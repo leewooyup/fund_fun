@@ -17,7 +17,6 @@ import java.util.UUID;
 public class Order {
     @Id
     private UUID postId;
-
     private int cost;
     private String orderDate;
     private String status;
