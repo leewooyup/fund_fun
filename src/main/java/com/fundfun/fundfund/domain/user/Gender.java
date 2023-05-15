@@ -1,4 +1,5 @@
 package com.fundfun.fundfund.domain.user;
 
-public class User {
+public enum Gender {
+    MALE, FEMALE
 }
