@@ -1,12 +1,12 @@
 package com.fundfun.fundfund.domain.payment;
 
+import com.fundfun.fundfund.domain.order.Orders;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -16,8 +16,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Payment {
     @Id
-    private int paymentId;
+    @Column(name = "payment_id", columnDefinition = "BINARY(16)")
+    private UUID id;
 
-    private UUID orderId;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Orders orders;
     private String paidDate;
 }
