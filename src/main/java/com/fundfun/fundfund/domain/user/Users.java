@@ -4,11 +4,10 @@ import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.vote.Vote;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,13 +15,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "BINARY(16)", name = "user_id")
     private UUID id;
 
-    private Product inprocess_product;
-    private Vote inprocess_vote;
+    @OneToMany(mappedBy = "users")
+    private List<Product> inprocess_product = new ArrayList<>();
+    @OneToMany(mappedBy = "users")
+    private List<Vote> inprocess_vote = new ArrayList<>();
+
     private String password;
     private String name;
     private String email;
