@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class payment {
+public class Payment {
     @Id
     private int paymentId;
 
