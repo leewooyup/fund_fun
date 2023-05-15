@@ -2,7 +2,10 @@ package com.fundfun.fundfund.domain.user;
 
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.vote.Vote;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
