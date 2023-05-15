@@ -1,10 +1,7 @@
 package com.fundfun.fundfund.domain.vote;
 
 import com.fundfun.fundfund.domain.post.Post;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Vote {
     @Id
     @GeneratedValue
