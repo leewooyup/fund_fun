@@ -11,13 +11,11 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vote {
     @Id
     private UUID voteId;
-
     private UUID postId;
     private String voteStart;
     private String voteEnd;
