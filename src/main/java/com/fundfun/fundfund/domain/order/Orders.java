@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Orders {
     @Id
     private UUID postId;
     
