@@ -25,5 +25,5 @@ public interface OrderService {
     /**
      * 주문삭제
      * */
-    void delete()
+    void delete();
 }
