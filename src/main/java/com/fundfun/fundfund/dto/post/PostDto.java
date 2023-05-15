@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.dto.post;
 import lombok.Data;
+import lombok.Setter;
 import org.w3c.dom.ls.LSOutput;
 
 import java.util.UUID;
