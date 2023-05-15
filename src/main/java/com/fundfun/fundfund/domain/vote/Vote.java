@@ -1,13 +1,12 @@
 package com.fundfun.fundfund.domain.vote;
 
+import com.fundfun.fundfund.domain.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,8 +17,12 @@ import java.util.UUID;
 public class Vote {
     @Id
     @GeneratedValue
-    private UUID voteId;
-    private UUID postId;
+    @Column(name="vote_id")
+    private UUID id;
+
+  @JoinColumn(name="post_id")
+  @OneToOne
+    private Post postId;
     private LocalDateTime voteStart;
     private LocalDateTime voteEnd;
     private String status;
