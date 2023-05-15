@@ -15,5 +15,6 @@ public class PostDto {
     private String category;
     private String status;
 
+
 }
 

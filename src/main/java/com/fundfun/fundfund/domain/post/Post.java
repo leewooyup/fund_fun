@@ -33,4 +33,17 @@ public class Post {
     private String updateDate;
     private String category;
     private String status;
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 }
