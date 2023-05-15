@@ -1,4 +1,4 @@
 package com.fundfun.fundfund.domain.user;
 
-public class User {
-}
+//public class Users {
+//}
