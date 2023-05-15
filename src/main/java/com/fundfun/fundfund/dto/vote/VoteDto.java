@@ -1,4 +1,4 @@
-package com.fundfun.fundfund.dto;
+package com.fundfun.fundfund.dto.vote;
 import lombok.Data;
 import org.w3c.dom.ls.LSOutput;
 

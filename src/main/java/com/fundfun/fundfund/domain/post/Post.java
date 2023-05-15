@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,15 +18,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
+
     @Id
     @GeneratedValue
-    private UUID postId;
+    @Column(columnDefinition = "BINARY(16)", name="post_id")
+    private UUID id;
     private String title;
     private String content;
-    private String post_date;
     private int like;
-    private String update_date;
+
+
+    @CreationTimestamp
+    private String postDate;
+
+    @UpdateTimestamp
+    private String updateDate;
     private String category;
     private String status;
-
 }
