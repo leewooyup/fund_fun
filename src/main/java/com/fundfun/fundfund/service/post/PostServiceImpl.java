@@ -17,6 +17,10 @@ import java.util.UUID;
         private final PostRepository postRep;
         private final ModelMapper modelMapper;
 
+        //게시물 생성
+        public void createPost(Post post) {
+        postRep.save(post);
+        }
 
         //전체 게시물 조회
         public List<Post> selectAll() {
@@ -28,6 +32,7 @@ import java.util.UUID;
             return postRep.findByTitleContaining(keyword);
 
         }
+
 
         //작성자로 게시물 조회
         public Optional<Post> selectPostByUserId(UUID userId) {
@@ -42,12 +47,6 @@ import java.util.UUID;
         //카테고리로 게시물 조회
         public List<Post> selectPostByCategory(String category) {
             return postRep.findByCategoryPost(category);
-        }
-
-        //게시물 생성
-        public void createPost(Post post) {
-
-            postRep.save(post);
         }
 
         //게시물 삭제
