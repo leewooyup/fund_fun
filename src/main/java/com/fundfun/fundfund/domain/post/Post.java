@@ -23,12 +23,12 @@ public class Post {
     @Column(name="post_id")
     private UUID id;
     private String title;
-    private String content;
-    private int like;
+    private String contentPost;
+    private int likePost;
 
     private Date postDate;
     private Date updateDate;
-    private String category;
+    private String categoryPost;
     private String status;
 
     public void setStatus(String status) {
@@ -40,7 +40,7 @@ public class Post {
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.contentPost = contentPost;
     }
 
 }
