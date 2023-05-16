@@ -23,24 +23,24 @@ public class Post {
     @Column(name="post_id")
     private UUID id;
     private String title;
-    private String content;
-    private int like;
+    private String contentPost;
+    private int likePost;
 
     private Date postDate;
     private Date updateDate;
-    private String category;
-    private String status;
+    private String categoryPost;
+    private String statusPost;
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusPost(String statusPost) {
+        this.statusPost = statusPost;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContentPost(String contentPost) {
+        this.contentPost = contentPost;
     }
 
 }
