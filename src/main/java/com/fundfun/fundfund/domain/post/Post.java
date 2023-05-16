@@ -1,6 +1,5 @@
 package com.fundfun.fundfund.domain.post;
 
-import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post extends BaseTimeEntity {
+public class Post {
 
     @Id
     @GeneratedValue
@@ -28,6 +27,8 @@ public class Post extends BaseTimeEntity {
     private String contentPost;
     private int likePost;
 
+    private Date postDate;
+    private Date updateDate;
     private String categoryPost;
     private String statusPost;
 
