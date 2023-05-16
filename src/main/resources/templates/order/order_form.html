@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <div th:text="${name}"></div>
+    <form method="post" action="/order/send">
+        <input type="number" name="cost">
+        <input type="submit">
+    </form>
+
+
+</th:block>
+</html>
