@@ -3,7 +3,6 @@ package com.fundfun.fundfund.service.order;
 import com.fundfun.fundfund.domain.order.Orders;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface OrderService {
 
