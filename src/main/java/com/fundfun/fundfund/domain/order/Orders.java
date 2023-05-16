@@ -2,6 +2,7 @@ package com.fundfun.fundfund.domain.order;
 
 import com.fundfun.fundfund.domain.payment.Payment;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Orders {
     @Id
-    @Column(name = "orders_id" ,columnDefinition = "BINARY(16)")
+    @Column(name = "orders_id")
     private UUID id;
 
     private int cost;
@@ -31,7 +32,9 @@ public class Orders {
     @OneToOne
     @JoinColumn(name = "payment_id")
     private Payment payment;
-
-    private UUID userId;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private Users users;
 
 }
