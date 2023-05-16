@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.domain.post;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -30,6 +31,8 @@ public class Post {
     private Date postDate;
     private Date updateDate;
     private String categoryPost;
+
+    @ColumnDefault("Idea")
     private String statusPost;
 
     public void setStatusPost(String statusPost) {

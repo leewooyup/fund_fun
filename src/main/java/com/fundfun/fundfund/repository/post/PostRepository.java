@@ -10,11 +10,11 @@ import java.util.UUID;
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
     //키워드가 포함된 제목으로 찾기
-    List<Post> findByTitleContain(String keyword);
+    List<Post> findByTitleContaining(String keyword);
     //상태로 찾기
     List<Post> findByStatusPost(String status);
     //카테고리로 찾기
-    List<Post> findByCategory(String category);
+    List<Post> findByCategoryPost(String category);
 
     Post findByTitle(String title);
 }

@@ -25,7 +25,7 @@ import java.util.UUID;
 
         //제목으로 게시물 조회
         public List<Post> selectPostByKeyword(String keyword) {
-            return postRep.findByTitleContain(keyword);
+            return postRep.findByTitleContaining(keyword);
 
         }
 
@@ -41,7 +41,7 @@ import java.util.UUID;
 
         //카테고리로 게시물 조회
         public List<Post> selectPostByCategory(String category) {
-            return postRep.findByCategory(category);
+            return postRep.findByCategoryPost(category);
         }
 
         //게시물 생성
@@ -95,7 +95,7 @@ import java.util.UUID;
         public void updatePostStatus(Post post) {
 
             if (post.getLikePost() >= 100) {
-                post.setStatusPost("update preproduct");
+                post.setStatusPost("Preproduct");
 
                 postRep.save(post);
 
