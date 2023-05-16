@@ -9,5 +9,12 @@ import java.util.List;
 import java.util.UUID;
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
-    List<Post> findByCategoryPost(String categoryPost);
+    //키워드가 포함된 제목으로 찾기
+    List<Post> findByTitleContain(String keyword);
+    //상태로 찾기
+    List<Post> findByStatusPost(String status);
+    //카테고리로 찾기
+    List<Post> findByCategory(String category);
+
+    Post findByTitle(String title);
 }
