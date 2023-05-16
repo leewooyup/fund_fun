@@ -2,11 +2,7 @@ package com.fundfun.fundfund.domain.vote;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-
+import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,15 +11,16 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "votes")
+@Builder
+
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="vote_id")
     private UUID id;
 
-  @JoinColumn(name="post_id")
-  @OneToOne
+    @JoinColumn(name="post_id")
+    @OneToOne
     private Post postId;
     private LocalDateTime voteStart;
     private LocalDateTime voteEnd;

@@ -30,6 +30,7 @@ repositories {
 }
 
 ext {
+	queryDslVersion = '4.4.0'
 	set('snippetsDir', file("build/generated-snippets"))
 }
 
@@ -53,6 +54,10 @@ dependencies {
 	// # Query DSL 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	//modelmapper
+	implementation 'org.modelmapper:modelmapper:2.4.4'
+
 }
 
 tasks.named('test') {

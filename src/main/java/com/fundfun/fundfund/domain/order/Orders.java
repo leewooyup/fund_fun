@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class Orders {
     @Id
-    @Column(name = "orders_id" ,columnDefinition = "BINARY(16)")
+    @Column(name = "orders_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 

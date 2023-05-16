@@ -15,7 +15,6 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "users")
 public class Users extends BaseTimeEntity {
     @Id
