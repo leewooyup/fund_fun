@@ -29,9 +29,9 @@ public class Orders extends BaseTimeEntity {
 //    @ColumnDefault("F")
     private String status;
 
-//    @OneToOne
-//    @JoinColumn(name = "product_id")
-//    private Product product;
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 //    @OneToOne
 //    @JoinColumn(name = "payment_id")

@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.controller.order;
 
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
@@ -36,7 +37,8 @@ public class OrderController {
      */
     @PostMapping("/send")
     public String orderFormSend(int cost) {
-        orderService.createOrder(cost);
+        Orders order = orderService.createOrder(cost);
+
 //        productService.updateProduct(cost);
         return "redirect:/order/receipt";
     }

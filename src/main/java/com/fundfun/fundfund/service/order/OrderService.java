@@ -19,7 +19,7 @@ public interface OrderService {
     /**
      * 주문 수정
      * */
-    int createOrder(int cost);
+    Orders createOrder(int cost);
 
     /**
      * 주문삭제
