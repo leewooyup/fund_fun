@@ -42,5 +42,5 @@ public interface ProductService {
      */
 //    int getCurrentCollection(UUID id);
 
-
+    Product createProduct();
 }
