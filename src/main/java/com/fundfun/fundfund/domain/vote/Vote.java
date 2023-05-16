@@ -26,9 +26,6 @@ public class Vote {
     private LocalDateTime voteEnd;
     private String status;
 
-    @ManyToOne
-    private Users writer;
-
     public void updateStatus() {
         if (LocalDateTime.now().isAfter(voteEnd)) {
             this.status = "end";

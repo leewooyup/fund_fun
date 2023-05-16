@@ -2,16 +2,18 @@ package com.fundfun.fundfund.service.vote;
 
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
+@Service
+@RequiredArgsConstructor
 public class VoteServiceImpl implements VoteService{
-
+    @Autowired
     private final VoteRepository voteRepository;
-
-    public VoteServiceImpl(VoteRepository voteRepository) {
-        this.voteRepository = voteRepository;
-    }
 
     @Override
     public Vote createVote(Vote vote) {
@@ -20,7 +22,12 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public Vote getVoteById(UUID voteId) {
+    public List<Vote> selectAll(){
+        return voteRepository.findAll();
+    }
+
+    @Override
+    public Vote selectVoteById(UUID voteId) {
         // Vote 조회 로직
         return voteRepository.findById(voteId).orElse(null);
     }
@@ -35,5 +42,13 @@ public class VoteServiceImpl implements VoteService{
         }
     }
 
+    @Override
+    public void deleteVote(UUID voteId){
+        Vote vote = voteRepository.findById(voteId).orElse(null);
+        if(vote == null)
+            throw new RuntimeException("해당 투표가 존재하지 않습니다.");
 
+        voteRepository.delete(vote);
+
+    }
 }
