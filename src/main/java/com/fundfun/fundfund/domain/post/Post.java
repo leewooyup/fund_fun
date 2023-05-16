@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -27,10 +28,10 @@ public class Post {
 
 
     @CreationTimestamp
-    private String postDate;
+    private Date postDate;
 
     @UpdateTimestamp
-    private String updateDate;
+    private Date updateDate;
     private String category;
     private String status;
 
