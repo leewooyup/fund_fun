@@ -5,15 +5,11 @@
         layout:decorate="~{/testwc/layout}"
 >
 <th:block layout:fragment="content">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-    상품페이지 index
-    <div th:each="ele : ${list}">
-        <div th:text = "${ele.goal}"> </div>
-    </div>
+<form method = "post" action ="">
+    <input type="text" name="cost">
+    <input type="submit">
+</form>
+
 
 
     </body>

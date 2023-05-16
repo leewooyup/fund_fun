@@ -14,6 +14,7 @@ public class DevInitData {
     CommandLineRunner init(ProductServiceImpl productService) {
         return args -> {
             productService.createProduct();
+            productService.createProduct2();
         };
     }
 }
