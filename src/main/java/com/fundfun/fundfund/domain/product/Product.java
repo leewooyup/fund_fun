@@ -1,8 +1,8 @@
 package com.fundfun.fundfund.domain.product;
 
 import com.fundfun.fundfund.domain.order.Orders;
-import lombok.Getter;
-import lombok.Setter;
+import com.fundfun.fundfund.domain.user.Users;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -10,9 +10,12 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class Product {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Product{
     @Id
-    @Column(name = "product_id", columnDefinition = "BINARY(16)")
+    @Column(name = "product_id")
     private UUID id;
 
     private String crowdStart;
@@ -26,5 +29,7 @@ public class Product {
     @JoinColumn(name = "order_id")
     private Orders orders;
 
-    private UUID userId;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private Users users;
 }

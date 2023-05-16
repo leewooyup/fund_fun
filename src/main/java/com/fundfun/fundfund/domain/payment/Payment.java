@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Payment {
     @Id
-    @Column(name = "payment_id", columnDefinition = "BINARY(16)")
+    @Column(name = "payment_id")
     private UUID id;
 
     @OneToOne

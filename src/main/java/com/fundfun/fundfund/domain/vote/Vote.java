@@ -17,19 +17,18 @@ import java.util.UUID;
 public class Vote {
     @Id
     @GeneratedValue
-    @Column(name="vote_id")
-    private UUID id;
 
-  @JoinColumn(name="post_id")
-  @OneToOne
-    private Post postId;
-    private LocalDateTime voteStart;
-    private LocalDateTime voteEnd;
+    @Column(name = "vote_id")
+    private UUID voteId;
+
+//    private LocalDateTime voteStart;
+//    private LocalDateTime voteEnd;
+
     private String status;
 
-    public void updateStatus() {
-        if (LocalDateTime.now().isAfter(voteEnd)) {
-            this.status = "end";
-        }
-    }
+//    public void updateStatus() {
+//        if (LocalDateTime.now().isAfter(voteEnd)) {
+//            this.status = "end";
+//        }
+//    }
 }

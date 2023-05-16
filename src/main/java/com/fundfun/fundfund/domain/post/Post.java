@@ -1,16 +1,15 @@
 package com.fundfun.fundfund.domain.post;
 
+import com.fundfun.fundfund.domain.vote.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,18 +20,20 @@ public class Post {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(16)", name="post_id")
+    @Column(name="post_id")
     private UUID id;
     private String title;
-    private String content;
-    private int like;
+    private String content_post;
+    private int likes;
 
-
-    @CreationTimestamp
-    private String postDate;
-
-    @UpdateTimestamp
-    private String updateDate;
-    private String category;
+//
+//    @CreationTimestamp
+//    private String postDate;
+//
+//    @UpdateTimestamp
+//    private String updateDate;
+    private String category_post;
     private String status;
+
+
 }
