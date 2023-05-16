@@ -16,6 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@Builder
+@ToString
 public class Users extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,7 +37,7 @@ public class Users extends BaseTimeEntity {
     private String email;
     private Role role;
     private String phone;
-    private String gender;
+    private Gender gender;
     private LocalDateTime reg_date;
     private Long money;
     private Long count;
