@@ -57,47 +57,20 @@ import com.fundfun.fundfund.modelmapper.ModelMapperConfig;
 
         }
 
-//게시물 수정
-
+        @Override
         public void updatePost(Post post) {
 
-            Optional<Post> optionalPost = postRep.findById(post.getId());
-            if (optionalPost.isPresent()) {
-                Post existingPost = optionalPost.get();
-
-                // 변경할 필드값을 업데이트합니다.
-                existingPost.setTitle(post.getTitle());
-                existingPost.setContent(post.getContent());
-
-                // 게시물을 저장하여 업데이트합니다.
-                postRep.save(existingPost);
-
-            }
-
         }
 
-        //좋아요 순으로 게시물 정렬
+        @Override
         public List<Post> getPostsOrderByLikes() {
-
-            Post post = Post.builder()
-                    .title("Example Title")
-                    .content("Example Content")
-                    .build();
-
-            return postRep.findAll(Sort.by(Sort.Direction.DESC, "like"));
-
+            return null;
         }
 
-//좋아요 100 개 이상 시 상태 변경
-
+        @Override
         public void updatePostStatus(Post post) {
 
-            if (post.getLike() >= 100) {
-                post.setStatus("update preproduct");
-
-                postRep.save(post);
-
-            }
-
         }
+
+
     }
