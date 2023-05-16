@@ -6,10 +6,14 @@ spring:
             enabled: true
     profiles:
         active: dev, base-addi
+
+    devtools:
+        livereload:
+            enabled: true
     datasource:
         driver-class-name: oracle.jdbc.driver.OracleDriver
         url: jdbc:oracle:thin:@localhost:1521:XE
-        username: c##lee
+        username: c##fundFun
         password: 1234
 
 

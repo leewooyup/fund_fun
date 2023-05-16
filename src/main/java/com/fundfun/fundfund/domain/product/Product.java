@@ -20,14 +20,14 @@ public class Product{
 
     private String crowdStart;
     private String crowdEnd;
-    private int goal;
-    private int currentGoal;
+    private Integer goal;
+    private Integer currentGoal;
     private String status;
     private String description;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Orders orders;
+//    @OneToOne
+//    @JoinColumn(name = "order_id")
+//    private Orders orders;
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
