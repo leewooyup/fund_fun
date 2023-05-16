@@ -5,6 +5,17 @@
     <title>Title</title>
 </head>
 <style>
+    @font-face {
+        font-family: "GmarketSansMedium";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+        format("woff");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    html > body {
+        font-family: "GmarketSansMedium";
+    }
     body {
         min-height: 100vh;
         display: flex;
@@ -29,6 +40,7 @@
         text-align: center;
         padding: 20px;
     }
+
 </style>
 
 <body>
@@ -47,7 +59,8 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">FundFun</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarWithDropdown" aria-controls="navbarWithDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarWithDropdown"
+                aria-controls="navbarWithDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse show" id="navbarWithDropdown">
@@ -59,7 +72,8 @@
                     <a class="nav-link" href="#">아이디어</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Dropdown link
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
