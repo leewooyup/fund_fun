@@ -26,5 +26,5 @@ public class Opinion {
     private UUID userId;
 
     // portfolio id와 join 필요
-    private UUID voted_for;
+    private UUID votedFor;
 }
