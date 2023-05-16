@@ -32,7 +32,7 @@ public class Post {
     private Date updateDate;
     private String categoryPost;
 
-    @ColumnDefault("Idea")
+    @ColumnDefault("IDEA")
     private String statusPost;
 
     public void setStatusPost(String statusPost) {

@@ -24,8 +24,8 @@ public class Users extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "orders")
     private List<Product> inprocess_product = new ArrayList<>();
-    @OneToMany(mappedBy = "writer")
-    private List<Vote> inprocess_vote = new ArrayList<>();
+    //@OneToMany(mappedBy = "writer")
+    //private List<Vote> inprocess_vote = new ArrayList<>();
 
     @OneToMany(mappedBy = "fundManager")
     private List<Product> managing_product = new ArrayList<>();
