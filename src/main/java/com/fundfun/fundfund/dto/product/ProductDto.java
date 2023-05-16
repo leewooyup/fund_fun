@@ -13,7 +13,7 @@ public class ProductDto {
 
     private String endDate;
 
-    private String goal;
+    private int goal;
 
     private String description;
 }

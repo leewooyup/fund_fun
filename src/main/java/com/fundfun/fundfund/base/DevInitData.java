@@ -19,7 +19,6 @@ public class DevInitData {
         return args -> {
             Product product = productService.createProduct();
             orderService.createOrder(3000000, product);
-
         };
     }
 }

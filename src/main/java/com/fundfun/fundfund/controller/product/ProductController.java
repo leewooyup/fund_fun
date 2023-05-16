@@ -30,31 +30,23 @@ public class ProductController {
     }
 
     /**
-     * 상품 등록
-     */
-//    @PostMapping("/write")
-//    public String write(ProductDto productDto) {
-//
-//        productService.insert();
-//        return "redirect:/test";
-//    }
-    /**
-     * test
+     * register 폼 이동
      * */
-    @GetMapping("/test")
-    public String test(){
-
+    @GetMapping("/register")
+    public String register(){
         return "product/product_register";
     }
 
+    /**
+     * 상품 등록
+     */
     @PostMapping("/write")
-    public void testWrite(ProductDto productDto) {
-        System.out.print(productDto.getTitle());
-        System.out.print(productDto.getStartDate());
-        System.out.print(productDto.getEndDate());
-        System.out.print(productDto.getGoal());
-        System.out.print(productDto.getDescription());
+    public String write(ProductDto productDto) {
+        System.out.println(productDto.getDescription());
+        productService.registerProduct(productDto);
+        return "redirect:/product/list";
     }
+
     /**
      * 주문서 상세보기
      */
