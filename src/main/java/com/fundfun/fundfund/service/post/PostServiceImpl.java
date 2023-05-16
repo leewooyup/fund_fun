@@ -67,7 +67,7 @@ import com.fundfun.fundfund.modelmapper.ModelMapperConfig;
 
                 // 변경할 필드값을 업데이트합니다.
                 existingPost.setTitle(post.getTitle());
-                existingPost.setContent(post.getContent());
+                existingPost.setContentPost(post.getContentPost());
 
                 // 게시물을 저장하여 업데이트합니다.
                 postRep.save(existingPost);
@@ -81,7 +81,7 @@ import com.fundfun.fundfund.modelmapper.ModelMapperConfig;
 
             Post post = Post.builder()
                     .title("Example Title")
-                    .content("Example Content")
+                    .contentPost("Example Content")
                     .build();
 
             return postRep.findAll(Sort.by(Sort.Direction.DESC, "like"));
@@ -92,8 +92,8 @@ import com.fundfun.fundfund.modelmapper.ModelMapperConfig;
 
         public void updatePostStatus(Post post) {
 
-            if (post.getLike() >= 100) {
-                post.setStatus("update preproduct");
+            if (post.getLikePost() >= 100) {
+                post.setStatusPost("update preproduct");
 
                 postRep.save(post);
 
