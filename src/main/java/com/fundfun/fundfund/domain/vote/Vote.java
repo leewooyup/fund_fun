@@ -17,11 +17,13 @@ import java.util.UUID;
 public class Vote {
     @Id
     @GeneratedValue
+
     @Column(name = "vote_id")
     private UUID voteId;
 
 //    private LocalDateTime voteStart;
 //    private LocalDateTime voteEnd;
+
     private String status;
 
 //    public void updateStatus() {

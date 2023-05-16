@@ -28,8 +28,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(Orders order) {
-
+    public int createOrder(int cost) {
+        Orders order = Orders.builder()
+                .cost(cost)
+                .build();
+        Orders result = orderRepository.save(order);
+        if(result == null) {
+            return 0;
+        }
+        return 1;
     }
 
     @Override
