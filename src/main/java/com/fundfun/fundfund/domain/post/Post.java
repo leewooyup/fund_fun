@@ -23,8 +23,8 @@ public class Post {
     @Column(name="post_id")
     private UUID id;
     private String title;
-    private String content;
-    private int like;
+    private String content_post;
+    private int likes;
 
 //
 //    @CreationTimestamp
@@ -32,7 +32,7 @@ public class Post {
 //
 //    @UpdateTimestamp
 //    private String updateDate;
-    private String category;
+    private String category_post;
     private String status;
 
 
