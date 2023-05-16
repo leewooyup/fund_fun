@@ -1,10 +1,11 @@
 package com.fundfun.fundfund.domain.vote;
 
 import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.user.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,9 +15,10 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "votes")
 public class Vote {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="vote_id")
     private UUID id;
 
@@ -26,6 +28,9 @@ public class Vote {
     private LocalDateTime voteStart;
     private LocalDateTime voteEnd;
     private String status;
+
+    @ManyToOne
+    private Users writer;
 
     public void updateStatus() {
         if (LocalDateTime.now().isAfter(voteEnd)) {

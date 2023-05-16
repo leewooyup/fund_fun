@@ -9,10 +9,11 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Setter
+@Table(name = "products")
 public class Product {
     @Id
-    @Column(name = "product_id", columnDefinition = "BINARY(16)")
+    @Column(name = "product_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String crowdStart;
@@ -26,5 +27,5 @@ public class Product {
     @JoinColumn(name = "order_id")
     private Orders orders;
 
-    private UUID userId;
+    private UUID fundManager;
 }
