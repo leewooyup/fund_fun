@@ -1,7 +1,9 @@
 package com.fundfun.fundfund.domain.product;
 
+import com.fundfun.fundfund.base.BaseTimeEntity;
 import com.fundfun.fundfund.domain.order.Orders;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -9,10 +11,10 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product{
+public class Product extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
@@ -25,9 +27,9 @@ public class Product{
     private String status;
     private String description;
 
-//    @OneToOne
-//    @JoinColumn(name = "order_id")
-//    private Orders orders;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Orders orders;
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
