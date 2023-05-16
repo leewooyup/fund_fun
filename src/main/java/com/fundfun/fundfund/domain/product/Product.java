@@ -1,7 +1,6 @@
 package com.fundfun.fundfund.domain.product;
 
 import com.fundfun.fundfund.domain.order.Orders;
-import com.fundfun.fundfund.domain.user.Users;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Product{
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
     private UUID id;
 

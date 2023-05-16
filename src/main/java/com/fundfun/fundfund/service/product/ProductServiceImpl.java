@@ -7,23 +7,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+
     @Override
-    public int createProduct(){
+    public void createProduct() {
         Product product = Product.builder()
                 .crowdStart("2023-05-15")
                 .crowdEnd("2023-07-15")
-                .goal(1_000_000)
-                .currentGoal(1_500_000)
+                .goal(1000000)
+                .currentGoal(1500000)
                 .status("진행중")
                 .description("펀드진행중")
                 .build();
 
-        Product result = productRepository.save(product);
-        if(result == null){
-            return 0;
-        }
-        return 1;
+        productRepository.save(product);
     }
 }
