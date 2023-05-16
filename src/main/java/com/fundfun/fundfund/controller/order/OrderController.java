@@ -37,13 +37,13 @@ public class OrderController {
     @PostMapping("/send")
     public String orderFormSend(int cost) {
         orderService.createOrder(cost);
-//        productService.updateProduct(cost);
+        //productService.updateProduct(cost);
         return "redirect:/order/receipt";
     }
 
     @GetMapping("/receipt")
     public String showOrderReceipt(Model model) {
-//        productService.getCurrentCollection();
+//        productService.getCurrentCollection(); //X
         model.addAttribute("curCollect", "200000000");
         return "order/order_receipt";
     }

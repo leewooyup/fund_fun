@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+<th:block layout:fragment="content">
+    <form method=post action="/product/write">
+
+        <input type="text" id="title" style="width:500px"/>
+        <p></p>
+
+        <input type="text" id="startDate"/>
+        <input type="text" id="endDate"/>
+        <input type="number" id="currentGoal"/>
+        <p></p>
+
+        <input type="text" id="description" style="width:500px;height:100px"/>
+
+        </input>
+    </form>
+
+    </body>
+</th:block>
+</html>

@@ -32,7 +32,15 @@ public interface ProductService {
      */
     Product selectById(UUID id);
 
+    /**
+     * 현재모금액 갱신
+     * */
+    int updateProduct(int cost);
 
+    /**
+     * 현재 모금액 구하기
+     */
+//    int getCurrentCollection(UUID id);
 
 
 }

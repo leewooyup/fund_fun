@@ -36,7 +36,7 @@ public class ProductController {
     @PostMapping("/write")
     public String write(Product product) {
         productService.insert(product);
-        return "product/product_detail";
+        return "product/product_register";
     }
 
     /**
