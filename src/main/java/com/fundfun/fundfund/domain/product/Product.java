@@ -33,7 +33,4 @@ public class Product{
 //    @JoinColumn(name = "user_id")
 //    private Users users;
 
-    public Product(UUID id){
-        this.id = id;
-    }
 }

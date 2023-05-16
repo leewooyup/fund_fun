@@ -1,10 +1,9 @@
 package com.fundfun.fundfund.controller.product;
 
 import com.fundfun.fundfund.domain.product.Product;
-import com.fundfun.fundfund.service.product.ProductService;
+import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +32,29 @@ public class ProductController {
     /**
      * 상품 등록
      */
-    @PostMapping("/write")
-    public String write(Product product) {
-        productService.insert(product);
+//    @PostMapping("/write")
+//    public String write(ProductDto productDto) {
+//
+//        productService.insert();
+//        return "redirect:/test";
+//    }
+    /**
+     * test
+     * */
+    @GetMapping("/test")
+    public String test(){
+
         return "product/product_register";
     }
 
+    @PostMapping("/write")
+    public void testWrite(ProductDto productDto) {
+        System.out.print(productDto.getTitle());
+        System.out.print(productDto.getStartDate());
+        System.out.print(productDto.getEndDate());
+        System.out.print(productDto.getGoal());
+        System.out.print(productDto.getDescription());
+    }
     /**
      * 주문서 상세보기
      */

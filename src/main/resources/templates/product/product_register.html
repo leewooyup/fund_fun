@@ -5,19 +5,33 @@
         layout:decorate="~{/testwc/layout}"
 >
 <th:block layout:fragment="content">
+    <style>
+        .gap{
+            gap:5px;
+        }
+
+    </style>
+    <label class="sub-title">상품 등록</label>
+    <div>김깨비 펀드매니저님</div>
     <form method=post action="/product/write">
 
-        <input type="text" id="title" style="width:500px"/>
-        <p></p>
+        <div>
+            <div>
+                <input type="text" id="title" style="width:500px" placeholder="제목"></input>
+            </div>
+            <div>
+                <div class="d-flex gap">
+                    <input type="text" id="startDate" placeholder="시작일" ></input>
+                    <input type="text" id="endDate" placeholder="종료일"></input>
+                    <input type="text" id="goal" placeholder="목표 금액"></input>
+                </div>
 
-        <input type="text" id="startDate"/>
-        <input type="text" id="endDate"/>
-        <input type="number" id="currentGoal"/>
-        <p></p>
+                <input type="text" id="description" style="width:500px;height:100px" placeholder="내용을 입력해주세요."></input>
+            </div>
+        </div>
+        <button type="button" class="btn btn-warning">Warning</button>
 
-        <input type="text" id="description" style="width:500px;height:100px"/>
 
-        </input>
     </form>
 
     </body>
