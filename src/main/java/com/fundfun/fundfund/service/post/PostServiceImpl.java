@@ -1,9 +1,7 @@
 package com.fundfun.fundfund.service.post;
 
 import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.post.QPost;
 import com.fundfun.fundfund.repository.post.PostRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
@@ -19,8 +17,6 @@ import com.fundfun.fundfund.modelmapper.ModelMapperConfig;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-
-    private final JPAQueryFactory query;
     private final PostRepository postRep;
     private final ModelMapper modelMapper;
 
@@ -32,8 +28,6 @@ public class PostServiceImpl implements PostService {
 
     //제목으로 게시물 조회
     public List<Post> selectPostByKeyword(String keyword) {
-        QPost p = QPost.post;
-        //List<Post> list = query.select().from(p).w
         return null;
     }
 
@@ -47,17 +41,14 @@ public class PostServiceImpl implements PostService {
         return null;
     }
 
-    fin
     //카테고리로 게시물 조회
-    public List<Post> selectPostByCategory(String categoryPost) {
-        QPost qpost = QPost.post;
-        return query.selectFrom(qpost)
-                .where(qpost.categoryPost.eq(categoryPost))
-                .fetch();
+    public List<Post> selectPostByCategory(String category) {
+        return null;
     }
 
     //게시물 생성
     public void createPost(Post post) {
+
         postRep.save(post);
     }
 
@@ -68,17 +59,24 @@ public class PostServiceImpl implements PostService {
 
     }
 
+//게시물 수정
+
     public void updatePost(Post post) {
-        Post existingPost = postRep.findById(post.getId()).orElse(null);
-        if (existingPost != null) {
-            //변경 필드값 업데이트
+
+        Optional<Post> optionalPost = postRep.findById(post.getId());
+        if (optionalPost.isPresent()) {
+            Post existingPost = optionalPost.get();
+
+            // 변경할 필드값을 업데이트합니다.
             existingPost.setTitle(post.getTitle());
+            existingPost.setContentPost(post.getContentPost());
 
-            //게시물저장
+            // 게시물을 저장하여 업데이트합니다.
             postRep.save(existingPost);
-        }
-    }
 
+        }
+
+    }
 
     //좋아요 순으로 게시물 정렬
     public List<Post> getPostsOrderByLikes() {

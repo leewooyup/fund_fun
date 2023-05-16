@@ -11,12 +11,13 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "payment")
 public class Payment {
     @Id
     @Column(name = "payment_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @OneToOne
