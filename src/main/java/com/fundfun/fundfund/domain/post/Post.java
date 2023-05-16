@@ -20,17 +20,13 @@ public class Post {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(16)", name="post_id")
+    @Column(name="post_id")
     private UUID id;
     private String title;
     private String content;
     private int like;
 
-
-    @CreationTimestamp
     private Date postDate;
-
-    @UpdateTimestamp
     private Date updateDate;
     private String category;
     private String status;

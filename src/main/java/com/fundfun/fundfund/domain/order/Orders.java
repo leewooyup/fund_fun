@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Orders {
     @Id
-    @Column(name = "orders_id" ,columnDefinition = "BINARY(16)")
+    @Column(name = "orders_id")
     private UUID id;
 
     private int cost;

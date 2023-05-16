@@ -14,18 +14,17 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)", name = "user_id")
+    @Column(name = "user_id")
     private UUID id;
 
-    @OneToMany(mappedBy = "users")
-    private List<Product> inprocess_product = new ArrayList<>();
-    @OneToMany(mappedBy = "users")
-    private List<Vote> inprocess_vote = new ArrayList<>();
+    //@OneToMany
+    //private List<Product> inprocess_product = new ArrayList<>();
+    //@OneToMany(mappedBy = "users")
+    //private List<Vote> inprocess_vote = new ArrayList<>();
 
     private String password;
     private String name;

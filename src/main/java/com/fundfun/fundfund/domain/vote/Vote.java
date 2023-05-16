@@ -18,8 +18,8 @@ public class Vote {
     @Column(name="vote_id")
     private UUID id;
 
-  @JoinColumn(name="post_id")
-  @OneToOne
+    @JoinColumn(name="post_id")
+    @OneToOne
     private Post postId;
     private LocalDateTime voteStart;
     private LocalDateTime voteEnd;

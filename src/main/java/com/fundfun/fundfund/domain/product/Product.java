@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 public class Product {
     @Id
-    @Column(name = "product_id", columnDefinition = "BINARY(16)")
+    @Column(name = "product_id")
     private UUID id;
 
     private String crowdStart;
