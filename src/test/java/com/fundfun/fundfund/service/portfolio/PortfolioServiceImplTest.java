@@ -28,7 +28,6 @@ class PortfolioServiceImplTest {
                     .build();
             portfolioService.createPort(port);
         }
-        ;
     }
     @Test
     public void 포폴전체조회() throws Exception {
@@ -44,7 +43,7 @@ class PortfolioServiceImplTest {
 
     @Test
     public void 작성자_포폴조회() throws Exception {
-        Optional<Portfolio> olist = portfolioService.selectPortfolioByUserId(null);
+        Optional<Portfolio> olist = portfolioService.selectPortfolioByUserId(UUID.randomUUID());
         olist.ifPresent(portfolio -> System.out.println(portfolio));
 
     }
@@ -57,7 +56,24 @@ class PortfolioServiceImplTest {
 
     @Test
     public void 예상수익률_포폴조회() throws Exception {
-        List<Portfolio> list = portfolioService.selectPortfolioByBeneRatio(null);
+        List<Portfolio> list = portfolioService.selectPortfolioByBeneRatio(1);
         for(Portfolio port : list) System.out.println(port);
     }
+
+    /*
+    @Test
+    public void 게시물삭제() throws Exception {
+
+        UUID uuid = portfolioService.selectAll().get(0).getId();
+        Optional<Post> postToDelete = portfolioService.selectPortfolioByUserId(uuid);
+
+        // 게시물이 존재하는지 확인
+        assertTrue(postToDelete.isPresent());
+
+        // 게시물 삭제
+        postToDelete.ifPresent(post -> {
+            portfolioServiceService.delete(post);
+            assertFalse(portfolioService.selectPostByUserId(1).isPresent());
+        })
+    };*/
 }

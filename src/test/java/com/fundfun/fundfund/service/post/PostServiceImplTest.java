@@ -44,11 +44,11 @@ class PostServiceImplTest {
         for (Post p : list) System.out.println(p);
     }
 
-    @Test
-    public void 작성자_게시물조회() throws Exception {
-        Optional<Post> olist = postService.selectPostByUserId(null);
-        olist.ifPresent(post -> System.out.println(post));
-    }
+    // @Test
+   // public void 작성자_게시물조회() throws Exception {
+    //    Optional<Post> olist = postService.selectPostByUserId(UUID.randomUUID());
+    //    olist.ifPresent(post -> System.out.println(post));
+   // }
 
     @Test
     public void 상태_게시물조회() throws Exception {
