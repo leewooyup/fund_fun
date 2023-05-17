@@ -23,13 +23,13 @@ public class Portfolio extends BaseTimeEntity {
     @Column(name = "portfolio_id")
     private UUID id;
 
-    @OneToOne
+    @ManyToOne
     private Vote vote;
 
-    @OneToOne
+    @ManyToOne
     private Users user;
 
-    @OneToOne
+    @ManyToOne
     private Post post;
 
     private String title;
