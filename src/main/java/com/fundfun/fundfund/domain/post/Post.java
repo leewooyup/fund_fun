@@ -28,7 +28,8 @@ public class Post extends BaseTimeEntity {
     private UUID id;
     private String title;
     private String contentPost;
-    private int likePost;
+    @Builder.Default
+    private int likePost = 0;
     private String categoryPost;
     @OneToOne
     private Vote vote;

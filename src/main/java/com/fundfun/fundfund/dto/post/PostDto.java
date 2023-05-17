@@ -5,16 +5,15 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.util.UUID;
 
+@Data
 public class PostDto {
-    private UUID voteId;
+    //private UUID postId;
     private String title;
     private String content;
-    private int like;
-    private String postDate;
-    private String updateDate;
-    private String category;
-    private String status;
-
-
+//    private int like;//
+//    private String postDate;//
+//    private String updateDate;//
+//    private String category;//
+//    private String status;//
 }
 
