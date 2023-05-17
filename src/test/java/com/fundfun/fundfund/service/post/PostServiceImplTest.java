@@ -18,7 +18,7 @@ class PostServiceImplTest {
     PostService postService;
 
     @Test
-    public void voteinsert() throws Exception {
+    public void 게시물_생성() throws Exception {
         for (int i = 0; i < 10; i++) {
             Post post = Post.builder()
                     .title("Title " + i)
@@ -125,13 +125,22 @@ class PostServiceImplTest {
         postToUpdateStatus.ifPresent(post -> {
             // 게시물의 좋아요 개수가 100개 이상인 경우 상태 변경
             if (post.getLikePost() >= 100) {
-                post.setStatusPost("PREPRODUCT");
+                //post.setStatusPost("PREPRODUCT");
                 postService.updatePostStatus(post);
             }
         });
     }
 
-
+    @Test
+    public void 상태변경및투표생성() throws Exception{
+        for(int i=0; i<15; i++){
+            List<Post> list = postService.selectAll();
+            Post post = list.get(1);
+            UUID id = post.getId();
+            postService.addLike(id);
+            System.out.println(i + "번쨰 시도) " + id + " 게시물의 좋아요 개수 : " + post.getLikePost() + ", 상태 = " + post.getStatusPost());
+        }
+    }
 }
 
 

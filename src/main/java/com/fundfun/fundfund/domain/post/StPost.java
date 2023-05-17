@@ -1,5 +1,5 @@
 package com.fundfun.fundfund.domain.post;
 
-public enum statusPost {
+public enum StPost {
     EARLY_IDEA, PREPRODUCT
 }
