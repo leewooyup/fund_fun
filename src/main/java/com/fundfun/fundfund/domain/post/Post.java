@@ -40,7 +40,7 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post")
     private List<Portfolio> portfolios = new ArrayList<>();
 
-    public void setStatusPost(String statusPost) {
+    public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;
     }
 

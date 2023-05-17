@@ -28,7 +28,8 @@ public class Vote {
     private Post postId;
     private LocalDateTime voteStart = LocalDateTime.now();
     private LocalDateTime voteEnd = voteStart.plusDays(30);
-    private String status;
+    @Builder.Default
+    private StVote status = StVote.PROCEED;
 
     @OneToMany(mappedBy="vote")
     private List<Opinion> opinions = new ArrayList<>();
@@ -38,7 +39,7 @@ public class Vote {
 
     public void updateStatus() {
         if (LocalDateTime.now().isAfter(voteEnd)) {
-            this.status = "END";
+            this.status = StVote.END;
         }
     }
 }
