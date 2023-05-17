@@ -30,7 +30,8 @@ public class Post extends BaseTimeEntity {
     private String contentPost;
     @Builder.Default
     private int likePost = 0;
-    private String categoryPost;
+    @Builder.Default
+    private String categoryPost = "주식형";
     @OneToOne
     private Vote vote;
 
