@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.service.portfolio;
 
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.repository.portfolio.PortRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
