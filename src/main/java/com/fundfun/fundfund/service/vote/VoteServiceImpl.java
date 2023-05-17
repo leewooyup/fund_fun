@@ -1,6 +1,5 @@
 package com.fundfun.fundfund.service.vote;
 
-import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

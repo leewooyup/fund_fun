@@ -1,7 +1,6 @@
 package com.fundfun.fundfund.domain.user;
 
 import com.fundfun.fundfund.domain.product.Product;
-import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
 
