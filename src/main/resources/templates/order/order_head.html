@@ -1,0 +1,43 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!-- 해당 부분을 fragment로 선언 -->
+<th:block th:fragment="orderHeadFragment">
+    <style>
+    .wrapper {
+        width: 85%;
+        margin: 0 auto;
+        justify-content: space-between;
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .form-order {
+        border-top: 2px solid #d3d3d3;
+        border-bottom: 2px solid #d3d3d3;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        width: 70%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .sub-title {
+        font-size: 17px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .input-cost {
+        border: 4px solid #ffc107;
+    }
+
+    .order-desc {
+        width: 60%;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+    </style>
+</th:block>
+</html>
