@@ -1,5 +1,7 @@
 package com.fundfun.fundfund.service.vote;
 
+import com.fundfun.fundfund.domain.vote.Vote;
+
 import java.util.List;
 import java.util.UUID;
 
