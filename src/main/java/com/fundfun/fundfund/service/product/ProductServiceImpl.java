@@ -74,10 +74,8 @@ public class ProductServiceImpl implements ProductService {
         Product dbProduct = selectById(productId);
         int money = dbProduct.getCurrentGoal() + cost;
 
-        Product product = Product.builder()
-                .currentGoal(money)
-                .build();
-        Product result = productRepository.save(product);
+        dbProduct.setCurrentGoal(money);
+        Product result = productRepository.save(dbProduct);
 
         if (result == null)
             return 0;

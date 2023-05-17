@@ -39,7 +39,6 @@ public class OrderServiceImpl implements OrderService {
 
     public Orders createOrder(int cost, Product product) {
         Orders order = Orders.builder()
-                .product(product)
                 .cost(cost)
                 .product(product)
                 .build();
