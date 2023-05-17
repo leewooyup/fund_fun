@@ -104,8 +104,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<Product> search(String title){
-        //List<Product> productList = productRepository.findAllByTitle();
-        return new ArrayList<>();
+        List<Product> productList = productRepository.findByTitleContaining(title);
+        return productList;
     }
 }
 

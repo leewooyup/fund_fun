@@ -22,16 +22,17 @@
         <div th:text="${ele.title}"></div>
     </div>
 
-    <form method="post" action="">
         <div>
             <div style="border-bottom:solid;margin:10px;">
                 <h3>상품게시판</h3>
                 <h5>상품게시판 설명임니다 ~~ </h5>
             </div>
-            <div class="aa">
-                <input type="text" name="title" placeholder="Search"></input>
-                <button type="submit" class="btn btn-warning">검색</button>
-            </div>
+            <form method="post" action="/product/search" >
+                <div class="aa">
+                    <input type="text" name="title" placeholder="Search"></input>
+                    <button type="submit" class="btn btn-warning">검색</button>
+                </div>
+            </form>
             <table class="table">
                 <thead>
                 <tr>
@@ -65,7 +66,7 @@
                 <button type="submit" class="btn btn-warning">글쓰기</button>
             </div>
         </div>
-    </form>
+
 
 
     </body>
