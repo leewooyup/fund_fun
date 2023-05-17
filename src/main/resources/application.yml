@@ -1,17 +1,18 @@
 server:
     port: 9000
 spring:
-    profiles:
-        active: dev, base-addi
-
     devtools:
         livereload:
             enabled: true
+    profiles:
+        active: dev, base-addi
+
     datasource:
         driver-class-name: oracle.jdbc.driver.OracleDriver
         url: jdbc:oracle:thin:@localhost:1521:XE
-        username: c##fundFun
+        username: c##lee
         password: 1234
+
 
     security:
         user:

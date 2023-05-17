@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller.order;
 
 import com.fundfun.fundfund.domain.order.Orders;
+import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -38,15 +40,15 @@ public class OrderController {
     @PostMapping("/send")
     public String orderFormSend(int cost) {
         Orders order = orderService.createOrder(cost);
+        productService.updateProduct(cost, order.getProduct().getId());
 
-//        productService.updateProduct(cost);
         return "redirect:/order/receipt";
     }
 
     @GetMapping("/receipt")
-    public String showOrderReceipt(Model model) {
-//        productService.getCurrentCollection();
-        model.addAttribute("curCollect", "200000000");
+    public String showOrderReceipt(Model model, Product product) {
+        int curCollect = productService.getCurrentCollection(product);
+        model.addAttribute("curCollect", curCollect);
         return "order/order_receipt";
     }
 
@@ -71,3 +73,4 @@ public class OrderController {
 
     }
 }
+
