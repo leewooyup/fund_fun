@@ -33,7 +33,7 @@ public class Post extends BaseTimeEntity {
     private Date updateDate;
     private String categoryPost;
 
-
+    @ColumnDefault("EARLY_IDEA")
     private String statusPost;
 
 
