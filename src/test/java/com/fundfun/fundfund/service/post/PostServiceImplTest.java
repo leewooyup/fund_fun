@@ -38,25 +38,31 @@ class PostServiceImplTest {
         for (Post p : list) System.out.println(p);
     }
 
+    @Test
     public void 제목_게시물조회() throws Exception {
         List<Post> list = postService.selectPostByKeyword(null);
         for (Post p : list) System.out.println(p);
     }
 
+    @Test
     public void 작성자_게시물조회() throws Exception {
         Optional<Post> olist = postService.selectPostByUserId(null);
         olist.ifPresent(post -> System.out.println(post));
     }
 
+    @Test
     public void 상태_게시물조회() throws Exception {
         List<Post> list = postService.selectPostByStatus(null);
         for (Post p : list) System.out.println(p);
     }
+
+    @Test
     public void 카테고리_게시물조회() throws Exception {
         List<Post> list = postService.selectPostByCategory(null);
         for (Post p : list) System.out.println(p);
     }
 
+    @Test
     public void 게시물삭제() throws Exception {
 
         UUID uuid = postService.selectAll().get(0).getId();
@@ -72,6 +78,7 @@ class PostServiceImplTest {
         });
     }
 
+    @Test
     public void 게시물수정() throws Exception {
 
         UUID uuid = postService.selectAll().get(0).getId();
@@ -98,11 +105,13 @@ class PostServiceImplTest {
         });
     }
 
+    @Test
     public void 좋아요정렬() throws Exception {
         List<Post> list = postService.getPostsOrderByLikes();
         for (Post p : list) System.out.println(p);
     }
 
+    @Test
     public void 상태변경() throws Exception {
 
         UUID uuid = postService.selectAll().get(0).getId();

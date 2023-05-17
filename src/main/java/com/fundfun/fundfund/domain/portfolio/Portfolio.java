@@ -2,10 +2,13 @@ package com.fundfun.fundfund.domain.portfolio;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -14,6 +17,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "portfolio")
 public class Portfolio extends BaseTimeEntity {
     @Id
@@ -35,19 +39,14 @@ public class Portfolio extends BaseTimeEntity {
     private String warnLevel;
     private int beneRatio;
 
+
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public void setContentPortfolio(String contentPortfolio) {
-        this.ContentPortfolio = contentPortfolio;
+    public void setContentPortfolio(String ContentPortfolio) {
+        this.ContentPortfolio = ContentPortfolio;
     }
+    public void setWarnLevel(String warnLevel){this.warnLevel = warnLevel;}
+    public void setBeneRatio(int beneRatio){this.beneRatio = beneRatio;}
 
-    public void setWarnLevel(String warnLevel){
-        this.warnLevel = warnLevel;
-    }
-
-    public void setBeneRatio(int warnLevel){
-        this.beneRatio = beneRatio;
-    }
 }

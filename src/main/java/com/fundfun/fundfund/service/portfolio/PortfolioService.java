@@ -22,8 +22,10 @@ public interface PortfolioService {
     List<Portfolio> selectPortfolioByWarnLevel(String warnLevel);
     
     //예상수익율로 포트폴리오 조회
-    List<Portfolio> selectPortfolioByBeneRatio(int beneRatio);
+    List<Portfolio> selectPortfolioByBeneRatio(Integer beneRatio);
 
+    //포트폴리오 생성
+    void createPort(Portfolio portfolio);
 
     //포트폴리오 삭제
     void delete(Portfolio portfolio);

@@ -15,6 +15,11 @@ import java.util.UUID;
     public class PortfolioServiceImpl implements PortfolioService {
     private final PortRepository portRep;
     private final ModelMapper modelMapper;
+
+    public void createPort(Portfolio portfolio) {
+        portRep.save(portfolio);
+    }
+
     //전체 포폴조회
     public List<Portfolio> selectAll() {
         return portRep.findAll();
@@ -37,7 +42,7 @@ import java.util.UUID;
     }
 
     //예상수익율로 포트폴리오 조회
-    public List<Portfolio> selectPortfolioByBeneRatio(int beneratio){
+    public List<Portfolio> selectPortfolioByBeneRatio(Integer beneratio){
         return portRep.findByBeneRatio(beneratio);
     }
 
