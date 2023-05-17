@@ -16,6 +16,9 @@ public interface VoteService {
     //투표 아이디로 조회
     Vote selectVoteById(UUID voteId);
 
+    //게시물아이디로 투표 조회
+    Vote selectVoteByPostId(UUID postId);
+
     //voteId에 해당하는 투표의 상태 업데이트
     void updateVoteStatus(UUID voteId);
     

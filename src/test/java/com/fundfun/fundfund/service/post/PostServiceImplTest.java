@@ -1,6 +1,9 @@
 package com.fundfun.fundfund.service.post;
 
 import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.vote.Vote;
+import com.fundfun.fundfund.service.vote.VoteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class PostServiceImplTest {
     @Autowired
     PostService postService;
+    @Autowired
+    VoteService voteService;
 
     @Test
     public void 게시물_생성() throws Exception {
@@ -24,7 +29,6 @@ class PostServiceImplTest {
                     .title("Title " + i)
                     .contentPost("Content " + i)
                     .categoryPost("Category " + i)
-                    .likePost(i)
                     .build();
 
             postService.createPost(post);
@@ -35,7 +39,9 @@ class PostServiceImplTest {
     @Test
     public void 게시물조회() throws Exception {
         List<Post> list = postService.selectAll();
-        for (Post p : list) System.out.println(p);
+        for (Post p : list) {
+            System.out.println("제목 : " + p.getTitle() + ", 좋아요 수 : " + p.getLikePost() + ", 상태 : " + p.getStatusPost());
+        }
     }
 
     @Test
@@ -133,12 +139,24 @@ class PostServiceImplTest {
 
     @Test
     public void 상태변경및투표생성() throws Exception{
-        for(int i=0; i<15; i++){
+        for(int i=0; i<11; i++){
             List<Post> list = postService.selectAll();
-            Post post = list.get(1);
+            Post post = list.get(4);
             UUID id = post.getId();
+            if(post.getLikePost()>=10) postService.updateStatus(post, StPost.PREPRODUCT);
             postService.addLike(id);
+
             System.out.println(i + "번쨰 시도) " + id + " 게시물의 좋아요 개수 : " + post.getLikePost() + ", 상태 = " + post.getStatusPost());
+        }
+
+        List<Post> list = postService.selectAll();
+        Post post = list.get(4);
+        Vote vote = voteService.selectVoteByPostId(post.getId());
+        if(vote!=null){
+            System.out.println(vote.getPost().getId() + " 글에 생성된 투표의 정보 : " + vote.getStatus() + ", " + vote.getVoteStart() + ", " + vote.getVoteEnd() + ", " + vote.getId());
+
+        } else {
+            System.out.println("투표가 생성되지 않았습니다.");
         }
     }
 }

@@ -33,6 +33,16 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
+    public Vote selectVoteByPostId(UUID postId) {
+        Vote vote = voteRepository.findByPostId(postId);
+        if(vote == null)
+            throw new RuntimeException("해당 투표가 존재하지 않습니다.");
+        return vote;
+
+    }
+
+
+    @Override
     public void updateVoteStatus(UUID voteId) {
         // Vote 상태 업데이트 로직
         Vote vote = voteRepository.findById(voteId).orElse(null);
@@ -49,6 +59,5 @@ public class VoteServiceImpl implements VoteService{
             throw new RuntimeException("해당 투표가 존재하지 않습니다.");
 
         voteRepository.delete(vote);
-
     }
 }

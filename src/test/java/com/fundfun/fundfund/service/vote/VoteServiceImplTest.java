@@ -19,8 +19,8 @@ class VoteServiceImplTest {
         for(int i=0; i<5; i++){
             voteService.createVote(Vote.builder()
                     .id(null)
-                    .postId(null).voteStart(null)
-                    .voteEnd(null).status("proceed").build());
+                    .post(null).voteStart(null)
+                    .voteEnd(null).status(null).build());
         }
     }
 

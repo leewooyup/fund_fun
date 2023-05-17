@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.service.post;
 
 import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.post.StPost;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +40,12 @@ public interface PostService {
     void addLike(UUID postId);
 
     //게시물의 상태 변경
-    void updateStatus(Post post, Enum statusPost);
+    void updateStatus(Post post, StPost status);
 
     //좋아요 100개 이상 넘어갔을 때 상태 변경
     void updatePostStatus(Post post);
+
+    //게시물의 좋아요 개수 조회
+    int getLikeById(UUID postId);
 
 }

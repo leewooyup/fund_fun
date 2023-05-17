@@ -25,21 +25,24 @@ public class Vote {
 
     @JoinColumn(name = "post_id")
     @OneToOne
-    private Post postId;
+    private Post post;
+
     private LocalDateTime voteStart = LocalDateTime.now();
     private LocalDateTime voteEnd = voteStart.plusDays(30);
     @Builder.Default
     private StVote status = StVote.PROCEED;
 
-    @OneToMany(mappedBy="vote")
-    private List<Opinion> opinions = new ArrayList<>();
+    //@OneToMany(mappedBy="vote")
+    //private List<Opinion> opinions = new ArrayList<>();
 
-    @OneToMany(mappedBy="vote")
-    private List<Portfolio> portfolios = new ArrayList<>();
+    //@OneToMany(mappedBy="vote")
+    //private List<Portfolio> portfolios = new ArrayList<>();
 
     public void updateStatus() {
         if (LocalDateTime.now().isAfter(voteEnd)) {
             this.status = StVote.END;
         }
     }
+
+    public void linkPost(Post post) {this.post = post;}
 }

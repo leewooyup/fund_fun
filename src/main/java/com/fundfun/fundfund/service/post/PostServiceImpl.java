@@ -2,6 +2,7 @@ package com.fundfun.fundfund.service.post;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.repository.post.PostRepository;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,6 @@ public class PostServiceImpl implements PostService {
 
     }
 
-
     //작성자로 게시물 조회
     public Optional<Post> selectPostByUserId(UUID userId) {
         return postRep.findById(userId);
@@ -64,7 +64,6 @@ public class PostServiceImpl implements PostService {
 //게시물 수정
 
     public void updatePost(Post post) {
-
         Post existingPost = postRep.findById(post.getId()).orElse(null);
         if (existingPost != null) {
             // 변경할 필드값을 업데이트합니다.
@@ -102,17 +101,17 @@ public class PostServiceImpl implements PostService {
 
         post.setLikePost(post.getLikePost()+1); //좋아요 + 1
         postRep.save(post);
-        //updatePostStatus(post); //좋아요 갯수 체크 및 상태 변경
+        //updateStatus(post, StPost.PREPRODUCT); //좋아요 갯수 체크 및 상태 변경
         //
     }
 
-    @Override
-    public void updateStatus(Post post, Enum statusPost) {
-
-    }
 
     public void updateStatus(Post post, StPost status){
         post.setStatusPost(status);
+        Vote vote = new Vote();
+        vote.linkPost(post);
+        voteRep.save(vote);
+        post.linkVote(vote);
         postRep.save(post);
     }
 
@@ -123,5 +122,15 @@ public class PostServiceImpl implements PostService {
 
             postRep.save(post);
         }
+    }
+
+    //게시물의 좋아요 개수 조회
+    @Override
+    public int getLikeById(UUID postId) {
+        Post post = postRep.findById(postId).orElse(null);
+        if(post==null)
+            throw new RuntimeException("해당 게시물이 존재하지 않습니다.");
+
+        return post.getLikePost();
     }
 }
