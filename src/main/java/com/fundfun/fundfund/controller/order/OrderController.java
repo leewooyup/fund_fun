@@ -40,7 +40,7 @@ public class OrderController {
     @PostMapping("/send")
     public String orderFormSend(int cost) {
         Orders order = orderService.createOrder(cost);
-        productService.updateProduct(cost, order.getProduct().getId());
+//        productService.updateProduct(cost, order.getProduct().getId());
 
         return "redirect:/order/receipt";
     }
