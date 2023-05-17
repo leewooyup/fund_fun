@@ -29,7 +29,7 @@ public class Orders extends BaseTimeEntity {
 //    @ColumnDefault("F")
     private String status;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
