@@ -39,14 +39,17 @@ public class OrderController {
      */
     @PostMapping("/send")
     public String orderFormSend(int cost) {
-        Orders order = orderService.createOrder(cost);
-//        productService.updateProduct(cost, order.getProduct().getId());
+        Product product = productService.createProduct();
+        Orders order = orderService.createOrder(cost, product);
+        System.out.println("order.getProduct().getId(): " + order.getProduct().getId());
+        productService.updateProduct(cost, order.getProduct().getId());
 
         return "redirect:/order/receipt";
     }
 
     @GetMapping("/receipt")
-    public String showOrderReceipt(Model model, Product product) {
+    public String showOrderReceipt(Model model) {
+        Product product = productService.createProduct();
         int curCollect = productService.getCurrentCollection(product);
         model.addAttribute("curCollect", curCollect);
         return "order/order_receipt";
