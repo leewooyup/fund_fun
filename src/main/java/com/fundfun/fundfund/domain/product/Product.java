@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,9 +29,9 @@ public class Product extends BaseTimeEntity {
     private String status;
     private String description;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Orders orders;
+//    @OneToMany(mappedBy = "orders")
+//    @JoinColumn(name = "order_id")
+//    private List<Orders> orders;
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
