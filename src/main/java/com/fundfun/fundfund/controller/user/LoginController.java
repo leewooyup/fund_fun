@@ -5,6 +5,7 @@ import com.fundfun.fundfund.domain.user.SessionUser;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,29 +19,14 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping
+@Slf4j
 public class LoginController {
     private final UserService userService;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    @RequestMapping(method = RequestMethod.POST, value = "/login")
-    public String login(String email, String password, HttpSession session) {
-        Optional<Users> target = userService.findByEmail(email);
-        if (encoder.encode(password) == target.get().getPassword()) {
-            session.setAttribute("authenticated", SessionUser.builder()
-                                                                    .gender(target.get().getGender())
-                                                                    .count(target.get().getCount())
-                                                                    .money(target.get().getMoney())
-                                                                    .phone(target.get().getPhone())
-                                                                    .email(target.get().getEmail())
-                                                                    .role(target.get().getRole())
-                                                                    .name(target.get().getName())
-                                                                    .build());
-        }
 
-        return "redirect:/";
-    }
 
     @GetMapping("/login")
     public String getLoginForm() {
+        log.info("[Login Controller] - login page accessed");
         return "login";
     }
 
