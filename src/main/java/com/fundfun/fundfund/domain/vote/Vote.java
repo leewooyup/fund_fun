@@ -1,10 +1,13 @@
 package com.fundfun.fundfund.domain.vote;
 
+import com.fundfun.fundfund.domain.opinion.Opinion;
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.user.Users;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,13 +25,19 @@ public class Vote {
     @JoinColumn(name="post_id")
     @OneToOne
     private Post postId;
-    private LocalDateTime voteStart;
-    private LocalDateTime voteEnd;
+    private LocalDateTime voteStart = LocalDateTime.now();
+    private LocalDateTime voteEnd = voteStart.plusDays(30);
     private String status;
+
+    @OneToMany(mappedBy="vote")
+    private List<Opinion> opinions = new ArrayList<>();
+
+    @OneToMany(mappedBy="vote")
+    private List<Portfolio> portfolios = new ArrayList<>();
 
     public void updateStatus() {
         if (LocalDateTime.now().isAfter(voteEnd)) {
-            this.status = "end";
+            this.status = "END";
         }
     }
 }
