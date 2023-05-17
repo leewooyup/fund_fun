@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+<th:block layout:fragment="content">
+    <style>
+        div .aa {
+            float: right;
+            padding: 0 10px 0 0
+        }
+
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    상품 전체보기
+    <div th:each="ele : ${list}">
+        <div th:text="${ele.title}"></div>
+    </div>
+
+    <form method="post" action="">
+        <div>
+            <div style="border-bottom:solid;margin:10px;">
+                <h3>상품게시판</h3>
+                <h5>상품게시판 설명임니다 ~~ </h5>
+            </div>
+            <div class="aa">
+                <input type="text" name="title" placeholder="Search"></input>
+                <button type="submit" class="btn btn-warning">검색</button>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성일</th>
+                    <th scope="col">좋아요</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="aa">
+                <button type="submit" class="btn btn-warning">글쓰기</button>
+            </div>
+        </div>
+    </form>
+
+
+    </body>
+</th:block>
+</html>

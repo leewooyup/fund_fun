@@ -48,4 +48,8 @@ public interface ProductService {
      * */
     Product createProduct();
 
+    /**
+     * 상품 검색
+     * */
+    List<Product> search(String title);
 }

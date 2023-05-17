@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,21 +21,21 @@ public class ProductController {
     private final ProductServiceImpl productService;
 
     /**
+     * register 폼 이동
+     * */
+    @GetMapping("/register")
+    public String register(){
+        return "product/product_register";
+    }
+
+    /**
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
     @GetMapping("/list")
     public String list(Model model) {
         List<Product> productList = productService.selectAll();
         model.addAttribute("list", productList);
-        return "index";
-    }
-
-    /**
-     * register 폼 이동
-     * */
-    @GetMapping("/register")
-    public String register(){
-        return "product/product_register";
+        return "/product/product_list";
     }
 
     /**
@@ -48,14 +49,6 @@ public class ProductController {
     }
 
     /**
-     * 주문서 상세보기
-     */
-    @GetMapping("/read/{id}")
-    public String read(UUID id) {
-        Product product = productService.selectById(id);
-        return "";
-    }
-    /**
      * 상품 삭제
      * */
     @RequestMapping("/delete")
@@ -63,5 +56,25 @@ public class ProductController {
         productService.delete(id);
         return "redirect:/product/list";
     }
+
+    /**
+     * 상세보기 --> order/form으로 이동
+     * */
+    @GetMapping("/detail/{id}")
+    public String detail(){
+
+        return "redirect:/order/form";
+    }
+
+    /**
+     * 검색해서 게시글 찾기
+     * */
+    @PostMapping("/search")
+    public String search(Model model, String title){
+        List<Product> productList = productService.search(title);
+        model.addAttribute("list", productList);
+        return "redirect:/product/list";
+    }
+
 
 }
