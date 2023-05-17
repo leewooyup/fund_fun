@@ -116,7 +116,7 @@ class PostServiceImplTest {
         postToUpdateStatus.ifPresent(post -> {
             // 게시물의 좋아요 개수가 100개 이상인 경우 상태 변경
             if (post.getLikePost() >= 100) {
-                post.setStatusPost("PREPRODUCT");
+                //post.setStatusPost("PREPRODUCT");
                 postService.updatePostStatus(post);
             }
         });
