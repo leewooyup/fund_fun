@@ -1,15 +1,12 @@
 package com.fundfun.fundfund.domain.post;
 
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,20 +25,18 @@ public class Post extends BaseTimeEntity {
     private String title;
     private String contentPost;
     private int likePost;
-
-    private Date postDate;
-    private Date updateDate;
     private String categoryPost;
+    @OneToOne
+    private Vote vote;
 
-
-    private String statusPost;
-
-
+    //@ColumnDefault("'EARLY_IDEA'")
+    @Builder.Default
+    private StPost statusPost = StPost.EARLY_IDEA;
 
     @OneToMany(mappedBy = "post")
     private List<Portfolio> portfolios = new ArrayList<>();
 
-    public void setStatusPost(String statusPost) {
+    public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;
     }
 
@@ -51,6 +46,12 @@ public class Post extends BaseTimeEntity {
 
     public void setContentPost(String contentPost) {
         this.contentPost = contentPost;
+    }
+
+    public void setLikePost(int likePost){ this.likePost = likePost; }
+
+    public void linkVote(Vote vote){
+        this.vote = vote;
     }
 }
 

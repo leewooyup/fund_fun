@@ -1,5 +1,5 @@
 package com.fundfun.fundfund.domain.vote;
 
-public enum status {
+public enum StVote {
     PROCEED, END
 }

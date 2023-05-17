@@ -35,6 +35,12 @@ public interface PostService {
     //좋아요 높은 순으로 게시물 정렬
     List<Post> getPostsOrderByLikes();
 
+    //게시물에 좋아요 추가
+    void addLike(UUID postId);
+
+    //게시물의 상태 변경
+    void updateStatus(Post post, Enum statusPost);
+
     //좋아요 100개 이상 넘어갔을 때 상태 변경
     void updatePostStatus(Post post);
 
