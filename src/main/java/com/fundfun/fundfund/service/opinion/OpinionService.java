@@ -1,6 +1,9 @@
 package com.fundfun.fundfund.service.opinion;
 
 import com.fundfun.fundfund.domain.opinion.Opinion;
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.domain.vote.Vote;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +19,7 @@ public interface OpinionService {
     int countByVotedFor(UUID votedFor);
 
     //표 등록
-    void insert(Opinion opinion);
+    void insertOpinion(Users user, Vote vote, Portfolio portfolio);
 
     //표 수정
     void update(Opinion opinion);

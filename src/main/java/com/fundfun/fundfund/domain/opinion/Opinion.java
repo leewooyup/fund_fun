@@ -1,5 +1,8 @@
 package com.fundfun.fundfund.domain.opinion;
 
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.domain.vote.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,12 +22,22 @@ public class Opinion {
     @Column(name="opinion_id")
     private UUID id;
 
-    @JoinColumn(name="vote_id")
-    private UUID voteId;
+    @ManyToOne
+    @JoinColumn(name = "vote_id")
+    private Vote vote;
 
-    @JoinColumn(name="user_id")
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     // portfolio id와 join 필요
-    private UUID votedFor;
+    @ManyToOne
+    @JoinColumn(name="portfolio_id")
+    private Portfolio votedFor;
+
+    public void linkVote(Vote vote) {this.vote = vote;}
+
+    public void linkUsers(Users user) {this.user = user;}
+
+    public void linkPortfolio(Portfolio portfolio) {this.votedFor = portfolio;}
 }

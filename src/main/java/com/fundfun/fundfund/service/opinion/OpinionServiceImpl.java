@@ -1,6 +1,10 @@
 package com.fundfun.fundfund.service.opinion;
 
 import com.fundfun.fundfund.domain.opinion.Opinion;
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.repository.opinion.OpinionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +40,13 @@ public class OpinionServiceImpl implements OpinionService{
 
     //표 등록
     @Override
-    public void insert(Opinion opinion) {
-        opinionRep.save(opinion);
+    public void insertOpinion(Users user, Vote vote, Portfolio portfolio) {
+        Opinion op = new Opinion();
+        op.linkUsers(user);
+        op.linkVote(vote);
+        op.linkPortfolio(portfolio);
+
+        opinionRep.save(op);
     }
 
     //표 수정
