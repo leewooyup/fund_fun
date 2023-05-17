@@ -1,23 +1,37 @@
 package com.fundfun.fundfund.domain.vote;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.user.Users;
+import lombok.*;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+
 public class Vote {
     @Id
-    private UUID voteId;
-    private UUID postId;
-    private String voteStart;
-    private String voteEnd;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="vote_id")
+    private UUID id;
+
+    @JoinColumn(name="post_id")
+    @OneToOne
+    private Post postId;
+    private LocalDateTime voteStart;
+    private LocalDateTime voteEnd;
     private String status;
+
+    @ManyToOne
+    private Users writer;
+
+    public void updateStatus() {
+        if (LocalDateTime.now().isAfter(voteEnd)) {
+            this.status = "end";
+        }
+    }
 }
