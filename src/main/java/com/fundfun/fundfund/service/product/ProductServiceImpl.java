@@ -20,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct() {
         Product product = Product.builder()
+                .title("A+B")
                 .crowdStart("2023-05-15")
                 .crowdEnd("2023-07-15")
                 .goal(1000000)
@@ -32,8 +33,9 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-    public void createProduct2() {
+    public Product createProduct2() {
         Product product = Product.builder()
+                .title("C+D")
                 .crowdStart("2023-08-15")
                 .crowdEnd("2023-12-15")
                 .goal(24)
@@ -43,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
         productRepository.save(product);
+        return product;
     }
 
 
@@ -84,11 +87,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product registerProduct(ProductDto productDto) {
         Product product = Product.builder()
+                .title(productDto.getTitle())
                 .goal(productDto.getGoal())
                 .currentGoal(0)
-                .crowdStart(productDto.getStartDate())
-                .crowdEnd(productDto.getEndDate())
-                .description("")
+                .crowdStart(productDto.getCrowdStart())
+                .crowdEnd(productDto.getCrowdEnd())
+                .description(productDto.getDescription())
                 .status("진행중")
                 .build();
         productRepository.save(product);

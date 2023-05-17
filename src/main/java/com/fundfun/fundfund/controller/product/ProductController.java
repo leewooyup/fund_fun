@@ -55,4 +55,13 @@ public class ProductController {
         Product product = productService.selectById(id);
         return "";
     }
+    /**
+     * 상품 삭제
+     * */
+    @RequestMapping("/delete")
+    public String delete(UUID id, String password){
+        productService.delete(id);
+        return "redirect:/product/list";
+    }
+
 }

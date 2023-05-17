@@ -20,6 +20,7 @@ public class Product extends BaseTimeEntity {
     @Column(name = "product_id")
     private UUID id;
 
+    private String title;
     private String crowdStart;
     private String crowdEnd;
     private Integer goal;

@@ -39,8 +39,8 @@ public class OrderController {
      */
     @PostMapping("/send")
     public String orderFormSend(int cost, Product product) {
-
-        Orders order = orderService.createOrder(cost, product);
+        Product product2 = productService.createProduct2();
+        Orders order = orderService.createOrder(cost, product2);
         productService.updateProduct(cost, order.getProduct().getId());
 
         return "redirect:/order/receipt";
