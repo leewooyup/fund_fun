@@ -8,6 +8,7 @@ import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
 @Slf4j
 public class UserRestController {
     private final UserService userService;
+    private final BCryptPasswordEncoder encoder;
 
     @PostMapping("register")
     public ApiResponse<String> register(@RequestBody Map<String, Object> resp, @RequestParam("role") String role) {
@@ -32,7 +34,7 @@ public class UserRestController {
                             .benefit(0L)
                             .name((String) resp.get("name"))
                             .phone((String) resp.get("phone"))
-                            .password((String) resp.get("pw"))
+                            .password(encoder.encode((String) resp.get("pw")))
                             .role(Role.valueOf(role))
                             .total_investment(0L)
                             .build())
