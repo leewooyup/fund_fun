@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.nio.ByteBuffer;
@@ -32,16 +29,17 @@ public class OrderController {
      * @param investDto
      * @return view
      * */
-    @GetMapping("/form")
-    public String showOrderForm(InvestDto investDto, Model model) {
-        Product product = productService.createProduct(); //테스트용 코드
-        //UUID encode
-        Base64.Encoder encoder = Base64.getEncoder();
-        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
-        long bits = product.getId().getMostSignificantBits();
-        byte[] encodedBits = encoder.encode(bb.array());
-        System.out.println("encodedBits: " + encodedBits);
-        model.addAttribute("encodedBits", encodedBits);
+    @PostMapping("/form")
+    public String showOrderForm(InvestDto investDto, Model model,  String encId) {
+        System.out.println("encId = " + encId);
+        // UUID 복호화
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] decodedUUIDBytes  = decoder.decode(encId);
+        String uuidString = new String(decodedUUIDBytes);
+        UUID uuid = UUID.fromString(uuidString);
+        // 복호화된 uuid로 해당 product 가져오기
+        Product product = productService.selectById(uuid);
+        System.out.println("product.getId(): " + product.getId());
         return "order/order_form";
     }
 

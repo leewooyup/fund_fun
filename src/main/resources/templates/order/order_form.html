@@ -27,7 +27,7 @@
                     <div>김깨비 펀드매니저님</div><!-- 하드코딩 -->
                 </div>
                 <form method="post" action="/order/send" th:object="${investDto}">
-                    <input type="hidden" name="encodedBits" th:value="${encodedBits}">
+<!--                    <input type="hidden" name="encodedBits" th:value="${encodedBits}">-->
                     <label class="sub-title">투자금액</label>
                     <div>
                         <input type="number" th:field="*{cost}" class="input-cost">
