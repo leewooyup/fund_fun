@@ -11,7 +11,7 @@
      role="alert" th:if="${#fields.hasAnyErrors()}" th:class="alert" style="padding:0;">
   <div th:if="${#fields.hasAnyErrors()}">
     <div th:each="err : ${#fields.allErrors()}">
-      <div class="alert alert-warning" role="alert" style="width:500px;margin-bottom:3px;font-weight:bold;font-size:17px;">
+      <div class="alert alert-warning" role="alert" style="width:400px;margin-bottom:3px;font-weight:bold;font-size:17px;">
         [[${err}]]
       </div>
     </div>

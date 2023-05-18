@@ -65,13 +65,14 @@ public class ProductController {
     }
 
     /**
-     * 상품 수정
-     * */
-//    @PostMapping("/delete")
-//    public String delete(UUID id){
-//        productService.update(id);
-//        return "redirect:/product/list";
-//    }
+     * 주문서 상세보기
+     */
+    @GetMapping("/read/{id}")
+    public String read(UUID id) {
+        Product product = productService.selectById(id);
+        return "";
+    }
+
 
     /**
      * 상품 삭제
