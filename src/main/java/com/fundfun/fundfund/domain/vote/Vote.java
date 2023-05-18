@@ -1,10 +1,14 @@
 package com.fundfun.fundfund.domain.vote;
 
+import com.fundfun.fundfund.domain.opinion.Opinion;
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.user.Users;
+
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,26 +16,33 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@Table(name = "vote")
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="vote_id")
     private UUID id;
 
-    @JoinColumn(name="post_id")
+    @JoinColumn(name = "post_id")
     @OneToOne
-    private Post postId;
-    private LocalDateTime voteStart;
-    private LocalDateTime voteEnd;
-    private String status;
+    private Post post;
 
-    @ManyToOne
-    private Users writer;
+    private LocalDateTime voteStart = LocalDateTime.now();
+    private LocalDateTime voteEnd = voteStart.plusDays(30);
+    @Builder.Default
+    private StVote status = StVote.PROCEED;
+
+    //@OneToMany(mappedBy="vote")
+    //private List<Opinion> opinions = new ArrayList<>();
+
+    //@OneToMany(mappedBy="vote")
+    //private List<Portfolio> portfolios = new ArrayList<>();
 
     public void updateStatus() {
         if (LocalDateTime.now().isAfter(voteEnd)) {
-            this.status = "end";
+            this.status = StVote.END;
         }
     }
+
+    public void linkPost(Post post) {this.post = post;}
 }

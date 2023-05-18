@@ -1,7 +1,6 @@
 package com.fundfun.fundfund.domain.user;
 
 import com.fundfun.fundfund.domain.product.Product;
-import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
 
@@ -24,8 +23,8 @@ public class Users extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "orders")
     private List<Product> inprocess_product = new ArrayList<>();
-    @OneToMany(mappedBy = "writer")
-    private List<Vote> inprocess_vote = new ArrayList<>();
+    //@OneToMany(mappedBy = "writer")
+    //private List<Vote> inprocess_vote = new ArrayList<>();
 
     @OneToMany(mappedBy = "fundManager")
     private List<Product> managing_product = new ArrayList<>();
