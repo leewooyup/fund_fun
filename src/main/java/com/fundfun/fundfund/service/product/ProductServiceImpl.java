@@ -8,6 +8,7 @@ import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -102,5 +103,9 @@ public class ProductServiceImpl implements ProductService {
         return dbProduct.getCurrentGoal();
     }
 
+    public List<Product> search(String title){
+        List<Product> productList = productRepository.findByTitleContaining(title);
+        return productList;
+    }
 }
 
