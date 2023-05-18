@@ -6,10 +6,14 @@ import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -32,16 +36,28 @@ public class ProductController {
     public String list(Model model) {
         List<Product> productList = productService.selectAll();
         model.addAttribute("list", productList);
-        return "product/product_list";
+        return "index";
+    }
+
+    /**
+     * register 폼 이동
+     * */
+    @GetMapping("/register")
+    public String register(ProductDto productDto){
+        return "product/product_register";
     }
 
     /**
      * 상품 등록
      */
     @PostMapping("/write")
-    public String write(ProductDto productDto) {
-       productService.registerProduct(productDto);
-        return "redirect:/list";
+    public String write(@Valid ProductDto productDto, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "product/product_register";
+        }
+        System.out.println(productDto.getDescription());
+        productService.registerProduct(productDto);
+        return "redirect:/product/list";
     }
 
     /**
