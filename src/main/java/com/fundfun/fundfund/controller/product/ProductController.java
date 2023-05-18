@@ -7,11 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,11 +20,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductServiceImpl productService;
+    private String productTitle;
     /**
      * register 폼 이동
      * */
-    @PostMapping("/register")
+    @GetMapping("/register")
     public String register(){
+        return "product/product_register";
+    }
+
+    @PostMapping("/regist")
+    public String regist(ProductDto productDto){
         return "product/product_register";
     }
 
@@ -37,15 +41,14 @@ public class ProductController {
     public String list(Model model) {
         List<Product> productList = productService.selectAll();
         model.addAttribute("list", productList);
-        return "index";
+        return "product/product_list";
     }
 
-    /**
-     * register 폼 이동
-     * */
-    @GetMapping("/register")
-    public String register(ProductDto productDto){
-        return "product/product_register";
+    @GetMapping("/searchList")
+    public String listSearch(Model model){
+        List<Product> searchList = productService.search(productTitle);
+        model.addAttribute("searchList", searchList);
+        return "product/product_search_list";
     }
 
     /**
@@ -94,9 +97,8 @@ public class ProductController {
      * */
     @PostMapping ("/search")
     public String search(Model model, String title){
-        List<Product> searchList = productService.search(title);
-        model.addAttribute("searchList", searchList);
-        return "index";
+        productTitle = title;
+        return "redirect:/product/searchList";
     }
 
 
