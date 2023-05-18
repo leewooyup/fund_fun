@@ -44,8 +44,10 @@ public interface PostService {
 
     //좋아요 100개 이상 넘어갔을 때 상태 변경
     void updatePostStatus(Post post);
-
+  
+  
     //게시물의 좋아요 개수 조회
     int getLikeById(UUID postId);
 
 }
+
