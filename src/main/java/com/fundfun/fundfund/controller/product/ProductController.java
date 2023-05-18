@@ -9,11 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/product")
@@ -23,7 +20,7 @@ public class ProductController {
     /**
      * register 폼 이동
      * */
-    @GetMapping("/register")
+    @PostMapping("/register")
     public String register(){
         return "product/product_register";
     }
@@ -43,8 +40,8 @@ public class ProductController {
      */
     @PostMapping("/write")
     public String write(ProductDto productDto) {
-        productService.registerProduct(productDto);
-        return "redirect:/";
+       productService.registerProduct(productDto);
+        return "redirect:/list";
     }
 
     /**
@@ -71,7 +68,7 @@ public class ProductController {
     @PostMapping ("/search")
     public String search(Model model, String title){
         List<Product> searchList = productService.search(title);
-        model.addAttribute("list", searchList);
+        model.addAttribute("searchList", searchList);
         return "index";
     }
 

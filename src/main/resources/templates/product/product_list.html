@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
     <style>
@@ -10,63 +10,66 @@
             float: right;
             padding: 0 10px 0 0
         }
+        a:link {
+            text-decoration: none;
+        }
 
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+        a:link {
+            text-decoration: none;
+        }
     </style>
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
     </head>
     <body>
-    상품 전체보기
-    <div th:each="ele : ${list}">
-        <div th:text="${ele.title}"></div>
-    </div>
 
-        <div>
-            <div style="border-bottom:solid;margin:10px;">
-                <h3>상품게시판</h3>
-                <h5>상품게시판 설명임니다 ~~ </h5>
-            </div>
-            <form method="post" action="/product/search" >
-                <div class="aa">
-                    <input type="text" name="title" placeholder="Search"></input>
-                    <button type="submit" class="btn btn-warning">검색</button>
-                </div>
-            </form>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">작성일</th>
-                    <th scope="col">좋아요</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="aa">
-                <button type="submit" class="btn btn-warning">글쓰기</button>
-            </div>
+    <div>
+        <div style="border-bottom:solid;margin:10px;">
+            <h3>상품게시판</h3>
+            <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
         </div>
 
+        <div class="container">
+            <div class="row row-cols-3">
+                <div th:each="ele : ${list}">
+                    <div class="col" style="padding:10px">
+                        <div>
+                            <a th:href="@{'/'}">
+                                <div>
+                                    <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid">
+                                </div>
+                                <div>
+                                    <span th:text="${ele.title}"></span>
+                                </div>
+                            </a>
+                            <div th:text="${ele.crowdStart}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/product/search" method="post">
+                    <div class="aa">
+                        <input name="title" placeholder="Search" type="text"></input>
+                        <button class="btn btn-warning" type="submit">검색</button>
+                    </div>
+                </form>
+
+                <form action="/product/register" method="post">
+                    <button class="btn btn-warning" type="submit">글쓰기</button>
+                </form>
+            </div>
 
 
     </body>
