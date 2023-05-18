@@ -10,6 +10,7 @@
             float: right;
             padding: 0 10px 0 0
         }
+
         a:link {
             text-decoration: none;
         }
@@ -25,6 +26,7 @@
         a:active {
             text-decoration: none;
         }
+
         a:link {
             text-decoration: none;
         }
@@ -44,11 +46,11 @@
         <div class="container">
             <div class="row row-cols-3">
                 <div th:each="ele : ${list}">
-                    <div class="col" style="padding:10px">
+                    <div class="col" >
                         <div>
                             <a th:href="@{'/'}">
                                 <div>
-                                    <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid">
+                                    <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid;width:80%">
                                 </div>
                                 <div>
                                     <span th:text="${ele.title}"></span>
@@ -58,19 +60,20 @@
                         </div>
                     </div>
                 </div>
-
-                <form action="/product/search" method="post">
-                    <div class="aa">
-                        <input name="title" placeholder="Search" type="text"></input>
-                        <button class="btn btn-warning" type="submit">검색</button>
-                    </div>
-                </form>
-
-                <form action="/product/register" method="post">
-                    <button class="btn btn-warning" type="submit">글쓰기</button>
-                </form>
             </div>
 
+            <form action="/product/search" method="post">
+                <div class="aa">
+                    <input name="title" placeholder="Search" type="text"></input>
+                    <button class="btn btn-warning" type="submit">검색</button>
+                </div>
+            </form>
+
+            <form action="/product/regist" method="post">
+                <button class="btn btn-warning" type="submit">글쓰기</button>
+            </form>
+        </div>
+    </div>
 
     </body>
 </th:block>
