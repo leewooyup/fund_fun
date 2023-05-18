@@ -101,5 +101,6 @@ public class ProductServiceImpl implements ProductService {
         Product dbProduct = selectById(product.getId());
         return dbProduct.getCurrentGoal();
     }
+
 }
 

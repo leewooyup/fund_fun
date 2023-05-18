@@ -62,6 +62,8 @@ public class ProductController {
         Product product = productService.selectById(id);
         return "";
     }
+
+
     /**
      * 상품 삭제
      * */
