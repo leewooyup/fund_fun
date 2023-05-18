@@ -15,13 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductServiceImpl productService;
+    /**
+     * register 폼 이동
+     * */
+    @PostMapping("/register")
+    public String register(){
+        return "product/product_register";
+    }
 
     /**
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
@@ -55,20 +61,32 @@ public class ProductController {
     }
 
     /**
-     * 주문서 상세보기
-     */
-    @GetMapping("/read/{id}")
-    public String read(UUID id) {
-        Product product = productService.selectById(id);
-        return "";
-    }
-    /**
      * 상품 삭제
      * */
-    @RequestMapping("/delete")
-    public String delete(UUID id, String password){
-        productService.delete(id);
-        return "redirect:/product/list";
+//    @PostMapping("/delete")
+//    public String delete(UUID id, String password){
+//        productService.delete(id);
+//        return "redirect:/product/list";
+//    }
+
+    /**
+     * 상세보기 --> order/form으로 이동
+     * */
+//    @GetMapping("/detail/{id}")
+//    public String detail(){
+//
+//        return "/order/form";
+//    }
+
+    /**
+     * 검색해서 게시글 찾기
+     * */
+    @PostMapping ("/search")
+    public String search(Model model, String title){
+        List<Product> searchList = productService.search(title);
+        model.addAttribute("searchList", searchList);
+        return "index";
     }
+
 
 }
