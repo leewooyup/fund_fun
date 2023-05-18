@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.config.auth;
 
+import com.fundfun.fundfund.service.user.CustomUserDetailService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,9 +17,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)// 특정 페이지에 특정 권한이 있는 유저만 접근을 허용할 경우 권한 및 인증을 미리 체크하겠다는 설정을 활성화
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    private final AuthFailureHandler authFailureHandler;
+    //    private final AuthFailureHandler authFailureHandler;
 //    private final AuthSucessHandler authSucessHandler;
-//    private final CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailService customUserDetailService;
 //    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
@@ -28,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(customUserDetailsService).passwordEncoder(encryptPassword());
+        auth.userDetailsService(customUserDetailService).passwordEncoder(encryptPassword());
 
 //        auth.inMemoryAuthentication()
 //                .withUser("admin")
@@ -51,9 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()    // csrf 토큰을 비활성화
                 .authorizeRequests() // 요청 URL에 따라 접근 권한을 설정
-                .antMatchers().authenticated()//2022-06-29_yeoooo: antPatter에 따라 인증이 필요한 경로
-                .antMatchers("/**", "/login/**", "/js/**", "/css/**", "/image/**")
-                .permitAll() // 해당 경로들은 접근을 허용
+//                .antMatchers().authenticated()//2022-06-29_yeoooo: antPatter에 따라 인증이 필요한 경로
+//                .antMatchers("/**", "/login/**", "/js/**", "/css/**", "/image/**")
+//                .permitAll() // 해당 경로들은 접근을 허용
 //                .anyRequest() // 다른 모든 요청은
 //                .authenticated() // 인증된 유저만 접근을 허용
                 .and()
@@ -64,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login/action") // 해당 URL로 요청이 오면 스프링 시큐리티가 가로채서 로그인처리를 한다. -> loadUserByName
 //                .successHandler(authSucessHandler) // 성공시 요청을 처리할 핸들러
 //                .failureHandler(authFailureHandler) // 실패시 요청을 처리할 핸들러
+
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 로그아웃 URL
