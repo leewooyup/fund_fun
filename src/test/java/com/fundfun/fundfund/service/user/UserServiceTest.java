@@ -55,7 +55,7 @@ class UserServiceTest {
         //when
         List<Users> users = userService.findAll();
         //then
-        org.assertj.core.api.Assertions.assertThat(users.size() == 3);
+        assertThat(users.size() == 3);
     }
 
     @Test
@@ -85,7 +85,7 @@ class UserServiceTest {
         //when
         Users found = userService.findByEmail("test4").get();
         //then
-        assertThat(found.equals(user));
+//        assertThat(user.getId())
 
     }
 
@@ -103,7 +103,7 @@ class UserServiceTest {
         //when
         Users found = userService.findByEmail("test4").get();
         //then
-        assertThat(found.equals(user));
+        assertThat(user.getId()).isEqualTo(found.getId());
     }
 
     @Test
@@ -136,8 +136,7 @@ class UserServiceTest {
         UserDTO to = new ModelMapper().map(Users.builder().email("testEmail").build(), UserDTO.class);
         userService.update(user.getId(), to);
         //then
-        assertThat(!userService.findById(id).get().equals(user));
-
+        assertThat(userService.findById(id).get().getEmail()).isEqualTo(to.getEmail());
 
     }
 }
