@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.domain.product;
 
 import com.fundfun.fundfund.base.BaseTimeEntity;
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,9 +42,9 @@ public class Product extends BaseTimeEntity {
 //    @JoinColumn(name = "order_id")
 //    private Orders orders;
 
-//    @OneToMany(mappedBy = "orders")
-//    @JoinColumn(name = "order_id")
-//    private List<Orders> orders;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Orders orders;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

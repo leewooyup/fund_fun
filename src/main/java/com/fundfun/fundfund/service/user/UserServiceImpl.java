@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.service.user;
 
+import com.fundfun.fundfund.domain.user.Gender;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class UserServiceImpl {
     public Users createUser(){ //테스트용code
         Users user = Users.builder()
                 .name("bana")
-                .gender("남")
+                .gender(Gender.valueOf("MALE"))
                 .password("1234")
                 .email("kb@kb.com")
                 .phone("010-2323-1313")
