@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
     <div class="d-flex flex-column align-items-center wrapper">
-        <div class="title">X와 Y의 결합상품</div>
+        <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
             <div>
-                <img src="https://picsum.photos/id/237/400/300" alt="">
+                <img alt="" src="https://picsum.photos/id/237/400/300">
             </div>
             <div>
                 <div>
                     <label class="sub-title">모인금액</label>
-                    <div>700,000원</div><!-- 하드코딩 -->
+                    <div><span th:text="${product.currentGoal}"></span>원</div>
                 </div>
                 <div>
                     <label class="sub-title">남은기간</label>
-                    <div>10일</div><!-- 하드코딩 -->
+                    <div><span th:text="${product.crowdEnd}"></span>일</div>
+
                 </div>
                 <div>
                     <label class="sub-title">담당 펀드매니저</label>
@@ -30,8 +31,8 @@
                     <input type="hidden" name="encId" th:value="${encId}">
                     <label class="sub-title">투자금액</label>
                     <div>
-                        <input type="number" th:field="*{cost}" class="input-cost">
-                        <button type="submit" class="btn btn-warning">투자</button>
+                        <input class="input-cost" th:field="*{cost}" type="number">
+                        <button class="btn btn-warning" type="submit">투자</button>
                     </div>
                     <div th:replace="form_errors :: formErrorsFragment"></div>
                 </form>

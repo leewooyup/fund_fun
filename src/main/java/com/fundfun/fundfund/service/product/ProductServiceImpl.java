@@ -12,6 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = Product.builder()
                 .title("A+B")
                 .crowdStart("2023-05-15")
-                .crowdEnd("2023-07-15")
+                .crowdEnd("2023-05-21")
                 .goal(1000L)
                 .currentGoal(1500L)
                 .status("진행중")
@@ -73,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * user가 order_form에서 해당상품에 투자할 때마다, Product의 currentGoal upadate
+     *
      * @param cost
      * @param productId
      * @return 성공(1)/실패(0)
@@ -91,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
         //Security annotation으로 가져오기
 
         //하나라도 못찾은 것이 있다면, Rollback
-        if(dbProduct == null || order == null || user == null) {
+        if (dbProduct == null || order == null || user == null) {
             throw new RuntimeException();
         }
 
@@ -123,5 +131,15 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productRepository.findByTitleContaining(title);
         return productList;
     }
+
+    public long crowdDeadline(Product product) {
+        Date deadLine = product.toDate(product.getCrowdEnd());
+        Date now = new Date();
+        long diff = ((deadLine.getTime() - now.getTime())/(24*60*60*1000))+1;
+
+        return diff;
+    }
+
+
 }
 
