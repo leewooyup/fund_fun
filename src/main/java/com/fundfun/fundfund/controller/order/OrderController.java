@@ -46,6 +46,7 @@ public class OrderController {
         // 복호화된 uuid로 해당 product 가져오기
         Product product = productService.selectById(uuid);
         System.out.println("product.getId(): " + product.getId());
+        model.addAttribute("product", product);
         return "order/order_form";
     }
 
@@ -62,7 +63,8 @@ public class OrderController {
             return "order/order_form";
         }
         Product product = productService.createProduct();
-        Orders order = orderService.createOrder(investDto.getCost(), product);
+        Users users = userService.createUser();
+        Orders order = orderService.createOrder(investDto.getCost(), product, users);
         System.out.println("order.getProduct().getId(): " + order.getProduct().getId());
         productService.updateProduct(investDto.getCost(), order.getProduct().getId());
 
@@ -72,7 +74,7 @@ public class OrderController {
     @GetMapping("/receipt")
     public String showOrderReceipt(Model model) {
         Product product = productService.createProduct();
-        int curCollect = productService.getCurrentCollection(product);
+        int curCollect = orderService.getCurrentCollection(product);
         model.addAttribute("curCollect", curCollect);
         return "order/order_receipt";
     }

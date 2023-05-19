@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = Product.builder()
                 .title("A+B")
                 .crowdStart("2023-05-15")
-                .crowdEnd("2023-07-15")
+                .crowdEnd("2023-07-05")
                 .goal(1000L)
                 .currentGoal(1500L)
                 .status("진행중")
@@ -98,5 +98,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productRepository.findByTitleContaining(title);
         return productList;
     }
+
+
 }
 

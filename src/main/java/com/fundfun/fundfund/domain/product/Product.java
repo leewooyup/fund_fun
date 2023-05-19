@@ -9,7 +9,11 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +31,9 @@ public class Product extends BaseTimeEntity {
 
     private String title;
     private String crowdStart;
+    //@Temporal(TemporalType.TIMESTAMP)
     private String crowdEnd;
+    //private LocalDateTime crowdEnd;
     private Long goal;
     private Long currentGoal;
     private String status;
@@ -41,10 +47,7 @@ public class Product extends BaseTimeEntity {
 //    @JoinColumn(name = "order_id")
 //    private List<Orders> orders;
 
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private Users users;
+    
     public String uuidEncode() {
         //UUID encode
         Base64.Encoder encoder = Base64.getEncoder();

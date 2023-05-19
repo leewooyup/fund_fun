@@ -76,7 +76,7 @@
                 <button class="btn btn-warning" type="submit">글쓰기</button>
             </form>
 
-            <form action="/order/form" method="post" id="productDetailSub">
+                <form action="/order/form" method="post" id="productDetailSub">
                 <input type="text" name="encId" >
             </form>
         </div>
@@ -85,7 +85,7 @@
 
            $(function(){
               $(document).on("click","#productHiddenCheck", function(){
-                 alert($(this).attr("name"))
+                 //alert($(this).attr("name"))
                  console.dir( $("[name=encodedUUID]") )
                   $("[name=encId]").val(  $(this).attr("name")  );
 
