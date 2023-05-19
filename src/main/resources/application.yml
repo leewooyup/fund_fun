@@ -6,21 +6,22 @@ spring:
         url: jdbc:oracle:thin:@localhost:1521:XE
         username: SALAD
         password: SALAD
-
     security:
         user:
             name: user
             password: 1234
-
-
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: create
+            ddl-auto: update
             # yeoooo : ? ? create ? update ?? create-drop ?? ?????
 #        defer-datasource-initialization: true
         generate-ddl: true
-
+    devtools:
+        livereload:
+            enabled: true
+        thymeleaf:
+            chach: false
 # sql init script
 #    sql:
 #        init:

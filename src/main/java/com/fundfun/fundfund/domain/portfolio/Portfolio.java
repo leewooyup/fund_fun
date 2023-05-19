@@ -1,5 +1,4 @@
 package com.fundfun.fundfund.domain.portfolio;
-
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
@@ -26,19 +25,29 @@ public class Portfolio extends BaseTimeEntity {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name="vote_id")
     private Vote vote;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name="user_id")
     private Users user;
 
     @ManyToOne
+    @JoinColumn(name="post_id")
     private Post post;
+
 
     private String title;
     private String ContentPortfolio;
     private String warnLevel;
-    private int beneRatio;
+    private float beneRatio;
 
+
+    public void linkVote(Vote vote) {this.vote = vote;}
+
+    public void linkUsers(Users user) {this.user = user;}
+
+    public void linkPost(Post post) {this.post = post;}
 
     public void setTitle(String title) {
         this.title = title;
@@ -47,6 +56,6 @@ public class Portfolio extends BaseTimeEntity {
         this.ContentPortfolio = ContentPortfolio;
     }
     public void setWarnLevel(String warnLevel){this.warnLevel = warnLevel;}
-    public void setBeneRatio(int beneRatio){this.beneRatio = beneRatio;}
+    public void setBeneRatio(float beneRatio){this.beneRatio = beneRatio;}
 
 }

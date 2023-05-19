@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <div class="d-flex flex-column wrapper">
+        <div class="fontSize-fix bottom_line">아이디어 작성</div>
+
+        <div style="margin-top: 1rem;">
+            <input type="text" placeholder="제목" class="width100 border-yellow paddingBtn"/>
+            <textarea class="border-yellow width100" rows="14" style="margin-top: 1rem;" placeholder="내용을 입력해주세요."></textarea>
+        </div>
+
+        <span style="margin-top: 1rem;">* 주의해주세요!</span>
+    </div>
+    <div th:text="${curCollect}"></div>
+
+    <style>
+        .fontSize-fix {
+            font-size: 1.2rem;
+        }
+
+        .paddingBtn {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
+        .bottom_line {
+            border-bottom: 1px solid darkgray;
+        }
+
+        .rightArea {
+            float: right;
+        }
+
+        .border-yellow {
+            border: 1px solid #ffc107;
+        }
+
+        .width100 {
+            width: 100%;
+        }
+    </style>
+</th:block>
+</html>
