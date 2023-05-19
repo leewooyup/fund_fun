@@ -1,3 +1,4 @@
+/*
 package com.fundfun.fundfund.config.security;
 
 import lombok.RequiredArgsConstructor;
@@ -52,3 +53,4 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
+*/
