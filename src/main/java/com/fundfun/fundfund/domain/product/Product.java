@@ -1,20 +1,19 @@
 package com.fundfun.fundfund.domain.product;
 
 import com.fundfun.fundfund.base.BaseTimeEntity;
-import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.sql.Date;
-import java.util.List;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -31,9 +30,7 @@ public class Product extends BaseTimeEntity {
 
     private String title;
     private String crowdStart;
-    //@Temporal(TemporalType.TIMESTAMP)
     private String crowdEnd;
-    //private LocalDateTime crowdEnd;
     private Long goal;
     private Long currentGoal;
     private String status;
@@ -57,6 +54,17 @@ public class Product extends BaseTimeEntity {
         String encodedString = encoder.encodeToString(this.id.toString().getBytes());
 
         return encodedString;
+    }
+
+    public Date toDate(String crowdEnd) {
+        Date deadLine = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            deadLine = sdf.parse(crowdEnd);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return deadLine;
     }
 
 }
