@@ -22,8 +22,4 @@ public class Alarm {
     private String content;
     private boolean is_read;
 
-    public static Alarm createAlarm(AlarmDTO dto) {
-        return new Alarm(null, dto.getUser(), dto.getContent(), false);
-    }
-
 }
