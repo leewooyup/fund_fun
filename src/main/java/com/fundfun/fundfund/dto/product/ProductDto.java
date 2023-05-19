@@ -17,7 +17,7 @@ public class ProductDto {
     @NotEmpty(message = "종료일을 설정해주세요.")
     private String crowdEnd;
     @NotNull(message = "목표금액을 입력해주세요.")
-    private Integer goal;
+    private Long goal;
     @NotEmpty(message = "상품설명을 입력해주세요")
     @Size(min=30, max=1000, message = "상품설명 최소 30자 이상 1000자 이하입니다.")
     private String description;

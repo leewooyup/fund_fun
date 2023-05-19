@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/product")
@@ -25,14 +24,10 @@ public class ProductController {
      * register 폼 이동
      * */
     @GetMapping("/register")
-    public String register(){
+    public String register(ProductDto productDto){
         return "product/product_register";
     }
 
-    @PostMapping("/regist")
-    public String regist(ProductDto productDto){
-        return "product/product_register";
-    }
 
     /**
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
@@ -44,12 +39,6 @@ public class ProductController {
         return "product/product_list";
     }
 
-    @GetMapping("/searchList")
-    public String listSearch(Model model){
-        List<Product> searchList = productService.search(productTitle);
-        model.addAttribute("searchList", searchList);
-        return "product/product_search_list";
-    }
 
     /**
      * 상품 등록
@@ -59,7 +48,6 @@ public class ProductController {
         if(bindingResult.hasErrors()) {
             return "product/product_register";
         }
-        System.out.println(productDto.getDescription());
         productService.registerProduct(productDto);
         return "redirect:/product/list";
     }
@@ -89,17 +77,19 @@ public class ProductController {
 //    @GetMapping("/detail/{id}")
 //    public String detail(){
 //
-//        return "/order/form";
+//        return "order/form";
 //    }
 
     /**
      * 검색해서 게시글 찾기
      * */
-    @PostMapping ("/search")
+    @GetMapping ("/search")
     public String search(Model model, String title){
-        productTitle = title;
-        return "redirect:/product/searchList";
+        List<Product> searchList = productService.search(title);
+        model.addAttribute("searchList", searchList);
+        return "product/product_search_list";
     }
+
 
 
 }

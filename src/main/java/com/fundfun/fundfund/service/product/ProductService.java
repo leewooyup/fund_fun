@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.service.product;
 
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 
 import java.util.List;
@@ -31,12 +32,8 @@ public interface ProductService {
     /**
      * 현재모금액 갱신
      * */
-    int updateProduct(int cost, UUID productId);
+    int updateProduct(Long cost, UUID productId);
 
-    /**
-     * 현재 모금액 구하기
-     */
-//    int getCurrentCollection(UUID id);
 
     /**
      * 상품 등록

@@ -24,7 +24,7 @@ public class Orders extends BaseTimeEntity {
     @Column(name = "orders_id")
     private UUID id;
 
-    private Integer cost;
+    private Long cost;
 
 //    @ColumnDefault("F")
     private String status;
@@ -37,8 +37,20 @@ public class Orders extends BaseTimeEntity {
 //    @JoinColumn(name = "payment_id")
 //    private Payment payment;
 //
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private Users users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users users;
+
+    public void linkProduct(Product product){
+        this.product = product;
+    }
+
+    public void linkUser(Users users){
+        this.users = users;
+    }
+
+    public void setCost(Long cost){
+        this.cost = cost;
+    }
 
 }

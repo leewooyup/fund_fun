@@ -14,4 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     //@Query(value = "select p from Product p where p.title like '%title%'")
     List<Product> findByTitleContaining(String title);
+
+    @Query(value = "select p from Product p order by p.createDate desc")
+    List<Product> findAll();
 }
