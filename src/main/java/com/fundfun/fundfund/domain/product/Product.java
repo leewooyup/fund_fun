@@ -7,6 +7,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,5 +42,15 @@ public class Product extends BaseTimeEntity {
 //    private List<Orders> orders;
 
 
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private Users users;
+    public String uuidEncode() {
+        //UUID encode
+        Base64.Encoder encoder = Base64.getEncoder();
+        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
+
+        return encodedString;
+    }
 
 }
