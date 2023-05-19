@@ -35,6 +35,7 @@ public class Product extends BaseTimeEntity {
     private Long currentGoal;
     private String status;
     private String description;
+    private String thumbnailRelPath;
 
 //    @OneToOne
 //    @JoinColumn(name = "order_id")
@@ -66,5 +67,13 @@ public class Product extends BaseTimeEntity {
         }
         return deadLine;
     }
+
+    public String getThumbnailImgUrl() {
+        if(thumbnailRelPath == null) return null;
+        return "/gen/" + thumbnailRelPath;
+    }
+
+
+//    private UUID fundManager;
 
 }

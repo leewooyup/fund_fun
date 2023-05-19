@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -44,11 +45,12 @@ public class ProductController {
      * 상품 등록
      */
     @PostMapping("/write")
-    public String write(@Valid ProductDto productDto, BindingResult bindingResult) {
+    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg) {
         if(bindingResult.hasErrors()) {
             return "product/product_register";
         }
-        productService.registerProduct(productDto);
+        System.out.println("thumbnailImg: " + thumbnailImg);
+        productService.registerProduct(productDto, thumbnailImg);
         return "redirect:/product/list";
     }
 
