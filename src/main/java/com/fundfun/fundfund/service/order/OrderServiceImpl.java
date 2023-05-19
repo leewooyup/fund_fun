@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public Orders createOrder(Long cost, Product product, Users user) {
         Orders order = new Orders();
         order.setProduct(product);
-        order.setUsers(user);
+        order.setUser(user);
         order.setCost(cost);
         return orderRepository.save(order);
     }

@@ -4,10 +4,13 @@ import com.fundfun.fundfund.base.BaseTimeEntity;
 import com.fundfun.fundfund.domain.payment.Payment;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
-import lombok.*;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
-import org.ietf.jgss.GSSName;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -37,16 +40,20 @@ public class Orders extends BaseTimeEntity {
 //    @JoinColumn(name = "payment_id")
 //    private Payment payment;
 //
+
+
+
+
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users users;
+    private Users user;
 
     public void linkProduct(Product product){
         this.product = product;
     }
 
     public void linkUser(Users users){
-        this.users = users;
+        this.user = users;
     }
 
     public void setCost(Long cost){

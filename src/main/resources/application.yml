@@ -1,0 +1,29 @@
+server:
+    port: 9000
+spring:
+    datasource:
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        url: jdbc:oracle:thin:@localhost:1521:XE
+        username: SALAD
+        password: SALAD
+
+    security:
+        user:
+            name: user
+            password: 1234
+
+
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: create
+            # yeoooo : ? ? create ? update ?? create-drop ?? ?????
+#        defer-datasource-initialization: true
+        generate-ddl: true
+
+# sql init script
+#    sql:
+#        init:
+#            platform: oracle
+#            encoding: UTF-8
+#            mode: always
