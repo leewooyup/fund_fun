@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface PortRepository extends JpaRepository<Portfolio, UUID> {
-
-    List<Portfolio> findByTitleContaining(String keyword);
-
-    List<Portfolio> findByWarnLevel(String warnLevel);
+public interface PortfolioRepository extends JpaRepository<Portfolio, UUID> {
 
 
-    List<Portfolio> findByBeneRatio(int beneratio);
+    //Portfolio findById(UUID portfolioId);
+
+    List<Portfolio> findByVoteId(UUID voteId);
+
+    List<Portfolio> findByUserId(UUID userId);
 }

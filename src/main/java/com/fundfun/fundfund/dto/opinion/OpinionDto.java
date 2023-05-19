@@ -10,11 +10,11 @@ import java.util.UUID;
 
 @Data
 public class OpinionDto {
-    //private UUID opinionId;
+    private UUID id;
 
-    private UUID voteId;
+    private UUID voteId; // vote와 연관관계
 
-    private UUID userId;
+    private UUID userId; // user와 연관관계
 
-    private UUID voted_for;
+    private UUID votedFor; // portfolio와 연관관계
 }
