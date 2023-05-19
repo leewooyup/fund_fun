@@ -3,6 +3,7 @@ package com.fundfun.fundfund.service.product;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +39,7 @@ public interface ProductService {
     /**
      * 상품 등록
      * */
-    Product registerProduct(ProductDto productDto);
+    Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg);
 
     /**
      * 상품등록 test

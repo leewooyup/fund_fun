@@ -2,15 +2,15 @@ package com.fundfun.fundfund.dto.vote;
 import lombok.Data;
 import org.w3c.dom.ls.LSOutput;
 
-public class VoteDto {
-    private int voteId;
-    private int postId;
-    private String voteStart;
-    private String voteEnd;
-    private String status;
+import java.util.UUID;
 
-    public String toString() {
-        return "a";
-    }
-    }
+@Data
+public class VoteDto {
+//    private int voteId; //
+    private UUID postId;
+//    private String voteStart; //
+//    private String voteEnd; // 안받아도 되는지?
+//    private String status; //
+
+}
 

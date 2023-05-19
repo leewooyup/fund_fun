@@ -8,10 +8,12 @@ import com.fundfun.fundfund.repository.order.OrderRepository;
 import com.fundfun.fundfund.repository.product.ProductRepository;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.user.UserServiceImpl;
+import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -26,6 +28,8 @@ import java.util.UUID;
 //@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+    @Value("${custom.genFileDirPath}")
+    private String genFileDirPath;
     private final ProductRepository productRepository;
     private final OrderServiceImpl orderService;
     private final UserServiceImpl userService;
@@ -112,7 +116,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product registerProduct(ProductDto productDto) {
+    public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg) {
+        String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
+        System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
         Product product = Product.builder()
                 .title(productDto.getTitle())
                 .goal(productDto.getGoal())
@@ -121,6 +127,7 @@ public class ProductServiceImpl implements ProductService {
                 .crowdEnd(productDto.getCrowdEnd())
                 .description(productDto.getDescription())
                 .status("진행중")
+                .thumbnailRelPath(thumbnailImgRelPath)
                 .build();
         Product result = productRepository.save(product);
 
@@ -131,7 +138,6 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productRepository.findByTitleContaining(title);
         return productList;
     }
-
     public long crowdDeadline(Product product) {
         Date deadLine = product.toDate(product.getCrowdEnd());
         Date now = new Date();
@@ -141,5 +147,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    public String getCurThumbnailImgDirName() {
+        return "product/" + Util.date.getCurDateFormatted("yyyy_MM_dd");
+    }
+
+    public String saveThumbnailImg(MultipartFile thumbnailImg) {
+        System.out.println("thumbnailImg: " + thumbnailImg);
+        String thumbnailImgDirName = getCurThumbnailImgDirName();
+        String fileName = UUID.randomUUID() + ".jpeg";
+        String thumbnailImgDirPath = genFileDirPath + "/" + thumbnailImgDirName;
+        String thumbnailImgFilePath = thumbnailImgDirPath + "/" + fileName;
+        System.out.println("thumbnailImgFilePath: " + thumbnailImgFilePath);
+        new File(thumbnailImgDirPath).mkdirs();
+
+        try {
+            thumbnailImg.transferTo(new File(thumbnailImgFilePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return thumbnailImgDirName + "/" + fileName;
+    }
 }
 
