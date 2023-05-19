@@ -38,15 +38,12 @@ public class OrderController {
     @PostMapping("/form")
     public String showOrderForm(InvestDto investDto, Model model,  String encId) {
         System.out.println("encId = " + encId);
-        // UUID 복호화
-        Base64.Decoder decoder = Base64.getDecoder();
-        byte[] decodedUUIDBytes  = decoder.decode(encId);
-        String uuidString = new String(decodedUUIDBytes);
-        UUID uuid = UUID.fromString(uuidString);
+        UUID uuid = orderService.decEncId(encId);
         // 복호화된 uuid로 해당 product 가져오기
         Product product = productService.selectById(uuid);
-        System.out.println("product.getId(): " + product.getId());
         model.addAttribute("product", product);
+        model.addAttribute("encId", encId);
+
         return "order/order_form";
     }
 
@@ -56,17 +53,13 @@ public class OrderController {
      * @param investDto, bindingResult
      * @return view
      */
-
-    @PostMapping("/send/{encodedBits}")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encodedBits) {
+    @PostMapping("/send")
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, String encId) {
         if(bindingResult.hasErrors()) {
             return "order/order_form";
         }
-        Product product = productService.createProduct();
-        Users users = userService.createUser();
-        Orders order = orderService.createOrder(investDto.getCost(), product, users);
-        System.out.println("order.getProduct().getId(): " + order.getProduct().getId());
-        productService.updateProduct(investDto.getCost(), order.getProduct().getId());
+        UUID uuid = orderService.decEncId(encId);
+        productService.updateProduct(investDto.getCost(), uuid);
 
         return "redirect:/order/receipt";
     }

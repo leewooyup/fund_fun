@@ -26,6 +26,7 @@ public class DevInitData {
 
             Product product2 = productService.createProduct2();
             orderService.createOrder(20L, product2, users);
+
         };
     }
 }
