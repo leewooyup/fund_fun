@@ -1,22 +1,16 @@
 package com.fundfun.fundfund.controller.user;
 
 import com.fundfun.fundfund.config.auth.JwtTokenProvider;
-import com.fundfun.fundfund.config.queryDsl.BaseConfig;
-import com.fundfun.fundfund.domain.user.SessionUser;
-import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.ApiResponse;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/ff/api/v1/")
@@ -41,8 +35,8 @@ public class LoginRestController {
 
 
     @RequestMapping("logout")
-    public ApiResponse<SessionUser> logout(@RequestBody Map<String, String> map) {
-        return ApiResponse.success(new SessionUser());
+    public ApiResponse<String> logout(@RequestBody Map<String, String> map) {
+        return ApiResponse.success("success");
     }
 
 
