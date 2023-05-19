@@ -17,6 +17,7 @@ public class Alarm {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users user;
 
     private String content;
