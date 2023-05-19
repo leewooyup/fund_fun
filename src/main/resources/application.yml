@@ -11,7 +11,7 @@ spring:
         url: jdbc:oracle:thin:@localhost:1521:XE
         username: SALAD
         password: SALAD
-        
+
     security:
         user:
             name: user
