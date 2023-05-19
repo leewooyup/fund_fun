@@ -38,7 +38,7 @@
         <label class="sub-title">상품 등록</label>
         <div>김깨비 펀드매니저님</div>
 
-        <form method="post" th:action="@{/product/write}" th:object="${productDto}">
+        <form method="post" th:action="@{/product/write}" th:object="${productDto}" enctype="multipart/form-data">
             <div class="d-flex flex-column product-register-wrapper">
                 <div style="width:100%;">
                     <input type="text" th:field="*{title}" style="width:100%;" placeholder="상품제목"></input>
@@ -62,8 +62,7 @@
                 </div>
 
                 <div>
-                    <input type="file" name="thumbnailImg" accept="image/png, image/gif, image/jpeg"
-                           enctype="multipart/form-data"/>
+                    <input type="file" name="thumbnailImg" accept="image/png, image/gif, image/jpeg" />
                 </div>
             </div>
 
