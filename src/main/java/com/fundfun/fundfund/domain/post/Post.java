@@ -1,16 +1,26 @@
 package com.fundfun.fundfund.domain.post;
 
-import com.fundfun.fundfund.domain.portfolio.Portfolio;
+
 import com.fundfun.fundfund.domain.vote.Vote;
+import com.fundfun.fundfund.dto.vote.VoteDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
+
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+
 import java.util.Date;
+
 
 import java.util.List;
 import java.util.UUID;

@@ -16,12 +16,12 @@ import java.util.UUID;
 @Table(name = "payment")
 public class Payment {
     @Id
-    @Column(name = "payment_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "payment_id")
     private UUID id;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Orders orders;
-    private String paidDate;
+//    @OneToOne
+//    @JoinColumn(name = "order_id")
+//    private Orders orders;
+//    private String paidDate;
 }

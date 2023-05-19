@@ -10,7 +10,11 @@
         <title>Title</title>
     </head>
     <body>
-    안녕하세요
+    검색결과 test index
+    <div th:each="ele : ${searchList}">
+        <div th:text="${ele.title}"></div>
+    </div>
+
 
     </body>
 </th:block>
