@@ -1,25 +1,29 @@
 package com.fundfun.fundfund.controller.user;
 
-import com.fundfun.fundfund.domain.user.Gender;
-import com.fundfun.fundfund.domain.user.RegisterForm;
-import com.fundfun.fundfund.domain.user.Role;
-import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.domain.user.*;
+import com.fundfun.fundfund.repository.user.UserRepository;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("ff/api/v1/")
 @RequiredArgsConstructor
 @Slf4j
 public class UserRestController {
+    private final UserRepository userRepository;
     private final UserService userService;
     private final BCryptPasswordEncoder encoder;
+    private final ModelMapper modelMapper;
 
     @PostMapping("register")
     public ApiResponse<String> register(@RequestBody Map<String, Object> resp, @RequestParam("role") String role) {
@@ -49,5 +53,37 @@ public class UserRestController {
         }
     }
 
+    @GetMapping("/users")
+    public ApiResponse<List<UserDTO>> findAll() {
+        return ApiResponse.success(userRepository.findAll()
+                .stream().map((x) -> modelMapper.map(x, UserDTO.class)).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/user/{email}")
+    public ApiResponse<UserDTO> findByEmail(@PathVariable String email) {
+        return ApiResponse.success(userRepository.findByEmail(email).map(
+                        (x) -> modelMapper.map(x, UserDTO.class))
+                .orElseThrow(NoSuchElementException::new));
+    }
+
+    @PostMapping("/user/{email}")
+    public ApiResponse<String> deleteByEmail(@PathVariable String email, @RequestParam("method") String method) {
+        userRepository.delete(
+                userRepository.findByEmail(email).map(users -> modelMapper.map(users, Users.class))
+                        .orElseThrow(NoSuchElementException::new));
+        return ApiResponse.success("success");
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ApiResponse<String> handleExceptions(Exception e) {
+        String err = "";
+        if (e.getClass().equals(NoSuchElementException.class)){
+            err = e.getMessage();
+            return ApiResponse.fail(500,e.getMessage());
+        }
+        else{
+            return ApiResponse.fail(500, new RuntimeException().getMessage());
+        }
+    }
 
 }
