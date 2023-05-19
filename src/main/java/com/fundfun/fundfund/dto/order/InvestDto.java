@@ -9,5 +9,5 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class InvestDto {
     @NotNull(message = "투자금액을 입력해주세요.")
-    private Integer cost;
+    private Long cost;
 }
