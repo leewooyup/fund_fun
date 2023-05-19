@@ -30,7 +30,6 @@ public class Opinion {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    // portfolio id와 join 필요
     @ManyToOne
     @JoinColumn(name="portfolio_id")
     private Portfolio votedFor;

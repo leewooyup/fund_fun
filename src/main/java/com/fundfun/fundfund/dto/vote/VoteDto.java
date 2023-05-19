@@ -1,16 +1,18 @@
 package com.fundfun.fundfund.dto.vote;
+import com.fundfun.fundfund.domain.vote.StVote;
 import lombok.Data;
 import org.w3c.dom.ls.LSOutput;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 public class VoteDto {
-//    private int voteId; //
+    private UUID id;
     private UUID postId;
-//    private String voteStart; //
-//    private String voteEnd; // 안받아도 되는지?
-//    private String status; //
+    private LocalDateTime voteStart;
+    private LocalDateTime voteEnd;
+    private StVote status;
 
 }
 
