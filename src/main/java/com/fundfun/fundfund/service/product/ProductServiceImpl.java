@@ -1,8 +1,12 @@
 package com.fundfun.fundfund.service.product;
 
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.repository.order.OrderRepository;
 import com.fundfun.fundfund.repository.product.ProductRepository;
+import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,10 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final OrderServiceImpl orderService;
     private final UserServiceImpl userService;
 
     @Override
@@ -66,11 +71,31 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    public int updateProduct(Long cost, UUID productId) {
+    /**
+     * user가 order_form에서 해당상품에 투자할 때마다, Product의 currentGoal upadate
+     * @param cost
+     * @param productId
+     * @return 성공(1)/실패(0)
+     */
+    @Transactional
+    public int updateProduct(Long cost, UUID productId) throws RuntimeException {
         Product dbProduct = selectById(productId);
+        //Product currentGoal 갱신하기
         Long money = dbProduct.getCurrentGoal() + cost;
-
         dbProduct.setCurrentGoal(money);
+        //Order(주문서) 생성
+        Users user = userService.createUser(); //테스트용 코드, 현재 로그인한 user
+        Orders order = orderService.createOrder(cost, dbProduct, user);
+
+        //User Point update
+        //Security annotation으로 가져오기
+
+        //하나라도 못찾은 것이 있다면, Rollback
+        if(dbProduct == null || order == null || user == null) {
+            throw new RuntimeException();
+        }
+
+        //다 성공했다면 update
         Product result = productRepository.save(dbProduct);
 
         if (result == null)

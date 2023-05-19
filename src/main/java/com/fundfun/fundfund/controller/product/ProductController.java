@@ -55,11 +55,11 @@ public class ProductController {
     /**
      * 주문서 상세보기
      */
-    @GetMapping("/read/{id}")
-    public String read(UUID id) {
-        Product product = productService.selectById(id);
-        return "";
-    }
+//    @GetMapping("/read/{id}")
+//    public String read(UUID id) {
+//        Product product = productService.selectById(id);
+//        return "";
+//    }
 
 
     /**

@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +20,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductServiceImpl productService;
-    private final UserServiceImpl userService;
+    
 
         @Override
     public List<Orders> selectAll() {
@@ -33,10 +34,18 @@ public class OrderServiceImpl implements OrderService {
 //        return orderRepository.save(order);
 //    }
 
+    public UUID decEncId(String encId) {
+        // UUID 디코딩
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] decodedUUIDBytes  = decoder.decode(encId);
+        String uuidString = new String(decodedUUIDBytes);
+        System.out.println("uuidString: " + uuidString);
+        return UUID.fromString(uuidString);
+    }
     public Orders createOrder(Long cost, Product product, Users user) {
         Orders order = new Orders();
-        order.linkProduct(product);
-        order.linkUser(user);
+        order.setProduct(product);
+        order.setUsers(user);
         order.setCost(cost);
         return orderRepository.save(order);
     }

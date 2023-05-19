@@ -42,9 +42,9 @@ public class Product extends BaseTimeEntity {
 //    private List<Orders> orders;
 
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private Users users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users fundManager;
     public String uuidEncode() {
         //UUID encode
         Base64.Encoder encoder = Base64.getEncoder();

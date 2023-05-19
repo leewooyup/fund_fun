@@ -38,14 +38,11 @@ public class OrderController {
     @PostMapping("/form")
     public String showOrderForm(InvestDto investDto, Model model,  String encId) {
         System.out.println("encId = " + encId);
-        // UUID 복호화
-        Base64.Decoder decoder = Base64.getDecoder();
-        byte[] decodedUUIDBytes  = decoder.decode(encId);
-        String uuidString = new String(decodedUUIDBytes);
-        UUID uuid = UUID.fromString(uuidString);
+        UUID uuid = orderService.decEncId(encId);
         // 복호화된 uuid로 해당 product 가져오기
         Product product = productService.selectById(uuid);
-        System.out.println("product.getId(): " + product.getId());
+        System.out.println("product.getId(): " + product.getTitle());
+        model.addAttribute("encId", encId);
         return "order/order_form";
     }
 
@@ -55,16 +52,17 @@ public class OrderController {
      * @param investDto, bindingResult
      * @return view
      */
-
-    @PostMapping("/send/{encodedBits}")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encodedBits) {
+    @PostMapping("/send")
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, String encId) {
         if(bindingResult.hasErrors()) {
             return "order/order_form";
         }
-        Product product = productService.createProduct();
-        Orders order = orderService.createOrder(investDto.getCost(), product);
-        System.out.println("order.getProduct().getId(): " + order.getProduct().getId());
-        productService.updateProduct(investDto.getCost(), order.getProduct().getId());
+        UUID uuid = orderService.decEncId(encId);
+//        Product product = productService.selectById(uuid);
+//        Users user = product.getUsers();
+//        Orders order = orderService.createOrder(investDto.getCost(), product, user);
+
+        productService.updateProduct(investDto.getCost(), uuid);
 
         return "redirect:/order/receipt";
     }
@@ -72,7 +70,7 @@ public class OrderController {
     @GetMapping("/receipt")
     public String showOrderReceipt(Model model) {
         Product product = productService.createProduct();
-        int curCollect = productService.getCurrentCollection(product);
+        int curCollect = orderService.getCurrentCollection(product);
         model.addAttribute("curCollect", curCollect);
         return "order/order_receipt";
     }

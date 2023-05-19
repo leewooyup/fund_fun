@@ -22,7 +22,7 @@ public class DevInitData {
         return args -> {
             Users users = userService.createUser();
             Product product = productService.createProduct();
-//            Orders order = orderService.createOrder(300L, product, users);
+            Orders order = orderService.createOrder(300L, product, users);
 //
 //            Product product2 = productService.createProduct2();
 //            orderService.createOrder(20L, product2, users);
