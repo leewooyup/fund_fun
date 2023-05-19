@@ -1,8 +1,17 @@
 package com.fundfun.fundfund.domain.user;
 
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
+
+import com.fundfun.fundfund.domain.vote.Vote;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +23,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class Users extends BaseTimeEntity {
     @Id
@@ -32,10 +42,10 @@ public class Users extends BaseTimeEntity {
     private String password;
     private String name;
     private String email;
-    private Role role;
+    //private Role role;
     private String phone;
     private String gender;
-    private LocalDateTime reg_date;
+    //private LocalDateTime reg_date;
     private Long money;
     private Long count;
     private Long total_investment;

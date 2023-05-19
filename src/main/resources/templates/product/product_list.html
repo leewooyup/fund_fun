@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+>
+<th:block layout:fragment="content">
+    <style>
+        div .aa {
+            float: right;
+            padding: 0 10px 0 0
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+
+
+    </head>
+    <body>
+
+    <div>
+        <div style="border-bottom:solid;margin:10px;">
+            <h3>상품게시판</h3>
+            <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
+        </div>
+
+        <div class="container">
+            <div class="row row-cols-3">
+                <div th:each="ele : ${list}">
+                    <div class="col" >
+                        <div>
+
+                            <a href="#" th:name="${ele.uuidEncode}" id="productHiddenCheck">
+                                <div>
+                                    <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid;width:80%">
+                                </div>
+                                <div>
+                                    <span th:text="${ele.title}"></span>
+                                </div>
+                            </a>
+                            <div th:text="${ele.crowdStart}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form action="/product/search" method="get">
+                <div class="aa">
+                    <input name="title" placeholder="Search" type="text"></input>
+                    <button class="btn btn-warning" type="submit">검색</button>
+                </div>
+            </form>
+
+            <form action="/product/register" method="get">
+                <button class="btn btn-warning" type="submit">글쓰기</button>
+            </form>
+
+            <form action="/order/form" method="post" id="productDetailSub">
+                <input type="hidden" name="encId" >
+            </form>
+        </div>
+    </div>
+    <script>
+
+           $(function(){
+              $(document).on("click","#productHiddenCheck", function(){
+                 alert($(this).attr("name"))
+                 console.dir( $("[name=encodedUUID]") )
+                  $("[name=encId]").val(  $(this).attr("name")  );
+
+                  $("#productDetailSub").submit();
+
+              })
+           })
+
+        </script>
+    </body>
+</th:block>
+
+
+</html>

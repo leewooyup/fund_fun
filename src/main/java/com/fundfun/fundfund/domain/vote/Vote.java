@@ -1,3 +1,4 @@
+
 package com.fundfun.fundfund.domain.vote;
 
 import com.fundfun.fundfund.domain.opinion.Opinion;
@@ -46,3 +47,4 @@ public class Vote {
 
     public void linkPost(Post post) {this.post = post;}
 }
+

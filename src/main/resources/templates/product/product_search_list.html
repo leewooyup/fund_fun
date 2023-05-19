@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+>
+<th:block layout:fragment="content">
+  <style>
+    div .aa {
+      float: right;
+      padding: 0 10px 0 0
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+
+  <div>
+    <div style="border-bottom:solid;margin:10px;">
+      <h3>상품게시판</h3>
+      <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
+    </div>
+
+    <div class="container">
+      <div class="row row-cols-3">
+        <div th:each="ele : ${searchList}">
+          <div class="col" >
+            <div>
+              <a th:href="@{'/order/form'}">
+                <div>
+                  <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid;width:80%">
+                </div>
+                <div>
+                  <span th:text="${ele.title}"></span>
+                </div>
+              </a>
+              <div th:text="${ele.crowdStart}"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  </body>
+</th:block>
+</html>
