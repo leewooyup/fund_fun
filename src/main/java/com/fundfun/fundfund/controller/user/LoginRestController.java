@@ -37,7 +37,7 @@ public class LoginRestController {
         // 2023-05-16_yeoooo : No User Found Exception 추가 필요
         return ApiResponse.success(jwtTokenProvider.createToken(target.getEmail(), target.getRole()));
 
-        }
+    }
 
 
     @RequestMapping("logout")
