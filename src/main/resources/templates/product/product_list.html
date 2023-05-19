@@ -48,7 +48,7 @@
                 <div th:each="ele : ${list}">
                     <div class="col" >
                         <div>
-                            <a th:href="@{'/'}">
+                            <a th:href="@{'/order/form'}">
                                 <div>
                                     <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid;width:80%">
                                 </div>
@@ -62,14 +62,14 @@
                 </div>
             </div>
 
-            <form action="/product/search" method="post">
+            <form action="/product/search" method="get">
                 <div class="aa">
                     <input name="title" placeholder="Search" type="text"></input>
                     <button class="btn btn-warning" type="submit">검색</button>
                 </div>
             </form>
 
-            <form action="/product/regist" method="post">
+            <form action="/product/register" method="get">
                 <button class="btn btn-warning" type="submit">글쓰기</button>
             </form>
         </div>

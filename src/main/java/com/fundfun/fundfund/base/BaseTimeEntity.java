@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @ToString
-@SequenceGenerator(name = "product_no_gen", sequenceName = "product_no", initialValue = 1, allocationSize = 1)
 public class BaseTimeEntity {
     @CreatedDate
     private LocalDateTime createDate;
@@ -27,6 +26,4 @@ public class BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_no_gen")
-    private int no;
 }

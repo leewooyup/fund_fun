@@ -28,8 +28,10 @@ public class Users {
 
 //    @OneToMany(mappedBy = "users")
 //    private List<Product> inprocess_product = new ArrayList<>();
+
 //    @OneToMany(mappedBy = "users")
 //    private List<Vote> inprocess_vote = new ArrayList<>();
+
 //    @OneToMany(mappedBy = "users")
 //    private List<Orders> inprocess_orders = new ArrayList<>();
 
@@ -37,10 +39,10 @@ public class Users {
     private String password;
     private String name;
     private String email;
-    private Role role;
+    //private Role role;
     private String phone;
     private String gender;
-    private LocalDateTime reg_date;
+    //private LocalDateTime reg_date;
     private Long money;
     private Long count;
     private Long total_investment;

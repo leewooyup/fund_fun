@@ -2,6 +2,7 @@ package com.fundfun.fundfund.domain.product;
 
 import com.fundfun.fundfund.base.BaseTimeEntity;
 import com.fundfun.fundfund.domain.order.Orders;
+import com.fundfun.fundfund.domain.user.Users;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -24,17 +25,19 @@ public class Product extends BaseTimeEntity {
     private String title;
     private String crowdStart;
     private String crowdEnd;
-    private Integer goal;
-    private Integer currentGoal;
+    private Long goal;
+    private Long currentGoal;
     private String status;
     private String description;
+
+//    @OneToOne
+//    @JoinColumn(name = "order_id")
+//    private Orders orders;
 
 //    @OneToMany(mappedBy = "orders")
 //    @JoinColumn(name = "order_id")
 //    private List<Orders> orders;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private Users users;
+
 
 }
