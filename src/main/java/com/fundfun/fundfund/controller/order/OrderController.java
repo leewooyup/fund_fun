@@ -6,6 +6,7 @@ import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
+import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class OrderController {
      * @param investDto
      * @return view
      * */
-    @PostMapping("/form")
+    @GetMapping("/form")
     public String showOrderForm(InvestDto investDto, Model model,  String encId) {
         System.out.println("encId = " + encId);
         UUID uuid = orderService.decEncId(encId);
@@ -43,6 +44,9 @@ public class OrderController {
         Product product = productService.selectById(uuid);
         model.addAttribute("product", product);
         model.addAttribute("encId", encId);
+
+        long crowdDeadLine = productService.crowdDeadline(product);
+        model.addAttribute("deadline", crowdDeadLine);
 
         return "order/order_form";
     }
