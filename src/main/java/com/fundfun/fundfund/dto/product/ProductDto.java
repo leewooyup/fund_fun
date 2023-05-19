@@ -2,6 +2,7 @@ package com.fundfun.fundfund.dto.product;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.util.UUID;
@@ -21,5 +22,4 @@ public class ProductDto {
     @NotEmpty(message = "상품설명을 입력해주세요")
     @Size(min=30, max=1000, message = "상품설명 최소 30자 이상 1000자 이하입니다.")
     private String description;
-
 }

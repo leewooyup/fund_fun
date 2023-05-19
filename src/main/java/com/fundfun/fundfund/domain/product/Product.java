@@ -32,6 +32,7 @@ public class Product extends BaseTimeEntity {
     private Long currentGoal;
     private String status;
     private String description;
+    private String thumbnailRelPath;
 
 //    @OneToOne
 //    @JoinColumn(name = "order_id")
@@ -51,6 +52,11 @@ public class Product extends BaseTimeEntity {
         String encodedString = encoder.encodeToString(this.id.toString().getBytes());
 
         return encodedString;
+    }
+
+    public String getThumbnailImgUrl() {
+        if(thumbnailRelPath == null) return null;
+        return "/gen/" + thumbnailRelPath;
     }
 
 }
