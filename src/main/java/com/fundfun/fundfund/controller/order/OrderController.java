@@ -41,8 +41,9 @@ public class OrderController {
         UUID uuid = orderService.decEncId(encId);
         // 복호화된 uuid로 해당 product 가져오기
         Product product = productService.selectById(uuid);
-        System.out.println("product.getId(): " + product.getTitle());
+        model.addAttribute("product", product);
         model.addAttribute("encId", encId);
+
         return "order/order_form";
     }
 
@@ -58,10 +59,6 @@ public class OrderController {
             return "order/order_form";
         }
         UUID uuid = orderService.decEncId(encId);
-//        Product product = productService.selectById(uuid);
-//        Users user = product.getUsers();
-//        Orders order = orderService.createOrder(investDto.getCost(), product, user);
-
         productService.updateProduct(investDto.getCost(), uuid);
 
         return "redirect:/order/receipt";

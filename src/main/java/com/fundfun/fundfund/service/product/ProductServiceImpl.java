@@ -14,9 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = Product.builder()
                 .title("A+B")
                 .crowdStart("2023-05-15")
-                .crowdEnd("2023-07-15")
+                .crowdEnd("2023-05-21")
                 .goal(1000L)
                 .currentGoal(1500L)
                 .status("진행중")
@@ -134,6 +138,14 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productRepository.findByTitleContaining(title);
         return productList;
     }
+    public long crowdDeadline(Product product) {
+        Date deadLine = product.toDate(product.getCrowdEnd());
+        Date now = new Date();
+        long diff = ((deadLine.getTime() - now.getTime())/(24*60*60*1000))+1;
+
+        return diff;
+    }
+
 
     public String getCurThumbnailImgDirName() {
         return "product/" + Util.date.getCurDateFormatted("yyyy_MM_dd");

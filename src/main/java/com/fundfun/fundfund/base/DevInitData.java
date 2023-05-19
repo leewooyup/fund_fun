@@ -23,9 +23,13 @@ public class DevInitData {
             Users users = userService.createUser();
             Product product = productService.createProduct();
             Orders order = orderService.createOrder(300L, product, users);
+
+            System.out.print(productService.crowdDeadline(product));
+
 //
 //            Product product2 = productService.createProduct2();
 //            orderService.createOrder(20L, product2, users);
+
         };
     }
 }
