@@ -9,25 +9,23 @@ spring:
     datasource:
         driver-class-name: oracle.jdbc.driver.OracleDriver
         url: jdbc:oracle:thin:@localhost:1521:XE
-        username: SALAD
-        password: SALAD
+        username: jeon
+        password: jeon
 
     security:
         user:
             name: user
             password: 1234
+
+
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: update
+            ddl-auto: none
             # yeoooo : ? ? create ? update ?? create-drop ?? ?????
-#        defer-datasource-initialization: true
+        #        defer-datasource-initialization: true
         generate-ddl: true
-    devtools:
-        livereload:
-            enabled: true
-        thymeleaf:
-            chach: false
+
 # sql init script
 #    sql:
 #        init:
@@ -36,5 +34,4 @@ spring:
 #            mode: always
 custom:
     genFileDirPath: c:/Temp/fundFun
-
 
