@@ -19,7 +19,6 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -70,11 +69,44 @@ public class Product extends BaseTimeEntity {
     }
 
     public String getThumbnailImgUrl() {
-        if(thumbnailRelPath == null) return null;
+        if (thumbnailRelPath == null) return null;
         return "/gen/" + thumbnailRelPath;
     }
 
 
 //    private UUID fundManager;
 
+    /**
+     * 시작일, 종료일은 업데이트 불가
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setGoal(Long goal) {
+        this.goal = goal;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCurrentGoal(Long currentGoal){
+        this.currentGoal = currentGoal;
+    }
+    public void setCrowdStart(String crowdStart){
+        this.crowdStart = crowdStart;
+    }
+
+    public void setCrowdEnd(String crowdEnd){
+        this.crowdEnd = crowdEnd;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
+    }
+
+    public void setThumbnailRelPath(String thumbnailRelPath){
+        this.thumbnailRelPath = thumbnailRelPath;
+    }
 }
