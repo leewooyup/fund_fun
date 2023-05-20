@@ -5,6 +5,7 @@ import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -47,11 +50,12 @@ public class UserController {
         return "redirect:/";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/curUser")
     @ResponseBody
-    public Users curUser(@AuthenticationPrincipal Users userInfo) {
-        System.out.println("userInfo: " + userInfo);
-        return userInfo;
+    public Principal curUser(Principal principal) {
+        System.out.println("principal: " + principal);
+        return principal;
     }
 
     @GetMapping("/user/login")
