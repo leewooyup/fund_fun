@@ -4,6 +4,7 @@ import com.fundfun.fundfund.domain.user.Gender;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -13,11 +14,12 @@ import java.util.UUID;
 public class UserServiceImpl {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     public Users createUser(){ //테스트용code
         Users user = Users.builder()
                 .name("bana")
                 .gender(Gender.valueOf("MALE"))
-                .password("1234")
+                .password(passwordEncoder.encode("1234"))
                 .email("kb@kb.com")
                 .phone("010-2323-1313")
                 .money(12L)
