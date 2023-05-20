@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller.user;
 
 import com.fundfun.fundfund.domain.user.*;
+import com.fundfun.fundfund.dto.user.UserContext;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,11 +54,14 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/curUser")
     @ResponseBody
-    public Principal curUser(Principal principal) {
-        System.out.println("principal: " + principal);
-        return principal;
+    public UserContext curUser(@AuthenticationPrincipal UserContext userContext) {
+        return userContext;
     }
 
+    /**
+     * 로그인 폼 이동
+     * @return view
+     */
     @GetMapping("/user/login")
     public String login() {
         return "login";

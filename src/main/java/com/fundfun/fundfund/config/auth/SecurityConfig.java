@@ -3,7 +3,9 @@ package com.fundfun.fundfund.config.auth;
 import com.fundfun.fundfund.service.user.CustomUserDetailService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -14,9 +16,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity//시큐리티 필터
 @EnableGlobalMethodSecurity(prePostEnabled = true)// 특정 페이지에 특정 권한이 있는 유저만 접근을 허용할 경우 권한 및 인증을 미리 체크하겠다는 설정을 활성화
@@ -25,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService customUserDetailService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final OAuth2UserService oAuth2UserService;
 
     @Bean
     public BCryptPasswordEncoder encryptPassword() {
@@ -100,13 +105,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .alwaysRemember(false) // 항상 기억할 것인지 여부` /
                 .tokenValiditySeconds(43200) //- in seconds, 12시간 유지
                 .rememberMeParameter("remember-me")
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/login")
+                .and()
+                .oauth2Login()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/product/list")
 //                .successHandler(authSucessHandler)
-//                .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
+                .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
         // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
-//                .userService(customOAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
+                .userService(oAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
         ;
 
     }
