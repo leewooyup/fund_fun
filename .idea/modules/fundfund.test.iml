@@ -5,5 +5,4 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
     </content>
   </component>
-  <component name="TestModuleProperties" production-module="fundfund.main" />
 </module>

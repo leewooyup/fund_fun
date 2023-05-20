@@ -44,29 +44,21 @@ public class Post extends BaseTimeEntity {
     private String categoryPost = "주식형";
     @OneToOne
     private Vote vote;
-
     //@ColumnDefault("'EARLY_IDEA'")
     @Builder.Default
     private StPost statusPost = StPost.EARLY_IDEA;
-
     @OneToMany(mappedBy = "post")
     private List<Portfolio> portfolios = new ArrayList<>();
-
     public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
-
     public void setContentPost(String contentPost) {
         this.contentPost = contentPost;
     }
-
     public void setLikePost(int likePost){ this.likePost = likePost; }
-
     public void linkVote(Vote vote){
         this.vote = vote;
     }
