@@ -9,8 +9,8 @@ spring:
     datasource:
         driver-class-name: oracle.jdbc.driver.OracleDriver
         url: jdbc:oracle:thin:@localhost:1521:XE
-        username: SALAD
-        password: SALAD
+        username: c##fundFun
+        password: 1234
 
     security:
         user:
