@@ -6,6 +6,7 @@ import com.fundfun.fundfund.domain.vote.Vote;
 
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "users")
 //@ToString
 public class Users extends BaseTimeEntity implements UserDetails {
