@@ -35,8 +35,10 @@ class PostServiceImplTest {
 //                    .id(UUID.randomUUID()).contentPost(null).build();
 //            postService.createPost(modelMapper.map(p, PostDto.class));
 //        }
-        Post p = Post.builder().id(UUID.randomUUID()).title("제목2").contentPost("게시물2").categoryPost("주식형").build();
-        postService.createPost(modelMapper.map(p, PostDto.class));
+        for(int i=0; i<5; i++) {
+            Post p = Post.builder().id(UUID.randomUUID()).title("제목 " + i).contentPost("게시물 " + i).categoryPost("주식형").build();
+            postService.createPost(modelMapper.map(p, PostDto.class));
+        }
     }
 
     @Test
@@ -74,8 +76,8 @@ class PostServiceImplTest {
     @Test
     public void 게시물삭제() throws Exception {
         UUID uuid = postService.selectAll().get(0).getId();
-        List<PostDto> list = postService.selectPostByUserId(uuid);
-        Post postToDelete = modelMapper.map(list.get(0), Post.class);
+        PostDto postDto = postService.selectPostById(uuid);
+        Post postToDelete = modelMapper.map(postDto, Post.class);
 
         //게시물이 존재하는지 확인
 //        assertTrue(postToDelete.isPresent());

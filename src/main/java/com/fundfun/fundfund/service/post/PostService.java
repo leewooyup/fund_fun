@@ -17,7 +17,7 @@ public interface PostService {
     List<PostDto> selectAll();
 
     //작성자로 게시물 조회
-    List<PostDto> selectPostByUserId(UUID postId);
+    PostDto selectPostById(UUID postId);
 
 
     //제목으로 게시물 검색

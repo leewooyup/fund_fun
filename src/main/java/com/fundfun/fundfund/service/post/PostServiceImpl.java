@@ -36,16 +36,16 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> selectAll() {
-        return postRepository.findAll().stream()
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream()
                 .map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
 
 
     @Override
-    public List<PostDto> selectPostByUserId(UUID userId) {
+    public PostDto selectPostById(UUID postId) {
 //        return modelMapper.map(postRepository.findById(userId).
 //                orElse(null), PostDto.class);
-        return postRepository.findById(userId).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        return modelMapper.map(postRepository.findById(postId), PostDto.class);
     };
 
 
