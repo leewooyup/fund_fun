@@ -12,19 +12,26 @@
 
         <div style="margin-top: 1rem;">
             <input type="text" placeholder="제목" class="width100 border-yellow paddingBtn"/>
-            <input type="text" placeholder="예상 수익률" class="width70 border-yellow paddingBtn"/>
-            <input type="text" placeholder="위험도" class="width70 border-yellow paddingBtn"/>
-
-
-            </div>
-s
+            <input type="text" placeholder="예상 수익률" class="width40 border-yellow paddingBtn"/>
+            <input type="text" placeholder="위험도" class="width40  border-yellow paddingBtn"/>
+            <textarea class="border-yellow width100" rows="14" style="margin-top: 1rem;" placeholder="내용을 입력해주세요."></textarea>
         </div>
+    </div>
 
-        <span style="margin-top: 1rem;">주의해주세요!</span>
+    <div style="margin-top: 1rem;">
+        <span style="margin-top: 1rem;">* 주의해주세요!</span>
+        <button class="btn btn-warning rightArea" type="submit">수정</button>
+    </div>
     </div>
     <div th:text="${curCollect}"></div>
 
     <style>
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: transparent;
+        }
+
         .fontSize-fix {
             font-size: 1.2rem;
         }

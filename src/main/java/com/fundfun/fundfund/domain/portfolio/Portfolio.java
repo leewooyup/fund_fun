@@ -1,4 +1,6 @@
 package com.fundfun.fundfund.domain.portfolio;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
@@ -7,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
@@ -21,18 +24,23 @@ import java.util.UUID;
 public class Portfolio extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "portfolio_id")
+    @Column(name = "portfolio_id", columnDefinition = "BINARY(32)")
     private UUID id;
 
-    @ManyToOne
+    @JsonIgnore
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="vote_id")
     private Vote vote;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name="user_id")
     private Users user;
 
-    @ManyToOne
+    @JsonIgnore
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="post_id")
     private Post post;
 
