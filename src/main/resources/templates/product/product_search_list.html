@@ -14,6 +14,8 @@
   <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+
   </head>
   <body>
 
@@ -28,7 +30,8 @@
         <div th:each="ele : ${searchList}">
           <div class="col" >
             <div>
-              <a th:href="@{'/order/form'}">
+
+              <a href="#" th:name="${ele.uuidEncode}" id="productHiddenCheck">
                 <div>
                   <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid;width:80%">
                 </div>
@@ -42,9 +45,37 @@
         </div>
       </div>
 
+      <form action="/product/search" method="get">
+        <div class="aa">
+          <input name="title" placeholder="Search" type="text"></input>
+          <button class="btn btn-warning" type="submit">검색</button>
+        </div>
+      </form>
+
+      <form action="/product/register" method="get">
+        <button class="btn btn-warning" type="submit">글쓰기</button>
+      </form>
+      <form action="/order/form" method="get" id="productDetailSub">
+        <input type="hidden" name="encId" >
+      </form>
     </div>
   </div>
+  <script>
 
+    $(function(){
+      $(document).on("click","#productHiddenCheck", function(){
+        //alert($(this).attr("name"))
+        console.dir( $("[name=encodedUUID]") )
+        $("[name=encId]").val(  $(this).attr("name")  );
+
+        $("#productDetailSub").submit();
+
+      })
+    })
+
+  </script>
   </body>
 </th:block>
+
+
 </html>
