@@ -98,7 +98,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(Role.COMMON.getValue()));
+        authorities.add(new SimpleGrantedAuthority(Integer.valueOf(Role.COMMON.getValue()).toString()));
         return new UserContext(user, authorities, attributes, userNameAttributeName);
     }
 

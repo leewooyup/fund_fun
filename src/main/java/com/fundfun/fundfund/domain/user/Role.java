@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum Role {
-    COMMON("ROLE_COMMON"),
-    FUND_MANAGER("ROLE_MANAGER"),
-    ADMIN("ROLE_ADMIN");
+    COMMON(1),
+    FUND_MANAGER(2),
+    ADMIN(0);
 
-    private String value;
-    Role(String value) {
+    private int value;
+    Role(int value) {
         this.value = value;
     }
 }
