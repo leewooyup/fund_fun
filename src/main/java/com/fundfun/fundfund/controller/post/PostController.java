@@ -6,8 +6,10 @@ import com.fundfun.fundfund.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +35,7 @@ public class PostController {
     @GetMapping("/detail/{id}")
     public String goIdeaDetail(@PathVariable UUID id, Model model) {
         PostDto post = postService.selectPostById(id);
-        if (post!=null) {
+        if (post != null) {
             model.addAttribute("post", post);
             return "post/detail";
         } else {
@@ -45,17 +47,19 @@ public class PostController {
 //    아이디어 작성 및 수정 화면 이동
 
     @GetMapping("/write")
-    public String goIdeaWrite(Model model) {
-        model.addAttribute("form", new PostForm());
+    public String goIdeaWrite(PostForm postForm, Model model) {
         return "post/write";
     }
 
     //아이디어작성
     @PostMapping("/write")
-    public String create(PostForm form) {
+    public String create(@Valid PostForm postForm, BindingResult result) {
+        if (result.hasErrors()) {
+            return "post/write";
+        }
         PostDto postDto = new PostDto();
-        postDto.setTitle(form.getTitle());
-        postDto.setContentPost(form.getContentPost());
+        postDto.setTitle(postForm.getTitle());
+        postDto.setContentPost(postForm.getContentPost());
         postDto.setCategoryPost("주식형");
         postDto.setStatusPost(StPost.EARLY_IDEA);
         postService.createPost(postDto);
@@ -66,7 +70,7 @@ public class PostController {
     @GetMapping("/edit/{postId}")
     public String goIdeaEdit(@PathVariable UUID postId, Model model) {
         PostDto postDto = postService.selectPostById(postId);
-        if (postDto!=null) {
+        if (postDto != null) {
 //            Post post = postDto.get();
             PostForm form = new PostForm();
 //            form.setTitle(post.getTitle());
@@ -81,9 +85,9 @@ public class PostController {
         }
     }
 
-    @GetMapping("/delete")
-    public String deleteIdea(@PathVariable UUID postId){
-        postService.deletePost(postId);
+    @GetMapping("/delete/{id}")
+    public String deleteIdea(@PathVariable UUID id) {
+        postService.deletePost(id);
         return "redirect:/post/list";
     }
 }
