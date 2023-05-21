@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+
+    <!-- Script -->
+    <script type="text/javascript">
+        var dataList = "";
+
+        $(Document).ready(function() {
+            getData();
+        });
+
+        // 리스트 가져오기
+        function getData() {
+            $.ajax({
+            url: "/portfolio/getData",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json; CHARSET=UTF-8",
+            data: JSON.stringify({}),
+            success: function(result) {
+                drawList(result.portfolioList);
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+        }
+
+        function drawList(data) {
+            dataList = data;
+            var html = '';
+            for(var i=0; i<data.length; i++) {
+                html += '<div class="marginBottom"><span onclick="goDetail(\'' + data[i].id + '\')">' + (i+1) + '.' + data[i].title + '</span></div>';
+                html += '<div class="bg-yellow leftArea" style="width: '+ data[i].beneRatio +'%; height: 1rem;"></div>';
+                html += '<span class="left_margin">' + data[i].beneRatio + '표, ' + data[i].beneRatio + '% </span>';
+                html += '<input type="radio" class="radioCls" name="selectPortfolio"/>';
+                html += '</div>';
+            }
+
+            $("#drawList").html(html);
+        }
+
+        // 상세 화면 이동
+        function goDetail(idx) {
+            location.href = "/portfolio/goDetail?id=" + idx;
+        }
+    </script>
+
+    <div class="d-flex flex-column wrapper">
+        <div class="fontSize-fix">A 산업과 B 산업 관련 상품 아이디어</div>
+        <span class="gray_text bottom_line">23-05-11 23:03</span>
+
+        <div class="bottom_line voteDiv">
+            <span class="fontSize-fix">투표 중</span>
+            <div id="drawList"></div>
+        </div>
+
+        <div class="marginBottom bottomDiv">
+            <button class="rightArea bg-yellow paddingBtn">포트폴리오 등록</button>
+            <button class="rightArea left_margin bg-yellow paddingBtn">투표하기</button>
+        </div>
+    </div>
+
+    <!-- Style -->
+    <style>
+        .fontSize-fix {
+            font-size: 1.2rem;
+        }
+
+        .gray_text {
+            color: darkgray;
+        }
+
+        .bottom_line {
+            border-bottom: 1px solid darkgray;
+        }
+
+        .leftArea {
+            float: left;
+        }
+
+        .radioCls {
+            float: right;
+            vertical-align: middle;
+            border: max(2px, 0.1em) solid gray;
+            border-radius: 50%;
+            width: 1.25em;
+            height: 1.25em;
+        }
+
+        .bg-yellow {
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .left_margin {
+            margin-left: 2rem;
+        }
+
+        .marginBottom {
+            margin-bottom: 2rem;
+        }
+
+        .voteDiv {
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .bottomDiv {
+            text-align: center;
+            display: inline-block;
+        }
+
+        .paddingBtn {
+            padding: 1rem 8rem !important;
+            margin-left: 5rem;
+        }
+    </style>
+</th:block>
+</html>

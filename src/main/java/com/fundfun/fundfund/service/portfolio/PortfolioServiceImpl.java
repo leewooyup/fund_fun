@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-    public class PortfolioServiceImpl implements PortfolioService {
+public class PortfolioServiceImpl implements PortfolioService {
     @Autowired
     private final PortfolioRepository portRep;
     @Autowired
@@ -92,5 +92,4 @@ import java.util.stream.Collectors;
 
 
 }
-
 

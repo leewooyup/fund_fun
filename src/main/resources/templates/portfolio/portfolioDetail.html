@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+
+    <!-- Script -->
+    <script type="text/javascript">
+        $(Document).ready(function() {
+
+        });
+    </script>
+
+    <div class="d-flex flex-column wrapper">
+        <div class="fontSize-fix bottom_line">
+            <span class="leftArea" th:text="${data['title']}"></span>
+            <span class="rightArea gray_text">23-05-11 23:03</span>
+        </div>
+
+        <div class="bottom_line voteDiv">
+            <div class="paddingBottom">
+                <div class="leftArea">
+                    <span class="gray_text">예상 수익률</span>
+                    <br/>
+                    <span class="red_text" th:text="${data['beneRatio']}"></span>
+                    <span class="font-sizeFix"> %</span>
+                </div>
+                <div class="margin40 leftArea">
+                    <span class="gray_text">위험도</span>
+                    <br/>
+                    <span class="red_text" th:text="${data['warnLevel']}"></span>
+                    <span class="font-sizeFix"> 등급</span>
+                </div>
+            </div>
+            <br/>
+            <div class="paddingBottom" style="margin-top: 4rem;">
+                <span th:text="${data['contentPortfolio']}"></span>
+            </div>
+
+            <div class="bottomDiv">
+                <button class="bg-yellow paddingBtn">포트폴리오 목록으로 돌아가기</button>
+            </div>
+        </div>
+
+        <div class="marginBottom">
+            <button class="rightArea paddingBtn2 left_margin bg-yellow">삭제</button>
+            <button class="rightArea  paddingBtn2 bg-yellow">수정</button>
+        </div>
+    </div>
+
+    <!-- Style -->
+    <style>
+        .fontSize-fix {
+            font-size: 1.2rem;
+        }
+
+        .gray_text {
+            color: darkgray;
+        }
+
+        .margin40 {
+            margin-left: 40%;
+        }
+
+        .red_text {
+            color: red;
+            font-size: 2rem;
+        }
+
+        .font-sizeFix {
+            font-size: 2rem;
+        }
+
+        .bottom_line {
+            border-bottom: 1px solid darkgray;
+        }
+
+        .leftArea {
+            float: left;
+        }
+
+        .rightArea {
+            float: right;
+        }
+
+        .bg-yellow {
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .left_margin {
+            margin-left: 2rem;
+        }
+
+        .marginBottom {
+            margin-bottom: 2rem;
+        }
+
+        .voteDiv {
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .bottomDiv {
+            text-align: center;
+        }
+
+        .paddingBottom {
+            padding-bottom: 2rem;
+        }
+
+        .paddingBtn {
+            padding: 1rem 8rem !important;
+        }
+
+        .paddingBtn2 {
+            padding: 1rem !important;
+        }
+    </style>
+</th:block>
+</html>
