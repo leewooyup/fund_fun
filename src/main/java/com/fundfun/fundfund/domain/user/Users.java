@@ -47,7 +47,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private String password;
     private String name;
     private String email;
-    @Column(columnDefinition = "int default 1")
+//    @Column(columnDefinition = " default 1")
     private Role role;
     private String phone;
     private Gender gender;
