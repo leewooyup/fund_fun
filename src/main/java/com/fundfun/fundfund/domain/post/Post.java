@@ -49,6 +49,7 @@ public class Post extends BaseTimeEntity {
     @Builder.Default
     private StPost statusPost = StPost.EARLY_IDEA;
     @OneToMany(mappedBy = "post")
+    @Builder.Default
     private List<Portfolio> portfolios = new ArrayList<>();
     public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;

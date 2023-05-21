@@ -41,7 +41,7 @@ spring:
         generate-ddl: true
 
         thymeleaf:
-            chach: false
+            cache: false
 # sql init script
 #    sql:
 #        init:

@@ -4,10 +4,7 @@ import com.fundfun.fundfund.base.BaseTimeEntity;
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.util.Util;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
