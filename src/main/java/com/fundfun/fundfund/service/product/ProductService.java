@@ -19,7 +19,7 @@ public interface ProductService {
   /**
    * 상품 업데이트
    * */
-  //Product update(ProductDto productDto, MultipartFile thumbnailImg);
+    void update(UUID id);
 
     /**
      * 상품 삭제

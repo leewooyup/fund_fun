@@ -41,7 +41,6 @@ public class ProductController {
         return "product/product_list";
     }
 
-
     /**
      * 상품 등록
      */
@@ -58,27 +57,16 @@ public class ProductController {
     /**
      * 상품 수정
      */
-    @GetMapping("/update/{encId}")
+    @PostMapping("/update/{encId}")
     public String update(ProductDto productDto, MultipartFile thumbnailImg, @PathVariable String encId, Model model) {
         System.out.println("update encId = " + encId);
-//        System.out.println("encId = " + encId);
-//        if(encId != null){
-//            Product product = productService.selectById(orderService.decEncId(encId));
-//            model.addAttribute("product", product);
-//        }
-        return "product/product_register";
+        if (encId != null) {
+            Product product = productService.selectById(orderService.decEncId(encId));
+            model.addAttribute("product", product);
+        }
+        return "product/product_update";
     }
 
-
-//    @GetMapping("/update")
-//    @ResponseBody
-//    public String update(@Valid ProductDto productDto, String encId, MultipartFile thumbnailImg) {
-//        UUID uuid = orderService.decEncId(encId);
-//        //System.out.println("thumbnailImg: " + thumbnailImg);
-//        productService.update(productDto, thumbnailImg);
-//        return "order/order_form?encId=" + encId;
-//
-//    }
 
 
     /**

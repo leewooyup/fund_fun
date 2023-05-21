@@ -3,17 +3,15 @@ package com.fundfun.fundfund.domain.product;
 import com.fundfun.fundfund.base.BaseTimeEntity;
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
-import com.fundfun.fundfund.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
@@ -34,6 +32,8 @@ public class Product extends BaseTimeEntity {
     private String crowdEnd;
     private Long goal;
     private Long currentGoal;
+
+    @ColumnDefault("진행중")
     private String status;
     private String description;
     private String thumbnailRelPath;
@@ -80,31 +80,9 @@ public class Product extends BaseTimeEntity {
     /**
      * 시작일, 종료일은 업데이트 불가
      */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setGoal(Long goal) {
-        this.goal = goal;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public void setCurrentGoal(Long currentGoal){
         this.currentGoal = currentGoal;
-    }
-    public void setCrowdStart(String crowdStart){
-        this.crowdStart = crowdStart;
-    }
-
-    public void setCrowdEnd(String crowdEnd){
-        this.crowdEnd = crowdEnd;
-    }
-
-    public void setStatus(String status){
-        this.status = status;
     }
 
     public void setThumbnailRelPath(String thumbnailRelPath){

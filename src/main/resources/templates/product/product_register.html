@@ -38,7 +38,7 @@
         <label class="sub-title">상품 등록</label>
         <div>김깨비 펀드매니저님</div>
 
-        <form id="saveForm"  method="post" th:action="@{/product/write}" th:object="${productDto}" enctype="multipart/form-data">
+        <form id="saveForm" method="post" th:action="@{/product/write}" th:object="${productDto}" enctype="multipart/form-data">
             <div class="d-flex flex-column product-register-wrapper">
                 <div style="width:100%;">
                     <input name="title" type="text" th:field="*{title}" style="width:100%;" placeholder="상품제목"></input>
@@ -46,10 +46,10 @@
 
                 <div class="d-flex justify-content-between">
                     <div>
-                        <input type="date" th:field="*{crowdStart}" data-placeholder="시작일" class="input-date"></input>
+                        <input name="crowdStart" type="date" th:field="*{crowdStart}" data-placeholder="시작일" class="input-date" disabled></input>
                     </div>
                     <div>
-                        <input type="date" th:field="*{crowdEnd}" data-placeholder="종료일" class="input-date"></input>
+                        <input name="crowdEnd" type="date" th:field="*{crowdEnd}" data-placeholder="종료일" class="input-date" disabled></input>
                     </div>
                     <div>
                         <input name="goal" type="number" th:field="*{goal}" placeholder="목표 금액" style="width:400px;"></input>
@@ -75,16 +75,6 @@
         </form>
 
     </div>
-<!--    <script>-->
-<!--        function saveInfo() {-->
-<!--            const form = document.getElementById('saveForm');-->
-<!--            const fields = [form.title, form.goal, form.desc];-->
-<!--            const fieldNames = ['제목', '목표금액', '내용'];-->
-
-<!--            form.action = [[ ${product == null} ]] ? 'product/write' : 'product/update';-->
-<!--            form.submit();-->
-<!--        }-->
-<!--    </script>-->
     </body>
 </th:block>
 </html>

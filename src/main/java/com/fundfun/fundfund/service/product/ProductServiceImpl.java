@@ -27,6 +27,7 @@ import java.time.Period;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 //@Transactional(readOnly = true)
@@ -74,16 +75,17 @@ public class ProductServiceImpl implements ProductService {
      * 전체 상품 조회
      */
     public List<Product> selectAll() {
-        return productRepository.findAll();
+        List<Product> productList = productRepository.findAll();
+//        List<ProductDto> product =
+//                productList.stream().map(p -> modelMapper.map(p, ProductDto.class)).collect(Collectors.toList());
+        return productList;
     }
 
     /**
      * 상품 업데이트 --> 디테일 정보에서 수정
      */
-    public Product update(ProductDto productDto, MultipartFile thumbnailImg) {
-        String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-        Product product = modelMapper.map(productDto, Product.class);
-        return productRepository.save(product);
+    public void update(UUID id) {
+        productRepository.save(selectById(id));
     }
 
     /**
@@ -154,6 +156,8 @@ public class ProductServiceImpl implements ProductService {
         if (productList == null) {
             throw new RuntimeException("해당 게시물이 존재하지 않습니다.");
         }
+//        List<ProductDto> product =
+//                productList.stream().map(p -> modelMapper.map(p, ProductDto.class)).collect(Collectors.toList());
         return productList;
     }
 
@@ -167,6 +171,10 @@ public class ProductServiceImpl implements ProductService {
 //        }
 //        return productList ;
 //    }
+
+    /**
+     * 마감일까지의 d-day
+     * */
     public long crowdDeadline(Product product) {
         Date deadLine = product.toDate(product.getCrowdEnd());
         Date now = new Date();
@@ -176,6 +184,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    /**
+     * 썸네일
+     * */
     public String getCurThumbnailImgDirName() {
         return "product/" + Util.date.getCurDateFormatted("yyyy_MM_dd");
     }
