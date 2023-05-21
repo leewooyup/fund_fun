@@ -16,11 +16,10 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Getter
-@SuperBuilder
 @MappedSuperclass
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@ToString
+@SuperBuilder
+@NoArgsConstructor
 public class BaseTimeEntity {
     @CreatedDate
     @Column(updatable = false)

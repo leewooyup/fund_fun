@@ -73,4 +73,11 @@ public class UserController {
         return "index";
     }
 
+    //test코드
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/show/user")
+    public String showUserInfo() {
+        return "testwc/test";
+    }
+
 }
