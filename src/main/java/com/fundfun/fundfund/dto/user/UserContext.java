@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fundfun.fundfund.domain.user.Role;
 import com.fundfun.fundfund.domain.user.Users;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,8 +18,13 @@ public class UserContext extends User implements OAuth2User {
     private Map<String, Object> attributes;
     private String userNameAttributeName;
 
+    private final String nickname;
+    private final Long money;
+
     public UserContext(Users user, List<GrantedAuthority> authorities) {
         super(user.getEmail(), user.getPassword(), authorities);
+        this.nickname = user.getUsername();
+        this.money = user.getMoney();
     }
 
     public UserContext(Users user, List<GrantedAuthority> authorities, Map<String, Object> attributes, String userNameAttributeName) {
