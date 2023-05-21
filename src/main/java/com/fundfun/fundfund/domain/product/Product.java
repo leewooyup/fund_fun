@@ -3,21 +3,22 @@ package com.fundfun.fundfund.domain.product;
 import com.fundfun.fundfund.base.BaseTimeEntity;
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
-import com.fundfun.fundfund.util.Util;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @Getter
-@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +33,7 @@ public class Product extends BaseTimeEntity {
     private String crowdEnd;
     private Long goal;
     private Long currentGoal;
-    private String status;
+    private int status;
     private String description;
     private String thumbnailRelPath;
 
@@ -75,4 +76,15 @@ public class Product extends BaseTimeEntity {
 
 //    private UUID fundManager;
 
+    /**
+     * 시작일, 종료일은 업데이트 불가
+     */
+
+    public void setCurrentGoal(Long currentGoal){
+        this.currentGoal = currentGoal;
+    }
+
+    public void setThumbnailRelPath(String thumbnailRelPath){
+        this.thumbnailRelPath = thumbnailRelPath;
+    }
 }
