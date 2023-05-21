@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
                 .crowdEnd("2023-05-21")
                 .goal(1000L)
                 .currentGoal(1500L)
-                .status("진행중")
+                .status(0)
                 .description("펀드진행중")
                 .build();
 
@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
                 .crowdStart("2023-08-15")
                 .crowdEnd("2023-12-15")
                 .currentGoal(66L)
-                .status("진행마감")
+                .status(2)
                 .description("펀드진행중")
                 .build();
 

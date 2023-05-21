@@ -38,31 +38,30 @@
         <label class="sub-title">상품 등록</label>
         <div>김깨비 펀드매니저님</div>
 
-        <form enctype="multipart/form-data" id="updateForm" method="post" th:action="@{/product/update}"
-              th:object="${product}">
+        <form enctype="multipart/form-data" id="updateForm" method="post" th:action="@{|/product/update/${encId}|}">
             <div class="d-flex flex-column product-register-wrapper">
                 <div style="width:100%;">
-                    <input name="title" placeholder="상품제목" style="width:100%;" th:field="*{title}" type="text"></input>
+                    <input placeholder="상품제목" style="width:100%;" name="title" type="text" th:value="${product.title}"></input>
                 </div>
 
                 <div class="d-flex justify-content-between">
                     <div>
-                        <input class="input-date" data-placeholder="시작일" name="crowdStart" th:field="*{crowdStart}"
-                               type="date"></input>
+                        <input class="input-date" data-placeholder="시작일" name="crowdStart"
+                               type="date" th:value="${product.crowdStart}" disabled></input>
                     </div>
                     <div>
-                        <input class="input-date" data-placeholder="종료일" name="crowdEnd" th:field="*{crowdEnd}"
-                               type="date"></input>
+                        <input class="input-date" data-placeholder="종료일" name="crowdEnd"
+                               type="date" th:value="${product.crowdEnd}" disabled></input>
                     </div>
                     <div>
-                        <input name="goal" placeholder="목표 금액" style="width:400px;" th:field="*{goal}"
-                               type="number"></input>
+                        <input placeholder="목표 금액" style="width:400px;" name="goal"
+                               th:value="${product.goal}" type="number"></input>
                     </div>
                 </div>
 
                 <div>
-                    <input name="desc" placeholder="상품설명을 입력해주세요." style="width:100%;height:100px" th:field="*{description}"
-                           type="text"></input>
+                    <input placeholder="상품설명을 입력해주세요." style="width:100%;height:100px" name="description"
+                           th:value="${product.description}" type="text"></input>
                 </div>
 
                 <div>

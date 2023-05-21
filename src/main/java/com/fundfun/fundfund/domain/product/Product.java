@@ -32,9 +32,7 @@ public class Product extends BaseTimeEntity {
     private String crowdEnd;
     private Long goal;
     private Long currentGoal;
-
-    @ColumnDefault("진행중")
-    private String status;
+    private int status;
     private String description;
     private String thumbnailRelPath;
 

@@ -5,6 +5,7 @@ import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.id.insert.Binder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,23 +56,35 @@ public class ProductController {
     }
 
     /**
-     * 상품 수정
+     * 상품 수정 폼
      */
-    @PostMapping("/update/{encId}")
-    public String update(ProductDto productDto, MultipartFile thumbnailImg, @PathVariable String encId, Model model) {
-        System.out.println("update encId = " + encId);
+    @GetMapping("/update/{encId}")
+    public String update(@PathVariable String encId, Model model) {
         if (encId != null) {
             Product product = productService.selectById(orderService.decEncId(encId));
             model.addAttribute("product", product);
+            System.out.println("product.title: " + product.getTitle());
+            model.addAttribute("encId",encId);
         }
+        System.out.println("update encId = " + encId);
         return "product/product_update";
+    }
+
+    /**
+     * 상품 수정 처리
+     */
+    @PostMapping("/update/{encId}")
+    public String updateProduct(@PathVariable String encId, Model model) {
+
+        return "redirect:/product/list";
     }
 
 
 
-    /**
-     * 상품 삭제
-     */
+
+        /**
+         * 상품 삭제
+         */
     @PostMapping("/delete")
     public String delete(UUID id) {
         productService.delete(id);

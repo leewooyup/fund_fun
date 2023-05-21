@@ -11,11 +11,6 @@
             padding: 0 10px 0 0
         }
 
-        div #selectbox {
-            width: 300px;
-            height: 50px;
-
-        }
     </style>
     <head>
         <meta charset="UTF-8">
@@ -30,7 +25,7 @@
             <h3>상품게시판</h3>
             <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
         </div>
-        <select id="category" name="category" onchange="chageSelect()">
+        <select id="category" name="category" onchange="changeSelect()">
             <option selected="selected" style="background-color: #ccc" value="X">카테고리</option>
             <option value="1">전체</option>
             <option value="2">진행 중인 상품</option>
@@ -65,9 +60,9 @@
             </div>
         </form>
 
-        <form action="/product/register" method="get">
+        <a href="/product/register">
             <button class="btn btn-warning" type="submit">글쓰기</button>
-        </form>
+        </a>
         <form action="/order/form" id="productDetailSub" method="get">
             <input name="encId" type="hidden">
         </form>
@@ -86,13 +81,13 @@
             })
         })
 
-        function chageSelect() {
+        function changeSelect() {
             var selectList = document.getElementById("category")
             if (selectList.options[selectList.selectedIndex].value == "1") {
                 location.href = "redirect:/product/list";
             }
             if (selectList.options[selectList.selectedIndex].value == "2") {
-                location.href = "/index";
+                location.href = "/product/list?status=1";
             }
         }
 
