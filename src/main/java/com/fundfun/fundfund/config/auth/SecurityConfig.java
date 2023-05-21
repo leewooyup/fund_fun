@@ -2,8 +2,13 @@ package com.fundfun.fundfund.config.auth;
 
 import com.fundfun.fundfund.service.user.CustomUserDetailService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -11,23 +16,30 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-//@RequiredArgsConstructor
+@Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity//시큐리티 필터
 @EnableGlobalMethodSecurity(prePostEnabled = true)// 특정 페이지에 특정 권한이 있는 유저만 접근을 허용할 경우 권한 및 인증을 미리 체크하겠다는 설정을 활성화
-@AllArgsConstructor
+//@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService customUserDetailService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final OAuth2UserService oAuth2UserService;
 
     @Bean
     public BCryptPasswordEncoder encryptPassword() {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailService).passwordEncoder(encryptPassword());
@@ -56,14 +68,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated() // 인증된 유저만 접근을 허용
                 .and()
                 .formLogin() // 로그인 폼은
-                .disable()
+//                .disable()
+                .loginPage("/user/login")
+//                .loginProcessingUrl("/user/login")
+                .defaultSuccessUrl("/product/list")
+                .failureUrl("/user/login?error=true")
+                .and()
 //                .usernameParameter("inputEmail")// 이곳에는 login page의 input tag id 를 넣어야 한다.
 //                .passwordParameter("inputPassword") //이곳에는 login page의 input tag id 를 넣어야 한다.
 //                .loginPage("/login") // 해당 주소로 로그인 페이지를 호출한다.
 //                .loginProcessingUrl("/login/action") // 해당 URL로 요청이 오면 스프링 시큐리티가 가로채서 로그인처리를 한다. -> loadUserByName
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
                 .authorizeRequests()
                 .anyRequest()
                 .permitAll()
@@ -88,13 +105,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .alwaysRemember(false) // 항상 기억할 것인지 여부` /
                 .tokenValiditySeconds(43200) //- in seconds, 12시간 유지
                 .rememberMeParameter("remember-me")
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/login")
+                .and()
+                .oauth2Login()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/product/list")
 //                .successHandler(authSucessHandler)
-//                .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
+                .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
         // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
-//                .userService(customOAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
+                .userService(oAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
         ;
 
     }
