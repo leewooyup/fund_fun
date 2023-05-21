@@ -9,18 +9,21 @@
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
     <div class="d-flex flex-column wrapper" >
         <div>
-            <span th:text="${post.title}" class="fontSize-fix"></span>
+            <h2><span th:text="${postDto.title}">title</span></h2>
         </div>
         <div>
-            <span th:text="${post.createdAt}" class="gray_text bottom_line"></span>
+            <span th:text="${postDto.createdAt}" class="gray_text bottom_line">createdAt</span>
         </div>
 
         <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
-            <span th:text="${post.contentPost}" class="fontSize-fix"></span>
+            <span th:text="${postDto.contentPost}" class="fontSize-fix">content</span>
+            <form action="@{/post/detail/{id}/like}" method="get">
+                <button class="btn btn-warning" type="submit" th:text="${postDto.likePost}">좋아요</button>
+            </form>
             <div class="centerBox">♥<br/>52</div>
             <div>
-                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/delete/{id}(id=${post.id})}">삭제</a></button>
-                <button class="rightArea bg-yellow paddingBtn paddingBtn-plus">수정</button>
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/delete/{id}(id=${postDto.id})}">삭제</a></button>
+                <button class="rightArea bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/edit/{id}(id=${postDto.id})}">수정</a></button>
             </div>
         </div>
 

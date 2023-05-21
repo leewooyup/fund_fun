@@ -45,7 +45,9 @@ public class PostServiceImpl implements PostService {
     public PostDto selectPostById(UUID postId) {
 //        return modelMapper.map(postRepository.findById(userId).
 //                orElse(null), PostDto.class);
-        return modelMapper.map(postRepository.findById(postId), PostDto.class);
+        Post post = postRepository.findById(postId).orElse(null);
+        if(post==null) throw new RuntimeException("해당 게시물이 존재하지 않습니다.");
+        return modelMapper.map(post, PostDto.class);
     };
 
 
