@@ -36,15 +36,16 @@
         <div class="row row-cols-3">
             <div th:each="ele : ${list}">
                 <div class="col">
-                    <div>
+                    <div>ele.title
 
                         <a href="#" id="productHiddenCheck" th:name="${ele.uuidEncode}">
                             <div>
-                                <img alt="" height="250px" style="border:solid;width:80%" th:src="${ele.getThumbnailImgUrl}"
+                                <img alt="" height="250px" style="border:solid;width:80%"
+                                     th:src="${ele.getThumbnailImgUrl}"
                                      width="250px">
                             </div>
                             <div>
-                                <span th:text="${ele.title}"></span>
+                                <span th:text="${}"></span>
                             </div>
                         </a>
                         <div th:text="${ele.crowdStart}"></div>
@@ -84,10 +85,10 @@
         function changeSelect() {
             var selectList = document.getElementById("category")
             if (selectList.options[selectList.selectedIndex].value == "1") {
-                location.href = "redirect:/product/list";
+                location.href = "";
             }
             if (selectList.options[selectList.selectedIndex].value == "2") {
-                location.href = "/product/list";
+                location.href = "";
             }
         }
 

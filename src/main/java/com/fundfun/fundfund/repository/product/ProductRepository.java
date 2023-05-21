@@ -17,5 +17,9 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query(value = "select p from Product p order by p.createDate desc")
     List<Product> findAll();
 
-//    List<Product> findByUserId(UUID userId);
+    //List<Product> findByUserId(UUID userId);
+
+    //
+    List<Product> findByStatus(int status);
+
 }

@@ -172,6 +172,10 @@ public class ProductServiceImpl implements ProductService {
 //        return productList ;
 //    }
 
+    public List<Product> selectByStatus(int status){
+        return productRepository.findByStatus(status);
+    }
+
     /**
      * 마감일까지의 d-day
      * */

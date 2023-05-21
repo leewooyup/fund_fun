@@ -36,9 +36,16 @@ public class ProductController {
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
     @GetMapping("/list")
-    public String list(Model model) {
-        List<Product> productList = productService.selectAll();
-        model.addAttribute("list", productList);
+    public String list(Model model, @PathVariable int aa) {
+        if(aa == 1){
+            List<Product> productList = productService.selectAll();
+            model.addAttribute("list", productList);
+        }
+        else if( aa == 2){
+            List<Product> productList = productService.selectByStatus(1);
+            model.addAttribute("list", productList);
+        }
+
         return "product/product_list";
     }
 
