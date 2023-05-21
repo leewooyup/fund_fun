@@ -76,8 +76,8 @@ class PostServiceImplTest {
     @Test
     public void 게시물삭제() throws Exception {
         UUID uuid = postService.selectAll().get(0).getId();
-        List<PostDto> list = postService.selectPostByUserId(uuid);
-        Post postToDelete = modelMapper.map(list.get(0), Post.class);
+        PostDto list = postService.selectPostById(uuid);
+        Post postToDelete = modelMapper.map(list, Post.class);
 
         //게시물이 존재하는지 확인
 //        assertTrue(postToDelete.isPresent());
