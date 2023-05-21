@@ -31,7 +31,7 @@ public class Vote {
     private Post post;
 
     private final LocalDateTime voteStart = LocalDateTime.now();
-    
+
     private final LocalDateTime voteEnd = voteStart.plusDays(30);
 
     @Builder.Default

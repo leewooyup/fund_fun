@@ -36,18 +36,18 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
 
     @OneToMany(mappedBy = "orders")
-    private List<Product> inprocess_product = new ArrayList<>();
+    private final List<Product> inprocess_product = new ArrayList<>();
 //    @OneToMany(mappedBy = "writer")
 //    private List<Vote> inprocess_vote = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "fundManager")
-    private List<Product> managing_product = new ArrayList<>();
+    private final List<Product> managing_product = new ArrayList<>();
 
     private String password;
     private String name;
     private String email;
-//    @ColumnDefault("ROLE_COMMON")
+    @Column(columnDefinition = "int default 1")
     private Role role;
     private String phone;
     private Gender gender;
