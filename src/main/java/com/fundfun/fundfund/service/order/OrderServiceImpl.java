@@ -48,7 +48,8 @@ public class OrderServiceImpl implements OrderService {
         investDto.setUser(user);
         investDto.setCost(cost);
 
-        return modelMapper.map(investDto, Orders.class);
+        Orders order = modelMapper.map(investDto, Orders.class);
+        return orderRepository.save(order);
     }
 
     @Override
