@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.domain.post;
 
 
+import com.fundfun.fundfund.domain.reply.Reply;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.vote.VoteDto;
@@ -45,7 +46,7 @@ public class Post extends BaseTimeEntity {
     private int likePost = 0;
     @Builder.Default
     private String categoryPost = "주식형";
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Vote vote;
     //@ColumnDefault("'EARLY_IDEA'")
     @Builder.Default
@@ -58,6 +59,12 @@ public class Post extends BaseTimeEntity {
 
 //    @OneToMany(mappedBy = "post")
 //    private List<Portfolio> portfolios = new ArrayList<>();
+
+    @OneToMany(mappedBy="post")
+    private List<Reply> replies = new ArrayList<>();
+
+
+
     public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;
     }

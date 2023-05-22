@@ -3,7 +3,9 @@ package com.fundfun.fundfund.controller.post;
 import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.post.PostDto;
+import com.fundfun.fundfund.dto.reply.ReplyDto;
 import com.fundfun.fundfund.service.post.PostService;
+import com.fundfun.fundfund.service.reply.ReplyService;
 import com.fundfun.fundfund.service.user.CustomUserDetailService;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class PostController {
 
     private final UserService userService;
 
+    private final ReplyService replyService;
+
     /**
      * 아이디어 전체조회 화면 이동
      * -> RestController로 옮겨야
@@ -48,6 +52,15 @@ public class PostController {
         PostDto postDto = postService.selectPostById(id);
         if (postDto != null) {
             model.addAttribute("postDto", postDto);
+            // 해당 id의 게시물을 model에 담아 반환
+
+            List<ReplyDto> replyList = replyService.selectReplyByPostId(postDto);
+            if(replyList != null){
+                model.addAttribute("replyList", replyList);
+                model.addAttribute("replyCount", replyService.countByPostId(id));
+            }
+            //해당 게시물에 댓글이 있다면 반환
+
             return "post/detail";
         } else {
             // 존재하지 않는 게시물일 경우 처리
@@ -86,6 +99,7 @@ public class PostController {
             return "post/write";
         }
         Users u = userService.findByEmail(user.getEmail()).orElse(null);
+        System.out.println("u = " + u.getEmail());
         PostDto postDto = new PostDto();
         postDto.setUser(u);
         postDto.setTitle(postForm.getTitle());
@@ -124,7 +138,6 @@ public class PostController {
     public String edit(@PathVariable("postId") UUID postId, @Valid PostForm postForm, BindingResult result) {
         System.out.println("postId = " + postId);
         if (result.hasErrors()) {
-            System.out.println("UUID = " + postId);
             return "redirect:/post/edit/" + postId;
         }
 //        PostDto postDto = new PostDto();

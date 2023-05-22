@@ -72,8 +72,6 @@ public class PostServiceImpl implements PostService {
         return postRepository.findByCategoryPost(category).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
 
-
-
     @Override
     public void deletePost(UUID postId){
         Post post = postRepository.findById(postId).orElse(null);
