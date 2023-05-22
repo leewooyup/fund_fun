@@ -6,7 +6,6 @@ import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.dto.reply.ReplyDto;
 import com.fundfun.fundfund.service.post.PostService;
 import com.fundfun.fundfund.service.reply.ReplyService;
-import com.fundfun.fundfund.service.user.CustomUserDetailService;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,9 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -43,7 +40,38 @@ public class PostController {
         return "post/list";
     }
 
+    /**
+     * 아이디어 인기순 정렬
+     * */
+    @GetMapping("/list/popular")
+    public String popularIdeaList(Model model){
+        List<PostDto> postList = postService.getPostsOrderByLikes();
+        model.addAttribute("postList", postList);
+        return "post/list";
+    }
 
+    /**
+     * 가상품만 보기
+     * */
+    @GetMapping("/list/preproduct")
+    public String preproductList(Model model){
+        List<PostDto> postList = postService.selectPostByStatus(StPost.PREPRODUCT);
+        model.addAttribute("postList", postList);
+        return "post/list";
+    }
+
+    /**
+     * 키워드로 검색
+     * */
+    @GetMapping("/list/searchResult")
+    public String searchList(Model model, @RequestParam String keyword){
+        System.out.println("keyword = " + keyword);
+        List<PostDto> postList = postService.selectPostByKeyword(keyword);
+        model.addAttribute("postList", postList);
+        model.addAttribute("keyword", keyword);
+        return "post/list";
+    }
+    
     /**
      * 아이디어 상세조회
      */
@@ -99,7 +127,7 @@ public class PostController {
             return "post/write";
         }
         Users u = userService.findByEmail(user.getEmail()).orElse(null);
-        System.out.println("u = " + u.getEmail());
+        //System.out.println("u = " + u.getEmail());
         PostDto postDto = new PostDto();
         postDto.setUser(u);
         postDto.setTitle(postForm.getTitle());

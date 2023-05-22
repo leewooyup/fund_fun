@@ -24,16 +24,17 @@
             <h5 class="gray_text">투자 아이디어를 자유롭게 제안할 수 있는 공간입니다.</h5>
         </div>
         <div style="margin-top: 1rem;">
-            <span class="gray_text leftArea">최신순 | </span>
-            <span class="gray_text leftArea">인기순 | </span>
-            <span class="gray_text leftArea">가상품</span>
+            <span class="gray_text leftArea"><a href="/post/list">최신순</a> | </span>
+            <span class="gray_text leftArea"><a href="/post/list/popular">인기순</a> | </span>
+            <span class="gray_text leftArea"><a href="/post/list/preproduct">가상품</a></span>
 
-            <form action="/post/write" method="get">
+            <form action="/post/list/searchResult" method="get">
+                <input type="text" name="keyword" th:text="${keyword}">
                 <button class="btn btn-warning" type="submit">검색</button>
             </form>
 
-            <button class="rightArea left_margin bg-yellow">검색</button>
-            <input type="text" class="rightArea border-yellow"/>
+<!--            <button class="rightArea left_margin bg-yellow">검색</button>-->
+<!--            <input type="text" class="rightArea border-yellow"/>-->
         </div>
 
         <table>
