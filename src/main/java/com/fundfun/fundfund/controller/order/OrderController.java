@@ -42,20 +42,18 @@ public class OrderController {
         model.addAttribute("product", productDto);
         model.addAttribute("encId", encId);
 
-        long crowdDeadLine = productService.crowdDeadline(productDto);
-        model.addAttribute("deadline", crowdDeadLine);
+        int deadline = productService.crowdDeadline(productDto);
+        model.addAttribute("deadline", deadline);
 
         return "order/order_form";
     }
 
     /**
      * 투자하기
-     * user가 입력한 투자금액(cost) 갱신하기
-     *
+     * user가 입력한 투자금액(cost) 투자 영수증으로 넘기기
      * @param investDto, bindingResult
      * @return view
      */
-
     @PostMapping("/send/{encId}")
     public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model) {
         if (bindingResult.hasErrors()) {
@@ -75,6 +73,9 @@ public class OrderController {
 
     /**
      * 주문 생성 + 상품 모금액 업데이트
+     * @param encId
+     * @param cost
+     * @return poduct_list view
      */
     @PostMapping("/update/{encId}")
     public String update(@PathVariable String encId, Long cost, Principal principal) {

@@ -48,7 +48,7 @@ spring:
         init:
             platform: oracle
             encoding: UTF-8
-            mode: always
+            mode: never
 custom:
     genFileDirPath: c:/Temp/fundFun
 

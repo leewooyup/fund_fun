@@ -18,6 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -34,21 +38,26 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-//    @Override
-//    public Product createProduct() { //테스트용code
-//        Product product = Product.builder()
-//                .title("A+B")
-//                .crowdStart("2023-05-15")
-//                .crowdEnd("2023-05-21")
-//                .goal(1000L)
-//                .currentGoal(1500L)
-//                .status("진행중")
-//                .description("펀드진행중")
-//                .build();
-//
-//        productRepository.save(product);
-//        return product;
-//    }
+
+    public ProductDto createProduct() { //테스트용code
+
+        LocalDateTime startDate = LocalDateTime.parse("2023-05-24T11:50:55");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-29T12:50:55");
+        Product product = Product.builder()
+                .title("A+B")
+                .crowdStart(startDate.toString())
+                .crowdEnd(endDate.toString())
+                .goal(1000L)
+                .currentGoal(1500L)
+                .status("진행중")
+                .description("펀드진행중")
+                .build();
+
+        productRepository.save(product);
+
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        return productDto;
+    }
 
     /**
      * 전체 상품 조회
@@ -188,12 +197,20 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 마감일까지의 d-day
      */
-    public long crowdDeadline(ProductDto productDto) {
-        Date deadLine = productDto.toDate(productDto.getCrowdEnd());
-        Date now = new Date();
-        long diff = ((deadLine.getTime() - now.getTime()) / (24 * 60 * 60 * 1000) + 1);
+    public int crowdDeadline(ProductDto productDto) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime deadLine = LocalDateTime.parse(productDto.getCrowdEnd());
 
-        return diff;
+        LocalDate nowInfo = now.toLocalDate();
+        LocalDate deadLineInfo = deadLine.toLocalDate();
+
+        Period period = Period.between(nowInfo, deadLineInfo);
+
+//        Date deadLine = productDto.toDate(productDto.getCrowdEnd());
+//        long diff = ((deadLine.getTime() - now.getTime()) / (24 * 60 * 60 * 1000) + 1);
+
+        System.out.println("gap: " + period.getDays());
+        return period.getDays();
     }
 
 
