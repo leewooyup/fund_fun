@@ -21,14 +21,20 @@
                 </div>
                 <div>
                     <label class="sub-title">남은기간</label>
-                    <div><span th:text="${deadline}"></span>일</div>
+                    <th:block th:if="${deadline &gt; -1}">
+                        <div><span th:text="${deadline}"></span>일</div>
+                    </th:block>
+                    <th:block th:if="${deadline &lt; 0}">
+                        <div>투자 마감</div>
+                    </th:block>
 
                 </div>
                 <div>
                     <label class="sub-title">담당 펀드매니저</label>
+                    <div th:text="${#authentication.principal.nickname}"></div>
                     <div>김깨비 펀드매니저님</div><!-- 하드코딩 -->
                 </div>
-                <form method="post" th:action=@{|"/order/send/${encId}"|} th:object="${investDto}">
+                <form method="post" th:action="@{|/order/send/${encId}|}" th:object="${investDto}">
                     <input type="hidden" name="encId" th:value="${encId}">
                     <label class="sub-title">투자금액</label>
                     <div>
@@ -51,8 +57,19 @@
     <a th:href= "@{/product/update/{id}(id=${encId})}" >
         <button class="btn btn-warning" type="button">수정</button>
     </a>
+    <a th:href= "@{/product/delete/{id}(id=${encId})}" id="confirmDel" >
+        <button class="btn btn-warning" type="button">삭제</button>
+    </a>
+    <script>
 
-<!--    <a th:href="@{|/product/update/${encId}|}">수정</a>-->
+        $(function(){
+            $('#confirmDel').click(function(){
+                if(!confirm('삭제하시면 복구할수 없습니다. \n 정말로 삭제하시겠습니까??')){
+                    return false;
+                }
+            });
+        });
 
+    </script>
 </th:block>
 </html>

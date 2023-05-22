@@ -26,6 +26,7 @@
     </div>
 
     <div class="container">
+      <th:block th:if="${searchList.size() != 0}">
       <div class="row row-cols-3">
         <div th:each="ele : ${searchList}">
           <div class="col" >
@@ -44,6 +45,11 @@
           </div>
         </div>
       </div>
+      </th:block>
+      <th:block th:if="${searchList.size() == 0}">
+        <div style="text-align: center"><h4>조회된 상품이 존재하지 않습니다.</h4></div>
+      </th:block>
+<!--
 
       <form action="/product/search" method="get">
         <div class="aa">
@@ -58,6 +64,7 @@
       <form action="/order/form" method="get" id="productDetailSub">
         <input type="hidden" name="encId" >
       </form>
+-->
     </div>
   </div>
   <script>

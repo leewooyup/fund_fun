@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
-    <style>
-        .foot{
-            padding:5px;
-        }
-
-    </style>
     <div class="d-flex flex-column align-items-center wrapper">
         <div class="title" style="text-align:left;">투자 영수증</div>
         <div class="order-main">
             <div class="order-main-left-section">
+                <input name="Id" type="hidden" value="${product}">
+                <input name="Id" type="hidden" value="${invest}">
                 <div>
                     <label class="sub-title">투자할 상품</label>
-                    <div>X와 Y의 결합상품</div><!-- 하드코딩 -->
+                    <div th:text="${product.title}"></div>
                 </div>
                 <div>
                     <label class="sub-title">투자할 금액</label>
-                    <div>10일</div><!-- 하드코딩 -->
+                    <div><span th:text="${invest.cost}"></span>원</div>
                 </div>
                 <div>
                     <label class="sub-title">현재 충전금</label>
@@ -34,14 +30,26 @@
                 <div>투자 시 유의사항</div>
             </div>
         </div>
-        <div class="d-flex" style="justify-content:center;margin:15px">
-            <form class="foot" action="order/update" method="post" >
-                <button class="btn btn-warning" type="submit">투자</button>
-            </form>
-            <form class="foot" action="/product/register" method="get" >
-                <button class="btn btn-warning" type="submit">취소</button>
-            </form>
+        <div class="d-flex" id="invest" style="justify-content:center">
+            <a th:href ="@{|/order/update/${encId}|}">
+                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>
+            </a>
+            <a href="/product/list?mode="+1>
+                <button class="btn btn-warning" type="button">취소</button>
+            </a>
         </div>
+        <form method="post" th:action ="@{|/order/update/${encId}|}" id="costSendForm">
+            <input type="hidden" name="cost" th:value="${invest.cost}">
+        </form>
     </div>
+    <script>
+        $(function(){
+            $(document).on("click", "#btn-invest", function() {
+                $("#costSendForm").submit();
+            });
+        });
+    </script>
+
 </th:block>
+
 </html>

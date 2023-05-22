@@ -22,4 +22,5 @@ public class UserDTO {
     private Long count;
     private Long total_investment;
     private Long benefit;
+
 }

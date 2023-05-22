@@ -37,6 +37,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
 //    @OneToMany(mappedBy = "orders")
 //    private final List<Product> inprocess_product = new ArrayList<>();
+
 //    @OneToMany(mappedBy = "writer")
 //    private List<Vote> inprocess_vote = new ArrayList<>();
 
@@ -47,7 +48,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private String password;
     private String name;
     private String email;
-//    @Column(columnDefinition = " default 1")
+    //    @Column(columnDefinition = " default 1")
     private Role role;
     private String phone;
     private Gender gender;
@@ -88,7 +89,9 @@ public class Users extends BaseTimeEntity implements UserDetails {
     }
 
     @Override
-    public boolean isEnabled() {
-        return true;
+    public boolean isEnabled() { return true;  }
+
+    public void setMoney(Long money){ //by lee
+        this.money = money;
     }
 }

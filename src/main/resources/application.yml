@@ -9,7 +9,7 @@ spring:
     datasource:
         driver-class-name: oracle.jdbc.driver.OracleDriver
         url: jdbc:oracle:thin:@localhost:1521:XE
-        username: c##fundFun
+        username: c##lee
         password: 1234
 
     security:
@@ -42,12 +42,13 @@ spring:
 
         thymeleaf:
             cache: false
-# sql init script
-#    sql:
-#        init:
-#            platform: oracle
-#            encoding: UTF-8
-#            mode: always
+        defer-datasource-initialization: true
+    # sql init script
+    sql:
+        init:
+            platform: oracle
+            encoding: UTF-8
+            mode: always
 custom:
     genFileDirPath: c:/Temp/fundFun
 
