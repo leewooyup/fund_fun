@@ -41,8 +41,8 @@ public class ProductServiceImpl implements ProductService {
 
     public ProductDto createProduct() { //테스트용code
 
-        LocalDateTime startDate = LocalDateTime.parse("2023-05-24T11:50:55");
-        LocalDateTime endDate = LocalDateTime.parse("2023-05-29T12:50:55");
+        LocalDate startDate = LocalDate.parse("2023-05-24");
+        LocalDate endDate = LocalDate.parse("2023-05-29");
         Product product = Product.builder()
                 .title("A+B")
                 .crowdStart(startDate.toString())
@@ -152,7 +152,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, Users user) {
         String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-
         productDto.setFundManager(user);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
@@ -198,13 +197,10 @@ public class ProductServiceImpl implements ProductService {
      * 마감일까지의 d-day
      */
     public int crowdDeadline(ProductDto productDto) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime deadLine = LocalDateTime.parse(productDto.getCrowdEnd());
+        LocalDate now = LocalDate.now();
+        LocalDate deadLine = LocalDate.parse(productDto.getCrowdEnd());
 
-        LocalDate nowInfo = now.toLocalDate();
-        LocalDate deadLineInfo = deadLine.toLocalDate();
-
-        Period period = Period.between(nowInfo, deadLineInfo);
+        Period period = Period.between(now, deadLine);
 
 //        Date deadLine = productDto.toDate(productDto.getCrowdEnd());
 //        long diff = ((deadLine.getTime() - now.getTime()) / (24 * 60 * 60 * 1000) + 1);

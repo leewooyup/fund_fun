@@ -12,7 +12,7 @@
         <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
             <div>
-                <img alt="" src="https://picsum.photos/id/237/400/300">
+                <img alt="" th:src="@{|/gen/${product.thumbnailRelPath}|}" width="400px" height="300px">
             </div>
             <div>
                 <div>
@@ -31,8 +31,7 @@
                 </div>
                 <div>
                     <label class="sub-title">담당 펀드매니저</label>
-                    <div th:text="${#authentication.principal.nickname}"></div>
-                    <div>김깨비 펀드매니저님</div><!-- 하드코딩 -->
+                    <div th:text="|${#authentication.principal.nickname} 펀드매니저님|"></div>
                 </div>
                 <form method="post" th:action="@{|/order/send/${encId}|}" th:object="${investDto}">
                     <input type="hidden" name="encId" th:value="${encId}">
