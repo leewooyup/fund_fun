@@ -3,9 +3,11 @@ package com.fundfun.fundfund.controller.order;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.exception.InSufficientMoneyException;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
+import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,28 +36,26 @@ public class OrderController {
      * @param investDto
      * @return view
      */
-    @GetMapping("/form")
-    public String showOrderForm(InvestDto investDto, Model model, String encId) {
+    @GetMapping("/form/{encId}")
+    public String showOrderForm(InvestDto investDto, Model model, @PathVariable String encId) {
         UUID uuid = orderService.decEncId(encId);//productId
         // 복호화된 uuid로 해당 product 가져오기
         ProductDto productDto = productService.selectById(uuid);
         model.addAttribute("product", productDto);
         model.addAttribute("encId", encId);
 
-        long crowdDeadLine = productService.crowdDeadline(productDto);
-        model.addAttribute("deadline", crowdDeadLine);
+        int deadline = productService.crowdDeadline(productDto);
+        model.addAttribute("deadline", deadline);
 
         return "order/order_form";
     }
 
     /**
      * 투자하기
-     * user가 입력한 투자금액(cost) 갱신하기
-     *
+     * user가 입력한 투자금액(cost) 투자 영수증으로 넘기기
      * @param investDto, bindingResult
      * @return view
      */
-
     @PostMapping("/send/{encId}")
     public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model) {
         if (bindingResult.hasErrors()) {
@@ -75,6 +75,9 @@ public class OrderController {
 
     /**
      * 주문 생성 + 상품 모금액 업데이트
+     * @param encId
+     * @param cost
+     * @return poduct_list view
      */
     @PostMapping("/update/{encId}")
     public String update(@PathVariable String encId, Long cost, Principal principal) {
@@ -82,12 +85,20 @@ public class OrderController {
         System.out.println("encId = " + orderService.decEncId(encId));
         Users user= userService.findByEmail(principal.getName()).orElse(null);
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
-        int result = productService.updateCost(cost, productDto, user); //투자정보 갱신 + 주문서 만들기
-
-        if(result == 0){
-            throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
+        try {
+            int result = productService.updateCost(cost, productDto, user); //투자정보 갱신 + 주문서 만들기
+            if (result == 0) {
+                throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
+            }
+        } catch (InSufficientMoneyException e) {
+            String errMsg = Util.url.encode(e.getMessage());
+            return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
+        } catch (RuntimeException e) {
+            String errMsg = Util.url.encode(e.getMessage());
+            return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
         }
-        return "redirect:/product/list";
+        String msg = Util.url.encode("성공적으로 투자되었습니다.");
+        return String.format("redirect:/product/list?msg=%s", msg);
 }
 
     /**
