@@ -34,7 +34,7 @@
             });
         });
 
-        // 리스트 가져오기
+        // 포트폴리오 목록 데이터 가져오기
         function getData() {
             $.ajax({
                 url: "/portfolio/getData",
@@ -43,7 +43,7 @@
                 contentType: "application/json; CHARSET=UTF-8",
                 data: JSON.stringify({"postId": postId}),
                 success: function(result) {
-                    drawList(result.portfolioList);
+                    drawList(result.portfolioList);  //밑에 함수 적어놈
                 },
                 error: function(e) {
                     console.log(e);

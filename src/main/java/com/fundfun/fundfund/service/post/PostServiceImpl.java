@@ -47,12 +47,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto selectPostById(UUID postId) {
-
         Post post = postRepository.findById(postId).orElse(null);
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         PostDto result = modelMapper.map(post, PostDto.class);
         return result;
-
     };
 
 

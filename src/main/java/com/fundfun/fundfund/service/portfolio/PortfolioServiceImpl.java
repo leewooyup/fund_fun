@@ -116,6 +116,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             existingPort.setPost(post);
             existingPort.setVote(vote);
 
+
             // 게시물을 저장하여 업데이트합니다.
             portRep.save(existingPort);
 

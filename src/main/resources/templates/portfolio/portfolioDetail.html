@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html
         xmlns:th="http://thymeleaf.org"
@@ -33,6 +34,43 @@
                 location.href = "/portfolio?postId=" + postId;
             });
 
+            // 삭제 버튼 클릭
+            $("#delete").on("click", function() {
+                var param = {
+                    "state": "D",
+                    "portfolioId": id,
+                    "postId": postId
+                }
+
+                $.ajax({
+
+                    url: "/portfolio/commitData",
+                    type: "post",
+                    dataType: "json",
+                    contentType :  "application/json; charset=UTF-8",
+                    data: JSON.stringify(param),
+
+                })
+                $.ajax({
+                    url: "/portfolio/commitData",
+                    type: "post",
+                    dataType: "json",
+                    contentType: "application/json; CHARSET=UTF-8",
+                    data: JSON.stringify(param),
+                    success: function (result) {
+                        if(result.msg == "fail") {
+                            alert("삭제 중 문제가 발생하였습니다.");
+                            return false;
+                        } else {
+                            alert("정상적으로 삭제되었습니다.");
+                            location.href = "/portfolio?postId=" + postId;
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
 
             // 등록/수정 버튼 클릭
             $("#commitBtn").on("click", function() {
@@ -87,10 +125,8 @@
                 msg = "수익률을 입력해주세요.";
             } else if(/^[가-힣a-zA-Z\s]+$/.test(beneRatio)) {
                 msg = "수익률은 실수와 정수만 입력됩니다.";
-            } else if(warnLevel == "") {
-                msg = "위험도를 입력해주세요.";
-            } else if(!/^[0-9]+$/.test(warnLevel)) {
-                msg = "위험도는 숫자만 입력됩니다.";
+            } else if($("#warnLevel" + plusId).val()==""){
+                msg = "위험도를 입력해주세요"
             } else if($("#content" + plusId).val() == "") {
                 msg = "내용을 입력해주세요.";
             }
