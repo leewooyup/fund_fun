@@ -17,11 +17,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
     private final OrderRepository orderRepository;
 
-
-        @Override
+    @Override
     public List<Orders> selectAll() {
         return null;
     }
@@ -33,6 +31,11 @@ public class OrderServiceImpl implements OrderService {
 //        return orderRepository.save(order);
 //    }
 
+    /**
+     * UUID 디코딩
+     * @param encId
+     * @return UUID
+     */
     public UUID decEncId(String encId) {
         // UUID 디코딩
         Base64.Decoder decoder = Base64.getDecoder();
@@ -55,11 +58,10 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    //test 코드
     @Override
     public int getCurrentCollection(Product product) {
         Users user = new Users(); //일단 로그인한 유저의 정보 있다고 가정
-
-
         return 0;
     }
 }

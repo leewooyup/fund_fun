@@ -48,21 +48,6 @@ public class ProductServiceImpl implements ProductService {
                 .crowdEnd("2023-05-21")
                 .goal(1000L)
                 .currentGoal(1500L)
-                .status(0)
-                .description("펀드진행중")
-                .build();
-
-        productRepository.save(product);
-        return product;
-    }
-
-    public Product createProduct2() { //테스트용code
-        Product product = Product.builder()
-                .title("C+D")
-                .crowdStart("2023-08-15")
-                .crowdEnd("2023-12-15")
-                .currentGoal(66L)
-                .status(2)
                 .description("펀드진행중")
                 .build();
 
@@ -106,11 +91,11 @@ public class ProductServiceImpl implements ProductService {
      * 상품 투자금 갱신
      *
      * @param cost
-     * @param productId
+     * @param logined
      * @return 성공(1)/실패(0)
      */
     @Transactional
-    public int updateCost(Long cost, UUID productId) throws RuntimeException {
+    public int updateCost(Long cost, Users logined) throws RuntimeException {
         Product dbProduct = selectById(productId);
         //Product currentGoal 갱신하기
         Long money = dbProduct.getCurrentGoal() + cost;
