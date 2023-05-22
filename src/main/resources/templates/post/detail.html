@@ -9,7 +9,7 @@
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
 
     <script th:inline="javascript">
-        var postId = [[${post.id}]];
+        var postId = [[${postDto.id}]];
     </script>
 
     <script type="text/javascript">
@@ -33,10 +33,10 @@
 
         <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
             <span th:text="${postDto.contentPost}" class="fontSize-fix">content</span>
-            <form action="@{/post/detail/{id}/like}" method="get">
-                <button class="btn btn-warning" type="submit" th:text="${postDto.likePost}">좋아요</button>
-            </form>
-            <div class="centerBox">♥<br/>52</div>
+
+            <div class="centerBox">
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/detail/{id}/like(id=${postDto.id})}"><span th:text="${postDto.likePost}" class="fontSize-fix">likePost</span></a></button>
+            </div>
             <div>
                 <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/delete/{id}(id=${postDto.id})}">삭제</a></button>
                 <button class="rightArea bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/edit/{id}(id=${postDto.id})}">수정</a></button>

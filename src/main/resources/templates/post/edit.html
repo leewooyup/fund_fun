@@ -11,7 +11,7 @@
     <div class="d-flex flex-column wrapper">
         <div class="fontSize-fix bottom_line">아이디어 작성</div>
 
-        <form method="post" th:action="@{/post/edit}" th:object="${postForm}">
+        <form method="post" th:action="@{/post/edit/{id}(id=${postId})}" th:object="${postForm}" >
             <div class="d-flex flex-column">
                 <div style="width:100%;">
                     <input type="text" th:field="*{title}" style="width:100%;" placeholder="제목"></input>
