@@ -51,21 +51,6 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-//    public Product createProduct2() { //테스트용code
-//        Product product = Product.builder()
-//                .title("C+D")
-//                .crowdStart("2023-08-15")
-//                .crowdEnd("2023-12-15")
-//                .currentGoal(66L)
-//                .status(2)
-//                .description("펀드진행중")
-//                .build();
-//
-//        productRepository.save(product);
-//        return product;
-//    }
-
-
     /**
      * 전체 상품 조회
      */
