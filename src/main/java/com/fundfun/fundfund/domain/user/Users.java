@@ -35,8 +35,8 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private UUID id;
 
 
-    @OneToMany(mappedBy = "orders")
-    private final List<Product> inprocess_product = new ArrayList<>();
+//    @OneToMany(mappedBy = "orders")
+//    private final List<Product> inprocess_product = new ArrayList<>();
 //    @OneToMany(mappedBy = "writer")
 //    private List<Vote> inprocess_vote = new ArrayList<>();
 

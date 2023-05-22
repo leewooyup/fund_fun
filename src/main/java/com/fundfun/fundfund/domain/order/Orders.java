@@ -1,9 +1,10 @@
 package com.fundfun.fundfund.domain.order;
 
-import com.fundfun.fundfund.base.BaseTimeEntity;
+
 import com.fundfun.fundfund.domain.payment.Payment;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
