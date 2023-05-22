@@ -36,7 +36,7 @@
         <div class="row row-cols-3">
             <div th:each="ele : ${list}">
                 <div class="col">
-                    <div>ele.title
+                    <div><span th:text="${ele.title}"></span>
 
                         <a href="#" id="productHiddenCheck" th:name="${ele.uuidEncode}">
                             <div>
@@ -45,7 +45,7 @@
                                      width="250px">
                             </div>
                             <div>
-                                <span th:text="${}"></span>
+<!--                                <span th:text="${}"></span>-->
                             </div>
                         </a>
                         <div th:text="${ele.crowdStart}"></div>
@@ -84,11 +84,11 @@
 
         function changeSelect() {
             var selectList = document.getElementById("category")
-            if (selectList.options[selectList.selectedIndex].value == "1") {
-                location.href = "";
+            if (selectList.options[selectList.selectedIndex].value === "1") {
+                location.href = "/product/list?mode="+1;
             }
-            if (selectList.options[selectList.selectedIndex].value == "2") {
-                location.href = "";
+            if (selectList.options[selectList.selectedIndex].value === "2") {
+                location.href = "/product/list?mode="+2;
             }
         }
 

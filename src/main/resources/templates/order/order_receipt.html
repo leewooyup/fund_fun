@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
-    <style>
-        .foot{
-            padding:5px;
-        }
-
-    </style>
     <div class="d-flex flex-column align-items-center wrapper">
         <div class="title" style="text-align:left;">투자 영수증</div>
         <div class="order-main">
             <div class="order-main-left-section">
+                <input name="Id" type="hidden" value="${product}">
+                <input name="Id" type="hidden" value="${invest}">
                 <div>
                     <label class="sub-title">투자할 상품</label>
-                    <div>X와 Y의 결합상품</div><!-- 하드코딩 -->
+                    <div th:text="${product.title}"></div>
                 </div>
                 <div>
                     <label class="sub-title">투자할 금액</label>
-                    <div>10일</div><!-- 하드코딩 -->
+                    <div><span th:text="${invest.cost}"></span>원</div>
                 </div>
                 <div>
                     <label class="sub-title">현재 충전금</label>
@@ -34,14 +30,32 @@
                 <div>투자 시 유의사항</div>
             </div>
         </div>
-        <div class="d-flex" style="justify-content:center;margin:15px">
-            <form class="foot" action="order/update" method="post" >
-                <button class="btn btn-warning" type="submit">투자</button>
-            </form>
-            <form class="foot" action="/product/register" method="get" >
+        <div class="d-flex" id="invest" style="justify-content:center;margin:15px;padding:5px">
+            <!--            <form action="/order/update" method="post" style="margin-right:10px">-->
+            <button id="ajaxBtn" class="btn btn-warning" jd="btn" type="submit">투자</button>
+            <!--            </form>-->
+            <a href="/product/list">
                 <button class="btn btn-warning" type="submit">취소</button>
-            </form>
+            </a>
         </div>
     </div>
+    <script>
+
+        $(function () {
+            $("#ajaxBtn").click(function () {
+                $.ajax({
+                    url: "ajaxTest?key=text",  //서버요청주소
+                    type: "post", // 요청방식(get, post, put, delete, patch)
+                    dataType: "text", //서버가 응답(보내온) 한 데이터타입(text | html | xml | json)
+                    data: {"name":"${product}"}, // 서버에게 보낼 parameter정보
+                    success: function (result) {
+                        console.log(name);
+                    }
+
+                });
+            });
+        });
+    </script>
 </th:block>
+
 </html>

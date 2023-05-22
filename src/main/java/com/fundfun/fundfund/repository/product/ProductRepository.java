@@ -14,12 +14,9 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findByTitleContaining(String title);
 
-    @Query(value = "select p from Product p order by p.createDate desc")
+    @Query(value = "select p from Product p order by p.createdAt desc")
     List<Product> findAll();
 
-    //List<Product> findByUserId(UUID userId);
-
-    //
-    List<Product> findByStatus(int status);
+//    List<Product> findByStatus(String status);
 
 }

@@ -1,20 +1,16 @@
 package com.fundfun.fundfund.domain.product;
 
-import com.fundfun.fundfund.base.BaseTimeEntity;
+
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
-
+import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Base64;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -33,7 +29,7 @@ public class Product extends BaseTimeEntity {
     private String crowdEnd;
     private Long goal;
     private Long currentGoal;
-    private int status;
+    private String status;
     private String description;
     private String thumbnailRelPath;
 
@@ -41,9 +37,9 @@ public class Product extends BaseTimeEntity {
 //    @JoinColumn(name = "order_id")
 //    private Orders orders;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Orders orders;
+//    @ManyToOne
+//    @JoinColumn(name = "order_id")
+//    private Orders orders;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -57,16 +53,7 @@ public class Product extends BaseTimeEntity {
         return encodedString;
     }
 
-    public Date toDate(String crowdEnd) {
-        Date deadLine = null;
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            deadLine = sdf.parse(crowdEnd);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return deadLine;
-    }
+
 
     public String getThumbnailImgUrl() {
         if(thumbnailRelPath == null) return "/gen/product/avatar.jpg";

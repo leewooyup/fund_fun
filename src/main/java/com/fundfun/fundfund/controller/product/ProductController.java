@@ -1,19 +1,25 @@
 package com.fundfun.fundfund.controller.product;
 
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
+import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.id.insert.Binder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -22,6 +28,7 @@ import java.util.UUID;
 public class ProductController {
     private final ProductServiceImpl productService;
     private final OrderServiceImpl orderService;
+    private final UserService userService;
 
     /**
      * register 폼 이동
@@ -36,66 +43,101 @@ public class ProductController {
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
     @GetMapping("/list")
-    public String list(Model model, @PathVariable int aa) {
-        if(aa == 1){
-            List<Product> productList = productService.selectAll();
-            model.addAttribute("list", productList);
-        }
-        else if( aa == 2){
-            List<Product> productList = productService.selectByStatus(1);
-            model.addAttribute("list", productList);
+    public String list(Model model, int mode) {
+        if (mode == 2) {
+            //List<Product> productList = productService.selectByStatus("진행중");
+            //model.addAttribute("list", productList);
+            return "product/product_list";
         }
 
+        List<Product> productList = productService.selectAll();
+        model.addAttribute("list", productList);
         return "product/product_list";
     }
+
 
     /**
      * 상품 등록
      */
+//    @PostMapping("/write")
+//    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg) {
+//        if (bindingResult.hasErrors()) {
+//            return "product/product_register";
+//        }
+//
+//        //System.out.println("thumbnailImg: " + thumbnailImg);
+//        productService.registerProduct(productDto, thumbnailImg);
+//        return "redirect:/product/list";
+//    }
     @PostMapping("/write")
-    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg) {
+    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "product/product_register";
         }
-        System.out.println("thumbnailImg: " + thumbnailImg);
-        productService.registerProduct(productDto, thumbnailImg);
-        return "redirect:/product/list";
+        Optional<Users> ou = userService.findByEmail(principal.getName());
+        if (ou.isPresent()) {
+            Users user = ou.get();
+            System.out.println("users = " + user.getId());
+            productService.registerProduct(productDto, thumbnailImg, user);
+        }
+        return "redirect:/product/list?mode=1";
     }
 
     /**
      * 상품 수정 폼
      */
     @GetMapping("/update/{encId}")
-    public String update(@PathVariable String encId, Model model) {
-        if (encId != null) {
-            Product product = productService.selectById(orderService.decEncId(encId));
-            model.addAttribute("product", product);
-            System.out.println("product.title: " + product.getTitle());
-            model.addAttribute("encId",encId);
+    public String update(@PathVariable String encId, Model model, Principal principal) {
+        Optional<Users> ou = userService.findByEmail(principal.getName());
+        if (ou.isPresent()) {
+            Users user = ou.get();
+            ProductDto productDto = productService.selectById(orderService.decEncId(encId));
+
+            if (user == productDto.getFundManager()) {
+                model.addAttribute("product", productDto);
+                model.addAttribute("encId", encId);
+
+                return "product/product_update";
+            } else {
+                throw new RuntimeException("상품 수정 권한이 없습니다.");
+            }
+
+        } else {
+            //존재하지 않는 게시물일 경우
+            return "redirect:/product/list?mode=1";
         }
-        System.out.println("update encId = " + encId);
-        return "product/product_update";
     }
 
     /**
      * 상품 수정 처리
      */
     @PostMapping("/update/{encId}")
-    public String updateProduct(@PathVariable String encId, Model model) {
+    public String updateProduct(@PathVariable String encId, ProductDto productDto, MultipartFile thumbnailImg, Principal principal) {
+        Optional<Users> ou = userService.findByEmail(principal.getName());
+        UUID productId = orderService.decEncId(encId);
+        if (ou.isPresent()) {
+            Users user = ou.get();
+            productService.update(productId, productDto, thumbnailImg, user);
 
-        return "redirect:/product/list";
+            return "redirect:/product/list?mode=1";
+        }
+        return "redirect:/product/list?mode=1";
     }
 
-
-
-
-        /**
-         * 상품 삭제
-         */
-    @PostMapping("/delete")
-    public String delete(UUID id) {
-        productService.delete(id);
-        return "redirect:/product/list";
+    /**
+     * 상품 삭제
+     */
+    @GetMapping("/delete/{encId}")
+    public String delete(@PathVariable String encId, Principal principal) {
+        Optional<Users> ou = userService.findByEmail(principal.getName());
+        UUID productId = orderService.decEncId(encId);
+        if (ou.isPresent()) {
+            Users user = ou.get();
+            productService.delete(productId, user);
+            return "redirect:/product/list?mode=1";
+        }
+        //로그인한 유저의 정보가 없거나 삭제하려는 유저가 게시물을 등록한 유저와 다를 경우
+        return "redirect:/product/list?mode=1";
     }
 
     /**
