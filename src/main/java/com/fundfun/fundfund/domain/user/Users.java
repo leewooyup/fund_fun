@@ -48,7 +48,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private String password;
     private String name;
     private String email;
-//    @Column(columnDefinition = " default 1")
+    //    @Column(columnDefinition = " default 1")
     private Role role;
     private String phone;
     private Gender gender;
@@ -89,7 +89,9 @@ public class Users extends BaseTimeEntity implements UserDetails {
     }
 
     @Override
-    public boolean isEnabled() {
-        return true;
+    public boolean isEnabled() { return true;  }
+
+    public void setMoney(Long money){ //by lee
+        this.money = money;
     }
 }

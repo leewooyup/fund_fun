@@ -2,6 +2,7 @@ package com.fundfun.fundfund.service.order;
 
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -10,6 +11,7 @@ import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -43,13 +45,15 @@ public class OrderServiceImpl implements OrderService {
         return UUID.fromString(uuidString);
     }
 
-    public Orders createOrder(InvestDto orderDto, ProductDto productDto, Users user) {
+    public Orders createOrder(Long cost, ProductDto productDto, Users user) {
+        InvestDto investDto = new InvestDto();
         Product product = modelMapper.map(productDto, Product.class);
-        orderDto.setProduct(product);
-        orderDto.setUser(user);
 
-        Orders order = modelMapper.map(orderDto, Orders.class);
-        return orderRepository.save(order);
+        investDto.setProduct(product);
+        investDto.setUser(user);
+        investDto.setCost(cost);
+
+        return modelMapper.map(investDto, Orders.class);
     }
 
     @Override

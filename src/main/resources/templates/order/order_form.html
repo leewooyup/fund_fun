@@ -21,7 +21,6 @@
                 </div>
                 <div>
                     <label class="sub-title">남은기간</label>
-<!--                    <div th:text="${deadline}"일></div>-->
                     <th:block th:if="${deadline &gt; -1}">
                         <div><span th:text="${deadline}"></span>일</div>
                     </th:block>
@@ -29,15 +28,13 @@
                         <div>투자 마감</div>
                     </th:block>
 
-                    <!--                    <div><span th:text="${deadline}"></span>일</div>-->
-
                 </div>
                 <div>
                     <label class="sub-title">담당 펀드매니저</label>
                     <div th:text="${#authentication.principal.nickname}"></div>
                     <div>김깨비 펀드매니저님</div><!-- 하드코딩 -->
                 </div>
-                <form method="post" th:action=@{|"/order/send/${encId}"|} th:object="${investDto}">
+                <form method="post" th:action="/order/send" th:object="${investDto}">
                     <input type="hidden" name="encId" th:value="${encId}">
                     <label class="sub-title">투자금액</label>
                     <div>

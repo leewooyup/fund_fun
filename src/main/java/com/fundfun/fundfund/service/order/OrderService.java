@@ -2,6 +2,7 @@ package com.fundfun.fundfund.service.order;
 
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -18,7 +19,7 @@ public interface OrderService {
     
      /* 주문 등록
      * */
-    Orders createOrder(InvestDto orderDto, ProductDto productDto, Users user);
+    Orders createOrder(Long cost, ProductDto productDto, Users user);
 
     /**
      * 주문삭제

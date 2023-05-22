@@ -20,8 +20,8 @@ public class DevInitData {
     @Bean
     CommandLineRunner init(ProductServiceImpl productService, OrderServiceImpl orderService, UserServiceImpl userService) {
         return args -> {
-            Users users = userService.createUser();
-            Product product = productService.createProduct();
+//            Users users = userService.createUser();
+//            Product product = productService.createProduct();
             //Orders order = orderService.createOrder(300L, product, users);
 //
 //            Product product2 = productService.createProduct2();

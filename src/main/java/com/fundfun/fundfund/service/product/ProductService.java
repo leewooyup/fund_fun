@@ -2,6 +2,7 @@ package com.fundfun.fundfund.service.product;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -15,17 +16,17 @@ public interface ProductService {
     /**
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
-    List<Product> selectAll();
+    List<ProductDto> selectAll();
 
     /**
      * 상품 업데이트
      */
-    Product update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, Users user);
+    void update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, Users user);
 
     /**
      * 상품 삭제
      */
-    void delete(UUID id, Users user);
+    void delete(UUID productId, Users user);
 
     /**
      * 주문서 상세보기
@@ -35,18 +36,13 @@ public interface ProductService {
     /**
      * 현재모금액 갱신
      */
-    int updateCost(InvestDto orderDto, ProductDto productDto, Users user);
+    int updateCost(Long cost, ProductDto productDto, Users user);
 
 
     /**
      * 상품 등록
      */
     Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, Users user);
-
-    /**
-     * 상품등록 test
-     */
-    Product createProduct();
 
     /**
      * 제목으로 상품 검색

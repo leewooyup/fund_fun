@@ -31,31 +31,25 @@
             </div>
         </div>
         <div class="d-flex" id="invest" style="justify-content:center;margin:15px;padding:5px">
-            <!--            <form action="/order/update" method="post" style="margin-right:10px">-->
-            <button id="ajaxBtn" class="btn btn-warning" jd="btn" type="submit">투자</button>
-            <!--            </form>-->
+            <a th:href ="@{|/order/update/${encId}|}">
+                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>
+            </a>
             <a href="/product/list">
-                <button class="btn btn-warning" type="submit">취소</button>
+                <button class="btn btn-warning" type="button">취소</button>
             </a>
         </div>
+        <form method="post" th:action ="@{|/order/update/${encId}|}" id="costSendForm">
+            <input type="hidden" name="cost" th:value="${invest.cost}">
+        </form>
     </div>
     <script>
-
-        $(function () {
-            $("#ajaxBtn").click(function () {
-                $.ajax({
-                    url: "ajaxTest?key=text",  //서버요청주소
-                    type: "post", // 요청방식(get, post, put, delete, patch)
-                    dataType: "text", //서버가 응답(보내온) 한 데이터타입(text | html | xml | json)
-                    data: {"name":"${product}"}, // 서버에게 보낼 parameter정보
-                    success: function (result) {
-                        console.log(name);
-                    }
-
-                });
+        $(function(){
+            $(document).on("click", "#btn-invest", function() {
+                $("#costSendForm").submit();
             });
         });
     </script>
+
 </th:block>
 
 </html>

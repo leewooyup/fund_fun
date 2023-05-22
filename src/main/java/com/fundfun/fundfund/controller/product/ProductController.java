@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller.product;
 
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
@@ -43,14 +44,14 @@ public class ProductController {
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
     @GetMapping("/list")
-    public String list(Model model, int mode) {
-        if (mode == 2) {
-            //List<Product> productList = productService.selectByStatus("진행중");
-            //model.addAttribute("list", productList);
-            return "product/product_list";
-        }
+    public String list(Model model) {
+//        if (mode == 2) {
+//            //List<Product> productList = productService.selectByStatus("진행중");
+//            //model.addAttribute("list", productList);
+//            return "product/product_list";
+//        }
 
-        List<Product> productList = productService.selectAll();
+        List<ProductDto> productList = productService.selectAll();
         model.addAttribute("list", productList);
         return "product/product_list";
     }
@@ -75,12 +76,11 @@ public class ProductController {
             return "product/product_register";
         }
         Optional<Users> ou = userService.findByEmail(principal.getName());
-        if (ou.isPresent()) {
+        if(ou.isPresent()) {
             Users user = ou.get();
-            System.out.println("users = " + user.getId());
             productService.registerProduct(productDto, thumbnailImg, user);
         }
-        return "redirect:/product/list?mode=1";
+        return "redirect:/product/list";
     }
 
     /**
@@ -88,40 +88,30 @@ public class ProductController {
      */
     @GetMapping("/update/{encId}")
     public String update(@PathVariable String encId, Model model, Principal principal) {
-        Optional<Users> ou = userService.findByEmail(principal.getName());
-        if (ou.isPresent()) {
-            Users user = ou.get();
-            ProductDto productDto = productService.selectById(orderService.decEncId(encId));
+        Users user = userService.findByEmail(principal.getName()).orElse(null);
+        ProductDto productDto = productService.selectById(orderService.decEncId(encId));
 
-            if (user == productDto.getFundManager()) {
-                model.addAttribute("product", productDto);
-                model.addAttribute("encId", encId);
+        if (user == productDto.getFundManager()) {
+            model.addAttribute("product", productDto);
+            model.addAttribute("encId", encId);
 
-                return "product/product_update";
-            } else {
-                throw new RuntimeException("상품 수정 권한이 없습니다.");
-            }
-
+            return "product/product_update";
         } else {
-            //존재하지 않는 게시물일 경우
-            return "redirect:/product/list?mode=1";
+            throw new RuntimeException("상품 수정 권한이 없습니다.");
         }
     }
+
 
     /**
      * 상품 수정 처리
      */
     @PostMapping("/update/{encId}")
     public String updateProduct(@PathVariable String encId, ProductDto productDto, MultipartFile thumbnailImg, Principal principal) {
-        Optional<Users> ou = userService.findByEmail(principal.getName());
+        Users user = userService.findByEmail(principal.getName()).orElse(null);
         UUID productId = orderService.decEncId(encId);
-        if (ou.isPresent()) {
-            Users user = ou.get();
-            productService.update(productId, productDto, thumbnailImg, user);
+        productService.update(productId, productDto, thumbnailImg, user);
 
-            return "redirect:/product/list?mode=1";
-        }
-        return "redirect:/product/list?mode=1";
+        return "redirect:/product/list";
     }
 
     /**
@@ -129,15 +119,11 @@ public class ProductController {
      */
     @GetMapping("/delete/{encId}")
     public String delete(@PathVariable String encId, Principal principal) {
-        Optional<Users> ou = userService.findByEmail(principal.getName());
+        Users user = userService.findByEmail(principal.getName()).orElse(null);
         UUID productId = orderService.decEncId(encId);
-        if (ou.isPresent()) {
-            Users user = ou.get();
-            productService.delete(productId, user);
-            return "redirect:/product/list?mode=1";
-        }
-        //로그인한 유저의 정보가 없거나 삭제하려는 유저가 게시물을 등록한 유저와 다를 경우
-        return "redirect:/product/list?mode=1";
+        productService.delete(productId, user);
+        return "redirect:/product/list";
+
     }
 
     /**

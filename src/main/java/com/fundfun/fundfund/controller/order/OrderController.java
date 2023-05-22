@@ -1,30 +1,22 @@
 package com.fundfun.fundfund.controller.order;
 
-import com.fundfun.fundfund.domain.order.Orders;
-import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
-import com.fundfun.fundfund.dto.product.ProductDto;
-import com.fundfun.fundfund.exception.UserNotFoundException;
-import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.dto.order.InvestDto;
+import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
-import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
-import com.fundfun.fundfund.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.nio.ByteBuffer;
-import java.security.Principal;
-import java.util.List;
 import javax.validation.Valid;
-import java.nio.ByteBuffer;
-import java.util.Base64;
-import java.util.Optional;
+import java.security.Principal;
 import java.util.UUID;
 
 @Controller
@@ -77,59 +69,35 @@ public class OrderController {
         }
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
+        model.addAttribute("encId", encId);
 
-        return "redirect:/order/receipt";
+        return "order/order_receipt";
     }
 
-//    @PostMapping("/send/{encId}")
-//    public String orderFormSend(Principal principal, @Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId) {
-//        if(bindingResult.hasErrors()) {
-//            return "order/order_form";
-//        }
-//        UUID uuid = orderService.decEncId(encId);
-//        productService.selectById(uuid);
-//        Optional<Users> ou = userService.findByEmail(principal.getName());
-//        if(!ou.isPresent()) {
-//            throw new UserNotFoundException();
-//        }
-//        Users logined = ou.get();
-//        productService.updateCost(investDto.getCost(), logined);
-//
-//        return "redirect:/order/receipt";
-//    }
+    /**
+     * 주문 생성 + 상품 모금액 업데이트
+     */
+    @PostMapping("/update/{encId}")
+    public String update(@PathVariable String encId, Long cost, Principal principal) {
+        Users user= userService.findByEmail(principal.getName()).orElse(null);
+        ProductDto productDto = productService.selectById(orderService.decEncId(encId));
+        productService.updateCost(cost, productDto, user); //투자정보 갱신 + 주문서 만들기
+
+        return "redirect:/product/list";
+}
 
     /**
      * 투자금액(입력)처리 후 영수증 확인 페이지
+     *
      * @return view
      */
 //    @GetMapping("/receipt")
 //    public String showOrderReceipt(Model model) {
-//        Product product = productService.createProduct();
 //        int curCollect = orderService.getCurrentCollection(product);
 //        model.addAttribute("curCollect", curCollect);
 //        return "order/order_receipt";
 //    }
-    /**
-     * 주문 생성 + 상품 모금액 업데이트
-     * */
-    @PostMapping("/update")
-    public String update() {
 
-        return "redirect:/product/list";
-        }
-
-
-//    public String update(ProductDto productDto, InvestDto orderDto, Principal principal) {
-//        Optional<Users> ou = userService.findByEmail(principal.getName());
-//        System.out.println("productDto = " + productDto.getId());
-//        System.out.println("investDto = " + investDto.getId());
-//        if(ou.isPresent()){
-//            Users user = ou.get();
-//            productService.updateCost(orderDto, productDto, user); //투자정보 갱신 + 주문서 만들기
-//            return "redirect:/product/list";
-//        }
-//
-//        throw new RuntimeException("주문에 실패하셨습니다.");
 
     /**
      * 내가 투자한 금액 가져와서 전체 투자금액 갱신

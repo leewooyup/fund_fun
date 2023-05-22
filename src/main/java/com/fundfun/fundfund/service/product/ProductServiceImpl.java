@@ -2,12 +2,12 @@ package com.fundfun.fundfund.service.product;
 
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
-import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.repository.product.ProductRepository;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
-import com.fundfun.fundfund.service.user.UserServiceImpl;
+import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -32,38 +31,38 @@ public class ProductServiceImpl implements ProductService {
     private String genFileDirPath;
     private final ProductRepository productRepository;
     private final OrderServiceImpl orderService;
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
-    @Override
-    public Product createProduct() { //테스트용code
-        Product product = Product.builder()
-                .title("A+B")
-                .crowdStart("2023-05-15")
-                .crowdEnd("2023-05-21")
-                .goal(1000L)
-                .currentGoal(1500L)
-                .status("진행중")
-                .description("펀드진행중")
-                .build();
-
-        productRepository.save(product);
-        return product;
-    }
+//    @Override
+//    public Product createProduct() { //테스트용code
+//        Product product = Product.builder()
+//                .title("A+B")
+//                .crowdStart("2023-05-15")
+//                .crowdEnd("2023-05-21")
+//                .goal(1000L)
+//                .currentGoal(1500L)
+//                .status("진행중")
+//                .description("펀드진행중")
+//                .build();
+//
+//        productRepository.save(product);
+//        return product;
+//    }
 
     /**
      * 전체 상품 조회
      */
-    public List<Product> selectAll() {
+    public List<ProductDto> selectAll() {
         List<Product> productList = productRepository.findAll();
-//      return   productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
-        return productList;
+      return  productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        //return productList;
     }
 
     /**
      * 상품 업데이트 --> 디테일 정보에서 수정
      */
-    public Product update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, Users user) {
+    public void update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, Users user) {
         Product dbProduct = productRepository.findById(productId).orElse(null);
 
         if (dbProduct == null || user != dbProduct.getFundManager()) {
@@ -79,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
 
         Product product = modelMapper.map(productDto, Product.class);
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
     /**
@@ -107,31 +106,31 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 상품 투자금 갱신
+     * <p>
+     * //     * @param cost
+     * //     * @param productId
      *
-//     * @param cost
-//     * @param productId
      * @return 성공(1)/실패(0)
      */
     @Transactional
-    public int updateCost(InvestDto orderDto, ProductDto productDto, Users user) throws RuntimeException {
+    public int updateCost(Long cost, ProductDto productDto, Users user) throws RuntimeException {
         //Product currentGoal 갱신하기
-        Long money = productDto.getCurrentGoal() + orderDto.getCost();
+        Long money = productDto.getCurrentGoal() + cost;
         productDto.setCurrentGoal(money);
 
-        Product product = modelMapper.map(productDto, Product.class);
         //Order(주문서) 생성
-        Orders order = orderService.createOrder(orderDto, productDto, user);
+        Orders order = orderService.createOrder(cost, productDto, user);
 
         //User Point update
-        //Security annotation으로 가져오기
+        userService.updateMoney(user.getMoney() - cost, user);
 
         //하나라도 못찾은 것이 있다면, Rollback
-        if (product == null || order == null || user == null) {
+        if (productDto == null || order == null || user == null) {
             throw new RuntimeException("업데이트에 실패하셨습니다.");
         }
 
         //다 성공했다면 update
-        Product result = productRepository.save(product);
+        Product result = productRepository.save(modelMapper.map(productDto, Product.class));
         if (result == null)
             return 0;
         return 1;
@@ -144,6 +143,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, Users user) {
         String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
+
         productDto.setFundManager(user);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
