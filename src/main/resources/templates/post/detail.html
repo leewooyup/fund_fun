@@ -7,6 +7,22 @@
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+
+    <script th:inline="javascript">
+        var postId = [[${post.id}]];
+    </script>
+
+    <script type="text/javascript">
+        $(Document).ready(function() {
+            // 포트폴리오 투표 클릭
+            $("#goPFList").on("click", function() {
+                location.href = "/portfolio?postId=" + postId;
+            });
+        });
+    </script>
+
+
+
     <div class="d-flex flex-column wrapper" >
         <div>
             <span th:text="${post.title}" class="fontSize-fix"></span>
@@ -25,7 +41,7 @@
         </div>
 
         <div style="margin-top: 1rem;" class="centerBox2 paddingBtn">
-            <button class="centerBox2">포트폴리오 투표</button>
+            <button class="centerBox2" id="goPFList">포트폴리오 투표</button>
         </div>
 
         <div style="margin-top: 1rem;">

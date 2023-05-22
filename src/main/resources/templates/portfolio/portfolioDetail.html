@@ -8,48 +8,184 @@
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
 
+    <script th:inline="javascript">
+        var state = [[${state}]];
+        var postId = [[${postId}]];
+        var id = ""; // 포트폴리오Id( 수정/상세 일경우 사용 )
+        var plusId = "New";
+
+        if(state != 'W') {
+            id = [[${not #strings.isEmpty(data) ? data['id'] : ''}]];
+            plusId = "";
+        }
+    </script>
+
     <!-- Script -->
     <script type="text/javascript">
         $(Document).ready(function() {
+            // 수정 화면 이동
+            $("#update").on("click", function() {
+                location.href = "/portfolio/goDetail?id=" + id + "&state=" + "U&postId=" + postId;
+            });
 
+            // 포트폴리오 목록 이동
+            $(".goPfList").on("click", function() {
+                location.href = "/portfolio?postId=" + postId;
+            });
+
+
+            // 등록/수정 버튼 클릭
+            $("#commitBtn").on("click", function() {
+                var msg = validation();
+
+                if(msg == "") {
+                    var param = {
+                        "title": $("#title" + plusId).val(),
+                        "beneRatio": $("#beneRatio" + plusId).val(),
+                        "warnLevel": $("#warnLevel" + plusId).val(),
+                        "content": $("#content" + plusId).val(),
+                        "postId": postId,
+                        "state": state,
+                        "portfolioId": id
+                    }
+
+                    $.ajax({
+                        url: "/portfolio/commitData",
+                        type: "post",
+                        dataType: "json",
+                        contentType: "application/json; CHARSET=UTF-8",
+                        data: JSON.stringify(param),
+                        success: function (result) {
+                            if(result.msg == "fail") {
+                                alert("저장 중 문제가 발생하였습니다.");
+                                return false;
+                            } else {
+                                alert("정상적으로 저장되었습니다.");
+                                location.href = "/portfolio?postId=" + postId;
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                } else {
+                    alert(msg);
+                    return false;
+                }
+            });
         });
+
+        // 입력 값 체크
+        function validation() {
+            var msg = "";
+            var beneRatio = $("#beneRatio" + plusId).val();
+            var warnLevel = $("#warnLevel" + plusId).val();
+
+            if($("#title" + plusId).val() == "") {
+                msg = "제목을 입력해주세요.";
+            } else if(beneRatio == "") {
+                msg = "수익률을 입력해주세요.";
+            } else if(/^[가-힣a-zA-Z\s]+$/.test(beneRatio)) {
+                msg = "수익률은 실수와 정수만 입력됩니다.";
+            } else if(warnLevel == "") {
+                msg = "위험도를 입력해주세요.";
+            } else if(!/^[0-9]+$/.test(warnLevel)) {
+                msg = "위험도는 숫자만 입력됩니다.";
+            } else if($("#content" + plusId).val() == "") {
+                msg = "내용을 입력해주세요.";
+            }
+
+            return msg;
+        }
     </script>
 
     <div class="d-flex flex-column wrapper">
         <div class="fontSize-fix bottom_line">
-            <span class="leftArea" th:text="${data['title']}"></span>
-            <span class="rightArea gray_text">23-05-11 23:03</span>
+            <th:block th:if="${state == 'R'}">
+                <span class="leftArea" th:text="${data['title']}"></span>
+                <span class="rightArea gray_text">23-05-11 23:03</span>
+            </th:block>
+            <th:block th:if="${state == 'W'}">
+                아이디어 등록
+            </th:block>
+            <th:block th:if="${state == 'U'}">
+                아이디어 수정
+            </th:block>
         </div>
-
-        <div class="bottom_line voteDiv">
-            <div class="paddingBottom">
-                <div class="leftArea">
-                    <span class="gray_text">예상 수익률</span>
-                    <br/>
-                    <span class="red_text" th:text="${data['beneRatio']}"></span>
-                    <span class="font-sizeFix"> %</span>
+        <th:block th:if="${state == 'R'}">
+            <div class="bottom_line voteDiv">
+                <div class="paddingBottom">
+                    <div class="leftArea">
+                        <span class="gray_text">예상 수익률</span>
+                        <br/>
+                        <span class="red_text" th:text="${data['beneRatio']}"></span>
+                        <span class="font-sizeFix"> %</span>
+                    </div>
+                    <div class="margin40 leftArea">
+                        <span class="gray_text">위험도</span>
+                        <br/>
+                        <span class="red_text" th:text="${data['warnLevel']}"></span>
+                        <span class="font-sizeFix"> 등급</span>
+                    </div>
                 </div>
-                <div class="margin40 leftArea">
-                    <span class="gray_text">위험도</span>
-                    <br/>
-                    <span class="red_text" th:text="${data['warnLevel']}"></span>
-                    <span class="font-sizeFix"> 등급</span>
+                <br/>
+                <div class="paddingBottom" style="margin-top: 4rem;">
+                    <span th:text="${data['contentPortfolio']}"></span>
+                </div>
+
+                <div class="bottomDiv">
+                    <button class="bg-yellow paddingBtn goPfList">포트폴리오 목록으로 돌아가기</button>
                 </div>
             </div>
-            <br/>
-            <div class="paddingBottom" style="margin-top: 4rem;">
-                <span th:text="${data['contentPortfolio']}"></span>
-            </div>
 
-            <div class="bottomDiv">
-                <button class="bg-yellow paddingBtn">포트폴리오 목록으로 돌아가기</button>
+            <div class="marginBottom">
+                <button class="rightArea paddingBtn2 left_margin bg-yellow" id="delete">삭제</button>
+                <button class="rightArea paddingBtn2 bg-yellow" id="update">수정</button>
             </div>
-        </div>
-
-        <div class="marginBottom">
-            <button class="rightArea paddingBtn2 left_margin bg-yellow">삭제</button>
-            <button class="rightArea  paddingBtn2 bg-yellow">수정</button>
-        </div>
+        </th:block>
+        <th:block th:unless="${state == 'R'}">
+            <div>
+                <th:block th:if="${state == 'W'}">
+                    <input type="text" placeholder="제목" id="titleNew"
+                           class="width100 border-yellow marginTop heightFix"/>
+                    <div class="marginTop marginBottom">
+                        <input type="text" placeholder="예상 수익률" id="beneRatioNew"
+                               class="leftArea width49 border-yellow heightFix"/>
+                        <input type="text" placeholder="위험도" id="warnLevelNew"
+                               class="rightArea width49 border-yellow heightFix"/>
+                    </div>
+                    <textarea class="border-yellow width100 marginTop" id="contentNew"
+                              rows="14" placeholder="내용을 입력해주세요."></textarea>
+                </th:block>
+                <th:block th:if="${state == 'U'}">
+                    <input type="text" placeholder="제목" id="title" th:value="${data['title']}"
+                           class="width100 border-yellow marginTop heightFix"/>
+                    <div class="marginTop marginBottom">
+                        <input type="text" placeholder="예상 수익률" id="beneRatio" th:value="${data['beneRatio']}"
+                               class="leftArea width49 border-yellow heightFix"/>
+                        <input type="text" placeholder="위험도" id="warnLevel" th:value="${data['warnLevel']}"
+                               class="rightArea width49 border-yellow heightFix"/>
+                    </div>
+                    <textarea class="border-yellow width100 marginTop" id="content" th:text="${data['contentPortfolio']}"
+                              rows="14" placeholder="내용을 입력해주세요."></textarea>
+                </th:block>
+            </div>
+            <div class="marginTop">
+                <span>* 주의해주세요!</span><br/>
+                <span>광고, 스팸성 게시글, 업종 및 종목명을 기재하지 않은 글은 통보 없이 관리자에 의해 삭제될 수 있습니다.</span>
+            </div>
+            <div class="marginBottom">
+                <button class="rightArea paddingBtn2 left_margin bg-yellow" id="commitBtn">
+                    <th:block th:if="${state == 'W'}">
+                        등록
+                    </th:block>
+                    <th:block th:if="${state == 'U'}">
+                        수정
+                    </th:block>
+                </button>
+                <button class="goPfList rightArea paddingBtn2 bg-yellow">목록으로 돌아가기</button>
+            </div>
+        </th:block>
     </div>
 
     <!-- Style -->
@@ -100,6 +236,10 @@
             margin-bottom: 2rem;
         }
 
+        .marginTop {
+            margin-top: 1rem;
+        }
+
         .voteDiv {
             margin-top: 1rem;
             padding-bottom: 1rem;
@@ -120,6 +260,22 @@
 
         .paddingBtn2 {
             padding: 1rem !important;
+        }
+
+        .border-yellow {
+            border: 1px solid #ffc107;
+        }
+
+        .width100 {
+            width: 100%;
+        }
+
+        .width49 {
+            width: 49%;
+        }
+
+        .heightFix {
+            height: 3rem;
         }
     </style>
 </th:block>
