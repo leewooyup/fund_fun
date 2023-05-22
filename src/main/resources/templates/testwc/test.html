@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html
+        lang="ko"
+        xmlns:th="http://thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <label>로그인된 이메일</label>
+    <div th:text="${#authentication.principal.username}"></div>
+
+<!--    <label>권한</label>-->
+<!--    <div th:text="${#authentication.principal.authorities.authority}"></div>-->
+
+    <label>닉네임</label>
+    <div th:text="${#authentication.principal.nickname}"></div>
+
+    <label>포인트</label>
+    <div th:text="${#authentication.principal.money}"></div>
+</body>
+</html>

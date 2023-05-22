@@ -10,6 +10,7 @@
             float: right;
             padding: 0 10px 0 0
         }
+
     </style>
     <head>
         <meta charset="UTF-8">
@@ -24,56 +25,73 @@
             <h3>상품게시판</h3>
             <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
         </div>
+        <select id="category" name="category" onchange="changeSelect()">
+            <option selected="selected" style="background-color: #ccc" value="X">카테고리</option>
+            <option value="1">전체</option>
+            <option value="2">진행 중인 상품</option>
+        </select>
+    </div>
 
-        <div class="container">
-            <div class="row row-cols-3">
-                <div th:each="ele : ${list}">
-                    <div class="col" >
-                        <div>
+    <div class="container">
+        <div class="row row-cols-3">
+            <div th:each="ele : ${list}">
+                <div class="col">
+                    <div>
 
-                            <a href="#" th:name="${ele.uuidEncode}" id="productHiddenCheck">
-                                <div>
-                                    <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid;width:80%">
-                                </div>
-                                <div>
-                                    <span th:text="${ele.title}"></span>
-                                </div>
-                            </a>
-                            <div th:text="${ele.crowdStart}"></div>
-                        </div>
+                        <a href="#" id="productHiddenCheck" th:name="${ele.uuidEncode}">
+                            <div>
+                                <img alt="" height="250px" style="border:solid;width:80%" th:src="${ele.getThumbnailImgUrl}"
+                                     width="250px">
+                            </div>
+                            <div>
+                                <span th:text="${ele.title}"></span>
+                            </div>
+                        </a>
+                        <div th:text="${ele.crowdStart}"></div>
                     </div>
                 </div>
             </div>
-
-            <form action="/product/search" method="get">
-                <div class="aa">
-                    <input name="title" placeholder="Search" type="text"></input>
-                    <button class="btn btn-warning" type="submit">검색</button>
-                </div>
-            </form>
-
-            <form action="/product/register" method="get">
-                <button class="btn btn-warning" type="submit">글쓰기</button>
-            </form>
-            <form action="/order/form" method="get" id="productDetailSub">
-                <input type="hidden" name="encId" >
-            </form>
         </div>
+
+        <form action="/product/search" method="get">
+            <div class="aa">
+                <input name="title" placeholder="Search" type="text"></input>
+                <button class="btn btn-warning" type="submit">검색</button>
+            </div>
+        </form>
+
+        <a href="/product/register">
+            <button class="btn btn-warning" type="submit">글쓰기</button>
+        </a>
+        <form action="/order/form" id="productDetailSub" method="get">
+            <input name="encId" type="hidden">
+        </form>
+    </div>
     </div>
     <script>
 
-           $(function(){
-              $(document).on("click","#productHiddenCheck", function(){
-                 //alert($(this).attr("name"))
-                 console.dir( $("[name=encodedUUID]") )
-                  $("[name=encId]").val(  $(this).attr("name")  );
+        $(function () {
+            $(document).on("click", "#productHiddenCheck", function () {
+                //alert($(this).attr("name"))
+                console.dir($("[name=encodedUUID]"))
+                $("[name=encId]").val($(this).attr("name"));
 
-                  $("#productDetailSub").submit();
+                $("#productDetailSub").submit();
 
-              })
-           })
+            })
+        })
 
-        </script>
+        function changeSelect() {
+            var selectList = document.getElementById("category")
+            if (selectList.options[selectList.selectedIndex].value == "1") {
+                location.href = "redirect:/product/list";
+            }
+            if (selectList.options[selectList.selectedIndex].value == "2") {
+                location.href = "/product/list";
+            }
+        }
+
+    </script>
     </body>
 </th:block>
 

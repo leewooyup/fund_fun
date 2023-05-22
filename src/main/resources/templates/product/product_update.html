@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 
 <th:block layout:fragment="content">
@@ -38,39 +38,40 @@
         <label class="sub-title">상품 등록</label>
         <div>김깨비 펀드매니저님</div>
 
-        <form id="saveForm" method="post" th:action="@{/product/write}" th:object="${productDto}" enctype="multipart/form-data">
+        <form enctype="multipart/form-data" id="updateForm" method="post" th:action="@{|/product/update/${encId}|}">
             <div class="d-flex flex-column product-register-wrapper">
                 <div style="width:100%;">
-                    <input name="title" type="text" th:field="*{title}" style="width:100%;" placeholder="상품제목"></input>
+                    <input placeholder="상품제목" style="width:100%;" name="title" type="text" th:value="${product.title}"></input>
                 </div>
 
                 <div class="d-flex justify-content-between">
                     <div>
-                        <input name="crowdStart" type="date" th:field="*{crowdStart}" data-placeholder="시작일" class="input-date" disabled></input>
+                        <input class="input-date" data-placeholder="시작일" name="crowdStart"
+                               type="date" th:value="${product.crowdStart}" disabled></input>
                     </div>
                     <div>
-                        <input name="crowdEnd" type="date" th:field="*{crowdEnd}" data-placeholder="종료일" class="input-date" disabled></input>
+                        <input class="input-date" data-placeholder="종료일" name="crowdEnd"
+                               type="date" th:value="${product.crowdEnd}" disabled></input>
                     </div>
                     <div>
-                        <input name="goal" type="number" th:field="*{goal}" placeholder="목표 금액" style="width:400px;"></input>
+                        <input placeholder="목표 금액" style="width:400px;" name="goal"
+                               th:value="${product.goal}" type="number"></input>
                     </div>
                 </div>
 
                 <div>
-                    <input name="desc" type="text" th:field="*{description}" style="width:100%;height:100px"
-                           placeholder="상품설명을 입력해주세요."></input>
+                    <input placeholder="상품설명을 입력해주세요." style="width:100%;height:100px" name="description"
+                           th:value="${product.description}" type="text"></input>
                 </div>
 
                 <div>
-                    <input type="file" name="thumbnailImg" accept="image/png, image/gif, image/jpeg" />
+                    <input accept="image/png, image/gif, image/jpeg" name="thumbnailImg" type="file"/>
 
                 </div>
             </div>
 
-            <div th:replace="form_errors :: formErrorsFragment"></div>
-
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>
+                <button class="btn btn-warning" id="send" style="margin-top:15px;" type="submit">등록</button>
             </div>
         </form>
 

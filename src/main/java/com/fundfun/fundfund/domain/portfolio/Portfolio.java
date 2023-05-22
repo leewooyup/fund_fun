@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.mapping.ToOne;
 
@@ -19,12 +20,12 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "portfolio")
 public class Portfolio extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "portfolio_id", columnDefinition = "BINARY(32)")
+    @Column(name = "portfolio_id")
     private UUID id;
 
     @JsonIgnore

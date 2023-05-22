@@ -7,6 +7,7 @@
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+
     <div class="d-flex flex-column align-items-center wrapper">
         <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
@@ -47,6 +48,11 @@
         예상 수익률은 ~%이고, 예상 위험도는 ~입니다.<br>
         비슷한 종목으로 구성된 펀드를 운용했을때 ~%의 수익률을 달성한 바 있습니다.<br>
     </div>
+    <a th:href= "@{/product/update/{id}(id=${encId})}" >
+        <button class="btn btn-warning" type="button">수정</button>
+    </a>
+
+<!--    <a th:href="@{|/product/update/${encId}|}">수정</a>-->
 
 </th:block>
 </html>

@@ -12,6 +12,7 @@ import com.fundfun.fundfund.domain.portfolio.Portfolio;
 
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -31,7 +32,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -55,8 +56,8 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name="user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "post")
-    private List<Portfolio> portfolios = new ArrayList<>();
+//    @OneToMany(mappedBy = "post")
+//    private List<Portfolio> portfolios = new ArrayList<>();
     public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;
     }
