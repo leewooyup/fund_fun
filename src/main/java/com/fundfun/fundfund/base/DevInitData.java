@@ -22,7 +22,7 @@ public class DevInitData {
     CommandLineRunner init(ProductServiceImpl productService, OrderServiceImpl orderService, UserServiceImpl userService) {
         return args -> {
             Users users = userService.createUser();
-            ProductDto product = productService.createProduct();
+            ProductDto product = productService.createProduct(users);
             Orders order = orderService.createOrder(300L, product, users);
 
         };

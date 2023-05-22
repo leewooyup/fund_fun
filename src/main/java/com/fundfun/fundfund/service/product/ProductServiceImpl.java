@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     private final ModelMapper modelMapper;
 
 
-    public ProductDto createProduct() { //테스트용code
+    public ProductDto createProduct(Users users) { //테스트용code
 
         LocalDate startDate = LocalDate.parse("2023-05-24");
         LocalDate endDate = LocalDate.parse("2023-05-29");
@@ -51,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
                 .currentGoal(1500L)
                 .status("진행중")
                 .description("펀드진행중")
+                .fundManager(users)
                 .build();
 
         productRepository.save(product);
