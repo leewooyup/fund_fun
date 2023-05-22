@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.service.product;
 
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -18,7 +19,7 @@ public interface ProductService {
   /**
    * 상품 업데이트
    * */
-    Product update(Product product);
+    void update(UUID id);
 
     /**
      * 상품 삭제
@@ -33,7 +34,7 @@ public interface ProductService {
     /**
      * 현재모금액 갱신
      * */
-    int updateProduct(Long cost, UUID productId);
+    int updateCost(Long cost, UUID productId);
 
 
     /**
@@ -47,7 +48,13 @@ public interface ProductService {
     Product createProduct();
 
     /**
-     * 상품 검색
+     * 제목으로 상품 검색
      * */
-    List<Product> search(String title);
+    List<Product> searchTitle(String title);
+
+  /***
+   * 아이디로 상품 검색
+   */
+//  List<Product> searchId(Users user);
+
 }

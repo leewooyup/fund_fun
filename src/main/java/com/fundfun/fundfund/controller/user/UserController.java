@@ -1,16 +1,26 @@
 package com.fundfun.fundfund.controller.user;
 
 import com.fundfun.fundfund.domain.user.*;
+import com.fundfun.fundfund.dto.user.UserContext;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @Slf4j
+@Controller
 public class UserController {
 
     private final UserService userService;
@@ -39,6 +49,35 @@ public class UserController {
         );
         log.info("[UserController] ]User Role {} has been registered.", user.getRole(), user.toString());
         return "redirect:/";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/curUser")
+    @ResponseBody
+    public UserContext curUser(@AuthenticationPrincipal UserContext userContext) {
+        return userContext;
+    }
+
+    /**
+     * 로그인 폼 이동
+     * @return view
+     */
+    @GetMapping("/user/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/")
+    public String index(@AuthenticationPrincipal Users user) {
+        System.out.println("user: " + user.toString());
+        return "index";
+    }
+
+    //test코드
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/show/user")
+    public String showUserInfo() {
+        return "testwc/test";
     }
 
 }

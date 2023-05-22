@@ -63,7 +63,7 @@ public class OrderController {
             return "order/order_form";
         }
         UUID uuid = orderService.decEncId(encId);
-        productService.updateProduct(investDto.getCost(), uuid);
+        productService.updateCost(investDto.getCost(), uuid);
 
         return "redirect:/order/receipt";
     }

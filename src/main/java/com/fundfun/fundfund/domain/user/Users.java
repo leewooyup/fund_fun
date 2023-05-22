@@ -6,6 +6,9 @@ import com.fundfun.fundfund.domain.vote.Vote;
 
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +24,8 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
+//@DynamicInsert
 @Table(name = "users")
 //@ToString
 public class Users extends BaseTimeEntity implements UserDetails {
@@ -30,17 +34,20 @@ public class Users extends BaseTimeEntity implements UserDetails {
     @Column(name = "user_id")
     private UUID id;
 
+
     @OneToMany(mappedBy = "orders")
-    private List<Product> inprocess_product = new ArrayList<>();
+    private final List<Product> inprocess_product = new ArrayList<>();
 //    @OneToMany(mappedBy = "writer")
 //    private List<Vote> inprocess_vote = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "fundManager")
-    private List<Product> managing_product = new ArrayList<>();
+    private final List<Product> managing_product = new ArrayList<>();
 
     private String password;
     private String name;
     private String email;
+//    @Column(columnDefinition = " default 1")
     private Role role;
     private String phone;
     private Gender gender;
