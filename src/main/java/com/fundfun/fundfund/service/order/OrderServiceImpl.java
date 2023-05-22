@@ -67,4 +67,9 @@ public class OrderServiceImpl implements OrderService {
         Users user = new Users(); //일단 로그인한 유저의 정보 있다고 가정
         return 0;
     }
+
+    //scheduler test 코드
+    public void sayHello() {
+        System.out.println("HELLO!!!!!!!!!!");
+    }
 }
