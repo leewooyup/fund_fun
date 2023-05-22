@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin() // 로그인 폼은
 //                .disable()
                 .loginPage("/user/login")
-//                .loginProcessingUrl("/user/login")
+                .loginProcessingUrl("/login/action")
                 .defaultSuccessUrl("/product/list")
                 .failureUrl("/user/login?error=true")
                 .and()
@@ -81,14 +81,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .sessionManagement()
 //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
-                .authorizeRequests()
-                .anyRequest()
-                .permitAll()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
-                .and()
+//                .authorizeRequests()
+//                .anyRequest()
+//                .permitAll()
+//                .and()
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+//                        UsernamePasswordAuthenticationFilter.class)
+//                .authorizeRequests()
+//                .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 로그아웃 URL
                 .logoutSuccessUrl("/") // 성공시 리턴 URL

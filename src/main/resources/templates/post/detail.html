@@ -34,10 +34,9 @@
         <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
             <span th:text="${postDto.contentPost}" class="fontSize-fix">content</span>
 
-            <div class="centerBox">
-                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/detail/{id}/like(id=${postDto.id})}"><span th:text="${postDto.likePost}" class="fontSize-fix">likePost</span></a></button>
-            </div>
             <div>
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/detail/{id}/like(id=${postDto.id})}"><span th:text="${postDto.likePost}" class="fontSize-fix">likePost</span></a></button>
+
                 <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/delete/{id}(id=${postDto.id})}">삭제</a></button>
                 <button class="rightArea bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/edit/{id}(id=${postDto.id})}">수정</a></button>
             </div>

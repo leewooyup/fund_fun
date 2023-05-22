@@ -4,6 +4,8 @@ import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.service.post.PostService;
+import com.fundfun.fundfund.service.user.CustomUserDetailService;
+import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -22,6 +25,8 @@ import java.util.UUID;
 public class PostController {
 
     private final PostService postService;
+
+    private final UserService userService;
 
     /**
      * 아이디어 전체조회 화면 이동
@@ -75,12 +80,14 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public String create(Principal principal, @Valid PostForm postForm, BindingResult result) {
-
+    public String create(@AuthenticationPrincipal Users user, @Valid PostForm postForm, BindingResult result) {
+        System.out.println("user.getEmail() = " + user.getEmail());
         if (result.hasErrors()) {
             return "post/write";
         }
+        Users u = userService.findByEmail(user.getEmail()).orElse(null);
         PostDto postDto = new PostDto();
+        postDto.setUser(u);
         postDto.setTitle(postForm.getTitle());
         postDto.setContentPost(postForm.getContentPost());
         postDto.setCategoryPost("주식형");
@@ -129,6 +136,7 @@ public class PostController {
 
     @GetMapping("/delete/{id}")
     public String deleteIdea(@PathVariable UUID id) {
+
         postService.deletePost(id);
         return "redirect:/post/list";
     }

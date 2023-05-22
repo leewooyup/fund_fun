@@ -56,8 +56,8 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name="user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "post")
-    private List<Portfolio> portfolios = new ArrayList<>();
+//    @OneToMany(mappedBy = "post")
+//    private List<Portfolio> portfolios = new ArrayList<>();
     public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;
     }
