@@ -91,11 +91,11 @@ public class ProductServiceImpl implements ProductService {
      * 상품 투자금 갱신
      *
      * @param cost
-     * @param productId
+     * @param logined
      * @return 성공(1)/실패(0)
      */
     @Transactional
-    public int updateCost(Long cost, UUID productId) throws RuntimeException {
+    public int updateCost(Long cost, Users logined) throws RuntimeException {
         Product dbProduct = selectById(productId);
         //Product currentGoal 갱신하기
         Long money = dbProduct.getCurrentGoal() + cost;
