@@ -17,10 +17,13 @@ public interface PortfolioService {
     List<PortfolioDto> selectAll();
 
     //포폴id로 포트폴리오 조회
-    PortfolioDto selectPortById(UUID portfolioId);
+
+    PortfolioDto selectById(UUID portfolioId);
 
     //보트 id로 포폴조회
     List<PortfolioDto> selectPortByVoteId(UUID voteId);
+
+    List<PortfolioDto> selectPortByPostId(UUID postId);
 
     //유저 id로 포트폴리오 조회
     List<PortfolioDto> selectPortByUserId(UUID UserId);
@@ -28,10 +31,10 @@ public interface PortfolioService {
 
     //포트폴리오 삭제
 
-    void deletePort(UUID portfolioId);
+    void deletePort(PortfolioDto portfolioDto);
 
 
     //포트폴리오 수정
     void updatePort(PortfolioDto portfolioDto);
 
-    }
+}

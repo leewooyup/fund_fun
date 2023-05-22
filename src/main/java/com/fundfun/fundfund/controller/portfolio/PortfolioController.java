@@ -1,8 +1,11 @@
 package com.fundfun.fundfund.controller.portfolio;
 
+import com.fundfun.fundfund.controller.post.PostForm;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
+import com.fundfun.fundfund.dto.vote.VoteDto;
 import com.fundfun.fundfund.service.portfolio.PortfolioService;
+import com.fundfun.fundfund.service.vote.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import javax.sound.sampled.Port;
+import javax.validation.Valid;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,62 +25,84 @@ public class PortfolioController {
     @Autowired
     private final PortfolioService portfolioService;
 
+    @Autowired
+    private final VoteService voteService;
+
+    // 포트폴리오 목록 이동
     @GetMapping("/portfolio")
-    public String goPortfolioList(Model model) {
+    public String goPortfolioList(HttpServletRequest req, HttpServletResponse res, Model model) {
+        String reqData = req.getParameter("postId");
+
+        /*if(reqData == null) {
+            model.addAttribute("state", "noId");
+        } else {
+            model.addAttribute("postId", UUID.fromString(reqData));
+            model.addAttribute("state", "pass");
+        }*/
         return "portfolio/portfolioList";
     }
 
-    //포트폴리오 상세페이지 조회
+    /*
+     * 포트폴리오 상세/수정/작성
+     * state
+     * - R : 상세
+     * - U : 수정
+     * - W : 생성
+     */
     @GetMapping("/portfolio/goDetail")
     public String goDetail(HttpServletRequest req, HttpServletResponse res, Model model) {
-        UUID id = UUID.fromString(req.getParameter("id"));
-        model.addAttribute("data", portfolioService.selectPortById(id));
+        String portfolioId = req.getParameter("id");
+        String postId = req.getParameter("postId");
+
+    /*    if(portfolioId != null) {
+            UUID id = UUID.fromString(portfolioId);
+            model.addAttribute("data", portfolioService.selectById(id));
+        } else {
+            model.addAttribute("data", null);
+        }*/
+
+        model.addAttribute("state", req.getParameter("state"));
+        model.addAttribute("postId", postId);
+
         return "portfolio/portfolioDetail";
         //존재하지 않은 게시물 처리
     }
 
+    // 포트폴리오 목록 데이터 - ajax
     @PostMapping(value = "/portfolio/getData")
     @ResponseBody
     public HashMap<String, Object> getData(@RequestBody Map<String, Object> paramMap) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("portfolioList", portfolioService.selectAll());
+        UUID postId = UUID.fromString(paramMap.get("postId").toString());
+
+        map.put("portfolioList", portfolioService.selectPortByPostId(postId));
+
         return map;
     }
 
-    //포트폴리오 등록하기
-    @GetMapping("/portfolio/write")
-    public String goIdeaWrite(Model model) {
-     //   model.addAttribute("form", new PortfolioForm());
-        return "/portfolio/write";
-    }
-    @GetMapping ("/portfolio/write")
-    public String create(Portfolio form) {
-        Portfolio portfolio = new Portfolio();
-        portfolio.setTitle(form.getTitle());
-        portfolio.setContentPortfolio(form.getContentPortfolio());
-        portfolio.setWarnLevel(form.getWarnLevel());
-        portfolio.setBeneRatio(form.getBeneRatio());
-        return "redirect:/portfolio";
-        //(값 입력안되면 등록 못하게 하고 싶음)  >> not empty라는 주석을 봤는데 여기가 아니라 entity에 달아야하는것인지 구음..
-    }
-    
-    
-//    //포트폴리오 수정하기
-//    @GetMapping("/postfolio/detail/edit/{portfolioId}")
-//    public String goIdeaEdit(@PathVariable UUID portfolioId, Model model) {
-//        Optional<PortfolioDto> portOptional
-//                = Optional.ofNullable(portfolioService.selectPortById(portfolioId));
-//        if (portOptional.isPresent()) {
-//            Portfolio port = portOptional.get();
-//            PortfolioForm form = new PortfolioForm();
-//            form.setContentPost(post.getContentPost());
-//            form.setWarnLevel(form.getWarnLevel());
-//            form.setBeneRatio(form.getBeneRatio());
-//            model.addAttribute("form", form);
-//            return "idea/ideaEdit";
-//        } else {
-//            // 존재하지 않는 게시물일 경우 처리
-//            return "redirect:/postfolio/detail";
-//        }
-}
+    // 포트폴리오 수정/작성 - ajax
+    @PostMapping(value = "/portfolio/commitData")
+    @ResponseBody
+    public HashMap<String, Object> commitData(@RequestBody Map<String, Object> paramMap) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("msg", "fail");
+        try {
+            PortfolioDto portfolioDto = new PortfolioDto();
+            String state = paramMap.get("state").toString();
 
+            UUID postId = UUID.fromString(paramMap.get("postId").toString());
+            VoteDto voteDto = voteService.selectVoteByPostId(postId);
+
+            portfolioDto.setPostId(postId);
+            portfolioDto.setVoteId(voteDto.getId());
+
+
+
+            map.put("msg", "success");
+        } catch (Exception e) {
+            System.out.println("Portfolio 수정/등록 시 에러 : " + e);
+        } finally {
+            return map;
+        }
+    }
+}

@@ -29,7 +29,7 @@ public class Portfolio extends BaseTimeEntity {
 
     @JsonIgnore
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name="vote_id")
     private Vote vote;
 
@@ -40,7 +40,7 @@ public class Portfolio extends BaseTimeEntity {
 
     @JsonIgnore
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name="post_id")
     private Post post;
 
@@ -49,7 +49,6 @@ public class Portfolio extends BaseTimeEntity {
     private String ContentPortfolio;
     private String warnLevel;
     private float beneRatio;
-
 
     public void linkVote(Vote vote) {this.vote = vote;}
 
@@ -65,5 +64,8 @@ public class Portfolio extends BaseTimeEntity {
     }
     public void setWarnLevel(String warnLevel){this.warnLevel = warnLevel;}
     public void setBeneRatio(float beneRatio){this.beneRatio = beneRatio;}
+
+    public void setVote(Vote vote){this.vote = vote;}
+    public void setPost(Post post){this.post = post;}
 
 }

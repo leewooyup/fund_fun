@@ -58,7 +58,7 @@ class PortfolioServiceImplTest {
     public void 포폴아이디로조회() throws Exception {
         List<PortfolioDto> list = portfolioService.selectAll();
         UUID uuid = list.get(0).getId();
-        PortfolioDto portfolioDto = portfolioService.selectPortById(uuid);
+        PortfolioDto portfolioDto = portfolioService.selectById(uuid);
         Portfolio p = modelMapper.map(portfolioDto, Portfolio.class);
         System.out.println(p.getId() + " , " + p.getContentPortfolio());
     }
@@ -78,7 +78,7 @@ class PortfolioServiceImplTest {
     public void 포트폴리오_삭제() throws Exception {
         List<PortfolioDto> list = portfolioService.selectAll();
         PortfolioDto portfolioDto = list.get(0);
-        portfolioService.deletePort(portfolioDto.getId());
+        portfolioService.deletePort(portfolioDto);
     }
 
 //    @Test

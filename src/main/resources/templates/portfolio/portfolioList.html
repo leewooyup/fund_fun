@@ -8,29 +8,47 @@
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
 
+    <script th:inline="javascript">
+        var state = [[${state}]];
+        var postId = "";
+
+        if(state == "noId") { // url 입력으로 접근 시 alert -> post/list 로 이동
+            alert("정상적인 경로로 접근해주세요.");
+            location.href = "/post/list";
+        } else {
+            postId = [[${postId}]];
+        }
+    </script>
+
     <!-- Script -->
     <script type="text/javascript">
         var dataList = "";
 
         $(Document).ready(function() {
             getData();
+
+            // 포트폴리오 작성 클릭
+            $("#goWrite").on("click", function() {
+                // idx : 포트폴리오Id, state : 상세/수정/작성 구분코드
+                location.href = "/portfolio/goDetail?state=W&postId=" + postId;
+            });
         });
 
         // 리스트 가져오기
         function getData() {
             $.ajax({
-            url: "/portfolio/getData",
-            type: "post",
-            dataType: "json",
-            contentType: "application/json; CHARSET=UTF-8",
-            data: JSON.stringify({}),
-            success: function(result) {
-                drawList(result.portfolioList);
-            },
-            error: function(e) {
-                console.log(e);
-            }
-        });
+                url: "/portfolio/getData",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json; CHARSET=UTF-8",
+                data: JSON.stringify({"postId": postId}),
+                success: function(result) {
+                    drawList(result.portfolioList);
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
         }
 
         function drawList(data) {
@@ -49,7 +67,8 @@
 
         // 상세 화면 이동
         function goDetail(idx) {
-            location.href = "/portfolio/goDetail?id=" + idx;
+            // idx : 포트폴리오Id, state : 상세/수정/작성 구분코드
+            location.href = "/portfolio/goDetail?id=" + idx + "&state=" + "R&postId=" + postId;
         }
     </script>
 
@@ -63,7 +82,7 @@
         </div>
 
         <div class="marginBottom bottomDiv">
-            <button class="rightArea bg-yellow paddingBtn">포트폴리오 등록</button>
+            <button class="rightArea bg-yellow paddingBtn" id="goWrite">포트폴리오 등록</button>
             <button class="rightArea left_margin bg-yellow paddingBtn">투표하기</button>
         </div>
     </div>
