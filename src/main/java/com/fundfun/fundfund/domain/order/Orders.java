@@ -7,6 +7,8 @@ import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 
 import javax.persistence.*;
@@ -18,15 +20,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@DynamicInsert
 public class Orders extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "orders_id")
     private UUID id;
 
+    @ColumnDefault("0")
     private Long cost;
 
-//    @ColumnDefault("F")
+    @ColumnDefault("'주문완료'")//or 주문취소
     private String status;
 
     @ManyToOne

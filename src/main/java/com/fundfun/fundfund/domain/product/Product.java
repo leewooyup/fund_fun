@@ -39,13 +39,17 @@ public class Product  extends  BaseTimeEntity{
 
     private String crowdEnd;
 
+    @ColumnDefault("0")
     private Long goal;
 
+    @ColumnDefault("0")
     private Long currentGoal;
-    private Integer status;
+
+    @ColumnDefault("'진행중'")// or 진행완료
+    private String status;
 
     private String description;
-   //@Column(columnDefinition = "ojpg")
+
     @ColumnDefault("'/product/avatar.jpg'")
     private String thumbnailRelPath;
 
