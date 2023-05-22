@@ -16,7 +16,7 @@ public interface ProductService {
     /**
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
-    List<ProductDto> selectAll();
+    List<Product> selectAll();
 
     /**
      * 상품 업데이트

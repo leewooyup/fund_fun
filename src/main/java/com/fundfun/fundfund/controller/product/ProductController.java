@@ -44,43 +44,36 @@ public class ProductController {
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
     @GetMapping("/list")
-    public String list(Model model) {
-//        if (mode == 2) {
-//            //List<Product> productList = productService.selectByStatus("진행중");
-//            //model.addAttribute("list", productList);
-//            return "product/product_list";
-//        }
+    public String list(Model model, int mode) {
+        if (mode == 1) {
+            List<Product> productList = productService.selectAll();
+            model.addAttribute("list", productList);
+            return "product/product_list";
+        }
+        if (mode == 2) {
+            List<Product> productList = productService.selectByStatus("진행중");
+            model.addAttribute("list", productList);
+            return "product/product_list";
+        }
+        return "product/list?mode=" + 1;
 
-        List<ProductDto> productList = productService.selectAll();
-        model.addAttribute("list", productList);
-        return "product/product_list";
     }
 
 
     /**
      * 상품 등록
      */
-//    @PostMapping("/write")
-//    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg) {
-//        if (bindingResult.hasErrors()) {
-//            return "product/product_register";
-//        }
-//
-//        //System.out.println("thumbnailImg: " + thumbnailImg);
-//        productService.registerProduct(productDto, thumbnailImg);
-//        return "redirect:/product/list";
-//    }
     @PostMapping("/write")
     public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "product/product_register";
         }
         Optional<Users> ou = userService.findByEmail(principal.getName());
-        if(ou.isPresent()) {
+        if (ou.isPresent()) {
             Users user = ou.get();
             productService.registerProduct(productDto, thumbnailImg, user);
         }
-        return "redirect:/product/list";
+        return "redirect:/product/list?mode=" + 1;
     }
 
     /**
@@ -111,7 +104,7 @@ public class ProductController {
         UUID productId = orderService.decEncId(encId);
         productService.update(productId, productDto, thumbnailImg, user);
 
-        return "redirect:/product/list";
+        return "redirect:/product/list?mode=" + 1;
     }
 
     /**
@@ -122,7 +115,7 @@ public class ProductController {
         Users user = userService.findByEmail(principal.getName()).orElse(null);
         UUID productId = orderService.decEncId(encId);
         productService.delete(productId, user);
-        return "redirect:/product/list";
+        return "redirect:/product/list?mode=" + 1;
 
     }
 

@@ -53,10 +53,10 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 전체 상품 조회
      */
-    public List<ProductDto> selectAll() {
+    public List<Product> selectAll() {
         List<Product> productList = productRepository.findAll();
-      return  productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
-        //return productList;
+        //return  productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return productList;
     }
 
     /**
@@ -119,8 +119,8 @@ public class ProductServiceImpl implements ProductService {
         productDto.setCurrentGoal(money);
 
         //Order(주문서) 생성
-        Orders order = orderService.createOrder(cost, productDto, user);
-
+        Orders order = orderService.createOrder(cost, productDto, user); //(유저의 투자금액, 상품 정보, 로그인한 유저 정보)
+        System.out.println("order 정보는!!!!!! "+ order.getId());
         //User Point update
         userService.updateMoney(user.getMoney() - cost, user);
 
@@ -181,9 +181,9 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 상품리스트 status(= 진행중 or 완료)에 따른 페이지 설정
      * */
-//    public List<Product> selectByStatus(String status){
-//        return productRepository.findByStatus(status);
-//    }
+    public List<Product> selectByStatus(String status){
+        return productRepository.findByStatus(status);
+    }
 
     /**
      * 마감일까지의 d-day

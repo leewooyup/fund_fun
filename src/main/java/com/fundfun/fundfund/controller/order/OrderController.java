@@ -56,14 +56,13 @@ public class OrderController {
      * @return view
      */
 
-    @PostMapping("/send")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, String encId, Model model) {
+    @PostMapping("/send/{encId}")
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model) {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
         UUID productId = orderService.decEncId(encId);
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
-
         if (productDto == null || investDto == null) {
             throw new RuntimeException("투자에 실패하셨습니다.");
         }
@@ -79,10 +78,15 @@ public class OrderController {
      */
     @PostMapping("/update/{encId}")
     public String update(@PathVariable String encId, Long cost, Principal principal) {
+        System.out.println("cost = " + cost);
+        System.out.println("encId = " + orderService.decEncId(encId));
         Users user= userService.findByEmail(principal.getName()).orElse(null);
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
-        productService.updateCost(cost, productDto, user); //투자정보 갱신 + 주문서 만들기
+        int result = productService.updateCost(cost, productDto, user); //투자정보 갱신 + 주문서 만들기
 
+        if(result == 0){
+            throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
+        }
         return "redirect:/product/list";
 }
 
