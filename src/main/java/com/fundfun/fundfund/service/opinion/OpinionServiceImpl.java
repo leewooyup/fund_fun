@@ -2,12 +2,17 @@ package com.fundfun.fundfund.service.opinion;
 
 import com.fundfun.fundfund.domain.opinion.Opinion;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.opinion.OpinionDto;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.vote.VoteDto;
 import com.fundfun.fundfund.repository.opinion.OpinionRepository;
+import com.fundfun.fundfund.repository.portfolio.PortfolioRepository;
+import com.fundfun.fundfund.repository.post.PostRepository;
+import com.fundfun.fundfund.repository.user.UserRepository;
+import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,12 @@ import java.util.stream.Collectors;
 public class OpinionServiceImpl implements OpinionService{
     @Autowired
     private final OpinionRepository opinionRep;
+    @Autowired
+    private final PortfolioRepository portfolioRepository;
+    @Autowired
+    private final VoteRepository voteRepository;
+    @Autowired
+    private final UserRepository userRepository;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -53,7 +64,8 @@ public class OpinionServiceImpl implements OpinionService{
 
     //voteId, userId로 등록된 opinion 조회 - 중복 확인을 위함(존재하면 true, 존재하지 않으면 false-투표 가능)
     @Override
-    public boolean checkOpinion(Vote vote, Users user){
+    public boolean checkOpinion(VoteDto voteDto, Users user){
+        Vote vote = modelMapper.map(voteDto, Vote.class);
         Opinion o = opinionRep.findByVoteIdAndUserId(vote, user);
         if(o != null)
             return true; //해당 유저가 해당 투표에 참여한 이력이 있다면
@@ -63,7 +75,16 @@ public class OpinionServiceImpl implements OpinionService{
 
     @Override
     public void createOpinion(OpinionDto opinionDto){
-        opinionRep.save(modelMapper.map(opinionDto, Opinion.class));
+        Opinion opinion = new Opinion();
+        Vote vote = voteRepository.findById(opinionDto.getVoteId()).orElse(null);
+        Portfolio portfolio = portfolioRepository.findById(opinionDto.getVotedFor()).orElse(null);
+        Users user = userRepository.findById(opinionDto.getUserId()).orElse(null);
+
+        opinion.setVote(vote);
+        opinion.setPortfolio(portfolio);
+        opinion.setUser(user);
+
+        opinionRep.save(opinion);
     }
 
     //표 수정

@@ -22,7 +22,7 @@ public interface OpinionService {
     int countByVotedFor(PortfolioDto portfolioDto);
 
     //voteId, userId로 등록된 opinion 조회 - 중복 확인을 위함(존재하면 true, 존재하지 않으면 false-투표 가능)
-    boolean checkOpinion(Vote vote, Users user);
+    boolean checkOpinion(VoteDto voteDto, Users user);
 
     //표 등록
     void createOpinion(OpinionDto opinionDto);

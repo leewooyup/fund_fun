@@ -12,7 +12,6 @@ public interface PortfolioService {
     //포트폴리오 생성
     void createPort(PortfolioDto portDto);
 
-
     //전체 포트폴리오 조회
     List<PortfolioDto> selectAll();
 

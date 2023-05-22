@@ -2,10 +2,12 @@ package com.fundfun.fundfund.service.portfolio;
 
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.repository.portfolio.PortfolioRepository;
 import com.fundfun.fundfund.repository.post.PostRepository;
+import com.fundfun.fundfund.repository.user.UserRepository;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,9 +26,10 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final PortfolioRepository portRep;
     @Autowired
     private final PostRepository postRepository;
-
     @Autowired
     private final VoteRepository voteRepository;
+    @Autowired
+    private final UserRepository userRepository;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -35,8 +38,10 @@ public class PortfolioServiceImpl implements PortfolioService {
         Portfolio portfolio = modelMapper.map(portfolioDto, Portfolio.class);
         Post post = postRepository.findById(portfolioDto.getPostId()).orElse(null);
         Vote vote = voteRepository.findById(portfolioDto.getVoteId()).orElse(null);
+        Users user = userRepository.findById(portfolioDto.getUserId()).orElse(null);
         portfolio.setPost(post);
         portfolio.setVote(vote);
+        portfolio.setUser(user);
         portRep.save(portfolio);
     }
 
@@ -108,6 +113,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         if (existingPort != null) {
             Post post = postRepository.findById(portfolioDto.getPostId()).orElse(null);
             Vote vote = voteRepository.findById(portfolioDto.getVoteId()).orElse(null);
+            Users user = userRepository.findById(portfolioDto.getUserId()).orElse(null);
             // 변경할 필드값을 업데이트합니다.
             existingPort.setTitle(portfolioDto.getTitle());
             existingPort.setContentPortfolio(portfolioDto.getContentPortfolio());
@@ -115,7 +121,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             existingPort.setBeneRatio(portfolioDto.getBeneRatio());
             existingPort.setPost(post);
             existingPort.setVote(vote);
-
+            existingPort.setUser(user);
 
             // 게시물을 저장하여 업데이트합니다.
             portRep.save(existingPort);

@@ -17,16 +17,16 @@ import java.util.UUID;
 @Profile("dev") // 이 클래스에 정의된 Bean 들은 dev 모드에서만 활성화된다.
 public class DevInitData {
     // CommandLineRunner: 앱 실행 직후 초기데이터 세팅 및 초기화에 사용된다.
-    @Bean
-    CommandLineRunner init(ProductServiceImpl productService, OrderServiceImpl orderService, UserServiceImpl userService) {
-        return args -> {
-            Users users = userService.createUser();
-            Product product = productService.createProduct();
-            Orders order = orderService.createOrder(300L, product, users);
+//    @Bean
+//    CommandLineRunner init(ProductServiceImpl productService, OrderServiceImpl orderService, UserServiceImpl userService) {
+//        return args -> {
+//            Users users = userService.createUser();
+//            Product product = productService.createProduct();
+//            Orders order = orderService.createOrder(300L, product, users);
 //
 //            Product product2 = productService.createProduct2();
 //            orderService.createOrder(20L, product2, users);
 
-        };
-    }
+//        };
+//    }
 }

@@ -43,12 +43,13 @@ spring:
 
         thymeleaf:
             cache: false
-# sql init script
-#    sql:
-#        init:
-#            platform: oracle
-#            encoding: UTF-8
-#            mode: always
+        defer-datasource-initialization: true
+    # sql init script
+    sql:
+        init:
+            platform: oracle
+            encoding: UTF-8
+            mode: always
 custom:
     genFileDirPath: c:/Temp/fundFun
 
