@@ -31,16 +31,18 @@
             </div>
         </div>
         <div class="d-flex" id="invest" style="justify-content:center">
-            <a th:href ="@{|/order/update/${encId}|}">
-                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>
-            </a>
-            <a href="/product/list?mode="+1>
+            <form method="post" th:action ="@{|/order/update/${encId}|}" id="costSendForm">
+                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>-->
+                <input type="hidden" name="cost" th:value="${invest.cost}">
+            </form>
+<!--            <a th:href ="@{|/order/update/${encId}|}">-->
+<!--                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>-->
+<!--            </a>-->
+            <a href="/product/list?mode=1">
                 <button class="btn btn-warning" type="button">취소</button>
             </a>
         </div>
-        <form method="post" th:action ="@{|/order/update/${encId}|}" id="costSendForm">
-            <input type="hidden" name="cost" th:value="${invest.cost}">
-        </form>
+
     </div>
     <script>
         $(function(){
