@@ -59,8 +59,8 @@
     <a th:href= "@{/product/delete/{id}(id=${encId})}" id="confirmDel" >
         <button class="btn btn-warning" type="button">삭제</button>
     </a>
-    <script>
 
+    <script>
         $(function(){
             $('#confirmDel').click(function(){
                 if(!confirm('삭제하시면 복구할수 없습니다. \n 정말로 삭제하시겠습니까??')){
@@ -69,6 +69,39 @@
             });
         });
 
+    </script>
+    <script th:inline="javascript">
+    toastr.options = {
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
+
+    function errorModal(msg) {
+        toastr["error"](msg);
+    }
+
+    function successModal(msg) {
+        toastr["success"](msg);
+    }
+
+    const params = /*[[ ${param} ]]*/ null;
+
+    if (params.errMsg) {
+        errorModal(params.errMsg);
+    }
     </script>
 </th:block>
 </html>

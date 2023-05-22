@@ -5,6 +5,7 @@ import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.exception.InSufficientMoneyException;
 import com.fundfun.fundfund.repository.product.ProductRepository;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
@@ -47,8 +48,8 @@ public class ProductServiceImpl implements ProductService {
                 .title("A+B")
                 .crowdStart(startDate.toString())
                 .crowdEnd(endDate.toString())
-                .goal(1000L)
-                .currentGoal(1500L)
+                .goal(1000000L)
+                .currentGoal(500L)
                 .status("진행중")
                 .description("펀드진행중")
                 .fundManager(users)
@@ -123,7 +124,7 @@ public class ProductServiceImpl implements ProductService {
      * @return 성공(1)/실패(0)
      */
     @Transactional
-    public int updateCost(Long cost, ProductDto productDto, Users user) throws RuntimeException {
+    public int updateCost(Long cost, ProductDto productDto, Users user) throws InSufficientMoneyException, RuntimeException {
         //Product currentGoal 갱신하기
         Long money = productDto.getCurrentGoal() + cost;
         productDto.setCurrentGoal(money);
@@ -131,7 +132,11 @@ public class ProductServiceImpl implements ProductService {
         //Order(주문서) 생성
         Orders order = orderService.createOrder(cost, productDto, user); //(유저의 투자금액, 상품 정보, 로그인한 유저 정보)
         System.out.println("order 정보는!!!!!! "+ order.getId());
+
         //User Point update
+        if(user.getMoney() < cost) {
+            throw new InSufficientMoneyException("충전이 필요합니다.");
+        }
         userService.updateMoney(user.getMoney() - cost, user);
 
         //하나라도 못찾은 것이 있다면, Rollback

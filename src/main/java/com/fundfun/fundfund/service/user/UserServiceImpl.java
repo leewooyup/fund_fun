@@ -22,9 +22,9 @@ public class UserServiceImpl {
                 .password(passwordEncoder.encode("1234"))
                 .email("kb@kb.com")
                 .phone("010-2323-1313")
-                .money(12L)
-                .count(23L)
-                .total_investment(34L)
+                .money(250L)
+                .count(5L)
+                .total_investment(30L)
                 .benefit(45L)
                 .build();
 
