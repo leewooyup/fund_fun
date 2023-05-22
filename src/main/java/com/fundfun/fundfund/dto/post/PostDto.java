@@ -2,6 +2,7 @@ package com.fundfun.fundfund.dto.post;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class PostDto {
     private String categoryPost;
     private StPost statusPost;
     private Vote vote;
+    private Users user;
 
     public void setTitle(String title) {
         this.title = title;
