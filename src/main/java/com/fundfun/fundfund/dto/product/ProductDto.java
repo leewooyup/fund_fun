@@ -32,7 +32,6 @@ public class ProductDto{
     private Long currentGoal;
     private String status;
     private String thumbnailRelPath;
-    private Orders orders;
     private Users fundManager;
 
     public Date toDate(String crowdEnd) {

@@ -1,4 +1,5 @@
 package com.fundfun.fundfund.domain.product;
+
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.util.BaseTimeEntity;
@@ -9,6 +10,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.util.Base64;
 import java.util.UUID;
@@ -19,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
-public class Product  extends  BaseTimeEntity{
+public class Product extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
@@ -70,25 +72,8 @@ public class Product  extends  BaseTimeEntity{
         return encodedString;
     }
 
-
-
     public String getThumbnailImgUrl() {
-        if(thumbnailRelPath == null) return "/gen/product/avatar.jpg";
+        if (thumbnailRelPath == null) return "/gen/product/avatar.jpg";
         return "/gen/" + thumbnailRelPath;
-    }
-
-
-//    private UUID fundManager;
-
-    /**
-     * 시작일, 종료일은 업데이트 불가
-     */
-
-    public void setCurrentGoal(Long currentGoal){
-        this.currentGoal = currentGoal;
-    }
-
-    public void setThumbnailRelPath(String thumbnailRelPath){
-        this.thumbnailRelPath = thumbnailRelPath;
     }
 }
