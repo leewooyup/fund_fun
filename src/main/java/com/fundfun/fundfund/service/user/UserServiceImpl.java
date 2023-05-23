@@ -19,6 +19,7 @@ public class UserServiceImpl {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     public Users createUser() { //테스트용 code
+
         Users user = Users.builder()
                 .name("bana")
                 .gender(Gender.valueOf("MALE"))
@@ -26,9 +27,9 @@ public class UserServiceImpl {
                 .email("kb@kb.com")
                 .role(FUND_MANAGER)
                 .phone("010-2323-1313")
-                .money(12L)
-                .count(23L)
-                .total_investment(34L)
+                .money(250L)
+                .count(5L)
+                .total_investment(30L)
                 .benefit(45L)
                 .build();
         System.out.println("gd" + userRepository.findById(user.getId()).get().getRole());

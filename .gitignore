@@ -177,4 +177,8 @@ application.properties
 application.yml
 
 DevInitData.java
+<<<<<<< HEAD
 data.sql
+=======
+data.sql
+>>>>>>> 06ae111022c2048c4a7f2ab058d8cd9b4259c8fb

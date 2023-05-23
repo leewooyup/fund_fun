@@ -7,19 +7,19 @@
 
 <th:block layout:fragment="content">
     <style>
-
-        input {
+        .box {
             margin: 5px 0;
             height: 50px;
             border: 4px solid #ffc107;
         }
 
-        .product-register-main {
-            width: 70%;
+        .thumbnailImg{
+            border:none;
+            border:0px;
         }
 
-        .input-date {
-            width: 300px;
+        .product-register-main {
+            width: 70%;
         }
 
         .product-register-wrapper {
@@ -35,37 +35,35 @@
     </style>
 
     <div class="d-flex flex-column product-register-main">
-        <label class="sub-title">상품 등록</label>
-        <div>김깨비 펀드매니저님</div>
+        <label class="sub-title" style="text-align: center;font-size:large;height:50px">상품 등록 페이지</label>
 
         <form enctype="multipart/form-data" id="updateForm" method="post" th:action="@{|/product/update/${encId}|}">
             <div class="d-flex flex-column product-register-wrapper">
-                <div style="width:100%;">
-                    <input placeholder="상품제목" style="width:100%;" name="title" type="text" th:value="${product.title}"></input>
+                <div style="width:30%;">
+                    <input class="box" placeholder="상품제목" style="width:100%;" name="title" type="text" th:value="${product.title}"></input>
                 </div>
-
                 <div class="d-flex justify-content-between">
                     <div>
-                        <input class="input-date" data-placeholder="시작일" name="crowdStart"
+                        <input class="box" data-placeholder="시작일" name="crowdStart"
                                type="date" th:value="${product.crowdStart}" disabled></input>
                     </div>
                     <div>
-                        <input class="input-date" data-placeholder="종료일" name="crowdEnd"
+                        <input class="box" data-placeholder="종료일" name="crowdEnd"
                                type="date" th:value="${product.crowdEnd}" disabled></input>
                     </div>
                     <div>
-                        <input placeholder="목표 금액" style="width:400px;" name="goal"
+                        <input class="box" placeholder="목표 금액" style="width:400px;" name="goal"
                                th:value="${product.goal}" type="number"></input>
                     </div>
                 </div>
 
                 <div>
-                    <input placeholder="상품설명을 입력해주세요." style="width:100%;height:100px" name="description"
+                    <input class="box" placeholder="상품설명을 입력해주세요." style="width:100%;height:100px" name="description"
                            th:value="${product.description}" type="text"></input>
                 </div>
 
                 <div>
-                    <input accept="image/png, image/gif, image/jpeg" name="thumbnailImg" type="file"/>
+                    <input class="thumbnailImg" accept="image/png, image/gif, image/jpeg" name="thumbnailImg" type="file"/>
 
                 </div>
             </div>

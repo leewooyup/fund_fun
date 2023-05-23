@@ -49,6 +49,10 @@ public class UserService {
                 .orElseThrow(NoSuchElementException::new);
     }
 
+    public void updateMoney(Long money, Users user){ //by lee
+        user.setMoney(money);
+        userRepository.save(user);
+    }
 
 
 }

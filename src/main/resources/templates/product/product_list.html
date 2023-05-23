@@ -5,13 +5,6 @@
         xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
-    <style>
-        div .aa {
-            float: right;
-            padding: 0 10px 0 0
-        }
-
-    </style>
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
@@ -25,26 +18,27 @@
             <h3>상품게시판</h3>
             <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
         </div>
-        <select id="category" name="category" onchange="changeSelect()">
-            <option selected="selected" style="background-color: #ccc" value="X">카테고리</option>
-            <option value="1">전체</option>
-            <option value="2">진행 중인 상품</option>
-        </select>
+<!--        <select id="category" name="category" onchange="changeSelect()">-->
+<!--            <option selected="selected" style="background-color: #ccc" value="X">카테고리</option>-->
+<!--            <option value="1">전체</option>-->
+<!--            <option value="2">진행 중인 상품</option>-->
+<!--        </select>-->
+        <div>
+            <span><a href ="/product/list">전체</a> | </span>
+            <a href ="/product/list/progress">진행 중인 상품</a>
+        </div>
     </div>
 
     <div class="container">
         <div class="row row-cols-3">
             <div th:each="ele : ${list}">
                 <div class="col">
-                    <div>
-
-                        <a href="#" id="productHiddenCheck" th:name="${ele.uuidEncode}">
+                    <div><span th:text="${ele.title}"></span>
+                        <a th:href="@{|/order/form/${ele.uuidEncode}|}">
                             <div>
-                                <img alt="" height="250px" style="border:solid;width:80%" th:src="${ele.getThumbnailImgUrl}"
+                                <img alt="" height="250px" style="border:solid;width:80%"
+                                     th:src="@{|/gen/${ele.thumbnailRelPath}|}"
                                      width="250px">
-                            </div>
-                            <div>
-                                <span th:text="${ele.title}"></span>
                             </div>
                         </a>
                         <div th:text="${ele.crowdStart}"></div>
@@ -54,42 +48,52 @@
         </div>
 
         <form action="/product/search" method="get">
-            <div class="aa">
+            <div style=" float: right;padding: 0 10px 0 0">
                 <input name="title" placeholder="Search" type="text"></input>
                 <button class="btn btn-warning" type="submit">검색</button>
             </div>
         </form>
-
         <a href="/product/register">
-            <button class="btn btn-warning" type="submit">글쓰기</button>
+            <button class="btn btn-warning" type="submit">등록</button>
         </a>
-        <form action="/order/form" id="productDetailSub" method="get">
-            <input name="encId" type="hidden">
-        </form>
     </div>
     </div>
-    <script>
+    <script th:inline="javascript">
+    toastr.options = {
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
 
-        $(function () {
-            $(document).on("click", "#productHiddenCheck", function () {
-                //alert($(this).attr("name"))
-                console.dir($("[name=encodedUUID]"))
-                $("[name=encId]").val($(this).attr("name"));
+    function errorModal(msg) {
+        toastr["error"](msg);
+    }
 
-                $("#productDetailSub").submit();
+    function successModal(msg) {
+        toastr["success"](msg);
+    }
 
-            })
-        })
+    const params = /*[[ ${param} ]]*/ null;
 
-        function changeSelect() {
-            var selectList = document.getElementById("category")
-            if (selectList.options[selectList.selectedIndex].value == "1") {
-                location.href = "redirect:/product/list";
-            }
-            if (selectList.options[selectList.selectedIndex].value == "2") {
-                location.href = "/product/list";
-            }
-        }
+    if (params.errMsg) {
+        errorModal(params.errMsg);
+    }
+
+    if(params.msg) {
+        successModal(params.msg);
+    }
 
     </script>
     </body>
