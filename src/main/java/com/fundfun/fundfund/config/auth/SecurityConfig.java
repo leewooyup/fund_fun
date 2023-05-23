@@ -1,6 +1,4 @@
-/*
-package com.fundfun.fundfund.config.security;
-
+package com.fundfun.fundfund.config.auth;
 
 import com.fundfun.fundfund.service.user.CustomUserDetailService;
 import lombok.AllArgsConstructor;
@@ -13,51 +11,28 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-
-
 
 @Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity//시큐리티 필터
+@EnableGlobalMethodSecurity(prePostEnabled = true)// 특정 페이지에 특정 권한이 있는 유저만 접근을 허용할 경우 권한 및 인증을 미리 체크하겠다는 설정을 활성화
+//@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService customUserDetailService;
     private final JwtTokenProvider jwtTokenProvider;
 
     private final OAuth2UserService oAuth2UserService;
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(
-                        csrf -> csrf.disable()
-                )
-                .authorizeRequests(
-                        authorizeRequests -> authorizeRequests
-                                .antMatchers("/**")
-                                .permitAll()
-                )
-                .formLogin(
-                        formLogin -> formLogin
-                                .loginPage("/user/login")
-                                .defaultSuccessUrl("/")
-                )
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                        .logoutSuccessUrl("/user/login")
-                        .invalidateHttpSession(true)
-                );
-        return http.build();
-    }
-    // 비밀번호 암호화
-    @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder encryptPassword() {
         return new BCryptPasswordEncoder();
     }
 
@@ -78,9 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /*
-		 csrf 토큰 활성화시 사용
-		 쿠키를 생성할 때 HttpOnly 태그를 사용하면 클라이언트 스크립트가 보호된 쿠키에 액세스하는 위험을 줄일 수 있으므로 쿠키의 보안을 강화할 수 있다.
-		*/
+       csrf 토큰 활성화시 사용
+       쿠키를 생성할 때 HttpOnly 태그를 사용하면 클라이언트 스크립트가 보호된 쿠키에 액세스하는 위험을 줄일 수 있으므로 쿠키의 보안을 강화할 수 있다.
+      */
         //http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 
         http.csrf().disable()    // csrf 토큰을 비활성화
@@ -136,17 +111,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/product/list")
 //                .successHandler(authSucessHandler)
                 .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
-        // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
+                // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
                 .userService(oAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
         ;
 
     }
 }
-
-    // 인증
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-}
-*/

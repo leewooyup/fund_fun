@@ -102,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
         List<Orders> orderList = orderService.selectByProductId(productId);
 
         if (product == null || user != product.getFundManager() || !orderList.isEmpty()) {
-
+            throw new RuntimeException("상품을 삭제할 수 없습니다.");
         }
         productRepository.delete(product);
     }
