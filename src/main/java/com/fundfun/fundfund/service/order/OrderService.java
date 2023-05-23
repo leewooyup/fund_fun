@@ -16,18 +16,40 @@ public interface OrderService {
      * 전체 검색
      * */
     List<Orders> selectAll();
-    
-     /* 주문 등록
+
+    /**
+     * 주문 조회
+     * */
+    Orders selectById(UUID id);
+
+    /**
+     * product와 연관된 주문 찾기
+     */
+    List<Orders> selectByProductId(UUID productId);
+
+    /**
+     * user와 연관된 주문 찾기
+     */
+    List<Orders> selectByUserId(UUID userId);
+
+    /**
+     * 주문 등록
      * */
     Orders createOrder(Long cost, ProductDto productDto, Users user);
+
+    /**
+     * 주문 업데이트
+     * */
+    void update(InvestDto investDto);
 
     /**
      * 주문삭제
      * */
     void delete(UUID orderId, Users user);
 
+
     /**
-     * 총 주문금액
+     * UUID 디코딩
      * */
-    int getCurrentCollection(ProductDto productDto);
+    UUID decEncId(String encId);
 }

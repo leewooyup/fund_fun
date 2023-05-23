@@ -46,16 +46,4 @@ public class Orders extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    public void linkProduct(Product product){
-        this.product = product;
-    }
-
-    public void linkUser(Users users){
-        this.user = users;
-    }
-
-    public void setCost(Long cost){
-        this.cost = cost;
-    }
-
 }

@@ -3,8 +3,10 @@ package com.fundfun.fundfund.controller.order;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.exception.InSufficientMoneyException;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
+import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.Util;
@@ -26,8 +28,8 @@ import java.util.UUID;
 @RequestMapping("/order")
 public class OrderController {
 
-    private final OrderServiceImpl orderService;
-    private final ProductServiceImpl productService;
+    private final OrderService orderService;
+    private final ProductService productService;
     private final UserService userService;
 
     /**
@@ -81,8 +83,6 @@ public class OrderController {
      */
     @PostMapping("/update/{encId}")
     public String update(@PathVariable String encId, Long cost, Principal principal) {
-        System.out.println("cost = " + cost);
-        System.out.println("encId = " + orderService.decEncId(encId));
         Users user= userService.findByEmail(principal.getName()).orElse(null);
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         try {
@@ -102,36 +102,12 @@ public class OrderController {
 }
 
     /**
-     * 투자금액(입력)처리 후 영수증 확인 페이지
-     *
-     * @return view
-     */
-//    @GetMapping("/receipt")
-//    public String showOrderReceipt(Model model) {
-//        int curCollect = orderService.getCurrentCollection(product);
-//        model.addAttribute("curCollect", curCollect);
-//        return "order/order_receipt";
-//    }
-
-
-    /**
-     * 내가 투자한 금액 가져와서 전체 투자금액 갱신
-     * post -> int
-     * */
-//    @GetMapping("/receipt")
-//    public String showOrderReceipt(Model model) {
-//        ProductDto productDto = productService.selectById(orderService.decEncId(encId));
-//        int curCollect = orderService.getCurrentCollection(productDto);
-//        model.addAttribute("curCollect", curCollect);
-//        return "order/order_receipt";
-//    }
-
-    /**
      * 마이페이지에서 주문 상세보기
      * */
 
+
     /**
-     * 주문 취소 -> 삭제
+     * 마이페이지에서 주문 취소 -> 삭제
      */
 //    @GetMapping("/delete/{encId}")
 //    public String delete(@PathVariable String encId, Principal principal) {
