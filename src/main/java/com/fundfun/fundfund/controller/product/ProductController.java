@@ -4,7 +4,9 @@ import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
+import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +26,8 @@ import java.util.UUID;
 @RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductServiceImpl productService;
-    private final OrderServiceImpl orderService;
+    private final ProductService productService;
+    private final OrderService orderService;
     private final UserService userService;
 
     /**
@@ -43,7 +45,7 @@ public class ProductController {
     @GetMapping("/list")
     public String list(Model model, @RequestParam(defaultValue = "1") Integer mode) {
         if (mode == 1) {
-            List<Product> productList = productService.selectAll();
+            List<ProductDto> productList = productService.selectAll();
             model.addAttribute("list", productList);
             return "product/product_list";
         }
@@ -70,7 +72,7 @@ public class ProductController {
             Users user = ou.get();
             productService.registerProduct(productDto, thumbnailImg, user);
         }
-        return "redirect:/product/list?mode=" + 1;
+        return "redirect:/product/list";
     }
 
     /**
@@ -101,7 +103,7 @@ public class ProductController {
         UUID productId = orderService.decEncId(encId);
         productService.update(productId, productDto, thumbnailImg, user);
 
-        return "redirect:/product/list?mode=" + 1;
+        return "redirect:/product/list";
     }
 
     /**
@@ -112,7 +114,7 @@ public class ProductController {
         Users user = userService.findByEmail(principal.getName()).orElse(null);
         UUID productId = orderService.decEncId(encId);
         productService.delete(productId, user);
-        return "redirect:/product/list?mode=" + 1;
+        return "redirect:/product/list";
 
     }
 

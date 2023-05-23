@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -33,7 +34,6 @@ public class ProductDto{
     private Long currentGoal;
     private String status;
     private String thumbnailRelPath;
-    private Orders orders;
     private Users fundManager;
 
     public Date toDate(String crowdEnd) {
@@ -47,4 +47,16 @@ public class ProductDto{
         return deadLine;
     }
 
+    public String uuidEncode() {
+        //UUID encode
+        Base64.Encoder encoder = Base64.getEncoder();
+        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
+
+        return encodedString;
+    }
+
+    public String getThumbnailImgUrl() {
+        if (thumbnailRelPath == null) return "/gen/product/avatar.jpg";
+        return "/gen/" + thumbnailRelPath;
+    }
 }

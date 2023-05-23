@@ -1,10 +1,7 @@
 package com.fundfun.fundfund.service.product;
 
-import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.product.Product;
-import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
-import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +13,7 @@ public interface ProductService {
     /**
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
-    List<Product> selectAll();
+    List<ProductDto> selectAll();
 
     /**
      * 상품 업데이트
@@ -52,10 +49,21 @@ public interface ProductService {
     /**
      * 아이디로 상품 검색
      */
-//  List<Product> searchId(Users user);
+    //List<Product> searchId(Users user);
 
     /**
      * 진행 상태(Status)로 상품 검색
      */
-    //List<Product> selectByStatus(String status);
+    List<Product> selectByStatus(String status);
+
+    /**
+     * 마감일 설정
+     */
+    int crowdDeadline(ProductDto productDto);
+
+    /**
+     * 하드코딩,,create
+     */
+    ProductDto createProduct(Users users);
+
 }

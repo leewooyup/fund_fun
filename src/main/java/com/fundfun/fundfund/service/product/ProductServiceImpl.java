@@ -2,7 +2,6 @@ package com.fundfun.fundfund.service.product;
 
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
-import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.exception.InSufficientMoneyException;
@@ -19,11 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,7 +34,6 @@ public class ProductServiceImpl implements ProductService {
     private final OrderServiceImpl orderService;
     private final UserService userService;
     private final ModelMapper modelMapper;
-
 
     public ProductDto createProduct(Users users) { //테스트용code
 
@@ -64,10 +59,9 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 전체 상품 조회
      */
-    public List<Product> selectAll() {
+    public List<ProductDto> selectAll() {
         List<Product> productList = productRepository.findAll();
-        //return  productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
-        return productList;
+        return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
     }
 
     /**
@@ -79,14 +73,22 @@ public class ProductServiceImpl implements ProductService {
         if (dbProduct == null || user != dbProduct.getFundManager()) {
             throw new RuntimeException("상품을 수정할 수 없습니다.");
         }
+
         //정보 수정
         productDto.setId(productId);
         productDto.setCrowdStart(dbProduct.getCrowdStart());
         productDto.setCrowdEnd(dbProduct.getCrowdEnd());
         productDto.setFundManager(user);
+        productDto.setStatus(dbProduct.getStatus());
+        productDto.setCurrentGoal(dbProduct.getCurrentGoal());
 
-        String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-        productDto.setThumbnailRelPath(thumbnailImgRelPath);
+        if (thumbnailImg != null) {
+            String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
+            productDto.setThumbnailRelPath(thumbnailImgRelPath);
+        } else{
+            productDto.setThumbnailRelPath(dbProduct.getThumbnailRelPath());
+
+        }
 
         Product product = modelMapper.map(productDto, Product.class);
         productRepository.save(product);
@@ -131,10 +133,9 @@ public class ProductServiceImpl implements ProductService {
 
         //Order(주문서) 생성
         Orders order = orderService.createOrder(cost, productDto, user); //(유저의 투자금액, 상품 정보, 로그인한 유저 정보)
-        System.out.println("order 정보는!!!!!! "+ order.getId());
 
         //User Point update
-        if(user.getMoney() < cost) {
+        if (user.getMoney() < cost) {
             throw new InSufficientMoneyException("충전이 필요합니다.");
         }
         userService.updateMoney(user.getMoney() - cost, user);
@@ -162,6 +163,10 @@ public class ProductServiceImpl implements ProductService {
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
 
+        if (product == null) {
+            throw new RuntimeException("상품 등록에 실패하셨습니다.");
+        }
+
         return productRepository.save(product);
     }
 
@@ -170,9 +175,9 @@ public class ProductServiceImpl implements ProductService {
      */
     public List<Product> searchTitle(String title) {
         List<Product> productList = productRepository.findByTitleContaining(title);
-//        if (productList == null) {
-//            throw new RuntimeException("해당 상품이 존재하지 않습니다.");
-//        }
+        if (productList == null) {
+            throw new RuntimeException("해당 상품이 존재하지 않습니다.");
+        }
 //        return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
         return productList;
     }
@@ -194,8 +199,8 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 상품리스트 status(= 진행중 or 완료)에 따른 페이지 설정
-     * */
-    public List<Product> selectByStatus(String status){
+     */
+    public List<Product> selectByStatus(String status) {
         return productRepository.findByStatus(status);
     }
 
@@ -205,12 +210,9 @@ public class ProductServiceImpl implements ProductService {
     public int crowdDeadline(ProductDto productDto) {
         LocalDate now = LocalDate.now();
         LocalDate deadLine = LocalDate.parse(productDto.getCrowdEnd());
-
         Period period = Period.between(now, deadLine);
-
 //        Date deadLine = productDto.toDate(productDto.getCrowdEnd());
 //        long diff = ((deadLine.getTime() - now.getTime()) / (24 * 60 * 60 * 1000) + 1);
-
         System.out.println("gap: " + period.getDays());
         return period.getDays();
     }
@@ -224,12 +226,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public String saveThumbnailImg(MultipartFile thumbnailImg) {
-        System.out.println("thumbnailImg: " + thumbnailImg);
+        //System.out.println("thumbnailImg: " + thumbnailImg);
         String thumbnailImgDirName = getCurThumbnailImgDirName();
         String fileName = UUID.randomUUID() + ".jpeg";
         String thumbnailImgDirPath = genFileDirPath + "/" + thumbnailImgDirName;
         String thumbnailImgFilePath = thumbnailImgDirPath + "/" + fileName;
-        System.out.println("thumbnailImgFilePath: " + thumbnailImgFilePath);
+        //System.out.println("thumbnailImgFilePath: " + thumbnailImgFilePath);
         new File(thumbnailImgDirPath).mkdirs();
 
         try {

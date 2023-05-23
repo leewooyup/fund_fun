@@ -5,13 +5,6 @@
         xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
-    <style>
-        div .aa {
-            float: right;
-            padding: 0 10px 0 0
-        }
-
-    </style>
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
@@ -45,7 +38,6 @@
                                      width="250px">
                             </div>
                             <div>
-<!--                                <span th:text="${}"></span>-->
                             </div>
                         </a>
                         <div th:text="${ele.crowdStart}"></div>
@@ -55,7 +47,7 @@
         </div>
 
         <form action="/product/search" method="get">
-            <div class="aa">
+            <div style=" float: right;padding: 0 10px 0 0">
                 <input name="title" placeholder="Search" type="text"></input>
                 <button class="btn btn-warning" type="submit">검색</button>
             </div>
@@ -70,10 +62,11 @@
         function changeSelect() {
             var selectList = document.getElementById("category")
             if (selectList.options[selectList.selectedIndex].value === "1") {
-                location.href = "/product/list?mode="+1;
+                location.href = "/product/list?mode=" + 1;
             }
             if (selectList.options[selectList.selectedIndex].value === "2") {
-                location.href = "/product/list?mode="+2;
+                location.href = "/product/list?mode=" + 2;
+
             }
         }
     </script>
