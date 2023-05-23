@@ -72,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(NoSuchElementException::new);
     }
     @Override
-    public PaymentMeanDTO findPayMean(Long id) {
+    public PaymentMeanDTO findPayMeanById(Long id) {
         return payMeanRepository.findById(id).map(x -> modelMapper.map(x, PaymentMeanDTO.class))
                 .orElseThrow(NoSuchElementException::new);
     }
