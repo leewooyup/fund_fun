@@ -32,21 +32,25 @@ public class PortfolioController {
     private final VoteService voteService;
 
     @GetMapping("/portfolio")
-    public String goPortfolioList(HttpServletRequest req, HttpServletResponse res, Model model, @AuthenticationPrincipal Users user) {
-        String reqData = req.getParameter("postId");
+    public String goPortfolioList(HttpServletRequest req, HttpServletResponse res, Model model,
+                                  @AuthenticationPrincipal Users user) {
+        String reqData = req.getParameter("postId");  //postid 파라미터로 받음.
 
-        if(reqData == null) {
-            model.addAttribute("state", "noId");
+        if (reqData == null) {
+            model.addAttribute("state", "noId");  //모델에 state속성추가
         } else {
-            model.addAttribute("postId", UUID.fromString(reqData));
+            model.addAttribute("postId", UUID.fromString(reqData));  //postid 변화 >  voteDto 조회
             model.addAttribute("state", "pass");
 
             UUID postId = UUID.fromString(reqData);
             VoteDto voteDto = voteService.selectVoteByPostId(postId);
+
             model.addAttribute("chkVote", opinionService.checkOpinion(voteDto, user) ? "1" : "0");
+            //의견 확인 checkVote ( 1, 0)  으로 설정해서 보이기
         }
         return "portfolio/portfolioList";
     }
+
 
     /*
      * 포트폴리오 작성/수정/상세보기/삭제
@@ -56,12 +60,13 @@ public class PortfolioController {
      * - R : 상세보기
      * - D : 삭제
      */
+
     @GetMapping("/portfolio/goDetail")
     public String goDetail(HttpServletRequest req, HttpServletResponse res, Model model) {
         String portfolioId = req.getParameter("id");
         String postId = req.getParameter("postId");
 
-        if(portfolioId != null) {
+        if (portfolioId != null) {
             UUID id = UUID.fromString(portfolioId);
             model.addAttribute("data", portfolioService.selectById(id));
         } else {
@@ -72,10 +77,9 @@ public class PortfolioController {
         model.addAttribute("postId", postId);
 
         return "portfolio/portfolioDetail";
-        //존재하지 않은 게시물 처리
     }
 
-   /* // 포트폴리오 목록 불러오기 - ajax (0521 코드)
+   // 포트폴리오 목록 불러오기 - ajax (0521 코드)
     @PostMapping(value = "/portfolio/getData")
     @ResponseBody
     public HashMap<String, Object> getData(@RequestBody Map<String, Object> paramMap) {
@@ -156,7 +160,7 @@ public class PortfolioController {
             portfolioDto.setVoteId(voteDto.getId());
             portfolioDto.setUserId(user.getId());
 
-            if(state.equals("D")) {
+            if (state.equals("D")) {
                 UUID portfolioId = UUID.fromString(paramMap.get("portfolioId").toString());
                 portfolioDto.setId(portfolioId);
                 portfolioService.deletePort(portfolioDto);
@@ -166,7 +170,7 @@ public class PortfolioController {
                 portfolioDto.setWarnLevel(paramMap.get("warnLevel").toString());
                 portfolioDto.setContentPortfolio(paramMap.get("content").toString());
 
-                if(state.equals("W")) {
+                if (state.equals("W")) {
                     portfolioService.createPort(portfolioDto);
                 } else {
                     UUID portfolioId = UUID.fromString(paramMap.get("portfolioId").toString());
@@ -183,60 +187,3 @@ public class PortfolioController {
         }
     }
 }
-
-
-   /* //0522 코드
-    // 포트폴리오 수정/작성 - ajax
-    @PostMapping(value = "/portfolio/commitData")
-    @ResponseBody
-    public HashMap<String, Object> commitData(@AuthenticationPrincipal Users user,
-                                              @RequestBody Map<String, Object> paramMap) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("msg", "fail");
-
-        //펀드매니저만 설정되게 해놓고 싶음.
-        if (user.getRole().equals("fund_manager")) {
-            try {
-                PortfolioDto portfolioDto = new PortfolioDto();
-                String state = paramMap.get("state").toString();
-
-                UUID postId = UUID.fromString(paramMap.get("postId").toString());
-                VoteDto voteDto = voteService.selectVoteByPostId(postId);
-
-                portfolioDto.setPostId(postId);
-                portfolioDto.setVoteId(voteDto.getId());
-
-                // 포트폴리오 삭제
-                if (state.equals("D")) {
-                    UUID portfolioId = UUID.fromString(paramMap.get("portfolioId").toString());
-                    portfolioDto.setId(portfolioId);
-                    portfolioService.deletePort(portfolioDto);
-                } else { //포트폴리오 수정 및 생성
-                    portfolioDto.setTitle(paramMap.get("title").toString());
-                    portfolioDto.setBeneRatio(Float.parseFloat(paramMap.get("beneRatio").toString()));
-                    portfolioDto.setWarnLevel(paramMap.get("warnLevel").toString());
-                    portfolioDto.setContentPortfolio(paramMap.get("content").toString());
-
-                    if (state.equals("W")) {
-                        portfolioService.createPort(portfolioDto);
-                    } else {
-                        UUID portfolioId = UUID.fromString(paramMap.get("portfolioId").toString());
-                        portfolioDto.setId(portfolioId);
-                        portfolioService.updatePort(portfolioDto);
-                    }
-                }
-                map.put("msg", "success");   //성공
-            } catch (Exception e) {
-                System.out.println("Portfolio 수정/등록 시 에러 : " + e);
-            } finally {
-                return map;
-            }
-        } else {
-            //펀드매니저만 가능함 등록되지 않음;
-        }
-        return map;
-    }*/
-
-
-
-
