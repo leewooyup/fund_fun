@@ -1,6 +1,10 @@
 package com.fundfun.fundfund.domain.user;
 
+import com.fundfun.fundfund.domain.alarm.Alarm;
 import com.fundfun.fundfund.domain.order.Orders;
+import com.fundfun.fundfund.domain.payment.PayMean;
+import com.fundfun.fundfund.domain.payment.Payment;
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.vote.Vote;
 
@@ -19,26 +23,35 @@ import java.util.UUID;
 
 @Entity
 @Getter
+//@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
-//@ToString
+
 public class Users extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private UUID id;
 
-    @OneToMany(mappedBy = "orders")
-    private List<Product> inprocess_product = new ArrayList<>();
-//    @OneToMany(mappedBy = "writer")
-//    private List<Vote> inprocess_vote = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<Portfolio> on_vote_portfolio = new ArrayList<>();
 
     @OneToMany(mappedBy = "fundManager")
     private List<Product> managing_product = new ArrayList<>();
 
+    @OneToMany
+    private List<Alarm> alarms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "paid_by")
+    private List<Payment> payments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<PayMean> means = new ArrayList<>();
+
     private String password;
+
     private String name;
     private String email;
     private Role role;
@@ -50,6 +63,25 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private Long total_investment;
     private Long benefit;
 
+    public void addAlarm(Alarm alarm) {
+        alarms.add(alarm);
+    }
+
+    public void addPayMean(PayMean payMean) {
+        means.add(payMean);
+    }
+
+    public void addPayment(Payment payment) {
+        payments.add(payment);
+    }
+
+    public void addPortfolio(Portfolio portfolio) {
+        on_vote_portfolio.add(portfolio);
+    }
+
+    public void addProduct(Product product) {
+        managing_product.add(product);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
