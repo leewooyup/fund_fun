@@ -4,7 +4,8 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
 >
-<th:block layout:fragment="content"/>
+
+<th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
 
     <script th:inline="javascript">
@@ -22,17 +23,26 @@
 
 
     <div class="d-flex flex-column wrapper">
+        <!-- 글 제목 -->
         <div>
             <h2><span th:text="${postDto.title}">title</span></h2>
         </div>
+
+        <!-- 글 작성일 -->
         <div>
             <span th:text="${postDto.createdAt}" class="gray_text bottom_line">createdAt</span>
         </div>
 
+        <!-- 글 내용, 목록으로 돌아가기, 좋아요, 수정, 삭제 버튼(순서대로) -->
+        <!-- 좋아요 버튼 중앙으로 옮겨야 함 -->
+        <!-- 글 내용 자동으로 줄 넘어가기? 설정해야 됨 -->
         <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
             <span th:text="${postDto.contentPost}" class="fontSize-fix">content</span>
 
             <div>
+                <button class="leftArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/list}">목록으로 돌아가기</a></button>
+
                 <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
                         th:href="@{/post/detail/{id}/like(id=${postDto.id})}"><span th:text="${postDto.likePost}"
                                                                                     class="fontSize-fix">likePost</span></a>
@@ -45,52 +55,16 @@
             </div>
         </div>
 
+        <!-- 포트폴리오 투표 버튼 -->
+        <!-- statusPost = StPost.EARLY_IDEA일 때 감춰져야 -->
         <div style="margin-top: 1rem;" class="centerBox2 paddingBtn">
             <button class="centerBox2" id="goPFList">포트폴리오 투표</button>
         </div>
 
-    <div style="margin-top: 1rem;">
-        <span class="fontSize-fix">댓글 </span>
-        <span class="fontSize-fix" th:text="${replyCount}"> </span>
-        <!--            <div style="margin-top: 0.5rem; padding-bottom: 1rem;">-->
-        <!--                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus">입력</button>-->
-        <!--                <input type="text" class="width92 leftArea border-yellow paddingBtn"/>-->
-        <!--            </div>-->
-
-        <form name="replyForm" action="/reply/write" method="post" autocomplete="off">
-            <div class="form-group">
-                <input type="hidden" name="id" th:value="*{postDto.id}"/>
-                <textarea name="contentReply" class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea>
-            </div>
-            <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>
-        </form>
-
-        <!--            <form method="post" th:action="@{reply/write}" th:object="${replyForm"}>-->
-        <!--                <div style="width:100%;">-->
-        <!--                    <input type="text" th:field="*{contentReply}" style="width:100%;" placeholder="댓글을 입력해주세요."></input>-->
-        <!--                </div>-->
-        <!--                <div class="d-flex justify-content-end">-->
-        <!--                    <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>-->
-        <!--                </div>-->
-        <!--            </form>-->
-    </div>
-
-    <div>
-        <div style="margin-top: 3rem;">
-            <table>
-                <tr th:each="ele: ${replyList}" style="border-top: 2px solid black;">
-                    <td><span th:text="${ele.getContentReply()}"></span></td>
-                    <td th:text="${ele.getCreatedAt()}"></td>
-                    <td><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
-                </tr>
-            </table>
+        <!-- 댓글 수, 등록폼 -->
         <div style="margin-top: 1rem;">
             <span class="fontSize-fix">댓글 </span>
             <span class="fontSize-fix" th:text="${replyCount}"> </span>
-<!--            <div style="margin-top: 0.5rem; padding-bottom: 1rem;">-->
-<!--                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus">입력</button>-->
-<!--                <input type="text" class="width92 leftArea border-yellow paddingBtn"/>-->
-<!--            </div>-->
 
             <form name="replyForm" action="/reply/write" method="post" autocomplete="off">
                 <div class="form-group">
@@ -99,17 +73,10 @@
                 </div>
                 <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>
             </form>
-
-            <!--            <form method="post" th:action="@{reply/write}" th:object="${replyForm"}>-->
-            <!--                <div style="width:100%;">-->
-            <!--                    <input type="text" th:field="*{contentReply}" style="width:100%;" placeholder="댓글을 입력해주세요."></input>-->
-            <!--                </div>-->
-            <!--                <div class="d-flex justify-content-end">-->
-            <!--                    <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>-->
-            <!--                </div>-->
-            <!--            </form>-->
         </div>
 
+        <!-- 댓글 목록 -->
+        <!-- CSS 전체적으로 수정해야 -->
         <div>
             <div style="margin-top: 3rem;">
                 <table>
