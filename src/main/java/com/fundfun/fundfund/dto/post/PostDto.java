@@ -2,41 +2,41 @@ package com.fundfun.fundfund.dto.post;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
 public class PostDto {
     private UUID id;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    @NotEmpty(message="제목을 입력해주세요.")
     private String title;
+    @NotEmpty(message="내용을 입력해주세요.")
+    @Size(min=30, max=1000, message="게시물의 길이 제한을 초과했습니다.")
     private String contentPost;
     private int likePost;
     private String categoryPost;
     private StPost statusPost;
     private Vote vote;
+    private Users user;
 
-
-    public void setStatusPost(StPost statusPost) {
-        this.statusPost = statusPost;
-    }
     public void setTitle(String title) {
         this.title = title;
     }
     public void setContentPost(String contentPost) {
         this.contentPost = contentPost;
     }
-    public void setLikePost(int likePost){ this.likePost = likePost; }
 
-    public void linkVote(Vote vote) {
-        this.vote = vote;
-    }
-
+    public void setCategoryPost(String categoryPost) {this.categoryPost = categoryPost;}
 }

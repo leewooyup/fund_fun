@@ -44,7 +44,6 @@ public class Orders extends BaseTimeEntity {
 //    @JoinColumn(name = "payment_id")
 //    private Payment payment;
 //
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;

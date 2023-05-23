@@ -69,4 +69,29 @@ public class Product extends BaseTimeEntity {
         this.thumbnailRelPath = this.thumbnailRelPath == null ? "/product/avatar.jpg" : this.thumbnailRelPath;
     }*/
 
+    public String uuidEncode() {
+        //UUID encode
+        Base64.Encoder encoder = Base64.getEncoder();
+        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
+
+        return encodedString;
+    }
+
+    public Date toDate(String crowdEnd) {
+        Date deadLine = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            deadLine = sdf.parse(crowdEnd);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return deadLine;
+    }
+
+    public String getThumbnailImgUrl() {
+        if(thumbnailRelPath == null) return "/gen/product/avatar.jpg";
+        return "/gen/" + thumbnailRelPath;
+    }
+
+
 }

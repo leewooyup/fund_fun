@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+
+    <script th:inline="javascript">
+        var postId = [[${postDto.id}]];
+    </script>
+
+    <script type="text/javascript">
+        $(Document).ready(function () {
+            // 포트폴리오 투표 클릭
+            $("#goPFList").on("click", function () {
+                location.href = "/portfolio?postId=" + postId;
+            });
+        });
+    </script>
+
+
+    <div class="d-flex flex-column wrapper">
+        <!-- 글 제목 -->
+        <div>
+            <h2><span th:text="${postDto.title}">title</span></h2>
+        </div>
+
+        <!-- 글 작성일 -->
+        <div>
+            <span th:text="${postDto.createdAt}" class="gray_text bottom_line">createdAt</span>
+        </div>
+
+        <!-- 글 내용, 목록으로 돌아가기, 좋아요, 수정, 삭제 버튼(순서대로) -->
+        <!-- 좋아요 버튼 중앙으로 옮겨야 함 -->
+        <!-- 글 내용 자동으로 줄 넘어가기? 설정해야 됨 -->
+        <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
+            <span th:text="${postDto.contentPost}" class="fontSize-fix">content</span>
+
+            <div>
+                <button class="leftArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/list}">목록으로 돌아가기</a></button>
+
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/detail/{id}/like(id=${postDto.id})}"><span th:text="${postDto.likePost}"
+                                                                                    class="fontSize-fix">likePost</span></a>
+                </button>
+
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/delete/{id}(id=${postDto.id})}">삭제</a></button>
+                <button class="rightArea bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/edit/{id}(id=${postDto.id})}">수정</a></button>
+            </div>
+        </div>
+
+        <!-- 포트폴리오 투표 버튼 -->
+        <!-- statusPost = StPost.EARLY_IDEA일 때 감춰져야 -->
+        <div style="margin-top: 1rem;" class="centerBox2 paddingBtn">
+            <button class="centerBox2" id="goPFList">포트폴리오 투표</button>
+        </div>
+
+        <!-- 댓글 수, 등록폼 -->
+        <div style="margin-top: 1rem;">
+            <span class="fontSize-fix">댓글 </span>
+            <span class="fontSize-fix" th:text="${replyCount}"> </span>
+
+            <form name="replyForm" action="/reply/write" method="post" autocomplete="off">
+                <div class="form-group">
+                    <input type="hidden" name="id" th:value="*{postDto.id}"/>
+                    <textarea name="contentReply" class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea>
+                </div>
+                <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>
+            </form>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <!-- CSS 전체적으로 수정해야 -->
+        <div>
+            <div style="margin-top: 3rem;">
+                <table>
+                    <tr th:each="ele: ${replyList}" style="border-top: 2px solid black;">
+                        <td><span th:text="${ele.getContentReply()}"></span></td>
+                        <td th:text="${ele.getCreatedAt()}"></td>
+                        <td><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:text="${curCollect}"></div>
+
+    <style>
+        .fontSize-fix {
+            font-size: 1.2rem;
+        }
+
+        .centerBox {
+            width: 5%;
+            margin: auto;
+            text-align: center;
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .centerBox2 {
+            width: 60%;
+            margin: auto;
+            text-align: center;
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .paddingBtn {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
+        .paddingBtn-plus {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+        }
+
+        .gray_text {
+            color: darkgray;
+        }
+
+        .bottom_line {
+            border-bottom: 1px solid darkgray;
+        }
+
+        .leftArea {
+            float: left;
+        }
+
+        .rightArea {
+            float: right;
+        }
+
+        .bg-yellow {
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .border-yellow {
+            border: 1px solid #ffc107;
+        }
+
+        .left_margin {
+            margin-left: 1rem;
+        }
+
+        .width92 {
+            width: 92%;
+        }
+    </style>
+</th:block>
+</html>

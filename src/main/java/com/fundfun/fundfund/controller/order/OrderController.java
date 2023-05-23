@@ -63,6 +63,7 @@ public class OrderController {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
+
         UUID productId = orderService.decEncId(encId);
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
         if (productDto == null || investDto == null) {

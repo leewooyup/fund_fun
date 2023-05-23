@@ -121,7 +121,6 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 상품 투자금 갱신
-     * <p>
      * //     * @param cost
      * //     * @param productId
      *
@@ -154,7 +153,6 @@ public class ProductServiceImpl implements ProductService {
         return 1;
     }
 
-
     /**
      * 상품 등록하기
      */
@@ -168,7 +166,6 @@ public class ProductServiceImpl implements ProductService {
         if (product == null) {
             throw new RuntimeException("상품 등록에 실패하셨습니다.");
         }
-
         return productRepository.save(product);
     }
 
@@ -182,21 +179,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
     }
-
-    /**
-     * 아이디로 상품 조회
-     */
-//    public List<Product> searchId(Users user) {
-//        List<Product> productList = productRepository.findByUserId(user.getId());
-//        if(productList == null){
-//            throw new RuntimeException("해당 게시글이 존재하지 않습니다.");
-//        }
-//        return productList ;
-//    }
-
-//    public List<Product> selectByStatus(int status){
-//        return productRepository.findByStatus(status);
-//    }
 
     /**
      * 상품리스트 status(= 진행중 or 완료)에 따른 페이지 설정

@@ -17,8 +17,10 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findByTitleContaining(String title);
     @Query(value = "select p from Product p order by p.createdAt desc")
     List<Product> findAll();
+
     @Query(value = "select p from Product p where p.status = ?1")
     List<Product> findByStatus(String status);
 
+//    List<Product> findByUserId(UUID userId);
 
 }

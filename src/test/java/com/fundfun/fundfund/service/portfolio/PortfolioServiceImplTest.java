@@ -2,12 +2,10 @@ package com.fundfun.fundfund.service.portfolio;
 
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.dto.vote.VoteDto;
-import com.fundfun.fundfund.service.portfolio.PortfolioService;
 import com.fundfun.fundfund.service.post.PostService;
 import com.fundfun.fundfund.service.vote.VoteService;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.sound.sampled.Port;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,7 +58,7 @@ class PortfolioServiceImplTest {
     public void 포폴아이디로조회() throws Exception {
         List<PortfolioDto> list = portfolioService.selectAll();
         UUID uuid = list.get(0).getId();
-        PortfolioDto portfolioDto = portfolioService.selectPortById(uuid);
+        PortfolioDto portfolioDto = portfolioService.selectById(uuid);
         Portfolio p = modelMapper.map(portfolioDto, Portfolio.class);
         System.out.println(p.getId() + " , " + p.getContentPortfolio());
     }
@@ -81,7 +78,7 @@ class PortfolioServiceImplTest {
     public void 포트폴리오_삭제() throws Exception {
         List<PortfolioDto> list = portfolioService.selectAll();
         PortfolioDto portfolioDto = list.get(0);
-        portfolioService.deletePort(portfolioDto.getId());
+        portfolioService.deletePort(portfolioDto);
     }
 
 //    @Test
