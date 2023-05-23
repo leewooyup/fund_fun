@@ -16,10 +16,10 @@ import java.util.UUID;
 
 
 public interface UserService {
-    List<Users> findAll();
-    Optional<Users> findById(UUID id);
-    Optional<Users> findByEmail(String email);
-    Users register(Users users);
+    List<UserDTO> findAll();
+    UserDTO findById(UUID id);
+    UserDTO findByEmail(String email);
+    UserDTO register(Users users);
     UUID deleteById(UUID uuid);
     Users update(UUID uuid, UserDTO to);
 }
