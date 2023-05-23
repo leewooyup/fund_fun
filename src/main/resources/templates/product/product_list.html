@@ -38,7 +38,7 @@
                         <a th:href="@{|/order/form/${ele.uuidEncode}|}">
                             <div>
                                 <img alt="" height="250px" style="border:solid;width:80%"
-                                     th:src="${ele.getThumbnailImgUrl}"
+                                     th:src="@{|/gen/${ele.thumbnailRelPath}|}"
                                      width="250px">
                             </div>
                             <div>

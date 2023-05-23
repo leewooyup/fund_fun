@@ -32,9 +32,10 @@
           <div class="col" >
             <div>
 
-              <a href="#" th:name="${ele.uuidEncode}" id="productHiddenCheck">
+<!--              <a href="#" th:name="${ele.uuidEncode}" id="productHiddenCheck">-->
+              <a th:href="@{|/order/form/${ele.uuidEncode}|}">
                 <div>
-                  <img alt="" src="https://picsum.photos/id/237/400/300" style="border:solid;width:80%">
+                  <img alt="" th:src="${ele.getThumbnailImgUrl}" height="250px" style="border:solid;width:80%">
                 </div>
                 <div>
                   <span th:text="${ele.title}"></span>
@@ -47,15 +48,14 @@
       </div>
       </th:block>
       <th:block th:if="${searchList.size() == 0}">
-        <div style="text-align: center"><h4>조회된 상품이 존재하지 않습니다.</h4></div>
+        <div style="text-align: center"><h5>조회된 상품이 존재하지 않습니다.</h5></div>
       </th:block>
-      <form action="/order/form" method="get" id="productDetailSub">
-        <input type="hidden" name="encId" >
-      </form>
+<!--      <form action="/order/form" method="get" id="productDetailSub">-->
+<!--        <input type="hidden" name="encId" >-->
+<!--      </form>-->
     </div>
   </div>
-  <script>
-
+<!--  <script>
     $(function(){
       $(document).on("click","#productHiddenCheck", function(){
         //alert($(this).attr("name"))
@@ -66,8 +66,7 @@
 
       })
     })
-
-  </script>
+  </script>-->
   </body>
 </th:block>
 

@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @DynamicInsert
 public class Product extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
@@ -33,6 +35,7 @@ public class Product extends BaseTimeEntity {
 
     private String crowdStart;
 
+    @ColumnDefault("'2023-05-29'") //test
     private String crowdEnd;
 
     @ColumnDefault("0")
@@ -46,7 +49,7 @@ public class Product extends BaseTimeEntity {
 
     private String description;
 
-    @ColumnDefault("'product/avatar.jpg'")
+    @ColumnDefault("'product/avatar.jpeg'")
     private String thumbnailRelPath;
 
 //    @OneToOne

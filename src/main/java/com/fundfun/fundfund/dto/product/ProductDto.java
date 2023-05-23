@@ -24,7 +24,6 @@ public class ProductDto{
     private String title;
     @NotEmpty(message = "시작일을 설정해주세요.")
     private String crowdStart;
-    @NotEmpty(message = "종료일을 설정해주세요.")
     private String crowdEnd;
     @NotNull(message = "목표금액을 입력해주세요.")
     private Long goal;
