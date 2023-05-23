@@ -31,7 +31,7 @@
                 <div class="col">
                     <div><span th:text="${ele.title}"></span>
 
-                        <a href="#" id="productHiddenCheck" th:name="${ele.uuidEncode}">
+                        <a th:href="@{|/order/form/${ele.uuidEncode}|}">
                             <div>
                                 <img alt="" height="250px" style="border:solid;width:80%"
                                      th:src="${ele.getThumbnailImgUrl}"
@@ -56,25 +56,9 @@
         <a href="/product/register">
             <button class="btn btn-warning" type="submit">글쓰기</button>
         </a>
-        <form action="/order/form" id="productDetailSub" method="get">
-            <input name="encId" type="hidden">
-        </form>
     </div>
     </div>
     <script>
-
-        $(function () {
-            $(document).on("click", "#productHiddenCheck", function () {
-                //alert($(this).attr("name"))
-                console.dir($("[name=encodedUUID]"))
-                $("[name=encId]").val($(this).attr("name"));
-
-                $("#productDetailSub").submit();
-
-            })
-        })
-
-
         function changeSelect() {
             var selectList = document.getElementById("category")
             if (selectList.options[selectList.selectedIndex].value === "1") {
@@ -85,7 +69,43 @@
 
             }
         }
+    </script>
+    <script th:inline="javascript">
+    toastr.options = {
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
 
+    function errorModal(msg) {
+        toastr["error"](msg);
+    }
+
+    function successModal(msg) {
+        toastr["success"](msg);
+    }
+
+    const params = /*[[ ${param} ]]*/ null;
+
+    if (params.errMsg) {
+        errorModal(params.errMsg);
+    }
+
+    if(params.msg) {
+        successModal(params.msg);
+    }
     </script>
     </body>
 </th:block>

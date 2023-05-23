@@ -5,6 +5,7 @@ import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.exception.InSufficientMoneyException;
 import com.fundfun.fundfund.repository.product.ProductRepository;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
@@ -18,6 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +39,31 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
+<<<<<<< HEAD
+=======
+
+    public ProductDto createProduct(Users users) { //테스트용code
+
+        LocalDate startDate = LocalDate.parse("2023-05-24");
+        LocalDate endDate = LocalDate.parse("2023-05-29");
+        Product product = Product.builder()
+                .title("A+B")
+                .crowdStart(startDate.toString())
+                .crowdEnd(endDate.toString())
+                .goal(1000000L)
+                .currentGoal(500L)
+                .status("진행중")
+                .description("펀드진행중")
+                .fundManager(users)
+                .build();
+
+        productRepository.save(product);
+
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        return productDto;
+    }
+
+>>>>>>> c52011146e55457f609ac24852d32fc36bcacb7b
     /**
      * 전체 상품 조회
      */
@@ -99,7 +129,7 @@ public class ProductServiceImpl implements ProductService {
      * @return 성공(1)/실패(0)
      */
     @Transactional
-    public int updateCost(Long cost, ProductDto productDto, Users user) throws RuntimeException {
+    public int updateCost(Long cost, ProductDto productDto, Users user) throws InSufficientMoneyException, RuntimeException {
         //Product currentGoal 갱신하기
         Long money = productDto.getCurrentGoal() + cost;
         productDto.setCurrentGoal(money);
@@ -108,6 +138,9 @@ public class ProductServiceImpl implements ProductService {
         Orders order = orderService.createOrder(cost, productDto, user); //(유저의 투자금액, 상품 정보, 로그인한 유저 정보)
 
         //User Point update
+        if(user.getMoney() < cost) {
+            throw new InSufficientMoneyException("충전이 필요합니다.");
+        }
         userService.updateMoney(user.getMoney() - cost, user);
 
         //하나라도 못찾은 것이 있다면, Rollback
@@ -129,7 +162,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, Users user) {
         String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-
         productDto.setFundManager(user);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
@@ -178,12 +210,14 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 마감일까지의 d-day
      */
-    public Long crowdDeadline(ProductDto productDto) {
-        Date deadLine = productDto.toDate(productDto.getCrowdEnd());
-        Date now = new Date();
-        Long diff = ((deadLine.getTime() - now.getTime()) / (24 * 60 * 60 * 1000) + 1);
-
-        return diff;
+    public int crowdDeadline(ProductDto productDto) {
+        LocalDate now = LocalDate.now();
+        LocalDate deadLine = LocalDate.parse(productDto.getCrowdEnd());
+        Period period = Period.between(now, deadLine);
+//        Date deadLine = productDto.toDate(productDto.getCrowdEnd());
+//        long diff = ((deadLine.getTime() - now.getTime()) / (24 * 60 * 60 * 1000) + 1);
+        System.out.println("gap: " + period.getDays());
+        return period.getDays();
     }
 
 

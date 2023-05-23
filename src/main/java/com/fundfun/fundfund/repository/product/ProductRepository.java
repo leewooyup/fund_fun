@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,5 +18,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findAll();
     @Query(value = "select p from Product p where p.status = ?1")
     List<Product> findByStatus(String status);
+
 
 }

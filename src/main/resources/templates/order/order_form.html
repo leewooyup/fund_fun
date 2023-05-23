@@ -12,7 +12,7 @@
         <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
             <div>
-                <img alt="" src="https://picsum.photos/id/237/400/300">
+                <img alt="" th:src="@{|/gen/${product.thumbnailRelPath}|}" width="400px" height="300px">
             </div>
             <div>
                 <div>
@@ -31,8 +31,7 @@
                 </div>
                 <div>
                     <label class="sub-title">담당 펀드매니저</label>
-                    <div th:text="${#authentication.principal.nickname}"></div>
-                    <div>김깨비 펀드매니저님</div><!-- 하드코딩 -->
+                    <div th:text="|${product.fundManager.name} 펀드매니저님|"></div>
                 </div>
                 <form method="post" th:action="@{|/order/send/${encId}|}" th:object="${investDto}">
                     <input type="hidden" name="encId" th:value="${encId}">
@@ -60,8 +59,8 @@
     <a th:href= "@{/product/delete/{id}(id=${encId})}" id="confirmDel" >
         <button class="btn btn-warning" type="button">삭제</button>
     </a>
-    <script>
 
+    <script>
         $(function(){
             $('#confirmDel').click(function(){
                 if(!confirm('삭제하시면 복구할수 없습니다. \n 정말로 삭제하시겠습니까??')){
@@ -70,6 +69,39 @@
             });
         });
 
+    </script>
+    <script th:inline="javascript">
+    toastr.options = {
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
+
+    function errorModal(msg) {
+        toastr["error"](msg);
+    }
+
+    function successModal(msg) {
+        toastr["success"](msg);
+    }
+
+    const params = /*[[ ${param} ]]*/ null;
+
+    if (params.errMsg) {
+        errorModal(params.errMsg);
+    }
     </script>
 </th:block>
 </html>

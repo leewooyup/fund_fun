@@ -3,6 +3,10 @@ package com.fundfun.fundfund.base;
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
+<<<<<<< HEAD
+=======
+import com.fundfun.fundfund.dto.product.ProductDto;
+>>>>>>> c52011146e55457f609ac24852d32fc36bcacb7b
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserServiceImpl;
@@ -21,11 +25,9 @@ public class DevInitData {
     CommandLineRunner init(ProductServiceImpl productService, OrderServiceImpl orderService, UserServiceImpl userService) {
         return args -> {
             Users users = userService.createUser();
-            Product product = productService.createProduct();
-            Orders order = orderService.createOrder(300L, product, users);
+            ProductDto product = productService.createProduct(users);
+            Orders order = orderService.createOrder(500L, product, users);
 
-            Product product2 = productService.createProduct2();
-            orderService.createOrder(20L, product2, users);
 
         };
     }

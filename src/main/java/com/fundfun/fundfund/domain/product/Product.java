@@ -44,7 +44,7 @@ public class Product extends BaseTimeEntity {
 
     private String description;
 
-    @ColumnDefault("'/product/avatar.jpg'")
+    @ColumnDefault("'product/avatar.jpg'")
     private String thumbnailRelPath;
 
 //    @OneToOne

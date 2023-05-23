@@ -90,4 +90,9 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.delete(order);
     }
 
+    //scheduler test 코드
+    public void sayHello() {
+        System.out.println("HELLO!!!!!!!!!!");
+    }
+
 }
