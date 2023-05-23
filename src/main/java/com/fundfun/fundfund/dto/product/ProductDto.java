@@ -46,4 +46,17 @@ public class ProductDto{
         }
         return deadLine;
     }
+
+    public String uuidEncode() {
+        //UUID encode
+        Base64.Encoder encoder = Base64.getEncoder();
+        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
+
+        return encodedString;
+    }
+
+    public String getThumbnailImgUrl() {
+        if (thumbnailRelPath == null) return "/gen/product/avatar.jpg";
+        return "/gen/" + thumbnailRelPath;
+    }
 }
