@@ -1,4 +1,4 @@
-/*
+
 package com.fundfun.fundfund.config.security;
 
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class SecurityConfig {
     }
     // 비밀번호 암호화
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     // 인증
@@ -53,4 +53,4 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
-*/
+

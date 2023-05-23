@@ -45,13 +45,20 @@ public class PostServiceImpl implements PostService {
     }
 
 
+
     @Override
     public PostDto selectPostById(UUID postId) {
+        System.out.println("postId = " + postId);
         Post post = postRepository.findById(postId).orElse(null);
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        PostDto result = modelMapper.map(post, PostDto.class);
-        return result;
-    };
+        PostDto resultDto = new PostDto();
+        System.out.println("post의 id = " + null);
+        if(resultDto != null) {
+            System.out.println("post의 id = " + post.getId());
+            resultDto = modelMapper.map(post, PostDto.class);
+        }
+
+        return resultDto;
+    }
 
 
     @Override
