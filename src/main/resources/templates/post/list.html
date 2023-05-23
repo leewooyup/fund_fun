@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+>
+<th:block layout:fragment="content">
+    <style>
+        div .aa {
+            float: right;
+            padding: 0 10px 0 0
+        }
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+
+
+    </head>
+    <body>
+    <div>
+        <div style="border-bottom:solid;margin:10px;">
+            <h3>아이디어</h3>
+            <h5 class="gray_text">투자 아이디어를 자유롭게 제안할 수 있는 공간입니다.</h5>
+        </div>
+        <div style="margin-top: 1rem;">
+            <span class="gray_text leftArea"><a href="/post/list">최신순</a> | </span>
+            <span class="gray_text leftArea"><a href="/post/list/popular">인기순</a> | </span>
+            <span class="gray_text leftArea"><a href="/post/list/preproduct">가상품</a></span>
+
+            <form action="/post/list/searchResult" method="get">
+                <input type="text" name="keyword" th:text="${keyword}">
+                <button class="btn btn-warning" type="submit">검색</button>
+            </form>
+
+<!--            <button class="rightArea left_margin bg-yellow">검색</button>-->
+<!--            <input type="text" class="rightArea border-yellow"/>-->
+        </div>
+
+        <table>
+            <tr style="border-top: 2px solid black;">
+                <th class="bd-left-none">제목</th>
+                <th>작성일</th>
+                <th class="bd-right-none">좋아요</th>
+            </tr>
+            <tr th:each="ele: ${postList}" style="border-top: 2px solid black;">
+                <td>
+                    <a th:href="@{/post/detail/{id}(id=${ele.getId()})}">
+                        <span th:text="${ele.getTitle()}"></span>
+                    </a>
+                </td>
+                <td th:text="${ele.getCreatedAt()}"></td>
+                <td class="bd-right-none" th:text="${ele.getLikePost()}"></td>
+            </tr>
+        </table>
+
+        <form action="/post/write" method="get">
+            <button class="btn btn-warning" type="submit">글쓰기</button>
+        </form>
+    </div>
+
+    </body>
+</th:block>
+</html>

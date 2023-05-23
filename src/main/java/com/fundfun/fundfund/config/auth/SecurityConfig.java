@@ -1,21 +1,25 @@
-package com.fundfun.fundfund.config.auth;
+/*
+package com.fundfun.fundfund.config.security;
+
 
 import com.fundfun.fundfund.service.user.CustomUserDetailService;
 import com.fundfun.fundfund.service.user.OAuth2UserService;
 import lombok.AllArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-//@RequiredArgsConstructor
+
+@RequiredArgsConstructor
 @EnableWebSecurity//시큐리티 필터
 @EnableGlobalMethodSecurity(prePostEnabled = true)// 특정 페이지에 특정 권한이 있는 유저만 접근을 허용할 경우 권한 및 인증을 미리 체크하겠다는 설정을 활성화
 @AllArgsConstructor
@@ -25,21 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthSuccessHandler authSuccessHandler;
 //    private final JwtTokenProvider jwtTokenProvider;
 
-
-    @Bean
-    public BCryptPasswordEncoder encryptPassword() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService).passwordEncoder(encryptPassword());
-    }
-
-    @Override
-    public void configure(WebSecurity web) { // 4
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**");
-    }
+  
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -102,5 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(oAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
         ;
 
+
     }
 }
+*/

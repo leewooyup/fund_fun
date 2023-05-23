@@ -10,6 +10,9 @@ import com.fundfun.fundfund.domain.vote.Vote;
 
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,6 +29,7 @@ import java.util.UUID;
 //@ToString
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
 @Table(name = "users")
 @AllArgsConstructor
 public class Users extends BaseTimeEntity implements UserDetails {
@@ -38,7 +42,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private List<Portfolio> on_vote_portfolio = new ArrayList<>();
 
     @OneToMany(mappedBy = "fundManager")
-    private List<Product> managing_product = new ArrayList<>();
+    private final List<Product> managing_product = new ArrayList<>();
 
     @OneToMany
     private List<Alarm> alarms = new ArrayList<>();

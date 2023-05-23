@@ -1,11 +1,23 @@
 package com.fundfun.fundfund.service.user;
 
+
 import com.fundfun.fundfund.domain.user.OAuthAttributes;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import com.fundfun.fundfund.domain.user.Role;
+import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.dto.user.UserContext;
+import com.fundfun.fundfund.exception.OAuthTypeMatchNotFoundException;
+import com.fundfun.fundfund.exception.UserNotFoundException;
+import com.fundfun.fundfund.repository.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

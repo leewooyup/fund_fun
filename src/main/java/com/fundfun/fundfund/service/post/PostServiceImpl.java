@@ -1,18 +1,22 @@
 package com.fundfun.fundfund.service.post;
 
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.domain.vote.Vote;
+import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.repository.post.PostRepository;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,16 +40,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> selectAll() {
-        return postRepository.findAll().stream()
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream()
                 .map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
 
 
     @Override
-    public List<PostDto> selectPostByUserId(UUID userId) {
-//        return modelMapper.map(postRepository.findById(userId).
-//                orElse(null), PostDto.class);
-        return postRepository.findById(userId).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+    public PostDto selectPostById(UUID postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        PostDto result = modelMapper.map(post, PostDto.class);
+        return result;
     };
 
 
@@ -66,8 +71,6 @@ public class PostServiceImpl implements PostService {
     public List<PostDto> selectPostByCategory(String category) {
         return postRepository.findByCategoryPost(category).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
-
-
 
     @Override
     public void deletePost(UUID postId){
