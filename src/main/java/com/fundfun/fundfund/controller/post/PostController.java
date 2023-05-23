@@ -42,9 +42,9 @@ public class PostController {
 
     /**
      * 아이디어 인기순 정렬
-     */
+     * */
     @GetMapping("/list/popular")
-    public String popularIdeaList(Model model) {
+    public String popularIdeaList(Model model){
         List<PostDto> postList = postService.getPostsOrderByLikes();
         model.addAttribute("postList", postList);
         return "post/list";
@@ -52,9 +52,9 @@ public class PostController {
 
     /**
      * 가상품만 보기
-     */
+     * */
     @GetMapping("/list/preproduct")
-    public String preproductList(Model model) {
+    public String preproductList(Model model){
         List<PostDto> postList = postService.selectPostByStatus(StPost.PREPRODUCT);
         model.addAttribute("postList", postList);
         return "post/list";
@@ -62,16 +62,16 @@ public class PostController {
 
     /**
      * 키워드로 검색
-     */
+     * */
     @GetMapping("/list/searchResult")
-    public String searchList(Model model, @RequestParam String keyword) {
+    public String searchList(Model model, @RequestParam String keyword){
         System.out.println("keyword = " + keyword);
         List<PostDto> postList = postService.selectPostByKeyword(keyword);
         model.addAttribute("postList", postList);
         model.addAttribute("keyword", keyword);
         return "post/list";
     }
-
+    
     /**
      * 아이디어 상세조회
      */
@@ -83,7 +83,7 @@ public class PostController {
             // 해당 id의 게시물을 model에 담아 반환
 
             List<ReplyDto> replyList = replyService.selectReplyByPostId(postDto);
-            if (replyList != null) {
+            if(replyList != null){
                 model.addAttribute("replyList", replyList);
                 model.addAttribute("replyCount", replyService.countByPostId(id));
             }
@@ -105,7 +105,7 @@ public class PostController {
         postService.addLike(id);
 
         PostDto postDto = postService.selectPostById(id);
-        if (postDto.getLikePost() >= 10 && postDto.getStatusPost() == StPost.EARLY_IDEA) {
+        if(postDto.getLikePost()>=10 && postDto.getStatusPost()==StPost.EARLY_IDEA){
             postService.updateStatus(postDto, StPost.PREPRODUCT);
         } //좋아요가 일정 개수 넘어가면 상태 변경 및 연결된 투표 생성
 
@@ -142,29 +142,20 @@ public class PostController {
      * 아이디어 수정
      */
     @GetMapping("/edit/{postId}")
-    public String goIdeaEdit(@PathVariable UUID postId, Model model, @AuthenticationPrincipal Users user) {
+    public String goIdeaEdit(@PathVariable UUID postId, Model model) {
         PostDto postDto = postService.selectPostById(postId);
-        Users writer = postDto.getUser();
-//        System.out.println("writer = " + writer.getId());
-//        System.out.println("user = " + user.getId());
-//        System.out.println(writer.getId().equals(user.getId()));
-        if (writer.getId().equals(user.getId())) { // 유저의 아이디와 글쓴이의 아이디가 일치하면 글 수정할 수 있도록 처리s
-            if (postDto != null) {
-                PostForm postForm = new PostForm();
-                //postForm.setId(postDto.getId());
-                postForm.setTitle(postDto.getTitle());
-                postForm.setContentPost(postDto.getContentPost());
+        if (postDto != null) {
+            PostForm postForm = new PostForm();
+            //postForm.setId(postDto.getId());
+            postForm.setTitle(postDto.getTitle());
+            postForm.setContentPost(postDto.getContentPost());
 
-                model.addAttribute("postId", postId);
-                model.addAttribute("postForm", postForm);
-                return "post/edit";
-            } else {
-                // 존재하지 않는 게시물일 경우 처리
-                return "redirect:/post/list";
-            }
+            model.addAttribute("postId", postId);
+            model.addAttribute("postForm", postForm);
+            return "post/edit";
         } else {
-
-            throw new RuntimeException("해당 글의 글쓴이만 게시물을 수정할 수 있습니다.");
+            // 존재하지 않는 게시물일 경우 처리
+            return "redirect:/post/list";
         }
     }
 
@@ -185,15 +176,9 @@ public class PostController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteIdea(@PathVariable UUID id, @AuthenticationPrincipal Users user) {
-        PostDto postDto = postService.selectPostById(id);
-        Users writer = postDto.getUser();
+    public String deleteIdea(@PathVariable UUID id) {
 
-        if (writer.getId().equals(user.getId())){
-            postService.deletePost(id);
-            return "redirect:/post/list";
-        } else {
-            throw new RuntimeException("해당 글의 글쓴이만 게시물을 삭제할 수 있습니다.");
-        }
+        postService.deletePost(id);
+        return "redirect:/post/list";
     }
 }

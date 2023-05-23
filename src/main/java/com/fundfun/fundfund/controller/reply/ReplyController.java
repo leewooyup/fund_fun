@@ -1,7 +1,6 @@
 package com.fundfun.fundfund.controller.reply;
 
 import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.reply.Reply;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.reply.ReplyDto;
 import com.fundfun.fundfund.service.post.PostService;
@@ -12,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,19 +47,10 @@ public class ReplyController {
         return "redirect:/post/detail/" + id;
     }
 
-    /**
-     * 댓글 삭제
-     * */
     @GetMapping("/delete/{id}")
     public String deleteReply(@AuthenticationPrincipal Users user, @PathVariable UUID id){
-        ReplyDto replyDto = replyService.selectById(id);
-        Users writer = replyDto.getUser();
+        replyService.deleteReply(id);
 
-        if (writer.getId().equals(user.getId())){ //
-            replyService.deleteReply(id);
-            return "redirect:/post/list";
-        } else {
-            throw new RuntimeException("해당 댓글의 글쓴이만 게시물을 삭제할 수 있습니다.");
-        }
+        return "redirect:/post/detail/" + id;
     }
 }

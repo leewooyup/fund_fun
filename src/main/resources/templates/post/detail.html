@@ -10,44 +10,14 @@
 
     <script th:inline="javascript">
         var postId = [[${postDto.id}]];
-        var postLike = [[${postDto.likePost}]];
     </script>
 
     <script type="text/javascript">
         $(Document).ready(function () {
-            visibleButton();
-
             // 포트폴리오 투표 클릭
             $("#goPFList").on("click", function () {
                 location.href = "/portfolio?postId=" + postId;
             });
-
-            $("#listBtn").on("click", function(){
-                location.href = "/post/list";
-            })
-
-            $("#likePostBtn").on("click", function(){
-                location.href = "/post/detail/" + postId + "/like"
-            })
-
-            $("#editPost").on("click", function(){
-                location.href = "/post/edit/" + postId;
-            })
-
-            $("#deletePost").on("click", function(){
-                location.href = "/post/delete/" + postId;
-            })
-
-            function visibleButton() {
-                if (postLike >= 10) {
-                    $("#buttondiv").show();
-                    $("#deletePost").hide();
-
-                } else {
-                    $("#buttondiv").hide();
-                    $("#deletePost").show();
-                }
-            }
         });
     </script>
 
@@ -68,24 +38,26 @@
         <!-- 글 내용 자동으로 줄 넘어가기? 설정해야 됨 -->
         <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
             <span th:text="${postDto.contentPost}" class="fontSize-fix">content</span>
-            <div style="margin-top: 1rem; padding-bottom: 1rem;">
-                <span class="fontSize-fix"> 좋아요 </span>
-                <button id="likePostBtn" class="centerBox btn btn-warning">
-                    <span th:text="${postDto.likePost}">likePost</span>
-                </button>
-            </div>
+
             <div>
-                <button id="listBtn" class="leftArea btn btn-warning">목록으로 돌아가기</button>
+                <button class="leftArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/list}">목록으로 돌아가기</a></button>
 
-                <button id="deletePost" class="rightArea left_margin btn btn-warning">삭제</button>
-                <button id="editPost" class="rightArea btn btn-warning">수정</button>
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/detail/{id}/like(id=${postDto.id})}"><span th:text="${postDto.likePost}"
+                                                                                    class="fontSize-fix">likePost</span></a>
+                </button>
 
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/delete/{id}(id=${postDto.id})}">삭제</a></button>
+                <button class="rightArea bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/edit/{id}(id=${postDto.id})}">수정</a></button>
             </div>
         </div>
 
         <!-- 포트폴리오 투표 버튼 -->
         <!-- statusPost = StPost.EARLY_IDEA일 때 감춰져야 -->
-        <div id="buttondiv" style="margin-top: 1rem;" class="centerBox2 paddingBtn">
+        <div style="margin-top: 1rem;" class="centerBox2 paddingBtn">
             <button class="centerBox2" id="goPFList">포트폴리오 투표</button>
         </div>
 
@@ -99,7 +71,7 @@
                     <input type="hidden" name="id" th:value="*{postDto.id}"/>
                     <textarea name="contentReply" class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea>
                 </div>
-                <button type="submit" class="rightArea btn btn-warning" style="margin-top:15px;">등록</button>
+                <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>
             </form>
         </div>
 

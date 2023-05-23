@@ -46,14 +46,14 @@ public class Post extends BaseTimeEntity {
     private int likePost = 0;
     @Builder.Default
     private String categoryPost = "주식형";
-    @OneToOne/*(cascade = CascadeType.REMOVE)*/
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Vote vote;
     //@ColumnDefault("'EARLY_IDEA'")
     @Builder.Default
     private StPost statusPost = StPost.EARLY_IDEA;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     private Users user;
 
