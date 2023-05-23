@@ -40,7 +40,7 @@ public class ProductController {
 
 
     /**
-     * (해당 유저에 해당하는 주문서 ..) 전체 검색
+     * (해당 유저에 해당하는 주문서 ..) 전체검색
      */
     @GetMapping("/list")
     public String list(Model model, @RequestParam(defaultValue = "1") Integer mode) {
