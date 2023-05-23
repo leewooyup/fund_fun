@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -15,7 +16,8 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
+@Table(name="opinion")
 public class Opinion {
     @Id
     @GeneratedValue
@@ -39,4 +41,8 @@ public class Opinion {
     public void linkUsers(Users user) {this.user = user;}
 
     public void linkPortfolio(Portfolio portfolio) {this.votedFor = portfolio;}
+
+    public void setVote(Vote vote){this.vote = vote;}
+    public void setPortfolio(Portfolio portfolio){this.votedFor = portfolio;}
+    public void setUser(Users user){this.user = user;}
 }

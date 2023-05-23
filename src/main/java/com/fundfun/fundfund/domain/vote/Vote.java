@@ -6,6 +6,8 @@ import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "vote")
 public class Vote {
     @Id
@@ -28,8 +30,10 @@ public class Vote {
     @OneToOne
     private Post post;
 
-    private LocalDateTime voteStart = LocalDateTime.now();
-    private LocalDateTime voteEnd = voteStart.plusDays(30);
+    private final LocalDateTime voteStart = LocalDateTime.now();
+
+    private final LocalDateTime voteEnd = voteStart.plusDays(30);
+
     @Builder.Default
     private StVote status = StVote.PROCEED;
 

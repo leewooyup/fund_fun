@@ -4,12 +4,8 @@ import com.fundfun.fundfund.base.BaseTimeEntity;
 import com.fundfun.fundfund.domain.payment.Payment;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
@@ -40,9 +36,6 @@ public class Orders extends BaseTimeEntity {
 //    @JoinColumn(name = "payment_id")
 //    private Payment payment;
 //
-
-
-
 
     @ManyToOne
     @JoinColumn(name = "user_id")

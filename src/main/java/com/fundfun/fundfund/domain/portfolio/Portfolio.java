@@ -1,4 +1,6 @@
 package com.fundfun.fundfund.domain.portfolio;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
@@ -7,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
@@ -16,7 +20,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "portfolio")
 public class Portfolio extends BaseTimeEntity {
     @Id
@@ -24,15 +28,20 @@ public class Portfolio extends BaseTimeEntity {
     @Column(name = "portfolio_id")
     private UUID id;
 
-    @ManyToOne
+    @JsonIgnore
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name="vote_id")
     private Vote vote;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name="user_id")
     private Users user;
 
-    @ManyToOne
+    @JsonIgnore
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name="post_id")
     private Post post;
 
@@ -57,5 +66,9 @@ public class Portfolio extends BaseTimeEntity {
     }
     public void setWarnLevel(String warnLevel){this.warnLevel = warnLevel;}
     public void setBeneRatio(float beneRatio){this.beneRatio = beneRatio;}
+
+    public void setVote(Vote vote){this.vote = vote;}
+    public void setPost(Post post){this.post = post;}
+    public void setUser(Users user){this.user = user;}
 
 }
