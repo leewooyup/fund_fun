@@ -4,127 +4,86 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
 >
-
-<th:block layout:fragment="content">
+<th:block layout:fragment="content"/>
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
 
     <script th:inline="javascript">
-        var postId = [[${post.id}]];
+        var postId = [[${postDto.id}]];
     </script>
 
     <script type="text/javascript">
-        $(Document).ready(function() {
+        $(Document).ready(function () {
             // 포트폴리오 투표 클릭
-            $("#goPFList").on("click", function() {
+            $("#goPFList").on("click", function () {
                 location.href = "/portfolio?postId=" + postId;
             });
         });
     </script>
 
 
-
-    <div class="d-flex flex-column wrapper" >
+    <div class="d-flex flex-column wrapper">
         <div>
-            <span th:text="${post.title}" class="fontSize-fix"></span>
+            <h2><span th:text="${postDto.title}">title</span></h2>
         </div>
         <div>
-            <span th:text="${post.createdAt}" class="gray_text bottom_line"></span>
+            <span th:text="${postDto.createdAt}" class="gray_text bottom_line">createdAt</span>
         </div>
 
         <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
-            <span th:text="${post.contentPost}" class="fontSize-fix"></span>
-            <div class="centerBox">♥<br/>52</div>
+            <span th:text="${postDto.contentPost}" class="fontSize-fix">content</span>
+
             <div>
-                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a th:href="@{/post/delete/{id}(id=${post.id})}">삭제</a></button>
-                <button class="rightArea bg-yellow paddingBtn paddingBtn-plus">수정</button>
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/detail/{id}/like(id=${postDto.id})}"><span th:text="${postDto.likePost}"
+                                                                                    class="fontSize-fix">likePost</span></a>
+                </button>
+
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/delete/{id}(id=${postDto.id})}">삭제</a></button>
+                <button class="rightArea bg-yellow paddingBtn paddingBtn-plus"><a
+                        th:href="@{/post/edit/{id}(id=${postDto.id})}">수정</a></button>
             </div>
         </div>
 
-        <div style="margin-top: 1rem;" class="centerBox2 paddingBtn">
-            <button class="centerBox2" id="goPFList">포트폴리오 투표</button>
-        </div>
+        Expand All
+        @@ -51,40 +45,18 @@ <h2><span th:text="${postDto.title}">title</span></h2>
+    </div>
 
-        <div style="margin-top: 1rem;">
-            <span class="fontSize-fix">댓글 4</span>
-            <div style="margin-top: 0.5rem; padding-bottom: 1rem;">
-                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus">입력</button>
-                <input type="text" class="width92 leftArea border-yellow paddingBtn"/>
-            </div>
-            <div style="margin-top: 3rem;">
-                <span class="leftArea">A 업종의 aa주에 같이 투자하는 건 어떤가요?</span>
+    <div style="margin-top: 1rem;">
+        <span class="fontSize-fix">댓글 </span>
+        <span class="fontSize-fix" th:text="${replyCount}"> </span>
+        <!--            <div style="margin-top: 0.5rem; padding-bottom: 1rem;">-->
+        <!--                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus">입력</button>-->
+        <!--                <input type="text" class="width92 leftArea border-yellow paddingBtn"/>-->
+        <!--            </div>-->
 
-                <span class="rightArea left_margin">삭제</span>
-                <span class="rightArea left_margin">수정</span>
-                <span class="rightArea left_margin">2305-11 23:19</span>
-                <span class="rightArea">♥ 15</span>
+        <form name="replyForm" action="/reply/write" method="post" autocomplete="off">
+            <div class="form-group">
+                <input type="hidden" name="id" th:value="*{postDto.id}"/>
+                <textarea name="contentReply" class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea>
             </div>
+            <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>
+        </form>
+
+        <!--            <form method="post" th:action="@{reply/write}" th:object="${replyForm"}>-->
+        <!--                <div style="width:100%;">-->
+        <!--                    <input type="text" th:field="*{contentReply}" style="width:100%;" placeholder="댓글을 입력해주세요."></input>-->
+        <!--                </div>-->
+        <!--                <div class="d-flex justify-content-end">-->
+        <!--                    <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>-->
+        <!--                </div>-->
+        <!--            </form>-->
+    </div>
+
+    <div>
+        <div style="margin-top: 3rem;">
+            <table>
+                <tr th:each="ele: ${replyList}" style="border-top: 2px solid black;">
+                    <td><span th:text="${ele.getContentReply()}"></span></td>
+                    <td th:text="${ele.getCreatedAt()}"></td>
+                    <td><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
+                </tr>
+            </table>
         </div>
     </div>
-    <div th:text="${curCollect}"></div>
-
-    <style>
-        .fontSize-fix {
-            font-size: 1.2rem;
-        }
-
-        .centerBox {
-            width: 5%;
-            margin: auto;
-            text-align: center;
-            background-color: #ffc107;
-            border: 1px solid #ffc107;
-        }
-
-        .centerBox2 {
-            width: 60%;
-            margin: auto;
-            text-align: center;
-            background-color: #ffc107;
-            border: 1px solid #ffc107;
-        }
-
-        .paddingBtn {
-            padding-top: 0.5rem !important;
-            padding-bottom: 0.5rem !important;
-        }
-
-        .paddingBtn-plus {
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
-        }
-
-        .gray_text {
-            color: darkgray;
-        }
-
-        .bottom_line {
-            border-bottom: 1px solid darkgray;
-        }
-
-        .leftArea {
-            float: left;
-        }
-
-        .rightArea {
-            float: right;
-        }
-
-        .bg-yellow {
-            background-color: #ffc107;
-            border: 1px solid #ffc107;
-        }
-
-        .border-yellow {
-            border: 1px solid #ffc107;
-        }
-
-        .left_margin {
-            margin-left: 1rem;
-        }
-
-        .width92 {
-            width: 92%;
-        }
-    </style>
-</th:block>
-</html>
+    </html>
