@@ -25,10 +25,9 @@ import java.util.UUID;
 @Getter
 //@ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Table(name = "users")
-
+@AllArgsConstructor
 public class Users extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,10 +43,10 @@ public class Users extends BaseTimeEntity implements UserDetails {
     @OneToMany
     private List<Alarm> alarms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "paid_by")
+    @OneToMany
     private List<Payment> payments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<PayMean> means = new ArrayList<>();
 
     private String password;
@@ -62,6 +61,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private Long count;
     private Long total_investment;
     private Long benefit;
+    private LocalDateTime lastLoginTime;
 
     public void addAlarm(Alarm alarm) {
         alarms.add(alarm);
@@ -91,10 +91,14 @@ public class Users extends BaseTimeEntity implements UserDetails {
         });
         return collectors;
     }
+    public Users updateOAuth(String name) {
+        this.name = name;
+        return this;
+    }
 
     @Override
     public String getUsername() {
-        return this.name;
+        return this.email;
     }
 
     @Override

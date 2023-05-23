@@ -16,13 +16,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class PayMean extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Mean mean;
-    private String number;
+    // 카드 번호 또는 계좌 번호
+    private String mean_id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users user;
 
     public static PayMean createPayMean(Mean mean, String number, Users user) {

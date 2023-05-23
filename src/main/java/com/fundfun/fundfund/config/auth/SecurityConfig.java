@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.config.auth;
 
 import com.fundfun.fundfund.service.user.CustomUserDetailService;
+import com.fundfun.fundfund.service.user.OAuth2UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,7 +21,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService customUserDetailService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final OAuth2UserService oAuth2UserService;
+    private final AuthSuccessHandler authSuccessHandler;
+//    private final JwtTokenProvider jwtTokenProvider;
 
 
     @Bean
@@ -56,20 +59,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated() // 인증된 유저만 접근을 허용
                 .and()
                 .formLogin() // 로그인 폼은
-                .disable()
 //                .usernameParameter("inputEmail")// 이곳에는 login page의 input tag id 를 넣어야 한다.
 //                .passwordParameter("inputPassword") //이곳에는 login page의 input tag id 를 넣어야 한다.
-//                .loginPage("/login") // 해당 주소로 로그인 페이지를 호출한다.
-//                .loginProcessingUrl("/login/action") // 해당 URL로 요청이 오면 스프링 시큐리티가 가로채서 로그인처리를 한다. -> loadUserByName
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .loginPage("/login") // 해당 주소로 로그인 페이지를 호출한다.
+                .loginProcessingUrl("/login/action") // 해당 URL로 요청이 오면 스프링 시큐리티가 가로채서 로그인처리를 한다. -> loadUserByName
+                .defaultSuccessUrl("/")
                 .and()
+                //JWT
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .authorizeRequests()
                 .anyRequest()
                 .permitAll()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+//                        UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .and()
                 .logout()
@@ -88,13 +93,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .alwaysRemember(false) // 항상 기억할 것인지 여부` /
                 .tokenValiditySeconds(43200) //- in seconds, 12시간 유지
                 .rememberMeParameter("remember-me")
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/login")
-//                .successHandler(authSucessHandler)
-//                .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .successHandler(authSuccessHandler)
+                .userInfoEndpoint()
         // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
-//                .userService(customOAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
+                .userService(oAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
         ;
 
     }

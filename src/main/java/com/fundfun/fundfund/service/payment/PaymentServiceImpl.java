@@ -32,8 +32,8 @@ public class PaymentServiceImpl implements PaymentService {
         return entity.getId();
     }
     @Override
-    public UUID addPayment(Users user, Orders order, PayMean mean, Long cost) {
-        Payment entity = Payment.createPayment(user, order, mean, cost);
+    public UUID addPayment(Users user, PayMean mean, Long cost) {
+        Payment entity = Payment.createPayment(user, mean, cost);
         paymentRepository.save(entity);
         return entity.getId();
     }
@@ -72,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(NoSuchElementException::new);
     }
     @Override
-    public PaymentMeanDTO findPayMean(Long id) {
+    public PaymentMeanDTO findPayMeanById(Long id) {
         return payMeanRepository.findById(id).map(x -> modelMapper.map(x, PaymentMeanDTO.class))
                 .orElseThrow(NoSuchElementException::new);
     }

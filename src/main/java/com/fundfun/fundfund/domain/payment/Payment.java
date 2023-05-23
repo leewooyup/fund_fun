@@ -23,18 +23,16 @@ public class Payment extends BaseTimeEntity {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users paid_by;
-
-    @OneToOne
-    private Orders order;
 
     @OneToOne
     private PayMean mean;
 
     private Long cost;
 
-    public static Payment createPayment(Users user, Orders order, PayMean mean, Long cost) {
-        Payment payment = new Payment(null, user, order, mean, cost);
+    public static Payment createPayment(Users user, PayMean mean, Long cost) {
+        Payment payment = new Payment(null, user, mean, cost);
         user.addPayment(payment);
         return payment;
     }
