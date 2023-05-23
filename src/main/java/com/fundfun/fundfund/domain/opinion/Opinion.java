@@ -41,4 +41,8 @@ public class Opinion {
     public void linkUsers(Users user) {this.user = user;}
 
     public void linkPortfolio(Portfolio portfolio) {this.votedFor = portfolio;}
+
+    public void setVote(Vote vote){this.vote = vote;}
+    public void setPortfolio(Portfolio portfolio){this.votedFor = portfolio;}
+    public void setUser(Users user){this.user = user;}
 }

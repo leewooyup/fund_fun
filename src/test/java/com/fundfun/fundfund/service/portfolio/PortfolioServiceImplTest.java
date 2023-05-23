@@ -30,7 +30,7 @@ class PortfolioServiceImplTest {
     @Test
     public void 포폴생성() throws Exception {
         List<PostDto> list = postService.selectAll();
-        PostDto postDto = list.get(1);
+        PostDto postDto = list.get(0);
         Post post = modelMapper.map(postDto, Post.class);
         VoteDto voteDto = voteService.selectVoteByPostId(post.getId());
         Vote vote = modelMapper.map(voteDto, Vote.class);

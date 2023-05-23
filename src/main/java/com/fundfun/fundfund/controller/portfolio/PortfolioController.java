@@ -1,10 +1,12 @@
 package com.fundfun.fundfund.controller.portfolio;
 
-import com.fundfun.fundfund.controller.post.PostForm;
+import com.fundfun.fundfund.domain.opinion.Opinion;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.dto.opinion.OpinionDto;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.vote.VoteDto;
+import com.fundfun.fundfund.service.opinion.OpinionService;
 import com.fundfun.fundfund.service.portfolio.PortfolioService;
 import com.fundfun.fundfund.service.vote.VoteService;
 import lombok.RequiredArgsConstructor;
@@ -16,63 +18,61 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.sampled.Port;
-import javax.validation.Valid;
 import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
 public class PortfolioController {
-
     @Autowired
     private final PortfolioService portfolioService;
+    @Autowired
+    private final OpinionService opinionService;
 
     @Autowired
     private final VoteService voteService;
 
-    // 포트폴리오 목록 이동
     @GetMapping("/portfolio")
-    public String goPortfolioList(HttpServletRequest req, HttpServletResponse res, Model model) {
+    public String goPortfolioList(HttpServletRequest req, HttpServletResponse res, Model model, @AuthenticationPrincipal Users user) {
         String reqData = req.getParameter("postId");
 
-        if (reqData == null) {
+        if(reqData == null) {
             model.addAttribute("state", "noId");
         } else {
             model.addAttribute("postId", UUID.fromString(reqData));
             model.addAttribute("state", "pass");
+
+            UUID postId = UUID.fromString(reqData);
+            VoteDto voteDto = voteService.selectVoteByPostId(postId);
+            model.addAttribute("chkVote", opinionService.checkOpinion(voteDto, user) ? "1" : "0");
         }
         return "portfolio/portfolioList";
     }
 
     /*
      * 포트폴리오 작성/수정/상세보기/삭제
-     * state (비슷한 페이지여서 상태 설정해서, 그 때에 따라 만들어버림.)
+     * state
      * - W : 작성(새로 생성)
      * - U : 수정
      * - R : 상세보기
      * - D : 삭제
      */
-
     @GetMapping("/portfolio/goDetail")
     public String goDetail(HttpServletRequest req, HttpServletResponse res, Model model) {
-        String portfolioId = req.getParameter("id");  //포폴아이디
-        String postId = req.getParameter("postId");   //포스트아이디
+        String portfolioId = req.getParameter("id");
+        String postId = req.getParameter("postId");
 
-        if (portfolioId != null) {
-            UUID id = UUID.fromString(portfolioId);  //uuid로 가져오기 > String 변경
+        if(portfolioId != null) {
+            UUID id = UUID.fromString(portfolioId);
             model.addAttribute("data", portfolioService.selectById(id));
-            // portfolioService에서 아이디로 불러오기
-
-            // 존재하지 않은 게시물 처리
         } else {
             model.addAttribute("data", null);
         }
 
-        model.addAttribute("state", req.getParameter("state"));  //상태
-        model.addAttribute("postId", postId);  //포스트아이디 추가
+        model.addAttribute("state", req.getParameter("state"));
+        model.addAttribute("postId", postId);
 
         return "portfolio/portfolioDetail";
-
+        //존재하지 않은 게시물 처리
     }
 
    /* // 포트폴리오 목록 불러오기 - ajax (0521 코드)
@@ -81,13 +81,49 @@ public class PortfolioController {
     public HashMap<String, Object> getData(@RequestBody Map<String, Object> paramMap) {
         HashMap<String, Object> map = new HashMap<>();
         UUID postId = UUID.fromString(paramMap.get("postId").toString());
+        List<PortfolioDto> portfolioList = portfolioService.selectPortByPostId(postId);
+        List<Integer> voteList = new ArrayList<>(portfolioList.size());
+        map.put("portfolioList", portfolioList);
 
-        map.put("portfolioList", portfolioService.selectPortByPostId(postId));
+        for(int i=0; i<portfolioList.size(); i++) {
+            PortfolioDto portfolioDto = new PortfolioDto();
+            portfolioDto.setId(portfolioList.get(i).getId());
+            int num = opinionService.countByVotedFor(portfolioDto);
+            voteList.add(i, num);
+        }
+
+        map.put("voteList", voteList);
 
         return map;
-    }*/
+    }
 
-    //0522 수정한 부분
+    // 포트폴리오 투표 - ajax
+    @PostMapping(value = "/portfolio/votePortfolio")
+    @ResponseBody
+    public HashMap<String, Object> votePortfolio(@RequestBody Map<String, Object> paramMap, @AuthenticationPrincipal Users user) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("msg", "fail");
+
+        try {
+            OpinionDto opinionDto = new OpinionDto();
+            UUID postId = UUID.fromString(paramMap.get("postId").toString());
+            UUID portpolioId = UUID.fromString(paramMap.get("portfolioId").toString());
+            VoteDto voteDto = voteService.selectVoteByPostId(postId);
+            opinionDto.setVoteId(voteDto.getId());
+            opinionDto.setUserId(user.getId());
+            opinionDto.setVotedFor(portpolioId);
+
+            opinionService.createOpinion(opinionDto);
+
+            map.put("msg", "success");
+        } catch(Exception e) {
+            System.out.println("Portfolio 투표 시 에러 : " + e);
+        } finally {
+            return map;
+        }
+    }
+
+   /* //0522 수정한 부분
     @PostMapping(value = "/portfolio/getData")
     @ResponseBody
     public HashMap<String, Object> getData(@AuthenticationPrincipal Users user,
@@ -100,17 +136,15 @@ public class PortfolioController {
         map.put("portfolioList", portfolioService.selectPortByPostId(postId));
 
         return map;
-    }
+    }*/
 
     //0521 코드
-   /* // 포트폴리오 수정/작성 - ajax
+    // 포트폴리오 수정/작성 - ajax
     @PostMapping(value = "/portfolio/commitData")
     @ResponseBody
-    public HashMap<String, Object> commitData(@RequestBody Map<String, Object> paramMap) {
+    public HashMap<String, Object> commitData(@RequestBody Map<String, Object> paramMap, @AuthenticationPrincipal Users user) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("msg", "fail");  
-        
-        
+        map.put("msg", "fail");
         try {
             PortfolioDto portfolioDto = new PortfolioDto();
             String state = paramMap.get("state").toString();
@@ -120,13 +154,13 @@ public class PortfolioController {
 
             portfolioDto.setPostId(postId);
             portfolioDto.setVoteId(voteDto.getId());
-            
-            // 포트폴리오 삭제
+            portfolioDto.setUserId(user.getId());
+
             if(state.equals("D")) {
                 UUID portfolioId = UUID.fromString(paramMap.get("portfolioId").toString());
                 portfolioDto.setId(portfolioId);
                 portfolioService.deletePort(portfolioDto);
-            } else { //포트폴리오 수정 및 생성
+            } else {
                 portfolioDto.setTitle(paramMap.get("title").toString());
                 portfolioDto.setBeneRatio(Float.parseFloat(paramMap.get("beneRatio").toString()));
                 portfolioDto.setWarnLevel(paramMap.get("warnLevel").toString());
@@ -140,15 +174,18 @@ public class PortfolioController {
                     portfolioService.updatePort(portfolioDto);
                 }
             }
-            map.put("msg", "success");   //성공
+
+            map.put("msg", "success");
         } catch (Exception e) {
             System.out.println("Portfolio 수정/등록 시 에러 : " + e);
         } finally {
             return map;
         }
-    }*/
+    }
+}
 
-    //0522 코드
+
+   /* //0522 코드
     // 포트폴리오 수정/작성 - ajax
     @PostMapping(value = "/portfolio/commitData")
     @ResponseBody
@@ -198,6 +235,8 @@ public class PortfolioController {
             //펀드매니저만 가능함 등록되지 않음;
         }
         return map;
-    }
-}
+    }*/
+
+
+
 

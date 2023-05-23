@@ -11,19 +11,19 @@
     <script th:inline="javascript">
         var state = [[${state}]];
         var postId = "";
+        var chkVote = "";
 
         if(state == "noId") { // url 입력으로 접근 시 alert -> post/list 로 이동
             alert("정상적인 경로로 접근해주세요.");
             location.href = "/post/list";
         } else {
             postId = [[${postId}]];
+            chkVote = [[${chkVote}]];
         }
     </script>
 
     <!-- Script -->
     <script type="text/javascript">
-        var dataList = "";
-
         $(Document).ready(function() {
             getData();
 
@@ -31,6 +31,42 @@
             $("#goWrite").on("click", function() {
                 // idx : 포트폴리오Id, state : 상세/수정/작성 구분코드
                 location.href = "/portfolio/goDetail?state=W&postId=" + postId;
+            });
+
+            // 투표하기
+            $("#vote").on("click", function() {
+                if(chkVote == 1) {
+                    alert("이미 투표하였습니다.");
+                    return false;
+                } else {
+                    if($("input:radio[name=selectPortfolio]").is(":checked") == true) {
+                        var param = {
+                            "postId": postId,
+                            "portfolioId": $('input[name=selectPortfolio]:checked').val()
+                        }
+                        $.ajax({
+                            url: "/portfolio/votePortfolio",
+                            type: "post",
+                            dataType: "json",
+                            contentType: "application/json; CHARSET=UTF-8",
+                            data: JSON.stringify(param),
+                            success: function(result) {
+                                if(result.msg == "fail") {
+                                    alert("투표 중 문제가 발생하였습니다.");
+                                    return false;
+                                } else {
+                                    alert("정상적으로 투표되었습니다.");
+                                    location.href = "/portfolio?postId=" + postId;
+                                }
+                            },
+                            error: function(e) {
+                                console.log(e);
+                            }
+                        });
+                    } else {
+                        alert("하나의 포트폴리오를 선택해주세요.");
+                    }
+                }
             });
         });
 
@@ -43,7 +79,7 @@
                 contentType: "application/json; CHARSET=UTF-8",
                 data: JSON.stringify({"postId": postId}),
                 success: function(result) {
-                    drawList(result.portfolioList);  //밑에 함수 적어놈
+                    drawList(result.portfolioList, result.voteList);  //밑에 함수 적어놈
                 },
                 error: function(e) {
                     console.log(e);
@@ -51,14 +87,14 @@
             });
         }
 
-        function drawList(data) {
-            dataList = data;
+        function drawList(data, voteList) {
+            var txt = (chkVote == "1") ? "disabled" : "";
             var html = '';
             for(var i=0; i<data.length; i++) {
                 html += '<div class="marginBottom"><span onclick="goDetail(\'' + data[i].id + '\')">' + (i+1) + '.' + data[i].title + '</span></div>';
-                html += '<div class="bg-yellow leftArea" style="width: '+ data[i].beneRatio +'%; height: 1rem;"></div>';
-                html += '<span class="left_margin">' + data[i].beneRatio + '표, ' + data[i].beneRatio + '% </span>';
-                html += '<input type="radio" class="radioCls" name="selectPortfolio"/>';
+                html += '<div class="bg-yellow leftArea" style="width: '+ voteList[i] +'%; height: 1rem;"></div>';
+                html += '<span class="left_margin">' + voteList[i] + '표</span>';
+                html += '<input type="radio" class="radioCls" name="selectPortfolio" value="' + data[i].id + '"' + txt + '/>';
                 html += '</div>';
             }
 
@@ -83,7 +119,7 @@
 
         <div class="marginBottom bottomDiv">
             <button class="rightArea bg-yellow paddingBtn" id="goWrite">포트폴리오 등록</button>
-            <button class="rightArea left_margin bg-yellow paddingBtn">투표하기</button>
+            <button class="rightArea left_margin bg-yellow paddingBtn" id="vote">투표하기</button>
         </div>
     </div>
 

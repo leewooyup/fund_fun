@@ -30,15 +30,15 @@ class PostServiceImplTest {
 
     @Test
     public void 게시물_생성() throws Exception {
-        for (int i = 0; i < 5; i++) {
+        /*or (int i = 0; i < 5; i++) {
            Post p = Post.builder()
                     .id(UUID.randomUUID()).contentPost(null).title("제목"+i)
                    .categoryPost("주식형").likePost(10).build();
            postService.createPost(modelMapper.map(p, PostDto.class));
-        }
-//        Post p = Post.builder().id(UUID.randomUUID()).title("제목3").contentPost("게시물3")
- //               .categoryPost("주식형").likePost(15).build();
- //       postService.createPost(modelMapper.map(p, PostDto.class));
+        }*/
+        Post p = Post.builder().id(UUID.randomUUID()).title("제목3").contentPost("게시물3")
+                .categoryPost("주식형").likePost(15).build();
+        postService.createPost(modelMapper.map(p, PostDto.class));
     }
 
     @Test
@@ -142,13 +142,14 @@ class PostServiceImplTest {
 //        });
     }
 
+
     @Test
     public void 상태변경및투표생성() throws Exception{
         for(int i=0; i<11; i++){
             List<PostDto> list = postService.selectAll();
-            PostDto postDto = list.get(1);
+            PostDto postDto = list.get(0);
             //Post post = modelMapper.map(postDto, Post.class);
-            if(postDto.getLikePost()>=5 && postDto.getStatusPost()==StPost.EARLY_IDEA)
+            if(postDto.getLikePost()>=5)
                 postService.updateStatus(postDto, StPost.PREPRODUCT);
             postService.addLike(postDto.getId());
 
