@@ -36,8 +36,8 @@ public class Scheduler {
 //        log.info("Java cron job Test = {}", strDate);
 //    }
 
-    @Scheduled(cron = "0/10 * * * * ?")
-    public void sayHello() {
-        orderService.sayHello();
-    }
+//    @Scheduled(cron = "0/10 * * * * ?")
+//    public void sayHello() {
+//        orderService.sayHello();
+//    }
 }
