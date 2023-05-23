@@ -171,5 +171,10 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,gradle,java
 
+.idea
+
 application.properties
 application.yml
+
+DevInitData.java
+data.sql
