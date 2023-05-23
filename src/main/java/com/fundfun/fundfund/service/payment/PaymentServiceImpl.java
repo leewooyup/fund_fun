@@ -32,8 +32,8 @@ public class PaymentServiceImpl implements PaymentService {
         return entity.getId();
     }
     @Override
-    public UUID addPayment(Users user, Orders order, PayMean mean, Long cost) {
-        Payment entity = Payment.createPayment(user, order, mean, cost);
+    public UUID addPayment(Users user, PayMean mean, Long cost) {
+        Payment entity = Payment.createPayment(user, mean, cost);
         paymentRepository.save(entity);
         return entity.getId();
     }

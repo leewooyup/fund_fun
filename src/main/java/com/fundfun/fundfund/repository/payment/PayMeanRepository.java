@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PayMeanRepository extends JpaRepository<PayMean, Long> {
-    String FIND_ALL_BY_USER_ID = "select p from PayMean p where p.user_id = :id";
+    String FIND_ALL_BY_USER_ID = "select * from paymean where userId = :id";
 
-    @Query(value = FIND_ALL_BY_USER_ID)
-    List<Payment> findAllByUserId(@Param("id") UUID id);
+    @Query(nativeQuery = true, value = FIND_ALL_BY_USER_ID)
+    List<PayMean> findAllByUserId(@Param("id") UUID id);
 }

@@ -12,8 +12,8 @@ import java.util.UUID;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 
-    String FIND_ALL_BY_USER_ID = "select p from Payment p where p.user_id = :id";
+    String FIND_ALL_BY_USER_ID = "select * from Payment where user_id = :id";
 
-    @Query(value = FIND_ALL_BY_USER_ID)
+    @Query(nativeQuery = true, value = FIND_ALL_BY_USER_ID)
     List<Payment> findAllByUserId(@Param("id") UUID id);
 }
