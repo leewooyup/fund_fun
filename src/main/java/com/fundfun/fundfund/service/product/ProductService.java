@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.service.product;
 
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -34,6 +35,7 @@ public interface ProductService {
      * 현재모금액 갱신
      */
     int updateCost(Long cost, ProductDto productDto, Users user);
+
 
 
     /**

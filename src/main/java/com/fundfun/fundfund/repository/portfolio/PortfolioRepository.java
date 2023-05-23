@@ -16,4 +16,6 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, UUID> {
     List<Portfolio> findByVoteId(UUID voteId);
 
     List<Portfolio> findByUserId(UUID userId);
+
+    List<Portfolio> findByPostId(UUID postId);
 }

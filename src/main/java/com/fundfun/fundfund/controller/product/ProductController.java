@@ -1,15 +1,13 @@
 package com.fundfun.fundfund.controller.product;
-
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.order.OrderService;
-import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductService;
-import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.id.insert.Binder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +27,7 @@ public class ProductController {
     private final ProductService productService;
     private final OrderService orderService;
     private final UserService userService;
+
 
     /**
      * register 폼 이동
@@ -65,6 +64,7 @@ public class ProductController {
         return "product/product_list";
     }
 
+
     @GetMapping("/list/progress")
     public String listProgress(Model model){
         List<ProductDto> productList = productService.selectByStatus("진행중");
@@ -72,6 +72,7 @@ public class ProductController {
         model.addAttribute("list", productList);
         return "product/product_list";
     }
+
     /**
      * 상품 등록
      */

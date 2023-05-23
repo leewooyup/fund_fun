@@ -34,14 +34,11 @@
             <div th:each="ele : ${list}">
                 <div class="col">
                     <div><span th:text="${ele.title}"></span>
-
                         <a th:href="@{|/order/form/${ele.uuidEncode}|}">
                             <div>
                                 <img alt="" height="250px" style="border:solid;width:80%"
                                      th:src="@{|/gen/${ele.thumbnailRelPath}|}"
                                      width="250px">
-                            </div>
-                            <div>
                             </div>
                         </a>
                         <div th:text="${ele.crowdStart}"></div>
@@ -56,11 +53,9 @@
                 <button class="btn btn-warning" type="submit">검색</button>
             </div>
         </form>
-
         <a href="/product/register">
             <button class="btn btn-warning" type="submit">등록</button>
         </a>
-
     </div>
     </div>
     <script th:inline="javascript">
@@ -99,6 +94,7 @@
     if(params.msg) {
         successModal(params.msg);
     }
+
     </script>
     </body>
 </th:block>

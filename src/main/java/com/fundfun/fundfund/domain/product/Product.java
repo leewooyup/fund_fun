@@ -14,8 +14,11 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -68,5 +71,30 @@ public class Product extends BaseTimeEntity {
     public void prePersist() {
         this.thumbnailRelPath = this.thumbnailRelPath == null ? "/product/avatar.jpg" : this.thumbnailRelPath;
     }*/
+
+    public String uuidEncode() {
+        //UUID encode
+        Base64.Encoder encoder = Base64.getEncoder();
+        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
+
+        return encodedString;
+    }
+
+    public Date toDate(String crowdEnd) {
+        Date deadLine = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            deadLine = sdf.parse(crowdEnd);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return deadLine;
+    }
+
+    public String getThumbnailImgUrl() {
+        if(thumbnailRelPath == null) return "/gen/product/avatar.jpg";
+        return "/gen/" + thumbnailRelPath;
+    }
+
 
 }

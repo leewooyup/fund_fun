@@ -1,15 +1,19 @@
 package com.fundfun.fundfund.service.user;
 
+import com.fundfun.fundfund.domain.user.Gender;
 import com.fundfun.fundfund.domain.user.Role;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import org.junit.jupiter.api.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
+import static com.fundfun.fundfund.domain.user.Role.FUND_MANAGER;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
@@ -25,7 +29,33 @@ class UserServiceTest {
     @Autowired
     UserService userService;
 
-    @BeforeEach
+    //0522 내가 수정한 코드
+
+    @Rollback(value = false)
+    @Test
+    public void 테스트생성1(){
+
+  /*      userService.register(Users.builder()
+                .name("bana")
+                .gender(Gender.valueOf("MALE"))
+                .password("1234")
+                .email("kb@kb.com")
+                .phone("010-2323-1313")
+                .money(12L)
+                .count(23L)
+                .total_investment(34L)
+                .benefit(45L)
+                .build());
+*/
+        userService.register(Users.builder()
+                .email("angel@kb.com")
+                .password("1234")
+                .name("angel")
+                        .role(FUND_MANAGER)
+                .build());
+    }
+
+   /* @BeforeEach
     void setup() {
         userService.register(Users.builder()
                 .role(Role.FUND_MANAGER)
@@ -138,5 +168,5 @@ class UserServiceTest {
         //then
         assertThat(userService.findById(id).get().getEmail()).isEqualTo(to.getEmail());
 
-    }
+    }*/
 }
