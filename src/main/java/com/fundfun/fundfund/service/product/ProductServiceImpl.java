@@ -99,8 +99,10 @@ public class ProductServiceImpl implements ProductService {
      */
     public void delete(UUID productId, Users user) {
         Product product = productRepository.findById(productId).orElse(null);
-        if (product == null || user != product.getFundManager()) {
-            throw new RuntimeException("상품을 삭제할 수 없습니다.");
+        List<Orders> orderList = orderService.selectByProductId(productId);
+
+        if (product == null || user != product.getFundManager() || !orderList.isEmpty()) {
+
         }
         productRepository.delete(product);
     }
@@ -173,13 +175,12 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 제목 키워드로 상품 조회
      */
-    public List<Product> searchTitle(String title) {
+    public List<ProductDto> searchTitle(String title) {
         List<Product> productList = productRepository.findByTitleContaining(title);
         if (productList == null) {
             throw new RuntimeException("해당 상품이 존재하지 않습니다.");
         }
-//        return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
-        return productList;
+        return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
     }
 
     /**
@@ -200,8 +201,9 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 상품리스트 status(= 진행중 or 완료)에 따른 페이지 설정
      */
-    public List<Product> selectByStatus(String status) {
-        return productRepository.findByStatus(status);
+    public List<ProductDto> selectByStatus(String status) {
+        List<Product> productList = productRepository.findByStatus(status);
+        return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
     }
 
     /**

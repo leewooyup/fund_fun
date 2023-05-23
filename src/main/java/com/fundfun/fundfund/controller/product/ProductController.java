@@ -42,23 +42,36 @@ public class ProductController {
     /**
      * (해당 유저에 해당하는 주문서 ..) 전체검색
      */
-    @GetMapping("/list")
-    public String list(Model model, @RequestParam(defaultValue = "1") Integer mode) {
-        if (mode == 1) {
-            List<ProductDto> productList = productService.selectAll();
-            model.addAttribute("list", productList);
-            return "product/product_list";
-        }
-        if (mode == 2) {
-            List<Product> productList = productService.selectByStatus("진행중");
-            model.addAttribute("list", productList);
-            return "product/product_list";
-        }
-        return "product/list?mode=" + mode;
+//    @GetMapping("/list")
+//    public String list(Model model, int modeVal) {
+//        if () {
+//            List<ProductDto> productList = productService.selectAll();
+//            model.addAttribute("list", productList);
+//            return "product/product_list";
+//        }
+//        if (modeVal == 2) {
+//            List<Product> productList = productService.selectByStatus("진행중");
+//            model.addAttribute("list", productList);
+//            return "product/product_list";
+//        }
+//        return "product/list";
+//
+//    }
 
+    @GetMapping("/list")
+    public String list(Model model){
+        List<ProductDto> productList = productService.selectAll();
+        model.addAttribute("list", productList);
+        return "product/product_list";
     }
 
-
+    @GetMapping("/list/progress")
+    public String listProgress(Model model){
+        List<ProductDto> productList = productService.selectByStatus("진행중");
+        System.out.println("product.size() = " + productList.size());
+        model.addAttribute("list", productList);
+        return "product/product_list";
+    }
     /**
      * 상품 등록
      */
@@ -71,6 +84,9 @@ public class ProductController {
         if (ou.isPresent()) {
             Users user = ou.get();
             productService.registerProduct(productDto, thumbnailImg, user);
+        }
+        else{
+            throw new RuntimeException("비회원입니다.");
         }
         return "redirect:/product/list";
     }
@@ -123,7 +139,7 @@ public class ProductController {
      */
     @GetMapping("/search")
     public String search(Model model, String title) {
-        List<Product> searchList = productService.searchTitle(title);
+        List<ProductDto> searchList = productService.searchTitle(title);
         model.addAttribute("searchList", searchList);
         return "product/product_search_list";
     }

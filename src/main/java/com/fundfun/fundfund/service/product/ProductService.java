@@ -44,7 +44,7 @@ public interface ProductService {
     /**
      * 제목으로 상품 검색
      */
-    List<Product> searchTitle(String title);
+    List<ProductDto> searchTitle(String title);
 
     /**
      * 아이디로 상품 검색
@@ -54,7 +54,7 @@ public interface ProductService {
     /**
      * 진행 상태(Status)로 상품 검색
      */
-    List<Product> selectByStatus(String status);
+    List<ProductDto> selectByStatus(String status);
 
     /**
      * 마감일 설정
