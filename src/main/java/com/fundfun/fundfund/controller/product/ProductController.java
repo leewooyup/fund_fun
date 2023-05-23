@@ -45,7 +45,7 @@ public class ProductController {
     @GetMapping("/list")
     public String list(Model model, @RequestParam(defaultValue = "1") Integer mode) {
         if (mode == 1) {
-            List<Product> productList = productService.selectAll();
+            List<ProductDto> productList = productService.selectAll();
             model.addAttribute("list", productList);
             return "product/product_list";
         }

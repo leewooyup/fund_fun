@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //유저(user)와 연관된 주문 전체 조회
-    public List<Orders> selectByUser(UUID userId) {
+    public List<Orders> selectByUserId(UUID userId) {
         return orderRepository.findByUserId(userId);
     }
 

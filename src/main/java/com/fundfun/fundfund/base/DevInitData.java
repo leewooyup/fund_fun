@@ -3,11 +3,10 @@ package com.fundfun.fundfund.base;
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
-<<<<<<< HEAD
-=======
 import com.fundfun.fundfund.dto.product.ProductDto;
->>>>>>> c52011146e55457f609ac24852d32fc36bcacb7b
+import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
+import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserServiceImpl;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +21,7 @@ import java.util.UUID;
 public class DevInitData {
     // CommandLineRunner: 앱 실행 직후 초기데이터 세팅 및 초기화에 사용된다.
     @Bean
-    CommandLineRunner init(ProductServiceImpl productService, OrderServiceImpl orderService, UserServiceImpl userService) {
+    CommandLineRunner init(ProductService productService, OrderService orderService, UserServiceImpl userService) {
         return args -> {
             Users users = userService.createUser();
             ProductDto product = productService.createProduct(users);

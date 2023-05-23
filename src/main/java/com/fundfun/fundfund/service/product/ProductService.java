@@ -13,7 +13,7 @@ public interface ProductService {
     /**
      * (해당 유저에 해당하는 주문서 ..) 전체 검색
      */
-    List<Product> selectAll();
+    List<ProductDto> selectAll();
 
     /**
      * 상품 업데이트
@@ -49,7 +49,7 @@ public interface ProductService {
     /**
      * 아이디로 상품 검색
      */
-    List<Product> searchId(Users user);
+    //List<Product> searchId(Users user);
 
     /**
      * 진행 상태(Status)로 상품 검색
@@ -59,6 +59,11 @@ public interface ProductService {
     /**
      * 마감일 설정
      */
-    Long crowdDeadline(ProductDto productDto);
+    int crowdDeadline(ProductDto productDto);
+
+    /**
+     * 하드코딩,,create
+     */
+    ProductDto createProduct(Users users);
 
 }
