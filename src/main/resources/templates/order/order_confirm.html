@@ -15,34 +15,38 @@
             padding: 30px;
         }
 
-        .container{
+        .container {
             padding: 0 20px;
+        }
+        .invest-msg{
+            font-size: large;
+            font-weight: bold;
         }
 
     </style>
     <body>
-    <div class ="container">
+    <div class="container">
         <div style="border-bottom:solid;margin:10px;">
             <h4>투자 완료</h4>
-
         </div>
-        <div id="receipt" class="d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center" id="receipt">
             <div>
                 <img alt="" src="https://picsum.photos/id/237/200/300" style="width:300px;height:250px">
             </div>
-            <div style="padding-top:20px">
-                <span th:text="|${user.name}님|"></span>
-                <span th:text="|${product.title} 상품에 ${cost}원 투자 완료되었습니다.|"></span>
+            <div style="padding-top:20px;text-align: center">
+                <div th:text="|${user.name}님|"></div>
+                <span class="invest-msg" th:text="|<${product.title}> 상품에 ${cost}원 투자 완료되었습니다.|"></span>
+            </div>
         </div>
         <div style="text-align:right; padding-top:10px">
-<!--            <h5> 충전금 잔액 : 10000원 </h5>-->
+            <!--            <h5> 충전금 잔액 : 10000원 </h5>-->
             <span th:text="|충전금 잔액 : ${user.money}원|"></span>
         </div>
         <div style="text-align: center">
             <a href="/product/list">
                 <button class="btn btn-warning" type="submit">상품 목록</button>
             </a>
-<!--            <a href=../order/form/${encId}> &lt;!&ndash;../order/form/${encId} &ndash;&gt;-->
+            <!--            <a href=../order/form/${encId}> &lt;!&ndash;../order/form/${encId} &ndash;&gt;-->
             <a th:href="@{|../order/update/${encId}|}"> <!--../order/form/${encId} -->
                 <button class="btn btn-warning" type="submit">마이페이지</button>
             </a>
