@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -59,19 +60,30 @@ public class OrderController {
      * @return view
      */
     @PostMapping("/send/{encId}")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model) {
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model,Principal principal) {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
 
         UUID productId = orderService.decEncId(encId);
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
+
+        //
+        Optional<Users> ou = userService.findByEmail(principal.getName());
+//        if(ou.isPresent()) {
+            Users user = ou.get();
+//        }
+//        else{
+//            throw new RuntimeException("로그인 먼저 진행해주세요.");
+//        }
+        //
         if (productDto == null || investDto == null) {
             throw new RuntimeException("투자에 실패하셨습니다.");
         }
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
+        model.addAttribute("user",user);
 
         return "order/order_receipt";
     }
@@ -99,8 +111,10 @@ public class OrderController {
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
-        return String.format("redirect:/product/list?msg=%s", msg);
-}
+        //return String.format("redirect:/product/list?msg=%s", msg);
+        return "order/order_confirm";
+
+    }
 
     /**
      * 마이페이지에서 주문 상세보기
@@ -123,6 +137,13 @@ public class OrderController {
 //        return "redirect:/order/list";
 //
 //    }
+
+    @PostMapping("/confirm/{encId}")
+    public String confirm(@PathVariable String encId){
+        System.out.println("encId = " + encId);
+
+        return "order/order_confirm";
+    }
 
 }
 

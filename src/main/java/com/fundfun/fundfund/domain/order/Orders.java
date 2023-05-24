@@ -36,7 +36,6 @@ public class Orders extends BaseTimeEntity {
     private String status;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "product_id")
     private Product product;
 

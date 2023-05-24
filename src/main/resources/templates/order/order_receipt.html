@@ -4,7 +4,7 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
 >
-
+</style>
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
     <div class="d-flex flex-column align-items-center wrapper">
@@ -19,11 +19,11 @@
                 </div>
                 <div>
                     <label class="sub-title">투자할 금액</label>
-                    <div><span th:text="${invest.cost}"></span>원</div>
+                    <div th:text="|${invest.cost}"원|></div>
                 </div>
                 <div>
-                    <label class="sub-title">현재 충전금</label>
-                    <div th:text="|${product.fundManager.name} 펀드매니저님|"></div>
+                    <label class="sub-title">보유 충전금</label>
+                    <div th:text="|${user.money}원|"></div>
                 </div>
             </div>
             <div class="order-main-right-section">
@@ -31,15 +31,15 @@
             </div>
         </div>
 
-        <div class="d-flex" id="invest" style="justify-content:center">
+        <div class="d-flex justify-content-center" id="invest" style="padding:10px; width:30%">
             <form method="post" th:action ="@{|/order/update/${encId}|}" id="costSendForm">
-                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>-->
+                <button class="btn btn-warning" id="btn-invest" type="button" style="margin-right:10px">투자</button>
                 <input type="hidden" name="cost" th:value="${invest.cost}">
             </form>
 <!--            <a th:href ="@{|/order/update/${encId}|}">-->
 <!--                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>-->
 <!--            </a>-->
-            <a href="/product/list?mode=1">
+            <a href="/product/list">
                 <button class="btn btn-warning" type="button">취소</button>
             </a>
         </div>
