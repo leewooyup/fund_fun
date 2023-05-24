@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +46,18 @@ public class PostServiceImpl implements PostService {
                 .map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
 
+//    @Override
+//    public Page<PostDto> selectAll(Pageable pageable){
+//        return (Page<PostDto>) postRepository.findAll(pageable).stream()
+//                .map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+//    }
+
 
     @Override
     public PostDto selectPostById(UUID postId) {
+        System.out.println("postId = " + postId);
         Post post = postRepository.findById(postId).orElse(null);
+        System.out.println("post의 id = " + post.getId());
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         PostDto result = modelMapper.map(post, PostDto.class);
         return result;
