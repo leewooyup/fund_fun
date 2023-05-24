@@ -35,7 +35,7 @@ public interface OrderService {
     /**
      * 주문 등록
      * */
-    Orders createOrder(Long cost, ProductDto productDto, Users user);
+    Orders createOrder(Long cost, ProductDto productDto, UserDTO userDTO);
 
     /**
      * 주문 업데이트
@@ -45,7 +45,7 @@ public interface OrderService {
     /**
      * 주문삭제
      * */
-    void delete(UUID orderId, Users user);
+    void delete(UUID orderId, UserDTO userDTO);
 
 
     /**

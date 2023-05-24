@@ -1,5 +1,6 @@
 server:
     port: 9000
+
 spring:
     profiles:
         active: dev, base-addi
@@ -12,7 +13,6 @@ spring:
 
         username: c##fundFun
         password: 1234
-
     security:
         user:
             name: user
@@ -37,14 +37,11 @@ spring:
         show-sql: true
         hibernate:
             ddl-auto: create
-            # yeoooo : ? ? create ? update ?? create-drop ?? ?????
-#        defer-datasource-initialization: true
         generate-ddl: true
 
         thymeleaf:
             cache: false
         defer-datasource-initialization: true
-    # sql init script
     sql:
         init:
             platform: oracle
