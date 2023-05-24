@@ -35,17 +35,17 @@ public class ProductDto{
     private String thumbnailRelPath;
     private Users fundManager;
 
-    public Date toDate(String crowdEnd) {
-        Date deadLine = null;
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            deadLine = sdf.parse(crowdEnd);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return deadLine;
-    }
-
+//    public Date toDate(String crowdEnd) {
+//        Date deadLine = null;
+//        try {
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            deadLine = sdf.parse(crowdEnd);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return deadLine;
+//    }
+//
     public String uuidEncode() {
         //UUID encode
         Base64.Encoder encoder = Base64.getEncoder();

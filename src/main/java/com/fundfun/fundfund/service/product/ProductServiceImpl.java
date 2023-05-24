@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = Product.builder()
                 .title("A+B")
                 .crowdStart(startDate.toString())
-                .crowdEnd(endDate.toString())
+                .crowdEnd("2023-05-29")
                 .goal(1000000L)
                 .currentGoal(500L)
                 .status("진행중")
@@ -158,6 +158,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, Users user) {
+        System.out.println("prouctDto.getCrowdEnd = " + productDto.getCrowdEnd());
         String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
         productDto.setFundManager(user);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);

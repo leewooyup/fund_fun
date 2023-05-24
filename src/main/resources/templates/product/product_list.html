@@ -11,6 +11,11 @@
 
 
     </head>
+    <style>
+        .container {
+            padding: 10px;
+        }
+    </style>
     <body>
 
     <div>
@@ -18,17 +23,14 @@
             <h3>상품게시판</h3>
             <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
         </div>
-<!--        <select id="category" name="category" onchange="changeSelect()">-->
-<!--            <option selected="selected" style="background-color: #ccc" value="X">카테고리</option>-->
-<!--            <option value="1">전체</option>-->
-<!--            <option value="2">진행 중인 상품</option>-->
-<!--        </select>-->
-        <div>
-            <span><a href ="/product/list">전체</a> | </span>
-            <a href ="/product/list/progress">진행 중인 상품</a>
+        <div style="padding-left:10px;">
+            <span><a href="/product/list">전체</a> | </span>
+            <a href="/product/list/progress">진행 중인 상품</a>
         </div>
+        <th:block th:if="${list.size() == 0}">
+           <span style="text-align: center"><h4>등록된 상품이 존재하지 않습니다.</h4></span>
+        </th:block>
     </div>
-
     <div class="container">
         <div class="row row-cols-3">
             <div th:each="ele : ${list}">
@@ -46,54 +48,55 @@
                 </div>
             </div>
         </div>
-
-        <form action="/product/search" method="get">
-            <div style=" float: right;padding: 0 10px 0 0">
-                <input name="title" placeholder="Search" type="text"></input>
-                <button class="btn btn-warning" type="submit">검색</button>
-            </div>
-        </form>
-        <a href="/product/register">
-            <button class="btn btn-warning" type="submit">등록</button>
-        </a>
+        <div style="margin-top: 10px">
+            <form action="/product/search" method="get">
+                <div style=" float: right;padding: 0 10px 0 0">
+                    <input name="title" placeholder="Search" type="text"></input>
+                    <button class="btn btn-warning" type="submit">검색</button>
+                </div>
+            </form>
+            <a href="/product/register">
+                <button class="btn btn-warning" type="submit">등록</button>
+            </a>
+        </div>
     </div>
     </div>
     <script th:inline="javascript">
-    toastr.options = {
-        closeButton: false,
-        debug: false,
-        newestOnTop: false,
-        progressBar: false,
-        positionClass: "toast-top-right",
-        preventDuplicates: false,
-        onclick: null,
-        showDuration: "300",
-        hideDuration: "1000",
-        timeOut: "5000",
-        extendedTimeOut: "1000",
-        showEasing: "swing",
-        hideEasing: "linear",
-        showMethod: "fadeIn",
-        hideMethod: "fadeOut"
-    };
+        toastr.options = {
+            closeButton: false,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: "toast-top-right",
+            preventDuplicates: false,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            timeOut: "5000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
 
-    function errorModal(msg) {
-        toastr["error"](msg);
-    }
+        function errorModal(msg) {
+            toastr["error"](msg);
+        }
 
-    function successModal(msg) {
-        toastr["success"](msg);
-    }
+        function successModal(msg) {
+            toastr["success"](msg);
+        }
 
-    const params = /*[[ ${param} ]]*/ null;
+        const params = /*[[ ${param} ]]*/ null;
 
-    if (params.errMsg) {
-        errorModal(params.errMsg);
-    }
+        if (params.errMsg) {
+            errorModal(params.errMsg);
+        }
 
-    if(params.msg) {
-        successModal(params.msg);
-    }
+        if (params.msg) {
+            successModal(params.msg);
+        }
 
     </script>
     </body>

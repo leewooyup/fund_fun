@@ -86,7 +86,8 @@ public class Product extends BaseTimeEntity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             deadLine = sdf.parse(crowdEnd);
         } catch (ParseException e) {
-            e.printStackTrace();
+            e.printStackTrace(
+            );
         }
         return deadLine;
     }
