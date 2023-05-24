@@ -40,11 +40,11 @@ spring:
 
         thymeleaf:
             cache: false
-    sql:
-        init:
-            platform: oracle
-            encoding: UTF-8
-            mode: never
+#    sql:
+#        init:
+#            platform: oracle
+#            encoding: UTF-8
+#            mode: never
 custom:
     genFileDirPath: c:/Temp/fundFun
 

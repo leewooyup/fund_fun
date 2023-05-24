@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = Product.builder()
                 .title("A+B")
                 .crowdStart(startDate.toString())
-                .crowdEnd(endDate.toString())
+                .crowdEnd("2023-05-23")
                 .goal(1000000L)
                 .currentGoal(500L)
                 .status("진행중")
@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         //정보 수정
-        productDto.setId(productId);
+//        productDto.setId(productId);
         productDto.setCrowdStart(dbProduct.getCrowdStart());
         productDto.setCrowdEnd(dbProduct.getCrowdEnd());
         productDto.setFundManager(user);

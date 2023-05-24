@@ -18,7 +18,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ProductDto{
-
     private UUID id;
     @NotEmpty(message = "상품제목을 입력해주세요.")
     private String title;
@@ -35,27 +34,27 @@ public class ProductDto{
     private String thumbnailRelPath;
     private Users fundManager;
 
-    public Date toDate(String crowdEnd) {
-        Date deadLine = null;
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            deadLine = sdf.parse(crowdEnd);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return deadLine;
-    }
-
-    public String uuidEncode() {
-        //UUID encode
-        Base64.Encoder encoder = Base64.getEncoder();
-        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
-
-        return encodedString;
-    }
-
-    public String getThumbnailImgUrl() {
-        if (thumbnailRelPath == null) return "/gen/product/avatar.jpg";
-        return "/gen/" + thumbnailRelPath;
-    }
+//    public Date toDate(String crowdEnd) {
+//        Date deadLine = null;
+//        try {
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            deadLine = sdf.parse(crowdEnd);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return deadLine;
+//    }
+//
+//    public String uuidEncode() {
+//        //UUID encode
+//        Base64.Encoder encoder = Base64.getEncoder();
+//        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
+//
+//        return encodedString;
+//    }
+//
+//    public String getThumbnailImgUrl() {
+//        if (thumbnailRelPath == null) return "/gen/product/avatar.jpg";
+//        return "/gen/" + thumbnailRelPath;
+//    }
 }

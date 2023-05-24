@@ -32,7 +32,7 @@ public class UserServiceImpl {
                 .total_investment(30L)
                 .benefit(45L)
                 .build();
-        System.out.println("gd" + userRepository.findById(user.getId()).get().getRole());
+//        System.out.println("gd" + userRepository.findById(user.getId()).get().getRole());
         userRepository.save(user);
         return user;
 
