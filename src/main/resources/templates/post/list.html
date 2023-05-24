@@ -10,14 +10,16 @@
             float: right;
             padding: 0 10px 0 0
         }
-        table{
-            width:100%;
+
+        table {
+            width: 100%;
         }
-        table, th, td{
-            margin-left:auto;
-            margin-right:auto;
-            text-align:center;
-            vertical-align:center;
+
+        table, th, td {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            vertical-align: center;
         }
     </style>
     <script th:inline="javascript">
@@ -26,16 +28,16 @@
 
     <script type="text/javascript">
         $(Document).ready(function () {
-            visibleButton();
-
-            function visibleButton() {
-                if (userInfo != null) {
-                    $("#createPostBtn").show();
-
-                } else {
-                    $("#createPostBtn").hide();
-                }
-            }
+            // visibleButton();
+            //
+            // function visibleButton() {
+            //     if (userInfo != null) {
+            //         $("#createPostBtn").show();
+            //
+            //     } else {
+            //         $("#createPostBtn").hide();
+            //     }
+            // }
         });
     </script>
 
@@ -73,41 +75,43 @@
                     </a>
                 </td>
                 <td class="bd-right-none" th:text="${ele.getLikePost()}"></td>
-                <td th:text="${ele.getCreatedAt()}"></td>
+                <td th:text="${ele.getWriteTime()}"></td>
 
             </tr>
         </table>
 
-        <!-- 페이징 처리 -->
+<!--        &lt;!&ndash; 페이징 처리 &ndash;&gt;-->
 <!--        <div style="text-align: center">-->
 <!--            &lt;!&ndash;  블럭당  &ndash;&gt;-->
 <!--            <nav class="pagination-container">-->
 <!--                <div class="pagination">-->
-<!--                    <th:set var="doneLoop" value="false"/>-->
+<!--        <span th:with="doneLoop=false">-->
+<!--            <span th:if="${startPage - blockCount > 0}">-->
+<!--                <a class="pagination-newer"-->
+<!--                   th:href="@{${pageContext.request.contextPath}/post/list(nowPage=${startPage-1})}">PREV</a>-->
+<!--            </span>-->
 
-<!--                    <th:if test="${(startPage-blockCount) > 0}"> &lt;!&ndash; (-2) > 0  &ndash;&gt;-->
-<!--                        <a class="pagination-newer" href="${pageContext.request.contextPath}/post/list?nowPage=${startPage-1}">PREV</a>-->
-<!--                    </th:if>-->
+<!--            <span class="pagination-inner">-->
+<!--                <span th:each="i: ${#numbers.sequence(startPage, startPage - 1 + blockCount)}">-->
+<!--                    <span th:if="${i - 1 >= postList.totalPages}">-->
+<!--                        <span th:with="doneLoop=true"></span>-->
+<!--                    </span>-->
 
-<!--                    <span class="pagination-inner">-->
-<!--		  <th:forEach var='i' begin='${startPage}' end='${(startPage-1)+blockCount}'>-->
+<!--                    <span th:unless="${doneLoop}">-->
+<!--                        <a th:class="${i == nowPage} ? 'pagination-active' : 'page'"-->
+<!--                           th:href="@{${pageContext.request.contextPath}/post/list(nowPage=${i})}" th:text="${i}"></a>-->
+<!--                    </span>-->
+<!--                </span>-->
+<!--            </span>-->
 
-<!--			    <th:if test="${(i-1)>=postList.getTotalPages()}">-->
-<!--			       <th:set var="doneLoop" value="true"/>-->
-<!--			    </th:if>-->
-
-<!--		  <th:if test="${not doneLoop}" >-->
-<!--		         <a class="${i==nowPage?'pagination-active':page}" href="${pageContext.request.contextPath}/post/list?nowPage=${i}">${i}</a>-->
-<!--		  </th:if>-->
-
-<!--		</th:forEach>-->
-<!--		</span>-->
-<!--                    <th:if test="${(startPage+blockCount)<=postList.getTotalPages()}">-->
-<!--                        <a class="pagination-older" href="${pageContext.request.contextPath}/post/list?nowPage=${startPage+blockCount}">NEXT</a>-->
-<!--                    </th:if>-->
-
+<!--            <span th:if="${startPage + blockCount <= postList.totalPages}">-->
+<!--                <a class="pagination-older"-->
+<!--                   th:href="@{${pageContext.request.contextPath}/post/list(nowPage=${startPage+blockCount})}">NEXT</a>-->
+<!--            </span>-->
+<!--        </span>-->
 <!--                </div>-->
 <!--            </nav>-->
+
 <!--        </div>-->
 
         <!-- 글쓰기 버튼 -->
