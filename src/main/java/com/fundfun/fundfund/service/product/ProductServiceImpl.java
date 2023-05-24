@@ -154,6 +154,21 @@ public class ProductServiceImpl implements ProductService {
         return 1;
     }
 
+
+    @Override
+    public boolean updateStatus(ProductDto productDto) {
+        String deadline = productDto.getCrowdEnd();
+        LocalDate deadlineLD = LocalDate.parse(deadline);
+        // deadline이 오늘날짜보다 작을 경우
+        if(deadlineLD.isBefore(LocalDate.now())) {
+            productDto.setStatus("진행종료");
+            Product product = modelMapper.map(productDto, Product.class);
+            productRepository.save(product);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 상품 등록하기
      */

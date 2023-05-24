@@ -51,7 +51,7 @@ public class OrderController {
         ProductDto productDto = productService.selectById(uuid);
         model.addAttribute("product", productDto);
         model.addAttribute("encId", encId);
-
+        productService.updateStatus(productDto);
         int deadline = productService.crowdDeadline(productDto);
         model.addAttribute("deadline", deadline);
 
