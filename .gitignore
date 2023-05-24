@@ -176,3 +176,4 @@ application.yml
 
 DevInitData.java
 data.sql
+SecurityConfig.java

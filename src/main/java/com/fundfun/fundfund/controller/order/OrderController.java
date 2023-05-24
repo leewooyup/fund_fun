@@ -139,7 +139,7 @@ public class OrderController {
 //    }
 
     @PostMapping("/confirm/{encId}")
-    public String confirm(@PathVariable String encId){
+    public String confirm(@PathVariable String encId,Principal principal){
         System.out.println("encId = " + encId);
 
         return "order/order_confirm";
