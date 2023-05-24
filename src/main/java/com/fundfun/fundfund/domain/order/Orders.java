@@ -21,7 +21,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+
 @DynamicInsert
 public class Orders extends BaseTimeEntity {
     @Id

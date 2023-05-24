@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDTO findById(UUID id) {
         return userRepository.findById(id).map(x -> modelMapper.map(x, UserDTO.class)).orElseThrow(NoSuchElementException::new);
+
     }
 
     @Override

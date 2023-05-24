@@ -20,7 +20,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+
 @Table(name = "portfolio")
 public class Portfolio extends BaseTimeEntity {
     @Id
