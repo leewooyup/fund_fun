@@ -35,30 +35,26 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public ProductDto createProduct(Users users) { //테스트용code
-
-        LocalDate startDate = LocalDate.parse("2023-05-24");
-        LocalDate endDate = LocalDate.parse("2023-05-29");
-        Product product = Product.builder()
-                .title("A+B")
-                .crowdStart(startDate.toString())
-<<<<<<< HEAD
-                .crowdEnd("2023-05-23")
-=======
-                .crowdEnd("2023-05-29")
->>>>>>> 7274451c3ebd5f7da1956b6c1773f21d17c5d451
-                .goal(1000000L)
-                .currentGoal(500L)
-                .status("진행중")
-                .description("펀드진행중")
-                .fundManager(users)
-                .build();
-
-        productRepository.save(product);
-
-        ProductDto productDto = modelMapper.map(product, ProductDto.class);
-        return productDto;
-    }
+//    public ProductDto createProduct(Users users) { //테스트용code
+//
+//        LocalDate startDate = LocalDate.parse("2023-05-24");
+//        LocalDate endDate = LocalDate.parse("2023-05-29");
+//        Product product = Product.builder()
+//                .title("A+B")
+//                .crowdStart(startDate.toString())
+//                .crowdEnd("2023-05-23")
+//                .goal(1000000L)
+//                .currentGoal(500L)
+//                .status("진행중")
+//                .description("펀드진행중")
+//                .fundManager(users)
+//                .build();
+//
+//        productRepository.save(product);
+//
+//        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+//        return productDto;
+//    }
 
     /**
      * 전체 상품 조회
@@ -79,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         //정보 수정
-//        productDto.setId(productId);
+        productDto.setId(productId);
         productDto.setCrowdStart(dbProduct.getCrowdStart());
         productDto.setCrowdEnd(dbProduct.getCrowdEnd());
         productDto.setFundManager(user);
