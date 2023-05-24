@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -57,8 +58,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> selectAll(Pageable pageable) {
-        return null;
+    public Page<PostDto> selectAll(Pageable pageable) {
+        Page<Post> postList = postRepository.findAll(pageable);
+
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
+
+        return postDtoList;
     }
 
     @Override

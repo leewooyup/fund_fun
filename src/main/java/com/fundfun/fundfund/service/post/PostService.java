@@ -18,7 +18,7 @@ public interface PostService {
     //전체 게시물 조회
     List<PostDto> selectAll();
 
-    List<PostDto> selectAll(Pageable pageable);
+    Page<PostDto> selectAll(Pageable pageable);
 
     int getTotalPages(List<PostDto> postDtoList);
 

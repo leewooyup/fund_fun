@@ -42,11 +42,41 @@ public class PostController {
 
     /**
      * 아이디어 전체조회 화면 이동
-     * -> RestController로 옮겨야
+     * : 페이징 처리 없는 버전
+     */
+//    @GetMapping("/list")
+//    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter){ /*, @RequestParam(defaultValue = "1") int nowPage*/
+//        /*Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+//        Page<PostDto> pageList = postService.selectAll(page);
+//
+//        int temp = (nowPage - 1) % BLOCK_COUNT;
+//        int startPage = nowPage - temp;
+//
+//        model.addAttribute("postList", pageList);
+//
+//        model.addAttribute("blockCount", BLOCK_COUNT);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("nowPage", nowPage);*/
+//
+//        List<PostDto> postList = postService.selectAll();
+//        model.addAttribute("postList", postList);
+//        if(adapter!=null){
+//            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+//        }
+//        else if(adapter == null){
+//            model.addAttribute("userInfo", null);
+//        }
+//
+//        return "post/list";
+//    }
+
+    /**
+     * 아이디어 전체조회 화면 이동
+     * : 페이징 처리 없는 버전
      */
     @GetMapping("/list")
-    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter){ /*, @RequestParam(defaultValue = "1") int nowPage*/
-        /*Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage){
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
         Page<PostDto> pageList = postService.selectAll(page);
 
         int temp = (nowPage - 1) % BLOCK_COUNT;
@@ -56,10 +86,8 @@ public class PostController {
 
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
-        model.addAttribute("nowPage", nowPage);*/
+        model.addAttribute("nowPage", nowPage);
 
-        List<PostDto> postList = postService.selectAll();
-        model.addAttribute("postList", postList);
         if(adapter!=null){
             model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
         }
