@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
     </head>
+    <style>
+        #receipt {
+            border-bottom: solid;
+            padding: 30px;
+        }
+    </style>
     <body>
+    <div>
+        <div style="border-bottom:solid;margin:10px;">
+            <h4>투자 완료</h4>
 
-
-
+        </div>
+        <div id="receipt" class="d-flex flex-column align-items-center">
+            <div>
+                <img alt="" src="https://picsum.photos/id/237/200/300" style="width:300px;height:250px">
+            </div>
+            <div style="padding-top:20px">
+                <h5><---> 상품에 ---원 투자 완료되었습니다.</h5>
+            </div>
+        </div>
+        <div style="text-align:right; padding-top:10px">
+            <h5> 충전금 잔액 : 10000원 </h5>
+        </div>
+        <div style="text-align: center">
+            <a href="/product/list">
+                <button class="btn btn-warning" type="submit">상품 목록</button>
+            </a>
+<!--            <a href=../order/form/${encId}> &lt;!&ndash;../order/form/${encId} &ndash;&gt;-->
+            <a th:href="@{|../order/update/${encId}|}"> <!--../order/form/${encId} -->
+                <button class="btn btn-warning" type="submit">마이페이지</button>
+            </a>
+        </div>
+    </div>
     </body>
 </th:block>
 </html>

@@ -5,12 +5,6 @@
         xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
-  <style>
-    div .aa {
-      float: right;
-      padding: 0 10px 0 0
-    }
-  </style>
   <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -48,7 +42,7 @@
       </div>
       </th:block>
       <th:block th:if="${searchList.size() == 0}">
-        <div style="text-align: center"><h5>조회된 상품이 존재하지 않습니다.</h5></div>
+        <div style="text-align: center; padding-top:10px"><h4>조회된 상품이 존재하지 않습니다.</h4></div>
       </th:block>
 <!--      <form action="/order/form" method="get" id="productDetailSub">-->
 <!--        <input type="hidden" name="encId" >-->
