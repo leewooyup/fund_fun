@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -158,9 +159,14 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, Users user) {
-        System.out.println("prouctDto.getCrowdEnd = " + productDto.getCrowdEnd());
+//        System.out.println("prouctDto.getCrowdEnd = " + productDto.getCrowdEnd());
+        LocalDate ld = LocalDate.parse(productDto.getCrowdStart());
+        LocalDate endDateLd = ld.plusDays(14);
+        String endDate = endDateLd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//        System.out.println("endDate: " + endDate);
         String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
         productDto.setFundManager(user);
+        productDto.setCrowdEnd(endDate);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
 
