@@ -120,7 +120,9 @@ public class Users extends BaseTimeEntity implements UserDetails {
     }
 
     @Override
-    public boolean isEnabled() {
-        return true;
+    public boolean isEnabled() { return true;  }
+
+    public void setMoney(Long money){ //by lee
+        this.money = money;
     }
 }

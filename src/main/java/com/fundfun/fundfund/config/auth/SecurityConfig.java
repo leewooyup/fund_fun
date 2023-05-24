@@ -21,9 +21,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)// 특정 페이지에 특정 권한이 있는 유저만 접근을 허용할 경우 권한 및 인증을 미리 체크하겠다는 설정을 활성화
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-        private final CustomUserDetailService customUserDetailService;
-        private final OAuth2UserService oAuth2UserService;
-        private final AuthSuccessHandler authSuccessHandler;
+    private final CustomUserDetailService customUserDetailService;
+    private final OAuth2UserService oAuth2UserService;
+    private final AuthSuccessHandler authSuccessHandler;
 //    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
@@ -98,11 +98,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .successHandler(authSuccessHandler)
                 .userInfoEndpoint()
-        // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
+                // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
                 .userService(oAuth2UserService) // 리소스 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
         ;
 
 
     }
 }
-
