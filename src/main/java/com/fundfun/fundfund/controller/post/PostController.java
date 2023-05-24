@@ -11,10 +11,7 @@ import com.fundfun.fundfund.service.reply.ReplyService;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,12 +74,12 @@ public class PostController {
     @GetMapping("/list")
     public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage){
         Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
-        Page<PostDto> pageList = postService.selectAll(page);
+        Page<PostDto> postList = postService.selectAll(page);
 
         int temp = (nowPage - 1) % BLOCK_COUNT;
         int startPage = nowPage - temp;
 
-        model.addAttribute("postList", pageList);
+        model.addAttribute("postList", postList);
 
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
@@ -102,10 +99,26 @@ public class PostController {
      * 아이디어 인기순 정렬
      */
     @GetMapping("/list/popular")
-    public String popularIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
-        List<PostDto> postList = postService.getPostsOrderByLikes();
+    public String popularIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
+        List<PostDto> postDtoList = postService.getPostsOrderByLikes();
+        Page<PostDto> postList = new PageImpl<>(postDtoList);
+
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
+
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
+        if(adapter!=null){
+            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
         return "post/list";
     }
 
@@ -113,10 +126,26 @@ public class PostController {
      * 가상품만 보기
      */
     @GetMapping("/list/preproduct")
-    public String preproductList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
-        List<PostDto> postList = postService.selectPostByStatus(StPost.PREPRODUCT);
+    public String preproductList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
+        List<PostDto> postDtoList = postService.selectPostByStatus(StPost.PREPRODUCT);
+        Page<PostDto> postList = new PageImpl<>(postDtoList);
+
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
+
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
+        if(adapter!=null){
+            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
         return "post/list";
     }
 
@@ -124,12 +153,27 @@ public class PostController {
      * 키워드로 검색
      */
     @GetMapping("/list/searchResult")
-    public String searchList(Model model, @RequestParam String keyword, @AuthenticationPrincipal UserAdapter adapter) {
-        System.out.println("keyword = " + keyword);
-        List<PostDto> postList = postService.selectPostByKeyword(keyword);
+    public String searchList(Model model, @RequestParam String keyword, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
+        List<PostDto> postDtoList = postService.selectPostByKeyword(keyword);
+        Page<PostDto> postList = new PageImpl<>(postDtoList);
+
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
+
         model.addAttribute("postList", postList);
         model.addAttribute("keyword", keyword);
-        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserAdapter.class));
+
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
+        if(adapter!=null){
+            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
         return "post/list";
     }
 
@@ -151,7 +195,7 @@ public class PostController {
             //해당 게시물에 댓글이 있다면 반환
 
             if(adapter!=null) {
-                model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class).getId());
+                model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
             }
             else if(adapter == null){
                 model.addAttribute("userInfo", null);
@@ -169,9 +213,9 @@ public class PostController {
      * 아이디어에 좋아요 누르기
      */
     @GetMapping("/detail/{id}/like")
-    public String addLike(@PathVariable UUID id, Model model) {
-        //좋아요 개수 추가
-        postService.addLike(id);
+    public String addLike(@PathVariable UUID id, Model model, @AuthenticationPrincipal UserAdapter adapter) {
+        //좋아요 개수 추가 및 유저 정보 변경
+        postService.addLike(id, adapter.getUser());
 
         PostDto postDto = postService.selectPostById(id);
         if (postDto.getLikePost() >= 10 && postDto.getStatusPost() == StPost.EARLY_IDEA) {

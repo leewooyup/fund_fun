@@ -2,6 +2,7 @@ package com.fundfun.fundfund.service.post;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.post.PostDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +20,6 @@ public interface PostService {
     List<PostDto> selectAll();
 
     Page<PostDto> selectAll(Pageable pageable);
-
-    int getTotalPages(List<PostDto> postDtoList);
 
     //작성자로 게시물 조회
     PostDto selectPostById(UUID postId);
@@ -47,7 +46,7 @@ public interface PostService {
     List<PostDto> getPostsOrderByLikes();
 
     //게시물에 좋아요 추가
-    void addLike(UUID postId);
+    void addLike(UUID postId, Users user);
 
     //게시물의 상태 변경
     void updateStatus(PostDto post, StPost status);

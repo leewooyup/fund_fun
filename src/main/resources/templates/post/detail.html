@@ -20,8 +20,9 @@
     <script th:inline="javascript">
         var postId = [[${postDto.id}]];
         var postLike = [[${postDto.likePost}]];
-        var userInfo = [[${userInfo}]]; //글을 조회중인 유저의 아이디
+        var userInfo = [[${userInfo.getId()}]]; //글을 조회중인 유저의 아이디
         var writer = [[${postDto.user.getId()}]]; //글을 작성한 유저의 아이디
+        var userLike = [[${userInfo.getCount()}]]; //글을 조회중인 유저의 좋아요 카운트
     </script>
 
     <script type="text/javascript">
@@ -70,8 +71,14 @@
                     }
                 }
                 else {
-                    $("#likePostBtn").show(); // 좋아요 가능
-                    $("#likePostCount").hide(); // 좋아요 개수 열람 버튼 숨기기
+                    if(userLike <= 0){
+                        $("#likePostBtn").hide(); // 좋아요 불가능
+                        $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
+                    }
+                    else{
+                        $("#likePostBtn").show(); // 좋아요 가능
+                        $("#likePostCount").hide(); // 좋아요 개수 열람 버튼 숨기기
+                    }
                     $("#editPost").hide();
                     $("#deletePost").hide();
                 }
