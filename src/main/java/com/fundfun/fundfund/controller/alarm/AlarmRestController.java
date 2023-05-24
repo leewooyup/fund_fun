@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller.alarm;
 
 import com.fundfun.fundfund.domain.alarm.AlarmDTO;
+import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.repository.user.UserRepository;
 import com.fundfun.fundfund.service.alarm.AlarmService;
@@ -29,7 +30,8 @@ public class AlarmRestController {
      * 읽지 않은 알림만 로드
      */
     @GetMapping("/")
-    public ApiResponse<List<AlarmDTO>> getUnreads(@AuthenticationPrincipal Users user) {
+    public ApiResponse<List<AlarmDTO>> getUnreads(@AuthenticationPrincipal UserAdapter adapter) {
+        Users user = adapter.getUser();
         List<AlarmDTO> alarms = alarmService.findAllUnread(user.getId());
         log.info("[AlarmRestController] - user {} requested Unread Alarm -> {}", user.getEmail(), alarms.toString());
         return ApiResponse.success(alarms);
@@ -40,8 +42,8 @@ public class AlarmRestController {
      * 한 유저에 관한 알림을 읽기 여부에 관계 없이 로드.
      */
     @GetMapping("/all")
-    public ApiResponse<List<AlarmDTO>> getAll(@AuthenticationPrincipal Users user) {
-        return ApiResponse.success(alarmService.findByUserId(user.getId()));
+    public ApiResponse<List<AlarmDTO>> getAll(@AuthenticationPrincipal UserAdapter adapter) {
+        return ApiResponse.success(alarmService.findByUserId(adapter.getUser().getId()));
     }
 
     /**
@@ -59,8 +61,8 @@ public class AlarmRestController {
      * 모든 알림을 읽음 상태로 변경
      */
     @PostMapping("/read/all")
-    public ApiResponse<String> readAll(@AuthenticationPrincipal Users user) {
-        alarmService.readAll(user.getId());
+    public ApiResponse<String> readAll(@AuthenticationPrincipal UserAdapter adapter) {
+        alarmService.readAll(adapter.getUser().getId());
         log.info("[AlarmRestController] - read All () executed");
         return ApiResponse.success("good test");
     }

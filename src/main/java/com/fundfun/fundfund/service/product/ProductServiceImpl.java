@@ -139,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
         if (user.getMoney() < cost) {
             throw new InSufficientMoneyException("충전이 필요합니다.");
         }
-        userService.updateMoney(user.getMoney() - cost, user);
+        user.minusMoney(cost);
 
         //하나라도 못찾은 것이 있다면, Rollback
         if (productDto == null || order == null || user == null) {

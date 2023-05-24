@@ -2,6 +2,7 @@ package com.fundfun.fundfund.controller.portfolio;
 
 import com.fundfun.fundfund.domain.opinion.Opinion;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.opinion.OpinionDto;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
@@ -33,7 +34,7 @@ public class PortfolioController {
 
     @GetMapping("/portfolio")
     public String goPortfolioList(HttpServletRequest req, HttpServletResponse res, Model model,
-                                  @AuthenticationPrincipal Users user) {
+                                  @AuthenticationPrincipal UserAdapter adapter) {
         String reqData = req.getParameter("postId");  //postid 파라미터로 받음.
 
         if (reqData == null) {
@@ -45,7 +46,7 @@ public class PortfolioController {
             UUID postId = UUID.fromString(reqData);
             VoteDto voteDto = voteService.selectVoteByPostId(postId);
 
-            model.addAttribute("chkVote", opinionService.checkOpinion(voteDto, user) ? "1" : "0");
+            model.addAttribute("chkVote", opinionService.checkOpinion(voteDto, adapter.getUser()) ? "1" : "0");
             //의견 확인 checkVote ( 1, 0)  으로 설정해서 보이기
         }
         return "portfolio/portfolioList";
@@ -104,7 +105,7 @@ public class PortfolioController {
     // 포트폴리오 투표 - ajax
     @PostMapping(value = "/portfolio/votePortfolio")
     @ResponseBody
-    public HashMap<String, Object> votePortfolio(@RequestBody Map<String, Object> paramMap, @AuthenticationPrincipal Users user) {
+    public HashMap<String, Object> votePortfolio(@RequestBody Map<String, Object> paramMap, @AuthenticationPrincipal UserAdapter adapter) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("msg", "fail");
 
@@ -114,7 +115,7 @@ public class PortfolioController {
             UUID portpolioId = UUID.fromString(paramMap.get("portfolioId").toString());
             VoteDto voteDto = voteService.selectVoteByPostId(postId);
             opinionDto.setVoteId(voteDto.getId());
-            opinionDto.setUserId(user.getId());
+            opinionDto.setUserId(adapter.getUser().getId());
             opinionDto.setVotedFor(portpolioId);
 
             opinionService.createOpinion(opinionDto);
@@ -146,7 +147,7 @@ public class PortfolioController {
     // 포트폴리오 수정/작성 - ajax
     @PostMapping(value = "/portfolio/commitData")
     @ResponseBody
-    public HashMap<String, Object> commitData(@RequestBody Map<String, Object> paramMap, @AuthenticationPrincipal Users user) {
+    public HashMap<String, Object> commitData(@RequestBody Map<String, Object> paramMap, @AuthenticationPrincipal UserAdapter adapter) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("msg", "fail");
         try {
@@ -158,7 +159,7 @@ public class PortfolioController {
 
             portfolioDto.setPostId(postId);
             portfolioDto.setVoteId(voteDto.getId());
-            portfolioDto.setUserId(user.getId());
+            portfolioDto.setUserId(adapter.getUser().getId());
 
             if (state.equals("D")) {
                 UUID portfolioId = UUID.fromString(paramMap.get("portfolioId").toString());

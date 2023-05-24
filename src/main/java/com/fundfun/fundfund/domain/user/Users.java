@@ -125,4 +125,24 @@ public class Users extends BaseTimeEntity implements UserDetails {
     public void setMoney(Long money){ //by lee
         this.money = money;
     }
+
+    public Long minusMoney(Long money) {
+        this.money -= money;
+        return this.money;
+    }
+
+    public Long addMoney(Long money) {
+        this.money += money;
+        return this.money;
+    }
+
+    public Long minusCount() {
+        this.count -= 1;
+        return this.count;
+    }
+
+    public Long resetCount() {
+        this.count = 5L;
+        return count;
+    }
 }

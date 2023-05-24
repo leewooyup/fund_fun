@@ -33,7 +33,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 public class Post extends BaseTimeEntity {
 
     @Id

@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserAdapter userAdapter = (UserAdapter) authentication.getPrincipal();
