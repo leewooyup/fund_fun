@@ -142,8 +142,8 @@
                 <table>
                     <tr th:each="ele: ${replyList}" style="border-top: 0.5px solid darkgray; border-bottom: 0.5px solid darkgray;">
                         <td style="text-align:left;"><span th:text="${ele.getContentReply()}"></span></td>
-                        <td th:text="${ele.getCreatedAt()}"></td>
-                        <td><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
+                        <td th:text="${ele.getWriteTime()}"></td>
+                        <td th:if="${ele.getUser().getId()==userInfo.getId()}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
                     </tr>
                 </table>
             </div>
