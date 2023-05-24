@@ -1,13 +1,14 @@
 package com.fundfun.fundfund.service.alarm;
 
-import com.fundfun.fundfund.domain.alarm.Alarm;
 import com.fundfun.fundfund.domain.alarm.AlarmDTO;
+import com.fundfun.fundfund.domain.user.Users;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface AlarmService {
+
+    AlarmDTO createAlarm(Users user, String content);
     List<AlarmDTO> findAll();
 
     List<AlarmDTO> findByUserId(UUID id);
@@ -16,8 +17,10 @@ public interface AlarmService {
 
     AlarmDTO deleteById();
 
-    void updateAlarm();
+    void readAlarm(Long id);
 
+    List<AlarmDTO> findAllUnread(UUID id);
+    void readAll(UUID id);
 
-
+    void deleteById(Long id);
 }

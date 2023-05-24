@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller.user;
 
 import com.fundfun.fundfund.config.auth.JwtTokenProvider;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.ApiResponse;
@@ -27,7 +28,7 @@ public class LoginRestController {
         String pw = encoder.encode(map.get("pw").toString());
 
         log.info("login attempted : id -> {}, pw -> {}", email, pw);
-        Users target = Optional.ofNullable(userService.findByEmail(email).orElseThrow(RuntimeException::new)).get();
+        UserDTO target = userService.findByEmail(email);
         // 2023-05-16_yeoooo : No User Found Exception 추가 필요
         return ApiResponse.success(jwtTokenProvider.createToken(target.getEmail(), target.getRole()));
 

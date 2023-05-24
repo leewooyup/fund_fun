@@ -40,13 +40,13 @@ class ReplyServiceImplTest {
         ReplyDto replyDto = new ReplyDto();
 
         replyDto.setId(UUID.randomUUID());
-        replyDto.setPostId(post.getId());
-        replyDto.setUserId(null);
+//        replyDto.setPostId(post.getId());
+//        replyDto.setUserId(null);
         replyDto.setContentReply("댓글!!");
 
         replyService.insertReply(replyDto);
 
-        System.out.println("replyDto는 " + replyDto.getPostId() + " 게시글에 등록되었습니다.");
+//        System.out.println("replyDto는 " + replyDto.getPostId() + " 게시글에 등록되었습니다.");
         Reply reply = modelMapper.map(replyDto, Reply.class);
         System.out.println("reply entity는 " + reply.getPost().getId() + " 게시글에 등록되었습니다.");
     }

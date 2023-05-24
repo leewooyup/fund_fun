@@ -1,11 +1,16 @@
 package com.fundfun.fundfund.domain.order;
 
-import com.fundfun.fundfund.base.BaseTimeEntity;
+
 import com.fundfun.fundfund.domain.payment.Payment;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 import javax.persistence.*;
@@ -16,16 +21,18 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+
+@DynamicInsert
 public class Orders extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "orders_id")
     private UUID id;
 
+    @ColumnDefault("0")
     private Long cost;
 
-//    @ColumnDefault("F")
+    @ColumnDefault("'주문완료'")//or 주문취소
     private String status;
 
     @ManyToOne
@@ -36,21 +43,8 @@ public class Orders extends BaseTimeEntity {
 //    @JoinColumn(name = "payment_id")
 //    private Payment payment;
 //
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
-
-    public void linkProduct(Product product){
-        this.product = product;
-    }
-
-    public void linkUser(Users users){
-        this.user = users;
-    }
-
-    public void setCost(Long cost){
-        this.cost = cost;
-    }
 
 }

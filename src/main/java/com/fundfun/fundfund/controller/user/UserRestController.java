@@ -29,8 +29,8 @@ public class UserRestController {
     public ApiResponse<String> register(@RequestBody Map<String, Object> resp, @RequestParam("role") String role) {
 
         try {
-            Users user = userService.register(
-                    userService.register(Users.builder()
+            UserDTO user = userService.register(
+                    Users.builder()
                             .count(0L)
                             .email((String) resp.get("email"))
                             .gender(Gender.valueOf((String) resp.get("gender")))
@@ -41,7 +41,7 @@ public class UserRestController {
                             .password(encoder.encode((String) resp.get("pw")))
                             .role(Role.valueOf(role))
                             .total_investment(0L)
-                            .build())
+                            .build()
             );
             log.info("[UserController] ]User Role {} has been registered.", user.getRole(), user.toString());
             return ApiResponse.success("success");
