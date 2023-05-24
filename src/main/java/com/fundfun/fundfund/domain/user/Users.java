@@ -29,7 +29,6 @@ import java.util.UUID;
 //@ToString
 @NoArgsConstructor
 @Builder
-@AllArgsConstructor
 @Table(name = "users")
 @AllArgsConstructor
 public class Users extends BaseTimeEntity implements UserDetails {
