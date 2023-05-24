@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -192,6 +193,9 @@ public class PostController {
 
             List<ReplyDto> replyList = replyService.selectReplyByPostId(postDto);
             if (replyList != null) {
+                for(ReplyDto r : replyList){
+                    r.setWriteTime(r.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+                }
                 model.addAttribute("replyList", replyList);
                 model.addAttribute("replyCount", replyService.countByPostId(id));
             }
