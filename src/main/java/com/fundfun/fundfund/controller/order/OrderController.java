@@ -95,7 +95,7 @@ public class OrderController {
      * @return poduct_list view
      */
     @PostMapping("/update/{encId}")
-    public String update(@PathVariable String encId, Long cost, Principal principal) {
+    public String update(@PathVariable String encId, Long cost, Principal principal, Model model) {
         Users user= userService.findByEmail(principal.getName()).orElse(null);
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         try {
@@ -111,6 +111,9 @@ public class OrderController {
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
+        model.addAttribute("user",user);
+        model.addAttribute("product", productDto);
+        model.addAttribute("cost", cost);
         //return String.format("redirect:/product/list?msg=%s", msg);
         return "order/order_confirm";
 
@@ -139,8 +142,7 @@ public class OrderController {
 //    }
 
     @PostMapping("/confirm/{encId}")
-    public String confirm(@PathVariable String encId,Principal principal){
-        System.out.println("encId = " + encId);
+    public String confirm(@PathVariable String encId){
 
         return "order/order_confirm";
     }

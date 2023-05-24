@@ -31,11 +31,12 @@
                 <img alt="" src="https://picsum.photos/id/237/200/300" style="width:300px;height:250px">
             </div>
             <div style="padding-top:20px">
-                <h5><---> 상품에 ---원 투자 완료되었습니다.</h5>
-            </div>
+                <span th:text="|${user.name}님|"></span>
+                <span th:text="|${product.title} 상품에 ${cost}원 투자 완료되었습니다.|"></span>
         </div>
         <div style="text-align:right; padding-top:10px">
-            <h5> 충전금 잔액 : 10000원 </h5>
+<!--            <h5> 충전금 잔액 : 10000원 </h5>-->
+            <span th:text="|충전금 잔액 : ${user.money}원|"></span>
         </div>
         <div style="text-align: center">
             <a href="/product/list">
