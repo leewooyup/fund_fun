@@ -45,8 +45,7 @@ public class PostController {
      * -> RestController로 옮겨야
      */
     @GetMapping("/list")
-    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter){
-        /*, @RequestParam(defaultValue = "1") int nowPage*/
+    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter){ /*, @RequestParam(defaultValue = "1") int nowPage*/
         /*Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
         Page<PostDto> pageList = postService.selectAll(page);
 
@@ -60,9 +59,8 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);*/
 
         List<PostDto> postList = postService.selectAll();
-
         model.addAttribute("postList", postList);
-       // model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
         return "post/list";
     }
 
@@ -97,7 +95,7 @@ public class PostController {
         List<PostDto> postList = postService.selectPostByKeyword(keyword);
         model.addAttribute("postList", postList);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserAdapter.class));
+        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserAdapter.class));
         return "post/list";
     }
 
