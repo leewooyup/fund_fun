@@ -15,14 +15,14 @@
                 <input name="Id" type="hidden" value="${invest}">
                 <div>
                     <label class="sub-title">투자할 상품</label>
-                    <div th:text="${product.title}"></div>
+                    <div th:text="${product.title}" style="font-size:large;font-weight: bold"></div>
                 </div>
                 <div>
                     <label class="sub-title">투자할 금액</label>
-                    <div th:text="|${invest.cost}"원|></div>
+                    <div th:text="|${invest.cost}원|"></div>
                 </div>
                 <div>
-                    <label class="sub-title">보유 충전금</label>
+                    <label class="sub-title">충전금 잔액</label>
                     <div th:text="|${user.money}원|"></div>
                 </div>
             </div>
