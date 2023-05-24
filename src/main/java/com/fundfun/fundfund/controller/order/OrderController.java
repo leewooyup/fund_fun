@@ -1,7 +1,5 @@
 package com.fundfun.fundfund.controller.order;
 
-import com.fundfun.fundfund.domain.user.UserAdapter;
-import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -13,11 +11,8 @@ import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +32,7 @@ public class OrderController {
     private final OrderService orderService;
     private final ProductService productService;
     private final UserService userService;
-    private final ModelMapper modelMapper;
+
     /**
      * 상품 Detail 페이지 + 투자 금액 입력 폼 페이지
      *
@@ -65,7 +60,7 @@ public class OrderController {
      * @return view
      */
     @PostMapping("/send/{encId}")
-    public String orderFormSend(@AuthenticationPrincipal UserAdapter adapter, @Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model) {
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model,Principal principal) {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
@@ -74,9 +69,9 @@ public class OrderController {
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
 
         //
-//        Users ou = userService.findByEmail(principal.getName());
+        Optional<Users> ou = userService.findByEmail(principal.getName());
 //        if(ou.isPresent()) {
-//            Users user = ou.get();
+        Users user = ou.get();
 //        }
 //        else{
 //            throw new RuntimeException("로그인 먼저 진행해주세요.");
@@ -88,7 +83,7 @@ public class OrderController {
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
-        model.addAttribute("user", modelMapper.map(adapter.getUser(), UserDTO.class));
+        model.addAttribute("user",user);
 
         return "order/order_receipt";
     }
@@ -100,10 +95,11 @@ public class OrderController {
      * @return poduct_list view
      */
     @PostMapping("/update/{encId}")
-    public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost) {
+    public String update(@PathVariable String encId, Long cost, Principal principal, Model model) {
+        Users user= userService.findByEmail(principal.getName()).orElse(null);
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         try {
-            int result = productService.updateCost(cost, productDto, adapter.getUser()); //투자정보 갱신 + 주문서 만들기
+            int result = productService.updateCost(cost, productDto, user); //투자정보 갱신 + 주문서 만들기
             if (result == 0) {
                 throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
             }
@@ -115,6 +111,9 @@ public class OrderController {
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
+        model.addAttribute("user",user);
+        model.addAttribute("product", productDto);
+        model.addAttribute("cost", cost);
         //return String.format("redirect:/product/list?msg=%s", msg);
         return "order/order_confirm";
 
@@ -144,7 +143,6 @@ public class OrderController {
 
     @PostMapping("/confirm/{encId}")
     public String confirm(@PathVariable String encId){
-        System.out.println("encId = " + encId);
 
         return "order/order_confirm";
     }
