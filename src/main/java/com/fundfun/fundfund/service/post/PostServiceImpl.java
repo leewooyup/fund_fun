@@ -12,9 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,43 +44,80 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> selectAll() {
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream()
-                .map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        for(Post p : postList){
+            PostDto postDto = modelMapper.map(p, PostDto.class);
+            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            postDtoList.add(postDto);
+        }
+
+        return postDtoList;
     }
 
+    @Override
+    public List<PostDto> selectAll(Pageable pageable) {
+        return null;
+    }
 
+    @Override
+    public int getTotalPages(List<PostDto> postDtoList) {
+        return 0;
+    }
 
     @Override
     public PostDto selectPostById(UUID postId) {
         System.out.println("postId = " + postId);
         Post post = postRepository.findById(postId).orElse(null);
-        PostDto resultDto = new PostDto();
-        System.out.println("post의 id = " + null);
-        if(resultDto != null) {
-            System.out.println("post의 id = " + post.getId());
-            resultDto = modelMapper.map(post, PostDto.class);
-        }
-
-        return resultDto;
-    }
+        System.out.println("post의 id = " + post.getId());
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        PostDto result = modelMapper.map(post, PostDto.class);
+        result.setWriteTime(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        return result;
+    };
 
 
     @Override
     public List<PostDto> selectPostByKeyword(String title) {
-//      return modelMapper.map(postRepository.findBytitle(title).
-//              orElse(null), PostDto.class);
-        return postRepository.findByTitleContaining(title).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        List<Post> postList = postRepository.findByTitleContaining(title);
+        List<PostDto> postDtoList = new ArrayList<>();
 
+        for(Post p : postList){
+            PostDto postDto = modelMapper.map(p, PostDto.class);
+            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            postDtoList.add(postDto);
+        }
+
+        return postDtoList;
     }
 
     @Override
     public List<PostDto> selectPostByStatus(StPost status) {
-        return postRepository.findByStatusPost(status).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        List<Post> postList = postRepository.findByStatusPost(status);
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        for(Post p : postList){
+            PostDto postDto = modelMapper.map(p, PostDto.class);
+            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            postDtoList.add(postDto);
+        }
+
+        return postDtoList;
     }
 
     @Override
     public List<PostDto> selectPostByCategory(String category) {
-        return postRepository.findByCategoryPost(category).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        List<Post> postList = postRepository.findByCategoryPost(category);
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        for(Post p : postList){
+            PostDto postDto = modelMapper.map(p, PostDto.class);
+            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            postDtoList.add(postDto);
+        }
+
+        return postDtoList;
     }
 
     @Override
@@ -105,10 +146,16 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> getPostsOrderByLikes() {
-        List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "likePost"));
-        return posts.stream()
-                .map(post -> modelMapper.map(post, PostDto.class))
-                .collect(Collectors.toList());
+        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "likePost"));
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        for(Post p : postList){
+            PostDto postDto = modelMapper.map(p, PostDto.class);
+            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            postDtoList.add(postDto);
+        }
+
+        return postDtoList;
     }
 
     @Override
@@ -139,7 +186,4 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("게시물이 존재하지 않습니다."));
         return post.getLikePost();
     }
-
-
-
 }

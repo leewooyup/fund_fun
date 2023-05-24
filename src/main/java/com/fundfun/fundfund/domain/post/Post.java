@@ -33,7 +33,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -62,8 +62,6 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy="post")
     private List<Reply> replies = new ArrayList<>();
-
-
 
     public void setStatusPost(StPost statusPost) {
         this.statusPost = statusPost;

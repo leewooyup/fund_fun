@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+
 @Table(name="opinion")
 public class Opinion {
     @Id
