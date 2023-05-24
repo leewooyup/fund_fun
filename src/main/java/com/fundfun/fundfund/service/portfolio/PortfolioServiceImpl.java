@@ -63,9 +63,13 @@ public class PortfolioServiceImpl implements PortfolioService {
     public PortfolioDto selectById(UUID portfolioId) {
         Portfolio portfolio = portRep.findById(portfolioId).orElse(null);
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        PortfolioDto resultList = modelMapper.map(portfolio, PortfolioDto.class);
+        PortfolioDto resultDto = new PortfolioDto();
+        if(portfolio != null) {
+            resultDto = modelMapper.map(portfolio, PortfolioDto.class);
+            resultDto.setUserId(portfolio.getUser().getId());
+        }
 
-        return resultList;
+        return resultDto;
     }
 
 
