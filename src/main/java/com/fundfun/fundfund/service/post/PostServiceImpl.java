@@ -96,43 +96,61 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostDto> selectPostByKeyword(String title) {
-        List<Post> postList = postRepository.findByTitleContaining(title);
-        List<PostDto> postDtoList = new ArrayList<>();
-
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
-
-        return postDtoList;
-    }
-
-    @Override
-    public List<PostDto> selectPostByStatus(StPost status) {
-        List<Post> postList = postRepository.findByStatusPost(status);
-        List<PostDto> postDtoList = new ArrayList<>();
-
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
+    public Page<PostDto> selectPostByKeyword(String title, Pageable pageable) {
+        Page<Post> postList = postRepository.findByTitleContaining(title, pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
 
         return postDtoList;
     }
 
     @Override
-    public List<PostDto> selectPostByCategory(String category) {
-        List<Post> postList = postRepository.findByCategoryPost(category);
-        List<PostDto> postDtoList = new ArrayList<>();
+    public Page<PostDto> selectPostByStatus(StPost status, Pageable pageable) {
+        Page<Post> postList = postRepository.findByStatusPost(status, pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
 
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
+        return postDtoList;
+    }
+
+    @Override
+    public Page<PostDto> selectPostByCategory(String category, Pageable pageable) {
+        Page<Post> postList = postRepository.findByCategoryPost(category, pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
 
         return postDtoList;
     }
@@ -162,15 +180,22 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostDto> getPostsOrderByLikes() {
-        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "likePost"));
-        List<PostDto> postDtoList = new ArrayList<>();
-
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
+    public Page<PostDto> getPostsOrderByLikes(Pageable pageable) {
+        //Page<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "likePost"));
+        Page<Post> postList = postRepository.findAll(pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
 
         return postDtoList;
     }
