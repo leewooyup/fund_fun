@@ -18,7 +18,9 @@ public interface PostService {
     //전체 게시물 조회
     List<PostDto> selectAll();
 
-//    Page<PostDto> selectAll(Pageable pageable);
+    List<PostDto> selectAll(Pageable pageable);
+
+    int getTotalPages(List<PostDto> postDtoList);
 
     //작성자로 게시물 조회
     PostDto selectPostById(UUID postId);

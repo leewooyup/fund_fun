@@ -60,7 +60,7 @@ public class PostController {
 
         List<PostDto> postList = postService.selectAll();
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
         return "post/list";
     }
 
@@ -95,7 +95,7 @@ public class PostController {
         List<PostDto> postList = postService.selectPostByKeyword(keyword);
         model.addAttribute("postList", postList);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserAdapter.class));
+        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserAdapter.class));
         return "post/list";
     }
 
