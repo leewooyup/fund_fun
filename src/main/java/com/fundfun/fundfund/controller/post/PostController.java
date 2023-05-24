@@ -60,7 +60,13 @@ public class PostController {
 
         List<PostDto> postList = postService.selectAll();
         model.addAttribute("postList", postList);
-        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        if(adapter!=null){
+            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
         return "post/list";
     }
 
@@ -116,7 +122,12 @@ public class PostController {
             }
             //해당 게시물에 댓글이 있다면 반환
 
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            if(adapter!=null) {
+                model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class).getId());
+            }
+            else if(adapter == null){
+                model.addAttribute("userInfo", null);
+            }
             //수정 및 삭제 버튼 유무 결정하기 위한 유저 정보 반환
 
             return "post/detail";

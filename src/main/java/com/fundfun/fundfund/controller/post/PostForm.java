@@ -21,7 +21,7 @@ public class PostForm {
     private String title;
 
     @NotEmpty(message = "내용을 입력해주세요.")
-    @Size(min = 10, max = 255, message = "게시물의 길이 제한을 초과했습니다.")
+    @Size(min = 10, max = 255, message = "허용된 글자수는 최소 10자, 최대 255자입니다.")
     private String contentPost;
 }
 
