@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.controller.order;
 
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -56,11 +57,12 @@ public class OrderController {
     /**
      * 투자하기
      * user가 입력한 투자금액(cost) 투자 영수증으로 넘기기
+     *
      * @param investDto, bindingResult
      * @return view
      */
     @PostMapping("/send/{encId}")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model,Principal principal) {
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
@@ -69,37 +71,34 @@ public class OrderController {
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
 
         //
-        Optional<Users> ou = userService.findByEmail(principal.getName());
-//        if(ou.isPresent()) {
-        Users user = ou.get();
-//        }
-//        else{
+        UserDTO userDTO = userService.findByEmail(principal.getName());
+//        if(userDTO == null) {
 //            throw new RuntimeException("로그인 먼저 진행해주세요.");
 //        }
-        //
         if (productDto == null || investDto == null) {
             throw new RuntimeException("투자에 실패하셨습니다.");
         }
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
-        model.addAttribute("user",user);
+        model.addAttribute("user", userDTO);
 
         return "order/order_receipt";
     }
 
     /**
      * 주문 생성 + 상품 모금액 업데이트
+     *
      * @param encId
      * @param cost
      * @return poduct_list view
      */
     @PostMapping("/update/{encId}")
     public String update(@PathVariable String encId, Long cost, Principal principal, Model model) {
-        Users user= userService.findByEmail(principal.getName()).orElse(null);
+        UserDTO userDTO = userService.findByEmail(principal.getName());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         try {
-            int result = productService.updateCost(cost, productDto, user); //투자정보 갱신 + 주문서 만들기
+            int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신 + 주문서 만들기
             if (result == 0) {
                 throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
             }
@@ -111,7 +110,7 @@ public class OrderController {
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
-        model.addAttribute("user",user);
+        model.addAttribute("user", userDTO);
         model.addAttribute("product", productDto);
         model.addAttribute("cost", cost);
         //return String.format("redirect:/product/list?msg=%s", msg);
@@ -129,20 +128,18 @@ public class OrderController {
      */
 //    @GetMapping("/delete/{encId}")
 //    public String delete(@PathVariable String encId, Principal principal) {
-//        Optional<Users> ou = userService.findByEmail(principal.getName());
+//        UserDTO userDTO = userService.findByEmail(principal.getName());
 //        UUID orderId = orderService.decEncId(encId);
-//        if(ou.isPresent()){
-//            Users user = ou.get();
-//            orderService.delete(orderId, user);
+//        if (orderService.selectById(orderId).getUser().equals(userDTO)) {
+//            orderService.delete(orderId, userDTO);
 //            return "redirect:/product/list";
 //        }
 //        //로그인한 유저의 정보가 없거나 삭제하려는 유저가 주문한 유저와 다를 경우
 //        return "redirect:/order/list";
-//
 //    }
 
     @PostMapping("/confirm/{encId}")
-    public String confirm(@PathVariable String encId){
+    public String confirm(@PathVariable String encId) {
 
         return "order/order_confirm";
     }
