@@ -110,6 +110,7 @@ public class OrderController {
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
+
         model.addAttribute("user", userDTO);
         model.addAttribute("product", productDto);
         model.addAttribute("cost", cost);
@@ -140,7 +141,6 @@ public class OrderController {
 
     @PostMapping("/confirm/{encId}")
     public String confirm(@PathVariable String encId) {
-
         return "order/order_confirm";
     }
 

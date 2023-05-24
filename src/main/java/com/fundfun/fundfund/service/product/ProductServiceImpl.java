@@ -36,6 +36,27 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
+//    public ProductDto createProduct(Users users) { //테스트용code
+//
+//        LocalDate startDate = LocalDate.parse("2023-05-24");
+//        LocalDate endDate = LocalDate.parse("2023-05-29");
+//        Product product = Product.builder()
+//                .title("A+B")
+//                .crowdStart(startDate.toString())
+//                .crowdEnd("2023-05-23")
+//                .goal(1000000L)
+//                .currentGoal(500L)
+//                .status("진행중")
+//                .description("펀드진행중")
+//                .fundManager(users)
+//                .build();
+//
+//        productRepository.save(product);
+//
+//        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+//        return productDto;
+//    }
+
     /**
      * 전체 상품 조회
      */
