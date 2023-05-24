@@ -18,7 +18,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ProductDto{
-
     private UUID id;
     @NotEmpty(message = "상품제목을 입력해주세요.")
     private String title;
