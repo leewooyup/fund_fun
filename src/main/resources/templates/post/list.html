@@ -6,6 +6,14 @@
 >
 <th:block layout:fragment="content">
     <style>
+        .pagination-newer {
+            margin-right: 50px;
+        }
+
+        .pagination-older {
+            margin-left: 50px;
+        }
+
         div .aa {
             float: right;
             padding: 0 10px 0 0
@@ -28,16 +36,16 @@
 
     <script type="text/javascript">
         $(Document).ready(function () {
-            // visibleButton();
-            //
-            // function visibleButton() {
-            //     if (userInfo != null) {
-            //         $("#createPostBtn").show();
-            //
-            //     } else {
-            //         $("#createPostBtn").hide();
-            //     }
-            // }
+            visibleButton();
+
+            function visibleButton() {
+                if (userInfo != null) {
+                    $("#createPostBtn").show();
+
+                } else {
+                    $("#createPostBtn").hide();
+                }
+            }
         });
     </script>
 
@@ -80,39 +88,33 @@
             </tr>
         </table>
 
-<!--        &lt;!&ndash; 페이징 처리 &ndash;&gt;-->
-<!--        <div style="text-align: center">-->
-<!--            &lt;!&ndash;  블럭당  &ndash;&gt;-->
-<!--            <nav class="pagination-container">-->
-<!--                <div class="pagination">-->
-<!--        <span th:with="doneLoop=false">-->
-<!--            <span th:if="${startPage - blockCount > 0}">-->
-<!--                <a class="pagination-newer"-->
-<!--                   th:href="@{${pageContext.request.contextPath}/post/list(nowPage=${startPage-1})}">PREV</a>-->
-<!--            </span>-->
+        <!-- 페이징 처리 -->
+        <div style="text-align: center; width:100%; display:flex;">
+            <!--  블럭당  -->
+            <nav class="pagination-container nav justify-content-center">
+                <div class="pagination" style="text-align:center">
+                    <span th:with="doneLoop=false">
+                        <!-- PREV -->
+                        <span th:if="${nowPage > startPage}">
+                            <a class="pagination-newer"
+                               th:href="@{/post/list?nowPage={n}(n=${nowPage}-1)}">PREV</a>
+                        </span>
 
-<!--            <span class="pagination-inner">-->
-<!--                <span th:each="i: ${#numbers.sequence(startPage, startPage - 1 + blockCount)}">-->
-<!--                    <span th:if="${i - 1 >= postList.totalPages}">-->
-<!--                        <span th:with="doneLoop=true"></span>-->
-<!--                    </span>-->
+                        <!-- 중앙의 페이지 번호 -->
+                        <span th:text="${nowPage}"></span>
+                        <span> 페이지  / </span>
+                        <span th:text="${postList.getTotalPages()}"></span>
+                        <span> 페이지</span>
 
-<!--                    <span th:unless="${doneLoop}">-->
-<!--                        <a th:class="${i == nowPage} ? 'pagination-active' : 'page'"-->
-<!--                           th:href="@{${pageContext.request.contextPath}/post/list(nowPage=${i})}" th:text="${i}"></a>-->
-<!--                    </span>-->
-<!--                </span>-->
-<!--            </span>-->
-
-<!--            <span th:if="${startPage + blockCount <= postList.totalPages}">-->
-<!--                <a class="pagination-older"-->
-<!--                   th:href="@{${pageContext.request.contextPath}/post/list(nowPage=${startPage+blockCount})}">NEXT</a>-->
-<!--            </span>-->
-<!--        </span>-->
-<!--                </div>-->
-<!--            </nav>-->
-
-<!--        </div>-->
+                        <!-- NEXT -->
+                        <span th:if="${nowPage < postList.getTotalPages()}">
+                            <a class="pagination-older"
+                               th:href="@{/post/list?nowPage={n}(n=${nowPage}+1)}">NEXT</a>
+                        </span>
+                    </span>
+                </div>
+            </nav>
+        </div>
 
         <!-- 글쓰기 버튼 -->
         <form action="/post/write" method="get">

@@ -22,6 +22,7 @@
         var postLike = [[${postDto.likePost}]];
         var userInfo = [[${userInfo.getId()}]]; //글을 조회중인 유저의 아이디
         var writer = [[${postDto.user.getId()}]]; //글을 작성한 유저의 아이디
+        var userLike = [[${userInfo.getCount()}]]; //글을 조회중인 유저의 좋아요 카운트
     </script>
 
     <script type="text/javascript">
@@ -57,15 +58,27 @@
                     $("#buttondiv").hide();
                 }
 
-                if(userInfo == writer){
-                    $("#editPost").show();
+                if(userInfo == writer){ // 작성자가 게시물에 접근했을 때
+                    $("#editPost").show(); // 글 수정 가능
+                    $("#likePostBtn").hide(); // 좋아요 불가능
+                    $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
+
                     if(postLike>=10){
                         $("#deletePost").hide();
                     }
                     else{
                         $("#deletePost").show();
                     }
-                } else{
+                }
+                else {
+                    if(userLike <= 0){
+                        $("#likePostBtn").hide(); // 좋아요 불가능
+                        $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
+                    }
+                    else{
+                        $("#likePostBtn").show(); // 좋아요 가능
+                        $("#likePostCount").hide(); // 좋아요 개수 열람 버튼 숨기기
+                    }
                     $("#editPost").hide();
                     $("#deletePost").hide();
                 }
@@ -90,6 +103,9 @@
             <div style="margin-top: 1rem; padding-bottom: 1rem; text-align:center;">
                 <span class="fontSize-fix"> 좋아요 </span>
                 <button id="likePostBtn" class="centerBox btn btn-warning">
+                    <span th:text="${postDto.likePost}">likePost</span>
+                </button>
+                <button id="likePostCount" class="centerBox btn btn-warning">
                     <span th:text="${postDto.likePost}">likePost</span>
                 </button>
             </div>

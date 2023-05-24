@@ -3,16 +3,19 @@ package com.fundfun.fundfund.service.post;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.repository.post.PostRepository;
+import com.fundfun.fundfund.repository.user.UserRepository;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private final VoteRepository voteRepository;
+
+    @Autowired
+    private final UserRepository userRepository;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -57,13 +63,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> selectAll(Pageable pageable) {
-        return null;
-    }
+    public Page<PostDto> selectAll(Pageable pageable) {
+        Page<Post> postList = postRepository.findAll(pageable);
 
-    @Override
-    public int getTotalPages(List<PostDto> postDtoList) {
-        return 0;
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
+
+        return postDtoList;
     }
 
     @Override
@@ -159,11 +176,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void addLike(UUID postId) {
+    public void addLike(UUID postId, Users user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시물이 존재하지 않습니다."));
 
         post.setLikePost(post.getLikePost() + 1); // 좋아요 수 증가
+        user.minusCount();
+        userRepository.save(user);
         postRepository.save(post);
 
     }

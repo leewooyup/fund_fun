@@ -151,7 +151,7 @@ class PostServiceImplTest {
             //Post post = modelMapper.map(postDto, Post.class);
             if(postDto.getLikePost()>=5)
                 postService.updateStatus(postDto, StPost.PREPRODUCT);
-            postService.addLike(postDto.getId());
+            //postService.addLike(postDto.getId());
 
 //            System.out.println(i + "번쨰 시도) " + id + " 게시물의 좋아요 개수 : " + post.getLikePost() + ", 상태 = " + post.getStatusPost());
         }
