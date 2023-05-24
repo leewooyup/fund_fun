@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.controller.order;
 
+import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
@@ -19,11 +20,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
@@ -97,10 +96,10 @@ public class OrderController {
      * 주문 생성 + 상품 모금액 업데이트
      * @param encId
      * @param cost
-     * @return poduct_list view
+     * @return view
      */
     @PostMapping("/update/{encId}")
-    public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost) {
+    public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         try {
             int result = productService.updateCost(cost, productDto, adapter.getUser()); //투자정보 갱신 + 주문서 만들기
@@ -116,8 +115,21 @@ public class OrderController {
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
         //return String.format("redirect:/product/list?msg=%s", msg);
-        return "order/order_confirm";
+        req.setAttribute("product", productDto);
+        req.setAttribute("user", adapter.getUser());
+        req.setAttribute("cost", cost);
+        return String.format("forward:/order/confirm?msg=%s", msg);
 
+    }
+
+    @PostMapping("/confirm")
+    public String showOrderConfirm(HttpServletRequest req, Model model, Long cost) {
+        ProductDto product = (ProductDto) req.getAttribute("product");
+        Users user = (Users) req.getAttribute("user");
+        model.addAttribute("product", product);
+        model.addAttribute("user", user);
+        model.addAttribute("cost", cost);
+        return "order/order_confirm";
     }
 
     /**
@@ -142,12 +154,12 @@ public class OrderController {
 //
 //    }
 
-    @PostMapping("/confirm/{encId}")
-    public String confirm(@PathVariable String encId){
-        System.out.println("encId = " + encId);
-
-        return "order/order_confirm";
-    }
+//    @PostMapping("/confirm/{encId}")
+//    public String confirm(@PathVariable String encId){
+//        System.out.println("encId = " + encId);
+//
+//        return "order/order_confirm";
+//    }
 
 }
 
