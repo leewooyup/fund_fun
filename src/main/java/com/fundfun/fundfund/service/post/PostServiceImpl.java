@@ -1,148 +1,53 @@
 package com.fundfun.fundfund.service.post;
 
-import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
-import com.fundfun.fundfund.domain.vote.Vote;
-import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.post.PostDto;
-import com.fundfun.fundfund.repository.post.PostRepository;
-import com.fundfun.fundfund.repository.vote.VoteRepository;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-@Service
-@RequiredArgsConstructor
-public class PostServiceImpl implements PostService {
-    @Autowired
-    private final PostRepository postRepository;
+public interface PostService {
 
-    @Autowired
-    private final VoteRepository voteRepository;
-
-    @Autowired
-    private final ModelMapper modelMapper;
-
-    @Override
-    public Post createPost(PostDto postDto){
-        Post post = modelMapper.map(postDto, Post.class);
-        return postRepository.save(post);
-    }
-
-    @Override
-    public List<PostDto> selectAll() {
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream()
-                .map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-    }
-
-//    @Override
-//    public Page<PostDto> selectAll(Pageable pageable){
-//        return (Page<PostDto>) postRepository.findAll(pageable).stream()
-//                .map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-//    }
+    //포스트 생성
+    Post createPost(PostDto postDto);
 
 
-    @Override
-    public PostDto selectPostById(UUID postId) {
-        System.out.println("postId = " + postId);
-        Post post = postRepository.findById(postId).orElse(null);
-        System.out.println("post의 id = " + post.getId());
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        PostDto result = modelMapper.map(post, PostDto.class);
-        return result;
-    };
+    //전체 게시물 조회
+    List<PostDto> selectAll();
+
+    //작성자로 게시물 조회
+    PostDto selectPostById(UUID postId);
 
 
-    @Override
-    public List<PostDto> selectPostByKeyword(String title) {
-//      return modelMapper.map(postRepository.findBytitle(title).
-//              orElse(null), PostDto.class);
-        return postRepository.findByTitleContaining(title).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-
-    }
-
-    @Override
-    public List<PostDto> selectPostByStatus(StPost status) {
-        return postRepository.findByStatusPost(status).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<PostDto> selectPostByCategory(String category) {
-        return postRepository.findByCategoryPost(category).stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-    }
-
-    @Override
-    public void deletePost(UUID postId){
-        Post post = postRepository.findById(postId).orElse(null);
-        if(post == null)
-            throw new RuntimeException("해당 게시물이 존재하지 않습니다.");
-        postRepository.delete(post);
-    }
-
-    @Override
-    public void updatePost(UUID postId, String newTitle, String newContent) {
-        Post post = postRepository.findById(postId).orElse(null);
-        if (post == null) {
-            throw new RuntimeException("해당 게시물이 존재하지 않습니다");
-        }
-
-        // 게시물 업데이트 로직을 추가합니다.
-        post.setTitle(newTitle);       // 제목 수정
-        post.setContentPost(newContent);   // 내용 수정
-
-        postRepository.save(post);
-    }
+    //제목으로 게시물 검색
+    List<PostDto> selectPostByKeyword(String keyword);
 
 
-
-    @Override
-    public List<PostDto> getPostsOrderByLikes() {
-        List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "likePost"));
-        return posts.stream()
-                .map(post -> modelMapper.map(post, PostDto.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void addLike(UUID postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("게시물이 존재하지 않습니다."));
-
-        post.setLikePost(post.getLikePost() + 1); // 좋아요 수 증가
-        postRepository.save(post);
-
-    }
-
-    @Override
-    public void updateStatus(PostDto postDto, StPost status) {
-        Post post = modelMapper.map(postDto, Post.class);
-
-        post.setStatusPost(status);
-        Vote vote = new Vote();
-        vote.linkPost(post);
-        voteRepository.save(vote);
-        post.linkVote(vote);
-        postRepository.save(post);
-    }
+    //상태로 게시물 조회(최신순)
+    List<PostDto> selectPostByStatus(StPost status);
 
 
-    @Override
-    public int getLikeById(UUID postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("게시물이 존재하지 않습니다."));
-        return post.getLikePost();
-    }
+    //카테고리로 게시물 조회
+    List<PostDto> selectPostByCategory(String category);
+
+    //게시물 삭제
+    void deletePost(UUID postId);
+
+    //게시물 수정
+    void updatePost(UUID postId, String newTitle, String newContent);
+
+    //좋아요 높은 순으로 게시물 정렬
+    List<PostDto> getPostsOrderByLikes();
+
+    //게시물에 좋아요 추가
+    void addLike(UUID postId);
+
+    //게시물의 상태 변경
+    void updateStatus(PostDto post, StPost status);
 
 
+    //게시물의 좋아요 개수 조회
+    int getLikeById(UUID postId);
 
 }
