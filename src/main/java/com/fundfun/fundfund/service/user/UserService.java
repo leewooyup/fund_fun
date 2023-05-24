@@ -14,53 +14,12 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
 
-    private final ModelMapper modelMapper;
-    private final UserRepository userRepository;
-
-    public List<Users> findAll() {
-        return userRepository.findAll();
-    }
-
-    public Optional<Users> findById(UUID id) {
-        return userRepository.findById(id);
-    }
-
-    public Optional<Users> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    public Users register(Users users) {
-        return userRepository.save(users);
-    }
-
-    public UUID deleteById(UUID uuid) {
-        userRepository.deleteById(uuid);
-        return uuid;
-    }
-
-    public Users update(UUID uuid, UserDTO to) {
-        return userRepository.findById(uuid).map(
-                        (x) -> userRepository.save(
-                                modelMapper.map(to.builder().id(uuid).build(), Users.class)))
-                .orElseThrow(NoSuchElementException::new);
-    }
-
-    public void updateMoney(Long money, Users user) { //by lee
-        user.setMoney(money);
-        userRepository.save(user);
-    }
+public interface UserService {
+    List<UserDTO> findAll();
+    UserDTO findById(UUID id);
+    UserDTO findByEmail(String email);
+    UserDTO register(Users users);
+    UUID deleteById(UUID uuid);
+    Users update(UUID uuid, UserDTO to);
 }
-
-
-//public interface UserService {
-//    List<Users> findAll();
-//    Optional<Users> findById(UUID id);
-//    Optional<Users> findByEmail(String email);
-//    Users register(Users users);
-//    UUID deleteById(UUID uuid);
-//    Users update(UUID uuid, UserDTO to);
-//}

@@ -35,7 +35,7 @@ public class Portfolio extends BaseTimeEntity {
     private Vote vote;
 
     @JsonIgnore
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="user_id")
     private Users user;
 

@@ -3,6 +3,8 @@ package com.fundfun.fundfund.service.post;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.dto.post.PostDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +17,8 @@ public interface PostService {
 
     //전체 게시물 조회
     List<PostDto> selectAll();
+
+//    Page<PostDto> selectAll(Pageable pageable);
 
     //작성자로 게시물 조회
     PostDto selectPostById(UUID postId);

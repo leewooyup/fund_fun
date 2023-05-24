@@ -10,55 +10,122 @@
             float: right;
             padding: 0 10px 0 0
         }
+        table{
+            width:100%;
+        }
+        table, th, td{
+            margin-left:auto;
+            margin-right:auto;
+            text-align:center;
+            vertical-align:center;
+        }
     </style>
+    <script th:inline="javascript">
+        var userInfo = [[${userInfo}]]; // 조회중인 유저
+    </script>
+
+    <script type="text/javascript">
+        $(Document).ready(function () {
+            visibleButton();
+
+            function visibleButton() {
+                if (userInfo != null) {
+                    $("#createPostBtn").show();
+
+                } else {
+                    $("#createPostBtn").hide();
+                }
+            }
+        });
+    </script>
+
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
-
-
+        <title>아이디어 목록</title>
     </head>
     <body>
     <div>
-        <div style="border-bottom:solid;margin:10px;">
+        <div style="border-bottom:solid; margin-top:10px; margin-bottom:10px;">
             <h3>아이디어</h3>
             <h5 class="gray_text">투자 아이디어를 자유롭게 제안할 수 있는 공간입니다.</h5>
         </div>
         <div style="margin-top: 1rem;">
-            <span class="gray_text leftArea"><a href="/post/list">최신순</a> | </span>
-            <span class="gray_text leftArea"><a href="/post/list/popular">인기순</a> | </span>
-            <span class="gray_text leftArea"><a href="/post/list/preproduct">가상품</a></span>
+            <span class="gray_text leftArea" style="margin-right:3px;"><a href="/post/list">최신순</a>  | </span>
+            <span class="gray_text leftArea" style="margin-right:3px;"><a href="/post/list/popular">인기순</a>  | </span>
+            <span class="gray_text leftArea" style="margin-right:3px;"><a href="/post/list/preproduct">가상품</a></span>
 
-            <form action="/post/list/searchResult" method="get">
-                <input type="text" name="keyword" th:text="${keyword}">
+            <form class="rightArea" action="/post/list/searchResult" method="get" style="margin-bottom:10px;">
+                <input type="text" name="keyword" th:value="${keyword}">
                 <button class="btn btn-warning" type="submit">검색</button>
             </form>
-
-<!--            <button class="rightArea left_margin bg-yellow">검색</button>-->
-<!--            <input type="text" class="rightArea border-yellow"/>-->
         </div>
 
-        <table>
-            <tr style="border-top: 2px solid black;">
+        <table style="table-layout:fixed; margin-top:20px; margin-bottom:20px;">
+            <tr style="border-top: 2px solid black; border-bottom: 2px solid black;">
                 <th class="bd-left-none">제목</th>
-                <th>작성일</th>
                 <th class="bd-right-none">좋아요</th>
+                <th>작성일</th>
             </tr>
-            <tr th:each="ele: ${postList}" style="border-top: 2px solid black;">
+            <tr th:each="ele: ${postList}" style="border-top: 1px solid darkgray; border-bottom: 1px solid darkgray;">
                 <td>
                     <a th:href="@{/post/detail/{id}(id=${ele.getId()})}">
                         <span th:text="${ele.getTitle()}"></span>
                     </a>
                 </td>
-                <td th:text="${ele.getCreatedAt()}"></td>
                 <td class="bd-right-none" th:text="${ele.getLikePost()}"></td>
+                <td th:text="${ele.getCreatedAt()}"></td>
+
             </tr>
         </table>
 
+        <!-- 페이징 처리 -->
+<!--        <div style="text-align: center">-->
+<!--            &lt;!&ndash;  블럭당  &ndash;&gt;-->
+<!--            <nav class="pagination-container">-->
+<!--                <div class="pagination">-->
+<!--                    <th:set var="doneLoop" value="false"/>-->
+
+<!--                    <th:if test="${(startPage-blockCount) > 0}"> &lt;!&ndash; (-2) > 0  &ndash;&gt;-->
+<!--                        <a class="pagination-newer" href="${pageContext.request.contextPath}/post/list?nowPage=${startPage-1}">PREV</a>-->
+<!--                    </th:if>-->
+
+<!--                    <span class="pagination-inner">-->
+<!--		  <th:forEach var='i' begin='${startPage}' end='${(startPage-1)+blockCount}'>-->
+
+<!--			    <th:if test="${(i-1)>=postList.getTotalPages()}">-->
+<!--			       <th:set var="doneLoop" value="true"/>-->
+<!--			    </th:if>-->
+
+<!--		  <th:if test="${not doneLoop}" >-->
+<!--		         <a class="${i==nowPage?'pagination-active':page}" href="${pageContext.request.contextPath}/post/list?nowPage=${i}">${i}</a>-->
+<!--		  </th:if>-->
+
+<!--		</th:forEach>-->
+<!--		</span>-->
+<!--                    <th:if test="${(startPage+blockCount)<=postList.getTotalPages()}">-->
+<!--                        <a class="pagination-older" href="${pageContext.request.contextPath}/post/list?nowPage=${startPage+blockCount}">NEXT</a>-->
+<!--                    </th:if>-->
+
+<!--                </div>-->
+<!--            </nav>-->
+<!--        </div>-->
+
+        <!-- 글쓰기 버튼 -->
         <form action="/post/write" method="get">
-            <button class="btn btn-warning" type="submit">글쓰기</button>
+            <button id="createPostBtn" class="rightArea btn btn-warning" type="submit">글쓰기</button>
         </form>
     </div>
-
     </body>
+    <style>
+        .leftArea {
+            float: left;
+        }
+
+        .rightArea {
+            float: right;
+        }
+    </style>
 </th:block>
+
+
 </html>
