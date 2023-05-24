@@ -1,6 +1,8 @@
 package com.fundfun.fundfund.controller.post;
 
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.user.UserAdapter;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.dto.reply.ReplyDto;
@@ -8,6 +10,7 @@ import com.fundfun.fundfund.service.post.PostService;
 import com.fundfun.fundfund.service.reply.ReplyService;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,13 +38,14 @@ public class PostController {
     private final UserService userService;
 
     private final ReplyService replyService;
+    private final ModelMapper modelMapper;
 
     /**
      * 아이디어 전체조회 화면 이동
      * -> RestController로 옮겨야
      */
     @GetMapping("/list")
-    public String goIdeaList(Model model, @AuthenticationPrincipal Users user /*, @RequestParam(defaultValue = "1") int nowPage*/) {
+    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter){ /*, @RequestParam(defaultValue = "1") int nowPage*/
         /*Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
         Page<PostDto> pageList = postService.selectAll(page);
 
@@ -55,7 +60,7 @@ public class PostController {
 
         List<PostDto> postList = postService.selectAll();
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", user);
+        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
         return "post/list";
     }
 
@@ -63,10 +68,10 @@ public class PostController {
      * 아이디어 인기순 정렬
      */
     @GetMapping("/list/popular")
-    public String popularIdeaList(Model model, @AuthenticationPrincipal Users user) {
+    public String popularIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
         List<PostDto> postList = postService.getPostsOrderByLikes();
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", user);
+        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
         return "post/list";
     }
 
@@ -74,10 +79,10 @@ public class PostController {
      * 가상품만 보기
      */
     @GetMapping("/list/preproduct")
-    public String preproductList(Model model, @AuthenticationPrincipal Users user) {
+    public String preproductList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
         List<PostDto> postList = postService.selectPostByStatus(StPost.PREPRODUCT);
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", user);
+        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
         return "post/list";
     }
 
@@ -85,12 +90,12 @@ public class PostController {
      * 키워드로 검색
      */
     @GetMapping("/list/searchResult")
-    public String searchList(Model model, @RequestParam String keyword, @AuthenticationPrincipal Users user) {
+    public String searchList(Model model, @RequestParam String keyword, @AuthenticationPrincipal UserAdapter adapter) {
         System.out.println("keyword = " + keyword);
         List<PostDto> postList = postService.selectPostByKeyword(keyword);
         model.addAttribute("postList", postList);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("userInfo", user);
+        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserAdapter.class));
         return "post/list";
     }
 
@@ -98,7 +103,7 @@ public class PostController {
      * 아이디어 상세조회
      */
     @GetMapping("/detail/{id}")
-    public String goIdeaDetail(@PathVariable UUID id, Model model, @AuthenticationPrincipal Users user) {
+    public String goIdeaDetail(@PathVariable UUID id, Model model, @AuthenticationPrincipal UserAdapter adapter) {
         PostDto postDto = postService.selectPostById(id);
         if (postDto != null) {
             model.addAttribute("postDto", postDto);
@@ -111,7 +116,7 @@ public class PostController {
             }
             //해당 게시물에 댓글이 있다면 반환
 
-            model.addAttribute("userInfo", user);
+            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
             //수정 및 삭제 버튼 유무 결정하기 위한 유저 정보 반환
 
             return "post/detail";
@@ -146,15 +151,13 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public String create(@AuthenticationPrincipal Users user, @Valid PostForm postForm, BindingResult result) {
-        System.out.println("user.getEmail() = " + user.getEmail());
+    public String create(@AuthenticationPrincipal UserAdapter adapter, @Valid PostForm postForm, BindingResult result) {
         if (result.hasErrors()) {
             return "post/write";
         }
-        Users u = userService.findByEmail(user.getEmail()).orElse(null);
 
         PostDto postDto = new PostDto();
-        postDto.setUser(u);
+        postDto.setUser(adapter.getUser());
         postDto.setTitle(postForm.getTitle());
         postDto.setContentPost(postForm.getContentPost());
         postDto.setCategoryPost("주식형");
@@ -167,11 +170,11 @@ public class PostController {
      * 아이디어 수정
      */
     @GetMapping("/edit/{postId}")
-    public String goIdeaEdit(@PathVariable UUID postId, Model model, @AuthenticationPrincipal Users user) {
+    public String goIdeaEdit(@PathVariable UUID postId, Model model, @AuthenticationPrincipal UserAdapter adapter) {
         PostDto postDto = postService.selectPostById(postId);
         Users writer = postDto.getUser();
 
-        if (writer.getId().equals(user.getId())) { // 유저의 아이디와 글쓴이의 아이디가 일치하면 글 수정할 수 있도록 처리
+        if (writer.getId().equals(adapter.getUser().getId())) { // 유저의 아이디와 글쓴이의 아이디가 일치하면 글 수정할 수 있도록 처리
             if (postDto != null) {
                 PostForm postForm = new PostForm();
                 postForm.setTitle(postDto.getTitle());
@@ -207,11 +210,11 @@ public class PostController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteIdea(@PathVariable UUID id, @AuthenticationPrincipal Users user) {
+    public String deleteIdea(@PathVariable UUID id, @AuthenticationPrincipal UserAdapter adapter) {
         PostDto postDto = postService.selectPostById(id);
         Users writer = postDto.getUser();
 
-        if (writer.getId().equals(user.getId())){
+        if (writer.getId().equals(adapter.getUser().getId())){
             postService.deletePost(id);
             return "redirect:/post/list";
         } else {

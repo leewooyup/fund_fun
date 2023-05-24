@@ -23,7 +23,6 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert

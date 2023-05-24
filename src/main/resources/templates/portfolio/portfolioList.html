@@ -12,13 +12,18 @@
         var state = [[${state}]];
         var postId = "";
         var chkVote = "";
+        var chkAuth = "";
 
         if(state == "noId") { // url 입력으로 접근 시 alert -> post/list 로 이동
             alert("정상적인 경로로 접근해주세요.");
             location.href = "/post/list";
+        } else if(state == "noData") {
+            alert("정상적인 데이터가 아닙니다.");
+            location.href = "/post/list";
         } else {
             postId = [[${postId}]];
             chkVote = [[${chkVote}]];
+            chkAuth = [[${authChk}]];
         }
     </script>
 
@@ -118,7 +123,7 @@
         </div>
 
         <div class="marginBottom bottomDiv">
-            <button class="rightArea bg-yellow paddingBtn" id="goWrite">포트폴리오 등록</button>
+            <button class="rightArea bg-yellow paddingBtn" id="goWrite" th:if="${authChk == 2}">포트폴리오 등록</button>
             <button class="rightArea left_margin bg-yellow paddingBtn" id="vote">투표하기</button>
         </div>
     </div>

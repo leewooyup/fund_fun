@@ -52,6 +52,7 @@
             function visibleButton() {
                 if (postLike >= 10) {
                     $("#buttondiv").show();
+
                 } else {
                     $("#buttondiv").hide();
                 }
@@ -80,7 +81,7 @@
 
         <!-- 글 작성일 -->
         <div>
-            <span th:text="${postDto.createdAt}" class="gray_text bottom_line">createdAt</span>
+            <span th:text="${postDto.writeTime}" class="gray_text bottom_line">createdAt</span>
         </div>
 
         <!-- 글 내용, 목록으로 돌아가기, 좋아요, 수정, 삭제 버튼(순서대로) -->

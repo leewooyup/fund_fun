@@ -18,7 +18,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+
 @Table(name = "reply")
 public class Reply extends BaseTimeEntity {
     @Id

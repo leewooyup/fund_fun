@@ -70,7 +70,8 @@ public class OpinionServiceImpl implements OpinionService{
         if(o != null)
             return true; //해당 유저가 해당 투표에 참여한 이력이 있다면
         else
-            return false; //해당 유저가 해당 투표에 참여한 이력이 없다면
+            return false; //해당 유저가 해당 투표에 참
+        // 여한 이력이 없다면
     }
 
     @Override

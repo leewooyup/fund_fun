@@ -21,7 +21,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+
 @DynamicInsert
 public class Orders extends BaseTimeEntity {
     @Id
@@ -40,7 +40,7 @@ public class Orders extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-//    @OneToOne
+    //    @OneToOne
 //    @JoinColumn(name = "payment_id")
 //    private Payment payment;
 //

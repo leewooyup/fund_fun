@@ -1,45 +1,83 @@
+<!--<!DOCTYPE html>-->
+<!--<html-->
+<!--        layout:decorate="~{/testwc/layout}"-->
+<!--        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--        xmlns:th="http://thymeleaf.org"-->
+<!--&gt;-->
+<!--<th:block layout:fragment="content">-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <title>Title</title>-->
+<!--    </head>-->
+<!--    <style>-->
+<!--        #receipt {-->
+<!--            border-bottom: solid;-->
+<!--            padding: 30px;-->
+<!--        }-->
+
+<!--        .container{-->
+<!--            padding: 0 20px;-->
+<!--        }-->
+
+<!--    </style>-->
+<!--    <body>-->
+<!--    <div class ="container">-->
+<!--        <div style="border-bottom:solid;margin:10px;">-->
+<!--            <h4>투자 완료</h4>-->
+
+<!--        </div>-->
+<!--        <div id="receipt" class="d-flex flex-column align-items-center">-->
+<!--            <div>-->
+<!--                <img alt="" src="https://picsum.photos/id/237/200/300" style="width:300px;height:250px">-->
+<!--            </div>-->
+<!--            <div style="padding-top:20px">-->
+<!--                <div th:text="|${user.name}님|"></div>-->
+<!--                <span th:text="|${product.title} 상품에 ${cost}원 투자 완료되었습니다.|">-->
+<!--            </span>-->
+<!--            </div>-->
+<!--            <div style="text-align:right; padding-top:10px">-->
+<!--                <h5> 충전금 잔액 : 10000원 </h5>-->
+<!--            </div>-->
+<!--            <div style="text-align: center">-->
+<!--                <a href="/product/list">-->
+<!--                    <button class="btn btn-warning" type="submit">상품 목록</button>-->
+<!--                </a>-->
+<!--                &lt;!&ndash;            <a href=../order/form/${encId}> &lt;!&ndash;../order/form/${encId} &ndash;&gt;&ndash;&gt;-->
+<!--                <a th:href="@{|../order/update/${encId}|}"> &lt;!&ndash;../order/form/${encId} &ndash;&gt;-->
+<!--                    <button class="btn btn-warning" type="submit">마이페이지</button>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </body>-->
+<!--</th:block>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html
         layout:decorate="~{/testwc/layout}"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
 >
+<style>
+    img {
+        width: 300px;
+        height: 250px;
+        padding: 10px;
+    }
+</style>
 <th:block layout:fragment="content">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <style>
-        #receipt {
-            border-bottom: solid;
-            padding: 30px;
-        }
-
-        .container {
-            padding: 0 20px;
-        }
-        .invest-msg{
-            font-size: large;
-            font-weight: bold;
-        }
-
-    </style>
-    <body>
-    <div class="container">
-        <div style="border-bottom:solid;margin:10px;">
-            <h4>투자 완료</h4>
-        </div>
-        <div class="d-flex flex-column align-items-center" id="receipt">
-            <div>
-                <img alt="" src="https://picsum.photos/id/237/200/300" style="width:300px;height:250px">
-            </div>
-            <div style="padding-top:20px;text-align: center">
-                <div th:text="|${user.name}님|"></div>
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <div class="d-flex flex-column align-items-center wrapper">
+        <div class="title" style="text-align:left;">투자 완료</div>
+        <div class="order-main" style="justify-content: center">
+            <div class="d-flex flex-column align-items-center">
+                <img alt="" src="https://picsum.photos/id/237/200/300">
+                <span th:text="|${user.name}님|"></span>
                 <span class="invest-msg" th:text="|<${product.title}> 상품에 ${cost}원 투자 완료되었습니다.|"></span>
             </div>
         </div>
-        <div style="text-align:right; padding-top:10px">
-            <!--            <h5> 충전금 잔액 : 10000원 </h5>-->
+        <div style="text-align:right; padding:10px 0">
             <span th:text="|충전금 잔액 : ${user.money}원|"></span>
         </div>
         <div style="text-align: center">
@@ -52,6 +90,5 @@
             </a>
         </div>
     </div>
-    </body>
 </th:block>
 </html>
