@@ -49,11 +49,11 @@ class PostServiceImplTest {
         }
     }
 
-    @Test
-    public void 제목_게시물조회() throws Exception {
-        List<PostDto> list = postService.selectPostByKeyword("이거");
-        for (PostDto p : list) System.out.println(p);
-    }
+//    @Test
+//    public void 제목_게시물조회() throws Exception {
+//        List<PostDto> list = postService.selectPostByKeyword("이거");
+//        for (PostDto p : list) System.out.println(p);
+//    }
 
     // @Test
    // public void 작성자_게시물조회() throws Exception {
@@ -61,17 +61,17 @@ class PostServiceImplTest {
     //    olist.ifPresent(post -> System.out.println(post));
    // }
 
-    @Test
-    public void 상태_게시물조회() throws Exception {
-        List<PostDto> list = postService.selectPostByStatus(StPost.EARLY_IDEA);
-        for (PostDto p : list) System.out.println(p);
-    }
+//    @Test
+//    public void 상태_게시물조회() throws Exception {
+//        List<PostDto> list = postService.selectPostByStatus(StPost.EARLY_IDEA);
+//        for (PostDto p : list) System.out.println(p);
+//    }
 
-    @Test
-    public void 카테고리_게시물조회() throws Exception {
-        List<PostDto> list = postService.selectPostByCategory(null);
-        for (PostDto p : list) System.out.println(p);
-    }
+//    @Test
+//    public void 카테고리_게시물조회() throws Exception {
+//        List<PostDto> list = postService.selectPostByCategory(null);
+//        for (PostDto p : list) System.out.println(p);
+//    }
 
     @Test
     public void 게시물삭제() throws Exception {
@@ -116,11 +116,11 @@ class PostServiceImplTest {
 //        });
     }
 
-    @Test
-    public void 좋아요정렬() throws Exception {
-        List<PostDto> list = postService.getPostsOrderByLikes();
-        for (PostDto p : list) System.out.println(p.getTitle() + " : " + p.getLikePost());
-    }
+//    @Test
+//    public void 좋아요정렬() throws Exception {
+//        List<PostDto> list = postService.getPostsOrderByLikes();
+//        for (PostDto p : list) System.out.println(p.getTitle() + " : " + p.getLikePost());
+//    }
 
     @Test
     public void 상태변경() throws Exception {

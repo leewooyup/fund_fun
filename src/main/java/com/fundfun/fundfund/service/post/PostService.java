@@ -26,15 +26,15 @@ public interface PostService {
 
 
     //제목으로 게시물 검색
-    List<PostDto> selectPostByKeyword(String keyword);
+    Page<PostDto> selectPostByKeyword(String keyword, Pageable pageable);
 
 
     //상태로 게시물 조회(최신순)
-    List<PostDto> selectPostByStatus(StPost status);
+    Page<PostDto> selectPostByStatus(StPost status, Pageable pageable);
 
 
     //카테고리로 게시물 조회
-    List<PostDto> selectPostByCategory(String category);
+    Page<PostDto> selectPostByCategory(String category, Pageable pageable);
 
     //게시물 삭제
     void deletePost(UUID postId);
@@ -43,7 +43,7 @@ public interface PostService {
     void updatePost(UUID postId, String newTitle, String newContent);
 
     //좋아요 높은 순으로 게시물 정렬
-    List<PostDto> getPostsOrderByLikes();
+    Page<PostDto> getPostsOrderByLikes(Pageable pageable);
 
     //게시물에 좋아요 추가
     void addLike(UUID postId, Users user);

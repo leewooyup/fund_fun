@@ -100,13 +100,14 @@ public class PostController {
      */
     @GetMapping("/list/popular")
     public String popularIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
-        List<PostDto> postDtoList = postService.getPostsOrderByLikes();
-        Page<PostDto> postList = new PageImpl<>(postDtoList);
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "likePost");
+        Page<PostDto> postDtoList = postService.getPostsOrderByLikes(page);
+        //Page<PostDto> postList = new PageImpl<>(postDtoList);
 
         int temp = (nowPage - 1) % BLOCK_COUNT;
         int startPage = nowPage - temp;
 
-        model.addAttribute("postList", postList);
+        model.addAttribute("postList", postDtoList);
 
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
@@ -127,13 +128,14 @@ public class PostController {
      */
     @GetMapping("/list/preproduct")
     public String preproductList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
-        List<PostDto> postDtoList = postService.selectPostByStatus(StPost.PREPRODUCT);
-        Page<PostDto> postList = new PageImpl<>(postDtoList);
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+        Page<PostDto> postDtoList = postService.selectPostByStatus(StPost.PREPRODUCT, page);
+        //Page<PostDto> postList = new PageImpl<>(postDtoList);
 
         int temp = (nowPage - 1) % BLOCK_COUNT;
         int startPage = nowPage - temp;
 
-        model.addAttribute("postList", postList);
+        model.addAttribute("postList", postDtoList);
 
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
@@ -154,13 +156,14 @@ public class PostController {
      */
     @GetMapping("/list/searchResult")
     public String searchList(Model model, @RequestParam String keyword, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
-        List<PostDto> postDtoList = postService.selectPostByKeyword(keyword);
-        Page<PostDto> postList = new PageImpl<>(postDtoList);
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+        Page<PostDto> postDtoList = postService.selectPostByKeyword(keyword, page);
+        //Page<PostDto> postList = new PageImpl<>(postDtoList);
 
         int temp = (nowPage - 1) % BLOCK_COUNT;
         int startPage = nowPage - temp;
 
-        model.addAttribute("postList", postList);
+        model.addAttribute("postList", postDtoList);
         model.addAttribute("keyword", keyword);
 
         model.addAttribute("blockCount", BLOCK_COUNT);
