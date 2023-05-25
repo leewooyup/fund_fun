@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,15 +62,22 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+
+            //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
         }
 
-        List<PostDto> postList = postService.selectAll();
-        model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
+        model.addAttribute("sortby", "standard");
+        //PREV, NEXT url 설정 위한 기준이 되는 attribute
+
+        //model.addAttribute("postList", postList);
+        //model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
         return "post/list";
     }
 
@@ -92,7 +100,11 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
@@ -123,7 +135,11 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
@@ -155,7 +171,11 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
@@ -188,7 +208,12 @@ public class PostController {
             //해당 게시물에 댓글이 있다면 반환
 
             if(adapter!=null) {
-                model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+                UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                        .build();
+                //model.addAttribute("userInfo", userDto);
+                model.addAttribute("userInfo", adapter.getUser().getId());
+                model.addAttribute("userLike", adapter.getUser().getCount());
+
             }
             else if(adapter == null){
                 model.addAttribute("userInfo", null);
@@ -278,9 +303,7 @@ public class PostController {
         if (result.hasErrors()) {
             return "redirect:/post/edit/" + postId;
         }
-//        PostDto postDto = new PostDto();
-//        postDto.setTitle(postForm.getTitle());
-//        postDto.setContentPost(postForm.getContentPost());
+
         postService.updatePost(postId, postForm.getTitle(), postForm.getContentPost());
         return "redirect:/post/list";
     }
