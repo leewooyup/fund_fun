@@ -77,7 +77,8 @@ public class PortfolioController {
      * - D : 삭제
      */
     @GetMapping("/portfolio/goDetail")
-    public String goDetail(HttpServletRequest req, HttpServletResponse res, Model model, @AuthenticationPrincipal Users user) {
+    public String goDetail(HttpServletRequest req, HttpServletResponse res, Model model,
+                           @AuthenticationPrincipal UserAdapter adapter) {
         String portfolioId = req.getParameter("id");
         String postId = req.getParameter("postId");
         String btnVisible = "";
@@ -90,7 +91,7 @@ public class PortfolioController {
             portfolioDto = portfolioService.selectById(id);
             model.addAttribute("data", portfolioDto);
 
-            btnVisible = portfolioDto.getUserId().equals(user.getId()) ? "1" : "0";
+            btnVisible = portfolioDto.getUserId().equals(adapter.getUser().getId()) ? "1" : "0";
         } else {
             model.addAttribute("data", null);
         }
