@@ -56,4 +56,3 @@ public interface PostService {
     int getLikeById(UUID postId);
 
 }
-

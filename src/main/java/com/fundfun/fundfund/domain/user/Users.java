@@ -56,6 +56,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
     private String name;
     private String email;
+    @Convert(converter = RoleConverter.class)
     private Role role;
     private String phone;
     private Gender gender;
