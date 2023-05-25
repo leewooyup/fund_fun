@@ -78,6 +78,7 @@
                       th:text="|<${product.title}> 상품에 ${cost}원 투자 완료되었습니다.|"></span>
             </div>
         </div>
+        <div id="tick"></div>
         <div style="text-align:right; padding:10px 0">
             <span th:text="|충전금 잔액 : ${user.money}원|"></span>
         </div>
@@ -91,6 +92,22 @@
             </a>
         </div>
     </div>
+    <script>
+        $(function() {
+            let count = 10;
+            timer();
+            let tickInterval = setInterval(timer, 1000); // 1초마다 계속 불러옴
+
+            function timer() {
+                if(count > 0) {
+                    count--;
+                    $("#tick").html(count);
+                } else {
+                    clearInterval(tickInterval);
+                }
+            }
+        });
+    </script>
     <script th:inline="javascript">
         toastr.options = {
             closeButton: false,
