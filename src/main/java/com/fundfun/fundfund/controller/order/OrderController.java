@@ -66,7 +66,7 @@ public class OrderController {
      * @return view
      */
     @PostMapping("/send/{encId}")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model, Principal principal) {
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model, @AuthenticationPrincipal UserAdapter adapter) {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
@@ -74,11 +74,8 @@ public class OrderController {
         UUID productId = orderService.decEncId(encId);
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
 
-        //
-        UserDTO userDTO = userService.findByEmail(principal.getName());
-//        if(userDTO == null) {
-//            throw new RuntimeException("로그인 먼저 진행해주세요.");
-//        }
+        //System.out.println("adapter.getName()"+adapter.getUser().getId());
+
         if (productDto == null || investDto == null) {
             throw new RuntimeException("투자에 실패하셨습니다.");
         }
@@ -86,7 +83,6 @@ public class OrderController {
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
         model.addAttribute("user", UserMapper.toDto(adapter.getUser()));
-
         return "order/order_receipt";
     }
 
@@ -97,10 +93,10 @@ public class OrderController {
      * @param cost
      * @return view
      */
-    //@Transactional
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+        System.out.println("userDto id = " + adapter.getUser().getId());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
 
         try {
@@ -131,7 +127,9 @@ public class OrderController {
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
 
         //업데이트된 유저를 다시 불러옴(유저 충전금 업데이트)
-        UserDTO updateUserDTO = userService.findById(userDTO.getId());
+        UserDTO updateUserDTO = userService.findById(adapter.getUser().getId());
+        System.out.println("updateUserDto.id = "+updateUserDTO);
+        System.out.println("updateUserDto.money = "+ updateUserDTO.getMoney());
 
 //        model.addAttribute("user", updateUserDTO);
 //        model.addAttribute("product", productDto);
