@@ -9,16 +9,22 @@ import com.fundfun.fundfund.dto.reply.ReplyDto;
 import com.fundfun.fundfund.service.post.PostService;
 import com.fundfun.fundfund.service.reply.ReplyService;
 import com.fundfun.fundfund.service.user.UserService;
+import com.fundfun.fundfund.util.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -37,7 +43,6 @@ public class PostController {
 
     private final ReplyService replyService;
     private final ModelMapper modelMapper;
-
     /**
      * 아이디어 전체조회 화면 이동
      * : 페이징 처리 없는 버전
@@ -57,7 +62,12 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+
+            //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
@@ -88,7 +98,11 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
@@ -119,7 +133,11 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
@@ -151,7 +169,8 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
         }
         else if(adapter == null){
             model.addAttribute("userInfo", null);
@@ -184,10 +203,16 @@ public class PostController {
             //해당 게시물에 댓글이 있다면 반환
 
             if(adapter!=null) {
-                model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+                UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                        .build();
+                //model.addAttribute("userInfo", userDto);
+                model.addAttribute("userInfo", adapter.getUser().getId());
+                model.addAttribute("userLike", adapter.getUser().getCount());
+
             }
             else if(adapter == null){
                 model.addAttribute("userInfo", null);
+                model.addAttribute("userLike", null);
             }
             //수정 및 삭제 버튼 유무 결정하기 위한 유저 정보 반환
 
@@ -274,9 +299,7 @@ public class PostController {
         if (result.hasErrors()) {
             return "redirect:/post/edit/" + postId;
         }
-//        PostDto postDto = new PostDto();
-//        postDto.setTitle(postForm.getTitle());
-//        postDto.setContentPost(postForm.getContentPost());
+
         postService.updatePost(postId, postForm.getTitle(), postForm.getContentPost());
         return "redirect:/post/list";
     }

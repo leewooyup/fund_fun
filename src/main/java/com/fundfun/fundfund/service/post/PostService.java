@@ -38,6 +38,9 @@ public interface PostService {
     //카테고리로 게시물 조회
     Page<PostDto> selectPostByCategory(String category, Pageable pageable);
 
+    //userId로 게시물 조회
+    List<PostDto> selectPostByUserId(UUID userId);
+
     //게시물 삭제
     void deletePost(UUID postId);
 

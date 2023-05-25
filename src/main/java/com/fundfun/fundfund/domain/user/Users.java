@@ -5,6 +5,7 @@ import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.payment.PayMean;
 import com.fundfun.fundfund.domain.payment.Payment;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.vote.Vote;
 
@@ -41,17 +42,19 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private List<Portfolio> on_vote_portfolio = new ArrayList<>();
 
     @OneToMany(mappedBy = "fundManager")
-    private final List<Product> managing_product = new ArrayList<>();
+    private List<Product> managing_product = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Alarm> alarms = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "paid_by")
     private List<Payment> payments = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<PayMean> means = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
     private String password;
 
     private String name;
@@ -68,23 +71,27 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private LocalDateTime lastLoginTime;
 
     public void addAlarm(Alarm alarm) {
-        alarms.add(alarm);
+        this.alarms.add(alarm);
     }
 
     public void addPayMean(PayMean payMean) {
-        means.add(payMean);
+        this.means.add(payMean);
     }
 
     public void addPayment(Payment payment) {
-        payments.add(payment);
+        this.payments.add(payment);
     }
 
     public void addPortfolio(Portfolio portfolio) {
-        on_vote_portfolio.add(portfolio);
+        this.on_vote_portfolio.add(portfolio);
     }
 
     public void addProduct(Product product) {
-        managing_product.add(product);
+        this.managing_product.add(product);
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 
     @Override
