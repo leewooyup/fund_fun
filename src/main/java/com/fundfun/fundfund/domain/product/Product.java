@@ -3,7 +3,10 @@ package com.fundfun.fundfund.domain.product;
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.util.BaseTimeEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -23,7 +26,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
-@Builder
 public class Product extends BaseTimeEntity {
 
     @Id
@@ -93,6 +95,5 @@ public class Product extends BaseTimeEntity {
         if(thumbnailRelPath == null) return "/gen/product/avatar.jpg";
         return "/gen/" + thumbnailRelPath;
     }
-
 
 }

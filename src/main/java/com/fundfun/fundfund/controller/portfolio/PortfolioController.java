@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+
 @Controller
 @RequiredArgsConstructor
 public class PortfolioController {
@@ -82,8 +83,8 @@ public class PortfolioController {
         String portfolioId = req.getParameter("id");
         String postId = req.getParameter("postId");
         String btnVisible = "";
-        System.out.println("porfolioId ="+"id");
-        System.out.println("postId ="+"postId");
+        System.out.println("현재 porfolioId ="+ portfolioId );
+        System.out.println("현재 postId ="+postId);
 
         if (portfolioId != null) {
             UUID id = UUID.fromString(portfolioId);
@@ -152,6 +153,8 @@ public class PortfolioController {
 
     //0521 코드
     // 포트폴리오 수정/작성 - ajax
+    //0521 코드
+    // 포트폴리오 수정/작성 - ajax
     @PostMapping(value = "/portfolio/commitData")
     @ResponseBody
     public HashMap<String, Object> commitData(@RequestBody Map<String, Object> paramMap,
@@ -170,36 +173,45 @@ public class PortfolioController {
                 portfolioDto.setPostId(postId); // postId Setting
                 portfolioDto.setVoteId(voteDto.getId()); // voteId Setting
                 portfolioDto.setUserId(userAdapter.getUser().getId()); // 사용자Id Setting
-                portfolioDto.setTitle(paramMap.get("title").toString()); // 입력한 title Setting
-                portfolioDto.setBeneRatio(Float.parseFloat(paramMap.get("beneRatio").toString())); // 입력한 beneRatio Setting
-                portfolioDto.setWarnLevel(paramMap.get("warnLevel").toString()); // 입력한 warnLevel Setting
-                portfolioDto.setContentPortfolio(paramMap.get("content").toString()); // 입력한 content Setting
 
                 if (state.equals("W")) { // 작성
+                    portfolioDto.setTitle(paramMap.get("title").toString()); // 입력한 title
+                    portfolioDto.setBeneRatio(Float.parseFloat(paramMap.get("beneRatio").toString())); // 입력한 beneRatio
+                    portfolioDto.setWarnLevel(paramMap.get("warnLevel").toString()); // 입력한 warnLevel
+                    portfolioDto.setContentPortfolio(paramMap.get("content").toString()); // 입력한 content
                     portfolioService.createPort(portfolioDto);
-
                     map.put("resultState", "success");
                     map.put("msg", "정상 저장되었습니다.");
-                } else { // 수정/삭제
+                } else {
+                    //수정/삭제
                     UUID portfolioId = UUID.fromString(paramMap.get("portfolioId").toString());
                     PortfolioDto portfolioChkDto = portfolioService.selectById(portfolioId);
 
                     // 해당 포트폴리오Id로 로그인 한 사용자와 작성자 일치 여부
                     if (portfolioChkDto.getUserId().equals(userAdapter.getUser().getId())) {
                         if (state.equals("D")) { // 삭제
+                            portfolioDto = new PortfolioDto();
                             portfolioDto.setId(portfolioId);
                             portfolioService.deletePort(portfolioDto);
+
+                            map.put("resultState", "success");
+                            map.put("msg", "정상 삭제되었습니다.");
                         } else { // 수정
+                            portfolioDto.setTitle(paramMap.get("title").toString()); // 입력한 title
+                            portfolioDto.setBeneRatio(Float.parseFloat(paramMap.get("beneRatio").toString())); // 입력한 beneRatio
+                            portfolioDto.setWarnLevel(paramMap.get("warnLevel").toString()); // 입력한 warnLevel
+                            portfolioDto.setContentPortfolio(paramMap.get("content").toString()); // 입력한 content
                             portfolioDto.setId(portfolioId);
                             portfolioService.updatePort(portfolioDto);
-                        }
 
-                        map.put("resultState", "success");
-                        map.put("msg", "정상 저장되었습니다.");
-                    } else {
+                            map.put("resultState", "success");
+                            map.put("msg", "정상 수정되었습니다.");
+                        }
+                    }else {
                         map.put("resultState", "notUser");
                         map.put("msg", "해당 게시글 작성자가 다릅니다.");
                     }
+
                 }
             } else {
                 map.put("resultState", "notAuth");

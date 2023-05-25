@@ -58,8 +58,8 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/curUser")
     @ResponseBody
-    public UserContext curUser(@AuthenticationPrincipal UserContext userContext) {
-        return userContext;
+    public Principal curUser(@AuthenticationPrincipal UserContext userContext, Principal principal) {
+        return principal;
     }
 
 }

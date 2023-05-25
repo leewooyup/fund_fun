@@ -28,38 +28,42 @@
             <a href="/product/list/progress">진행 중인 상품</a>
         </div>
         <th:block th:if="${list.size() == 0}">
-           <span style="text-align: center"><h4>등록된 상품이 존재하지 않습니다.</h4></span>
+            <span style="text-align: center"><h4>등록된 상품이 존재하지 않습니다.</h4></span>
         </th:block>
-    </div>
-    <div class="container">
-        <div class="row row-cols-3">
-            <div th:each="ele : ${list}">
-                <div class="col">
-                    <div><span th:text="${ele.title}"></span>
-                        <a th:href="@{|/order/form/${ele.uuidEncode}|}">
-                            <div>
-                                <img alt="" height="250px" style="border:solid;width:80%"
-                                     th:src="@{|/gen/${ele.thumbnailRelPath}|}"
-                                     width="250px">
-                            </div>
-                        </a>
-                        <div th:text="${ele.crowdStart}"></div>
+        <div class="container">
+            <div class="row row-cols-3">
+                <div th:each="ele : ${list}">
+                    <div class="col">
+                        <div><span th:text="${ele.title}"></span>
+                            <a th:href="@{|/order/form/${ele.uuidEncode}|}">
+                                <div th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
+                                    <img alt="" height="250px" style="border:solid;width:80%"
+                                         th:src="@{|/gen/${ele.thumbnailRelPath}|}"
+                                         width="250px">
+                                </div>
+                                <div th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
+                                    <img alt="" height="250px" style="border:solid;width:80%"
+                                         th:src="@{|/gen/${ele.getThumbnailImgRedirectUrl}|}"
+                                         width="250px">
+                                </div>
+                            </a>
+                            <div th:text="${ele.crowdStart}"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div style="margin-top: 10px">
+                <form action="/product/search" method="get">
+                    <div style=" float: right;padding: 0 10px 0 0">
+                        <input name="title" placeholder="Search" type="text"></input>
+                        <button class="btn btn-warning" type="submit">검색</button>
+                    </div>
+                </form>
+                <a href="/product/register">
+                    <button class="btn btn-warning" type="submit">등록</button>
+                </a>
+            </div>
         </div>
-        <div style="margin-top: 10px">
-            <form action="/product/search" method="get">
-                <div style=" float: right;padding: 0 10px 0 0">
-                    <input name="title" placeholder="Search" type="text"></input>
-                    <button class="btn btn-warning" type="submit">검색</button>
-                </div>
-            </form>
-            <a href="/product/register">
-                <button class="btn btn-warning" type="submit">등록</button>
-            </a>
-        </div>
-    </div>
     </div>
     <script th:inline="javascript">
         toastr.options = {
