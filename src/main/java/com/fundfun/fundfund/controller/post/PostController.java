@@ -43,6 +43,7 @@ public class PostController {
 
     private final ReplyService replyService;
     private final ModelMapper modelMapper;
+
     /**
      * 아이디어 전체조회 화면 이동
      * : 페이징 처리 없는 버전
@@ -76,8 +77,6 @@ public class PostController {
         model.addAttribute("sortby", "standard");
         //PREV, NEXT url 설정 위한 기준이 되는 attribute
 
-        //model.addAttribute("postList", postList);
-        //model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
         return "post/list";
     }
 
