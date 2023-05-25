@@ -1,6 +1,6 @@
 package com.fundfun.fundfund.service.reply;
 
-import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.product.post.Post;
 import com.fundfun.fundfund.domain.reply.Reply;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.post.PostDto;
@@ -14,8 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ReplyServiceImplTest {
