@@ -7,6 +7,8 @@ import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.repository.order.OrderRepository;
+import com.fundfun.fundfund.repository.product.ProductRepository;
+import com.fundfun.fundfund.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
     //전체 조회
@@ -64,29 +68,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //주문등록
-    public Orders createOrder(Long cost, ProductDto productDto, UserDTO userDTO) {
+    public Orders createOrder(Long cost, UUID productId, UUID userId) {
         InvestDto investDto = new InvestDto();
-        Product product = modelMapper.map(productDto, Product.class);
-        Users user = modelMapper.map(userDTO, Users.class);
+        Product product = productRepository.findById(productId).orElse(null);
+        Users user = userRepository.findById(userId).orElse(null);
 
         investDto.setProduct(product);
         investDto.setUser(user);
         investDto.setCost(cost);
 
+        user.minusMoney(cost);
+        userRepository.save(user);
+
         Orders order = modelMapper.map(investDto, Orders.class);
-        if(order == null){
-            throw new RuntimeException("투자에 실패하셨습니다.");
-        }
         return orderRepository.save(order);
     }
 
     //주문삭제
     @Override
-    public void delete(UUID orderId, UserDTO userDTO) {
+    public void delete(UUID orderId) {
         Orders order = orderRepository.findById(orderId).orElse(null);
-        if (order == null || userDTO.equals(order.getUser())) {
-            throw new RuntimeException("해당 투자를 삭제할 수 없습니다.");
-        }
         orderRepository.delete(order);
     }
 

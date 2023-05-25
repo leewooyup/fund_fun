@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller.order;
 
 
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
@@ -95,15 +96,30 @@ public class OrderController {
      * @param cost
      * @return view
      */
+    //@Transactional
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
+
         try {
-            int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신 + 주문서 만들기
+            //User Point update
+            if (userDTO.getMoney() < cost) {
+                throw new InSufficientMoneyException("충전이 필요합니다.");
+            }
+
+            //주문서 생성 + 유저 충전금 업데이트
+            Orders order = orderService.createOrder(cost, productDto.getId(), userDTO.getId());
+            if (order == null) {
+                throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
+            }
+
+            //Product update
+            int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신
             if (result == 0) {
                 throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
             }
+
         } catch (InSufficientMoneyException e) {
             String errMsg = Util.url.encode(e.getMessage());
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
@@ -113,9 +129,18 @@ public class OrderController {
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
 
+        //업데이트된 유저를 다시 불러옴(유저 충전금 업데이트)
+        UserDTO updateUserDTO = userService.findById(userDTO.getId());
+
+//        model.addAttribute("user", updateUserDTO);
+//        model.addAttribute("product", productDto);
+//        model.addAttribute("cost", cost);
+//        return "order/order_confirm";
+
+
         //return String.format("redirect:/product/list?msg=%s", msg);
         req.setAttribute("product", productDto);
-        req.setAttribute("user", adapter.getUser());
+        req.setAttribute("user", updateUserDTO);
         req.setAttribute("cost", cost);
         return String.format("forward:/order/confirm?msg=%s", msg);
 
@@ -124,7 +149,7 @@ public class OrderController {
     @PostMapping("/confirm")
     public String showOrderConfirm(HttpServletRequest req, Model model, Long cost) {
         ProductDto product = (ProductDto) req.getAttribute("product");
-        Users user = (Users) req.getAttribute("user");
+        UserDTO user = (UserDTO) req.getAttribute("user");
         model.addAttribute("product", product);
         model.addAttribute("user", user);
         model.addAttribute("cost", cost);

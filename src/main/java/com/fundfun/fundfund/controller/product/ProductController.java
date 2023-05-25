@@ -8,6 +8,10 @@ import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.id.insert.Binder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +33,9 @@ public class ProductController {
     private final ProductService productService;
     private final OrderService orderService;
     private final UserService userService;
+
+    private final static int PAGE_COUNT=6;
+    private final static int BLOCK_COUNT=3;
 
 
     /**
@@ -65,18 +73,40 @@ public class ProductController {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public String list(Model model){
-        List<ProductDto> productList = productService.selectAll();
-        model.addAttribute("list", productList);
+    public String list(Model model, @RequestParam(defaultValue = "1") int nowPage){
+        Pageable page = PageRequest.of((nowPage-1), PAGE_COUNT , Sort.Direction.DESC, "createdAt");
+
+        Page<ProductDto> pageList =  productService.selectAll(page);
+
+        int temp = (nowPage-1)%BLOCK_COUNT;
+        int startPage=nowPage-temp;
+        //List<ProductDto> productList = productService.selectAll();
+        model.addAttribute("list", pageList);
+        model.addAttribute("blockCount", BLOCK_COUNT);
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
+
         return "product/product_list";
     }
 
 
     @GetMapping("/list/progress")
-    public String listProgress(Model model){
-        List<ProductDto> productList = productService.selectByStatus("진행중");
-        System.out.println("product.size() = " + productList.size());
-        model.addAttribute("list", productList);
+    public String listProgress(Model model, @RequestParam(defaultValue = "1") int nowPage){
+        Pageable page = PageRequest.of((nowPage-1), PAGE_COUNT , Sort.Direction.DESC, "createdAt");
+
+        Page<ProductDto> progressList = productService.selectByStatus(page, "진행중");
+
+        int temp = (nowPage-1)%BLOCK_COUNT;
+        int startPage=nowPage-temp;
+        //List<ProductDto> productList = productService.selectAll();
+        model.addAttribute("list", progressList);
+        model.addAttribute("blockCount", BLOCK_COUNT);
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
         return "product/product_list";
     }
 

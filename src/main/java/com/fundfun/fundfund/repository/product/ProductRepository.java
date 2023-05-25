@@ -3,6 +3,8 @@ package com.fundfun.fundfund.repository.product;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query(value = "select p from Product p where p.status = ?1")
     List<Product> findByStatus(String status);
 
-//    List<Product> findByUserId(UUID userId);
+    @Query(value = "select p from Product p where p.status = ?1")
+    Page<Product> selectByStatus(Pageable pageable, String status);
 
 }
