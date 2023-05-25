@@ -7,6 +7,13 @@
 </style>
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <style>
+        .invest{
+            font-size:large;
+            font-weight: bold;
+        }
+
+    </style>
     <div class="d-flex flex-column align-items-center wrapper">
         <div class="title" style="text-align:left;">투자 영수증</div>
         <div class="order-main">
@@ -15,15 +22,15 @@
                 <input name="Id" type="hidden" value="${invest}">
                 <div>
                     <label class="sub-title">투자할 상품</label>
-                    <div th:text="${product.title}" style="font-size:large;font-weight: bold"></div>
+                    <div class="invest" th:text="${product.title}"></div>
                 </div>
                 <div>
                     <label class="sub-title">투자할 금액</label>
-                    <div th:text="|${invest.cost}원|"></div>
+                    <div class="invest" th:text="|${invest.cost}원|"></div>
                 </div>
                 <div>
                     <label class="sub-title">충전금 잔액</label>
-                    <div th:text="|${user.money}원|"></div>
+                    <div class="invest" th:text="|${user.money}원|"></div>
                 </div>
             </div>
             <div class="order-main-right-section">

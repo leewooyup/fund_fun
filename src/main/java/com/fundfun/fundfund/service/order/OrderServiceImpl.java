@@ -48,13 +48,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //주문 업데이트
-    public void update(InvestDto investDto){
+    public void update(InvestDto investDto) {
         Orders order = modelMapper.map(investDto, Orders.class);
         orderRepository.save(order);
 
     }
+
     /**
      * UUID 디코딩
+     *
      * @param encId
      * @return UUID
      */
@@ -63,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         Base64.Decoder decoder = Base64.getDecoder();
         byte[] decodedUUIDBytes = decoder.decode(encId);
         String uuidString = new String(decodedUUIDBytes);
-        System.out.println("uuidString: " + uuidString);
+        //System.out.println("uuidString: " + uuidString);
         return UUID.fromString(uuidString);
     }
 
@@ -77,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
         investDto.setUser(user);
         investDto.setCost(cost);
 
+        //투자 후 유저 충전금 업데이트
         user.minusMoney(cost);
         userRepository.save(user);
 
@@ -91,9 +94,9 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.delete(order);
     }
 
-    //scheduler test 코드
-    public void sayHello() {
-        System.out.println("HELLO!!!!!!!!!!");
-    }
+//    //scheduler test 코드
+//    public void sayHello() {
+//        System.out.println("HELLO!!!!!!!!!!");
+//    }
 
 }

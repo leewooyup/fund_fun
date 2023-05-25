@@ -56,7 +56,7 @@
             content: "";
             top: 0;
             left: 0;
-            background-color: #2c3e50;
+            background-color: #5F584C;
             border-radius: 24px;
             -webkit-transform: scale(0);
             transform: scale(0);
@@ -97,36 +97,13 @@
             <h3>상품게시판</h3>
             <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매중인 펀드 상품입니다. </h5>
         </div>
-        <div style="padding:0 0 10px 20px;">
+        <div style="padding:0 0 10px 10px;">
             <span><a href="/product/list">전체</a> | </span>
             <a href="/product/list/progress">진행 중인 상품</a>
         </div>
         <th:block th:if="${list.isEmpty()}">
             <span style="text-align: center"><h4>등록된 상품이 존재하지 않습니다.</h4></span>
         </th:block>
-
-<!--                <th:unless>-->
-<!--                    <div class="container">-->
-<!--                        <div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">-->
-<!--                            <div class="row row-cols-3">-->
-<!--                                <div th:each="ele : ${list}">-->
-<!--                                    <div class="col">-->
-<!--                                        <a th:href="@{|/order/form/${ele.uuidEncode}|}">-->
-<!--                                            <div>-->
-<!--                                                <img alt="" th:src="@{|/gen/${ele.thumbnailRelPath}|}">-->
-<!--                                            </div>-->
-<!--                                        </a>-->
-<!--                                        <div style="font-size: large;font-weight: bold" th:text="${ele.title}"></div>-->
-<!--                                        <div style="color:#8B8B8B" th:text="|${ele.crowdStart}일 ~|"></div>-->
-<!--                                        <div class="progress" style="margin-bottom:2rem">-->
-<!--                                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar"-->
-<!--                                                 role="progressbar" style="width: 25%;background-color:#FFCE0B">25%-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
         <th:unless>
             <div class="container">
@@ -148,7 +125,7 @@
                                 </a>
                                 <div style="font-size: large;font-weight: bold" th:text="${ele.title}"></div>
                                 <div style="color:#8B8B8B" th:text="|${ele.crowdStart}일 ~|"></div>
-                                <div class="progress" style="margin-bottom:2rem">
+                                <div class="progress" style="margin-bottom:2rem;width:80%">
                                     <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar"
                                          role="progressbar" style="width: 25%;background-color:#FFCE0B">25%
                                     </div>
@@ -163,7 +140,6 @@
 
         <div>
             <div style="text-align: center">
-                <!--  블럭당  -->
                 <nav class="pagination-container">
                     <div class="pagination">
                         <th:block th:with="doneLoop=false"></th:block>
