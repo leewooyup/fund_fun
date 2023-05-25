@@ -55,6 +55,10 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Orders> orders = new ArrayList<>();
+
     private String password;
 
     private String name;

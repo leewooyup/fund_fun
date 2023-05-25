@@ -1,7 +1,9 @@
 package com.fundfun.fundfund.domain.user;
 
 import com.fundfun.fundfund.domain.alarm.AlarmDTO;
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.payment.PaymentMeanDTO;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.payment.PaymentDTO;
@@ -35,6 +37,8 @@ public class UserDTO {
     private List<AlarmDTO> alarms;
     private List<PaymentDTO> payments;
     private List<PaymentMeanDTO> means;
+    private List<Orders> orders;
+    private List<Post> posts;
 
 
 }
