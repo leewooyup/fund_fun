@@ -167,6 +167,7 @@
             </div>
 
             <div class="marginBottom">
+                <span th:text="${btnVisible}"></span>
                 <button class="rightArea paddingBtn2 left_margin bg-yellow" id="delete" th:if="${#strings.equals(btnVisible, '1')}">삭제</button>
                 <button class="rightArea paddingBtn2 bg-yellow" id="update" th:if="${#strings.equals(btnVisible, '1')}">수정</button>
             </div>

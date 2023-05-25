@@ -76,8 +76,6 @@ public class PortfolioServiceImpl implements PortfolioService {
     //포트폴리오 아이디로 포폴조회
     public PortfolioDto selectPortById(UUID portfolioId){
         Portfolio portfolio = portRep.findById(portfolioId).orElse(null);
-
-        //return modelMapper.map(portRep.findById(portfolioId).orElse(null), PortfolioDto.class));
         return modelMapper.map(portfolio, PortfolioDto.class);
     };
 
