@@ -1,8 +1,15 @@
 package com.fundfun.fundfund.domain.user;
 
+import com.fundfun.fundfund.domain.alarm.AlarmDTO;
+import com.fundfun.fundfund.domain.payment.PaymentMeanDTO;
+import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
+import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.service.payment.PaymentDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -10,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Setter
 public class UserDTO {
     private UUID id;
     private String name;
@@ -22,5 +30,11 @@ public class UserDTO {
     private Long count;
     private Long total_investment;
     private Long benefit;
+    private List<PortfolioDto> on_vote_portfolio;
+    private List<ProductDto> managing_product;
+    private List<AlarmDTO> alarms;
+    private List<PaymentDTO> payments;
+    private List<PaymentMeanDTO> means;
+
 
 }
