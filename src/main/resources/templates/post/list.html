@@ -96,8 +96,22 @@
                     <span th:with="doneLoop=false">
                         <!-- PREV -->
                         <span th:if="${nowPage > startPage}">
-                            <a class="pagination-newer"
-                               th:href="@{/post/list?nowPage={n}(n=${nowPage}-1)}">PREV</a>
+                            <span th:if="${sortby == 'standard'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list?nowPage={n}(n=${nowPage}-1)}">PREV</a>
+                            </span>
+                            <span th:if="${sortby == 'popular'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list/popular?nowPage={n}(n=${nowPage}-1)}">PREV</a>
+                            </span>
+                            <span th:if="${sortby == 'preproduct'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list/preproduct?nowPage={n}(n=${nowPage}-1)}">PREV</a>
+                            </span>
+                            <span th:if="${sortby == 'search'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list/searchResult?keyword={k}&nowPage={n}(k=${keyword}, n=${nowPage}-1)}">PREV</a>
+                            </span>
                         </span>
 
                         <!-- 중앙의 페이지 번호 -->
@@ -108,9 +122,22 @@
 
                         <!-- NEXT -->
                         <span th:if="${nowPage < postList.getTotalPages()}">
-                            <a class="pagination-older"
-                               th:href="@{/post/list?nowPage={n}(n=${nowPage}+1)}">NEXT</a>
-                        </span>
+                            <span th:if="${sortby == 'standard'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list?nowPage={n}(n=${nowPage}+1)}">NEXT</a>
+                            </span>
+                            <span th:if="${sortby == 'popular'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list/popular?nowPage={n}(n=${nowPage}+1)}">NEXT</a>
+                            </span>
+                            <span th:if="${sortby == 'preproduct'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list/preproduct?nowPage={n}(n=${nowPage}+1)}">NEXT</a>
+                            </span>
+                            <span th:if="${sortby == 'search'}">
+                                <a class="pagination-newer"
+                                   th:href="@{/post/list/searchResult?keyword={k}&nowPage={n}(k=${keyword}, n=${nowPage}+1)}">NEXT</a>
+                            </span>
                     </span>
                 </div>
             </nav>
