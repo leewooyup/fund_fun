@@ -12,6 +12,7 @@ import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -179,6 +180,8 @@ public class ProductServiceImpl implements ProductService {
         }
         Users user = modelMapper.map(userDTO, Users.class);
         productDto.setFundManager(user);
+        String crowdEnd = plus2Weeks(productDto.getCrowdStart());
+        productDto.setCrowdEnd(crowdEnd);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
 
@@ -205,6 +208,12 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> selectByStatus(String status) {
         List<Product> productList = productRepository.findByStatus(status);
         return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+    }
+
+    public String plus2Weeks(String startDate) {
+        LocalDate ld = LocalDate.parse(startDate);
+        LocalDate crowdEnd = ld.plusDays(14);
+        return crowdEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     /**
