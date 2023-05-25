@@ -51,7 +51,6 @@ public class OrderServiceImpl implements OrderService {
     }
     /**
      * UUID 디코딩
-     *
      * @param encId
      * @return UUID
      */
@@ -65,9 +64,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //주문등록
-    public Orders createOrder(Long cost, ProductDto productDto, Users user) {
+    public Orders createOrder(Long cost, ProductDto productDto, UserDTO userDTO) {
         InvestDto investDto = new InvestDto();
         Product product = modelMapper.map(productDto, Product.class);
+        Users user = modelMapper.map(userDTO, Users.class);
 
         investDto.setProduct(product);
         investDto.setUser(user);
@@ -82,9 +82,9 @@ public class OrderServiceImpl implements OrderService {
 
     //주문삭제
     @Override
-    public void delete(UUID orderId, Users user) {
+    public void delete(UUID orderId, UserDTO userDTO) {
         Orders order = orderRepository.findById(orderId).orElse(null);
-        if (order == null || user != order.getUser()) {
+        if (order == null || userDTO.equals(order.getUser())) {
             throw new RuntimeException("해당 투자를 삭제할 수 없습니다.");
         }
         orderRepository.delete(order);

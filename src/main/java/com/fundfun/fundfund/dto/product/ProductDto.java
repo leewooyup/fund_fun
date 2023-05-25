@@ -18,7 +18,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ProductDto{
-
     private UUID id;
     @NotEmpty(message = "상품제목을 입력해주세요.")
     private String title;
@@ -57,5 +56,9 @@ public class ProductDto{
     public String getThumbnailImgUrl() {
         if (thumbnailRelPath == null) return "/gen/product/avatar.jpg";
         return "/gen/" + thumbnailRelPath;
+    }
+
+    public String getThumbnailImgRedirectUrl() {
+        return this.thumbnailRelPath + "?random=" + UUID.randomUUID();
     }
 }

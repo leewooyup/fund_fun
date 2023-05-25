@@ -76,8 +76,6 @@ public class PortfolioServiceImpl implements PortfolioService {
     //포트폴리오 아이디로 포폴조회
     public PortfolioDto selectPortById(UUID portfolioId){
         Portfolio portfolio = portRep.findById(portfolioId).orElse(null);
-
-        //return modelMapper.map(portRep.findById(portfolioId).orElse(null), PortfolioDto.class));
         return modelMapper.map(portfolio, PortfolioDto.class);
     };
 
@@ -96,20 +94,25 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     //포트폴리오 삭제
-    public void deletePort(PortfolioDto portfolioDto){
+    public void deletePort(PortfolioDto portfolioDto) {
         Portfolio portfolio = portRep.findById(portfolioDto.getId()).orElse(null);
+        if (portfolio == null) {
+            System.out.println("삭제할 포트폴리오가 존재하지 않습니다.");
+            return;
+        }
 
-        if(portfolio == null) {
-            throw new RuntimeException("해당 게시물이 존재하지 않습니다.");
+        // 포트폴리오 삭제 로직 추가
+        portRep.delete(portfolio);
+
+        // 삭제 후 포트폴리오가 존재하는지 확인
+        Portfolio deletedPortfolio = portRep.findById(portfolioDto.getId()).orElse(null);
+        if (deletedPortfolio == null) {
+            System.out.println("포트폴리오가 성공적으로 삭제되었습니다.");
         } else {
-            Post post = postRepository.findById(portfolioDto.getPostId()).orElse(null);
-            Vote vote = voteRepository.findById(portfolioDto.getVoteId()).orElse(null);
-
-            portfolio.setPost(post);
-            portfolio.setVote(vote);
-            portRep.delete(portfolio);
+            System.out.println("포트폴리오 삭제에 실패하였습니다.");
         }
     }
+
 
     //포트폴리오 수정
     public void updatePort(PortfolioDto portfolioDto){
