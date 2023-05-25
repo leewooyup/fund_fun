@@ -1,8 +1,5 @@
 package com.fundfun.fundfund.service.post;
 
-import com.fundfun.fundfund.domain.portfolio.Portfolio;
-import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.product.post.Post;
 import com.fundfun.fundfund.domain.product.post.StPost;
@@ -28,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
