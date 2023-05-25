@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.controller.order;
 
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
@@ -93,15 +94,30 @@ public class OrderController {
      * @param cost
      * @return poduct_list view
      */
+    //@Transactional
     @PostMapping("/update/{encId}")
     public String update(@PathVariable String encId, Long cost, Principal principal, Model model) {
         UserDTO userDTO = userService.findByEmail(principal.getName());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
+
         try {
-            int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신 + 주문서 만들기
+            //User Point update
+            if (userDTO.getMoney() < cost) {
+                throw new InSufficientMoneyException("충전이 필요합니다.");
+            }
+
+            //주문서 생성 + 유저 충전금 업데이트
+            Orders order = orderService.createOrder(cost, productDto.getId(), userDTO.getId());
+            if (order == null) {
+                throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
+            }
+
+            //Product update
+            int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신
             if (result == 0) {
                 throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
             }
+
         } catch (InSufficientMoneyException e) {
             String errMsg = Util.url.encode(e.getMessage());
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
@@ -110,7 +126,11 @@ public class OrderController {
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
-        model.addAttribute("user", userDTO);
+
+        //업데이트된 유저를 다시 불러옴(유저 충전금 업데이트)
+        UserDTO updateUserDTO = userService.findById(userDTO.getId());
+
+        model.addAttribute("user", updateUserDTO);
         model.addAttribute("product", productDto);
         model.addAttribute("cost", cost);
         //return String.format("redirect:/product/list?msg=%s", msg);
