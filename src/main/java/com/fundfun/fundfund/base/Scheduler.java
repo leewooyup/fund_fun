@@ -1,6 +1,9 @@
 package com.fundfun.fundfund.base;
 
+import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
+import com.fundfun.fundfund.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -18,6 +22,7 @@ public class Scheduler {
 //    private static final Logger log = LoggerFactory.getLogger(Scheduler.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final OrderServiceImpl orderService;
+    private final ProductService productService;
 //    @Scheduled(fixedRate = 1000)
 //    public void reportCurTime() {
 //        log.info("Java fixedRate Thread={}", Thread.currentThread().getName());
@@ -36,8 +41,14 @@ public class Scheduler {
 //        log.info("Java cron job Test = {}", strDate);
 //    }
 
-//    @Scheduled(cron = "0/10 * * * * ?")
-//    public void sayHello() {
-//        orderService.sayHello();
-//    }
+    /**
+     * 매일 0분 0시 0초, 펀딩 상태 갱신
+     */
+    @Scheduled(cron = "0 0 0 * * * ")
+    public void sayHello() {
+        List<ProductDto> productDtoList = productService.selectAll();
+        for(ProductDto productDto : productDtoList) {
+            productService.updateStatus(productDto);
+        }
+    }
 }

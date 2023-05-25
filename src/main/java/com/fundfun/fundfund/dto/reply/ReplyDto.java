@@ -14,5 +14,7 @@ public class ReplyDto {
     private Users user;
     private String contentReply;
     private LocalDateTime createdAt;
+    // 댓글 작성일 - 가독성 위해 파싱
+    private String writeTime = null;
     private LocalDateTime updatedAt;
 }

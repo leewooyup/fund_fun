@@ -35,6 +35,20 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email).map(x -> modelMapper.map(x, UserDTO.class)).orElseThrow(NoSuchElementException::new);
     }
 
+    @Override
+    public Long addMoney(UserDTO dto, Long amount) {
+        Users user = modelMapper.map(dto, Users.class);
+        user.addMoney(amount);
+        return user.getMoney();
+    }
+
+    @Override
+    public Long minusMoney(UserDTO dto, Long amount) {
+        Users user = modelMapper.map(dto, Users.class);
+            user.minusMoney(amount);
+            return user.getMoney();
+    }
+
     public UserDTO register(Users users) {
         return modelMapper.map(userRepository.save(users), UserDTO.class);
     }
