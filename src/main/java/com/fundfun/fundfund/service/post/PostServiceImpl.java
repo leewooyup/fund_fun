@@ -3,24 +3,25 @@ package com.fundfun.fundfund.service.post;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.repository.post.PostRepository;
+import com.fundfun.fundfund.repository.user.UserRepository;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +35,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private final VoteRepository voteRepository;
+
+    @Autowired
+    private final UserRepository userRepository;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -59,13 +63,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> selectAll(Pageable pageable) {
-        return null;
-    }
+    public Page<PostDto> selectAll(Pageable pageable) {
+        Page<Post> postList = postRepository.findAll(pageable);
 
-    @Override
-    public int getTotalPages(List<PostDto> postDtoList) {
-        return 0;
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
+
+        return postDtoList;
     }
 
     @Override
@@ -81,45 +96,75 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostDto> selectPostByKeyword(String title) {
-        List<Post> postList = postRepository.findByTitleContaining(title);
-        List<PostDto> postDtoList = new ArrayList<>();
-
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
-
-        return postDtoList;
-    }
-
-    @Override
-    public List<PostDto> selectPostByStatus(StPost status) {
-        List<Post> postList = postRepository.findByStatusPost(status);
-        List<PostDto> postDtoList = new ArrayList<>();
-
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
+    public Page<PostDto> selectPostByKeyword(String title, Pageable pageable) {
+        Page<Post> postList = postRepository.findByTitleContaining(title, pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
 
         return postDtoList;
     }
 
     @Override
-    public List<PostDto> selectPostByCategory(String category) {
-        List<Post> postList = postRepository.findByCategoryPost(category);
-        List<PostDto> postDtoList = new ArrayList<>();
-
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
+    public Page<PostDto> selectPostByStatus(StPost status, Pageable pageable) {
+        Page<Post> postList = postRepository.findByStatusPost(status, pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
 
         return postDtoList;
+    }
+
+    @Override
+    public Page<PostDto> selectPostByCategory(String category, Pageable pageable) {
+        Page<Post> postList = postRepository.findByCategoryPost(category, pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
+
+        return postDtoList;
+    }
+
+    @Override
+    public List<PostDto> selectPostByUserId(UUID userId){
+        Users user = userRepository.findById(userId).orElse(null);
+        if(user != null){
+            List<Post> postList = postRepository.findByUser(user);
+            List<PostDto> postDtoList = postList.stream().map(p -> modelMapper.map(p, PostDto.class)).collect(Collectors.toList());
+            return postDtoList;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -147,25 +192,34 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostDto> getPostsOrderByLikes() {
-        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "likePost"));
-        List<PostDto> postDtoList = new ArrayList<>();
-
-        for(Post p : postList){
-            PostDto postDto = modelMapper.map(p, PostDto.class);
-            postDto.setWriteTime(p.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            postDtoList.add(postDto);
-        }
+    public Page<PostDto> getPostsOrderByLikes(Pageable pageable) {
+        //Page<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "likePost"));
+        Page<Post> postList = postRepository.findAll(pageable);
+        Page<PostDto> postDtoList = postList.map( m -> PostDto.builder()
+                .id(m.getId())
+                .createdAt(m.getCreatedAt())
+                .writeTime(m.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(m.getUpdatedAt())
+                .title(m.getTitle())
+                .contentPost(m.getContentPost())
+                .likePost(m.getLikePost())
+                .categoryPost(m.getCategoryPost())
+                .statusPost(m.getStatusPost())
+                .vote(m.getVote())
+                .user(m.getUser())
+                .build());
 
         return postDtoList;
     }
 
     @Override
-    public void addLike(UUID postId) {
+    public void addLike(UUID postId, Users user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시물이 존재하지 않습니다."));
 
         post.setLikePost(post.getLikePost() + 1); // 좋아요 수 증가
+        user.minusCount();
+        userRepository.save(user);
         postRepository.save(post);
 
     }

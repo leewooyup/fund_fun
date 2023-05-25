@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,25 +45,36 @@ public class PostController {
     private final ModelMapper modelMapper;
     /**
      * 아이디어 전체조회 화면 이동
-     * -> RestController로 옮겨야
+     * : 페이징 처리 없는 버전
      */
     @GetMapping("/list")
-    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter){ /*, @RequestParam(defaultValue = "1") int nowPage*/
-        /*Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
-        Page<PostDto> pageList = postService.selectAll(page);
+    public String goIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage){
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+        Page<PostDto> postList = postService.selectAll(page);
 
         int temp = (nowPage - 1) % BLOCK_COUNT;
         int startPage = nowPage - temp;
 
-        model.addAttribute("postList", pageList);
+        model.addAttribute("postList", postList);
 
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
-        model.addAttribute("nowPage", nowPage);*/
+        model.addAttribute("nowPage", nowPage);
 
-        List<PostDto> postList = postService.selectAll();
-        model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
+        if(adapter!=null){
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+
+            //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
+        model.addAttribute("sortby", "standard");
+        //PREV, NEXT url 설정 위한 기준이 되는 attribute
         return "post/list";
     }
 
@@ -70,10 +82,34 @@ public class PostController {
      * 아이디어 인기순 정렬
      */
     @GetMapping("/list/popular")
-    public String popularIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
-        List<PostDto> postList = postService.getPostsOrderByLikes();
-        model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
+    public String popularIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "likePost");
+        Page<PostDto> postDtoList = postService.getPostsOrderByLikes(page);
+        //Page<PostDto> postList = new PageImpl<>(postDtoList);
+
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
+
+        model.addAttribute("postList", postDtoList);
+
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
+        if(adapter!=null){
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
+        model.addAttribute("sortby", "popular");
+        //PREV, NEXT url 설정 위한 기준이 되는 attribute
+
         return "post/list";
     }
 
@@ -81,10 +117,33 @@ public class PostController {
      * 가상품만 보기
      */
     @GetMapping("/list/preproduct")
-    public String preproductList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
-        List<PostDto> postList = postService.selectPostByStatus(StPost.PREPRODUCT);
-        model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
+    public String preproductList(Model model, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+        Page<PostDto> postDtoList = postService.selectPostByStatus(StPost.PREPRODUCT, page);
+        //Page<PostDto> postList = new PageImpl<>(postDtoList);
+
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
+
+        model.addAttribute("postList", postDtoList);
+
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
+        if(adapter!=null){
+            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                    .build();
+            //model.addAttribute("userInfo", userDto);
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
+        model.addAttribute("sortby", "preproduct");
+        //PREV, NEXT url 설정 위한 기준이 되는 attribute
         return "post/list";
     }
 
@@ -92,12 +151,32 @@ public class PostController {
      * 키워드로 검색
      */
     @GetMapping("/list/searchResult")
-    public String searchList(Model model, @RequestParam String keyword, @AuthenticationPrincipal UserAdapter adapter) {
-        System.out.println("keyword = " + keyword);
-        List<PostDto> postList = postService.selectPostByKeyword(keyword);
-        model.addAttribute("postList", postList);
+    public String searchList(Model model, @RequestParam String keyword, @AuthenticationPrincipal UserAdapter adapter, @RequestParam(defaultValue = "1") int nowPage) {
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+        Page<PostDto> postDtoList = postService.selectPostByKeyword(keyword, page);
+        //Page<PostDto> postList = new PageImpl<>(postDtoList);
+
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
+
+        model.addAttribute("postList", postDtoList);
         model.addAttribute("keyword", keyword);
-        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserAdapter.class));
+
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("nowPage", nowPage);
+
+        if(adapter!=null){
+            model.addAttribute("userInfo", adapter.getUser().getId());
+
+        }
+        else if(adapter == null){
+            model.addAttribute("userInfo", null);
+        }
+
+        model.addAttribute("sortby", "search");
+        //PREV, NEXT url 설정 위한 기준이 되는 attribute
+
         return "post/list";
     }
 
@@ -113,12 +192,26 @@ public class PostController {
 
             List<ReplyDto> replyList = replyService.selectReplyByPostId(postDto);
             if (replyList != null) {
+                for(ReplyDto r : replyList){
+                    r.setWriteTime(r.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+                }
                 model.addAttribute("replyList", replyList);
                 model.addAttribute("replyCount", replyService.countByPostId(id));
             }
             //해당 게시물에 댓글이 있다면 반환
 
-            model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
+            if(adapter!=null) {
+                UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
+                        .build();
+                //model.addAttribute("userInfo", userDto);
+                model.addAttribute("userInfo", adapter.getUser().getId());
+                model.addAttribute("userLike", adapter.getUser().getCount());
+
+            }
+            else if(adapter == null){
+                model.addAttribute("userInfo", null);
+                model.addAttribute("userLike", null);
+            }
             //수정 및 삭제 버튼 유무 결정하기 위한 유저 정보 반환
 
             return "post/detail";
@@ -132,9 +225,9 @@ public class PostController {
      * 아이디어에 좋아요 누르기
      */
     @GetMapping("/detail/{id}/like")
-    public String addLike(@PathVariable UUID id, Model model) {
-        //좋아요 개수 추가
-        postService.addLike(id);
+    public String addLike(@PathVariable UUID id, Model model, @AuthenticationPrincipal UserAdapter adapter) {
+        //좋아요 개수 추가 및 유저 정보 변경
+        postService.addLike(id, adapter.getUser());
 
         PostDto postDto = postService.selectPostById(id);
         if (postDto.getLikePost() >= 10 && postDto.getStatusPost() == StPost.EARLY_IDEA) {
@@ -204,9 +297,7 @@ public class PostController {
         if (result.hasErrors()) {
             return "redirect:/post/edit/" + postId;
         }
-//        PostDto postDto = new PostDto();
-//        postDto.setTitle(postForm.getTitle());
-//        postDto.setContentPost(postForm.getContentPost());
+
         postService.updatePost(postId, postForm.getTitle(), postForm.getContentPost());
         return "redirect:/post/list";
     }

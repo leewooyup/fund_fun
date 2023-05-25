@@ -1,6 +1,5 @@
 server:
     port: 9000
-
 spring:
     profiles:
         active: dev, base-addi
@@ -10,8 +9,10 @@ spring:
     datasource:
         driver-class-name: oracle.jdbc.driver.OracleDriver
         url: jdbc:oracle:thin:@localhost:1521:XE
+
         username: c##lee
         password: 1234
+
     security:
         user:
             name: user
@@ -35,15 +36,15 @@ spring:
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: create
+            ddl-auto: update
+            # yeoooo : ? ? create ? update ?? create-drop ?? ?????
+#        defer-datasource-initialization: true
         generate-ddl: true
-        properties:
-            hibernate:
-                dialect: org.hibernate.dialect.Oracle12cDialect
 
         thymeleaf:
             cache: false
         defer-datasource-initialization: true
+    # sql init script
     sql:
         init:
             platform: oracle
