@@ -2,6 +2,7 @@ package com.fundfun.fundfund.service.product;
 
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.exception.InSufficientMoneyException;
@@ -20,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,26 +37,26 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public ProductDto createProduct(Users users) { //테스트용code
-
-        LocalDate startDate = LocalDate.parse("2023-05-24");
-        LocalDate endDate = LocalDate.parse("2023-05-29");
-        Product product = Product.builder()
-                .title("A+B")
-                .crowdStart(startDate.toString())
-                .crowdEnd("2023-05-29")
-                .goal(1000000L)
-                .currentGoal(500L)
-                .status("진행중")
-                .description("펀드진행중")
-                .fundManager(users)
-                .build();
-
-        productRepository.save(product);
-
-        ProductDto productDto = modelMapper.map(product, ProductDto.class);
-        return productDto;
-    }
+//    public ProductDto createProduct(Users users) { //테스트용code
+//
+//        LocalDate startDate = LocalDate.parse("2023-05-24");
+//        LocalDate endDate = LocalDate.parse("2023-05-29");
+//        Product product = Product.builder()
+//                .title("A+B")
+//                .crowdStart(startDate.toString())
+//                .crowdEnd("2023-05-23")
+//                .goal(1000000L)
+//                .currentGoal(500L)
+//                .status("진행중")
+//                .description("펀드진행중")
+//                .fundManager(users)
+//                .build();
+//
+//        productRepository.save(product);
+//
+//        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+//        return productDto;
+//    }
 
     /**
      * 전체 상품 조회
@@ -67,10 +69,11 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 상품 업데이트 --> 디테일 정보에서 수정
      */
-    public void update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, Users user) {
+    public void update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
         Product dbProduct = productRepository.findById(productId).orElse(null);
+        Users user = modelMapper.map(userDTO, Users.class);
 
-        if (dbProduct == null || user != dbProduct.getFundManager()) {
+        if (dbProduct == null || userDTO.equals(dbProduct.getFundManager())) {
             throw new RuntimeException("상품을 수정할 수 없습니다.");
         }
 
@@ -81,27 +84,28 @@ public class ProductServiceImpl implements ProductService {
         productDto.setFundManager(user);
         productDto.setStatus(dbProduct.getStatus());
         productDto.setCurrentGoal(dbProduct.getCurrentGoal());
-
-        if (thumbnailImg != null) {
-            String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-            productDto.setThumbnailRelPath(thumbnailImgRelPath);
-        } else{
-            productDto.setThumbnailRelPath(dbProduct.getThumbnailRelPath());
-
+        
+        String thumbnailImgRelPath = null;
+        if(thumbnailImg.isEmpty()) {
+            thumbnailImgRelPath = "product/avatar.jpg";
+            System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
+        } else {
+            thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
         }
-
+        productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
+
         productRepository.save(product);
     }
 
     /**
      * 상품 삭제
      */
-    public void delete(UUID productId, Users user) {
+    public void delete(UUID productId) {
         Product product = productRepository.findById(productId).orElse(null);
         List<Orders> orderList = orderService.selectByProductId(productId);
 
-        if (product == null || user != product.getFundManager() || !orderList.isEmpty()) {
+        if (product == null ||  !orderList.isEmpty()) {
             throw new RuntimeException("상품을 삭제할 수 없습니다.");
         }
         productRepository.delete(product);
@@ -127,22 +131,24 @@ public class ProductServiceImpl implements ProductService {
      * @return 성공(1)/실패(0)
      */
     @Transactional
-    public int updateCost(Long cost, ProductDto productDto, Users user) throws InSufficientMoneyException, RuntimeException {
+    public int updateCost(Long cost, ProductDto productDto, UserDTO userDTO) throws InSufficientMoneyException, RuntimeException {
         //Product currentGoal 갱신하기
         Long money = productDto.getCurrentGoal() + cost;
         productDto.setCurrentGoal(money);
 
         //Order(주문서) 생성
-        Orders order = orderService.createOrder(cost, productDto, user); //(유저의 투자금액, 상품 정보, 로그인한 유저 정보)
+        Orders order = orderService.createOrder(cost, productDto, userDTO); //(유저의 투자금액, 상품 정보, 로그인한 유저 정보)
 
         //User Point update
-        if (user.getMoney() < cost) {
+        if (userDTO.getMoney() < cost) {
             throw new InSufficientMoneyException("충전이 필요합니다.");
         }
-        user.minusMoney(cost);
+
+//        Users user = modelMapper.map(userDTO, Users.class);
+//        user.setMoney(user.minusMoney(cost));
 
         //하나라도 못찾은 것이 있다면, Rollback
-        if (productDto == null || order == null || user == null) {
+        if (productDto == null || order == null || userDTO == null) {
             throw new RuntimeException("업데이트에 실패하셨습니다.");
         }
 
@@ -153,13 +159,40 @@ public class ProductServiceImpl implements ProductService {
         return 1;
     }
 
+
+    /**
+     * 매일 자정 펀딩 상태 체크 및 update
+     * @param productDto
+     * @return update(true)/not(false)
+     */
+    @Override
+    public boolean updateStatus(ProductDto productDto) {
+        String deadline = productDto.getCrowdEnd();
+        LocalDate deadlineLD = LocalDate.parse(deadline);
+        // deadline이 오늘날짜보다 작을 경우
+        if(deadlineLD.isBefore(LocalDate.now())) {
+            productDto.setStatus("진행종료");
+            Product product = modelMapper.map(productDto, Product.class);
+            productRepository.save(product);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 상품 등록하기
      */
     @Override
-    public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, Users user) {
-        System.out.println("prouctDto.getCrowdEnd = " + productDto.getCrowdEnd());
-        String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
+    public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
+        System.out.println("thumbnailImg: " + thumbnailImg);
+        String thumbnailImgRelPath = null;
+        if(thumbnailImg.isEmpty()) {
+            thumbnailImgRelPath = "product/avatar.jpg";
+            System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
+        } else {
+            thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
+        }
+        Users user = modelMapper.map(userDTO, Users.class);
         productDto.setFundManager(user);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
@@ -196,9 +229,7 @@ public class ProductServiceImpl implements ProductService {
         LocalDate now = LocalDate.now();
         LocalDate deadLine = LocalDate.parse(productDto.getCrowdEnd());
         Period period = Period.between(now, deadLine);
-//        Date deadLine = productDto.toDate(productDto.getCrowdEnd());
-//        long diff = ((deadLine.getTime() - now.getTime()) / (24 * 60 * 60 * 1000) + 1);
-        System.out.println("gap: " + period.getDays());
+//        System.out.println("gap: " + period.getDays());
         return period.getDays();
     }
 
