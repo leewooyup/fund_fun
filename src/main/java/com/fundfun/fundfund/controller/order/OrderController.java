@@ -40,7 +40,6 @@ public class OrderController {
 
     /**
      * 상품 Detail 페이지 + 투자 금액 입력 폼 페이지
-     *
      * @param investDto
      * @return view
      */
@@ -61,8 +60,7 @@ public class OrderController {
     /**
      * 투자하기
      * user가 입력한 투자금액(cost) 투자 영수증으로 넘기기
-     *
-     * @param investDto, bindingResult
+     * @param investDto
      * @return view
      */
     @PostMapping("/send/{encId}")

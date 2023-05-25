@@ -31,7 +31,7 @@ public class ProductController {
 
 
     /**
-     * register 폼 이동
+     * 등록 폼 이동
      */
     @GetMapping("/register")
     public String register(ProductDto productDto, MultipartFile thumb) {
@@ -58,6 +58,11 @@ public class ProductController {
 //
 //    }
 
+    /**
+     * 전체 상품 list 보여주기
+     * @param model
+     * @return view
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String list(Model model){
@@ -76,7 +81,7 @@ public class ProductController {
     }
 
     /**
-     * 상품 등록
+     * 상품 등록 처리
      */
     @PostMapping("/write")
     public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg, Principal principal) {

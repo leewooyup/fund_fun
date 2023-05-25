@@ -57,4 +57,8 @@ public class ProductDto{
         if (thumbnailRelPath == null) return "/gen/product/avatar.jpg";
         return "/gen/" + thumbnailRelPath;
     }
+
+    public String getThumbnailImgRedirectUrl() {
+        return this.thumbnailRelPath + "?random=" + UUID.randomUUID();
+    }
 }

@@ -72,6 +72,7 @@ public class ProductServiceImpl implements ProductService {
     public void update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
         Product dbProduct = productRepository.findById(productId).orElse(null);
         Users user = modelMapper.map(userDTO, Users.class);
+
         if (dbProduct == null || userDTO.equals(dbProduct.getFundManager())) {
             throw new RuntimeException("상품을 수정할 수 없습니다.");
         }
@@ -83,16 +84,17 @@ public class ProductServiceImpl implements ProductService {
         productDto.setFundManager(user);
         productDto.setStatus(dbProduct.getStatus());
         productDto.setCurrentGoal(dbProduct.getCurrentGoal());
-
-        if (thumbnailImg != null) {
-            String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-            productDto.setThumbnailRelPath(thumbnailImgRelPath);
-        } else{
-            productDto.setThumbnailRelPath(dbProduct.getThumbnailRelPath());
-
+        
+        String thumbnailImgRelPath = null;
+        if(thumbnailImg.isEmpty()) {
+            thumbnailImgRelPath = "product/avatar.jpg";
+            System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
+        } else {
+            thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
         }
-
+        productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
+
         productRepository.save(product);
     }
 
@@ -158,6 +160,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    /**
+     * 매일 자정 펀딩 상태 체크 및 update
+     * @param productDto
+     * @return update(true)/not(false)
+     */
     @Override
     public boolean updateStatus(ProductDto productDto) {
         String deadline = productDto.getCrowdEnd();
@@ -177,9 +184,14 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
-        //System.out.println("prouctDto.getCrowdEnd = " + productDto.getCrowdEnd());
-        String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-
+        System.out.println("thumbnailImg: " + thumbnailImg);
+        String thumbnailImgRelPath = null;
+        if(thumbnailImg.isEmpty()) {
+            thumbnailImgRelPath = "product/avatar.jpg";
+            System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
+        } else {
+            thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
+        }
         Users user = modelMapper.map(userDTO, Users.class);
         productDto.setFundManager(user);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
