@@ -154,7 +154,4 @@ public class ProductController {
         model.addAttribute("searchList", searchList);
         return "product/product_search_list";
     }
-
-
-
 }
