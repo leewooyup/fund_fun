@@ -1,12 +1,9 @@
 package com.fundfun.fundfund.controller.order;
 
-<<<<<<< HEAD
-import com.fundfun.fundfund.domain.order.Orders;
-=======
 
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserAdapter;
->>>>>>> fef54c051c1b2b7eda25d425865ae36a4b675af7
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
@@ -143,7 +140,7 @@ public class OrderController {
 
         //return String.format("redirect:/product/list?msg=%s", msg);
         req.setAttribute("product", productDto);
-        req.setAttribute("user", adapter.getUser());
+        req.setAttribute("user", updateUserDTO);
         req.setAttribute("cost", cost);
         return String.format("forward:/order/confirm?msg=%s", msg);
 
@@ -152,7 +149,7 @@ public class OrderController {
     @PostMapping("/confirm")
     public String showOrderConfirm(HttpServletRequest req, Model model, Long cost) {
         ProductDto product = (ProductDto) req.getAttribute("product");
-        Users user = (Users) req.getAttribute("user");
+        UserDTO user = (UserDTO) req.getAttribute("user");
         model.addAttribute("product", product);
         model.addAttribute("user", user);
         model.addAttribute("cost", cost);
