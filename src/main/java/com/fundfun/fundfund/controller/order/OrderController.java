@@ -14,11 +14,13 @@ import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
+import com.fundfun.fundfund.util.UserMapper;
 import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +67,7 @@ public class OrderController {
      * @return view
      */
     @PostMapping("/send/{encId}")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model, Principal principal) {
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model, @AuthenticationPrincipal UserAdapter adapter) {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
@@ -73,18 +75,16 @@ public class OrderController {
         UUID productId = orderService.decEncId(encId);
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
 
-        //
-        UserDTO userDTO = userService.findByEmail(principal.getName());
-//        if(userDTO == null) {
-//            throw new RuntimeException("로그인 먼저 진행해주세요.");
-//        }
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+
         if (productDto == null || investDto == null) {
             throw new RuntimeException("투자에 실패하셨습니다.");
         }
+
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
-        model.addAttribute("user", userDTO);
+        model.addAttribute("user",userDTO );
 
         return "order/order_receipt";
     }
@@ -96,10 +96,10 @@ public class OrderController {
      * @param cost
      * @return view
      */
-    //@Transactional
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+        System.out.println("userDto id = " + adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
 
         try {
@@ -130,13 +130,13 @@ public class OrderController {
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
 
         //업데이트된 유저를 다시 불러옴(유저 충전금 업데이트)
-        UserDTO updateUserDTO = userService.findById(userDTO.getId());
+        UserDTO updateUserDTO = userService.findByEmail(adapter.getUser().getEmail());
+
 
 //        model.addAttribute("user", updateUserDTO);
 //        model.addAttribute("product", productDto);
 //        model.addAttribute("cost", cost);
 //        return "order/order_confirm";
-
 
         //return String.format("redirect:/product/list?msg=%s", msg);
         req.setAttribute("product", productDto);

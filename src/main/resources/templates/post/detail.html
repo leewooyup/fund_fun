@@ -20,8 +20,9 @@
     <script th:inline="javascript">
         var postId = [[${postDto.id}]];
         var postLike = [[${postDto.likePost}]];
-        var userInfo = [[${userInfo.getId()}]]; //글을 조회중인 유저의 아이디
+        var userInfo = [[${userInfo}]]; //글을 조회중인 유저의 아이디
         var writer = [[${postDto.user.getId()}]]; //글을 작성한 유저의 아이디
+        var userLike = [[${userLike}]]; //글을 조회중인 유저의 좋아요 카운트
     </script>
 
     <script type="text/javascript">
@@ -56,18 +57,34 @@
                 } else {
                     $("#buttondiv").hide();
                 }
+                if(userInfo != null) { // 로그인한 사람이 봤을 때
+                    if (userInfo == writer) { // 작성자가 게시물에 접근했을 때
+                        $("#editPost").show(); // 글 수정 가능
+                        $("#likePostBtn").hide(); // 좋아요 불가능
+                        $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
 
-                if(userInfo == writer){
-                    $("#editPost").show();
-                    if(postLike>=10){
+                        if (postLike >= 10) {
+                            $("#deletePost").hide();
+                        } else {
+                            $("#deletePost").show();
+                        }
+                    } else { // 작성자 이외의 회원이 게시물에 접근했을 때
+                        if (userLike <= 0) {
+                            $("#likePostBtn").hide(); // 좋아요 불가능
+                            $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
+                        } else {
+                            $("#likePostBtn").show(); // 좋아요 가능
+                            $("#likePostCount").hide(); // 좋아요 개수 열람 버튼 숨기기
+                        }
+                        $("#editPost").hide();
                         $("#deletePost").hide();
                     }
-                    else{
-                        $("#deletePost").show();
-                    }
-                } else{
-                    $("#editPost").hide();
-                    $("#deletePost").hide();
+                }
+                else if(userInfo == null){ // 로그인 안 한 사람이 봤을 때
+                    $("#editPost").hide(); // 수정 불가능
+                    $("#deletePost").hide(); // 삭제 불가능
+                    $("#likePostBtn").hide(); // 좋아요 불가능
+                    $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
                 }
             }
         });
@@ -90,6 +107,9 @@
             <div style="margin-top: 1rem; padding-bottom: 1rem; text-align:center;">
                 <span class="fontSize-fix"> 좋아요 </span>
                 <button id="likePostBtn" class="centerBox btn btn-warning">
+                    <span th:text="${postDto.likePost}">likePost</span>
+                </button>
+                <button id="likePostCount" class="centerBox btn btn-warning">
                     <span th:text="${postDto.likePost}">likePost</span>
                 </button>
             </div>
@@ -126,8 +146,9 @@
                 <table>
                     <tr th:each="ele: ${replyList}" style="border-top: 0.5px solid darkgray; border-bottom: 0.5px solid darkgray;">
                         <td style="text-align:left;"><span th:text="${ele.getContentReply()}"></span></td>
-                        <td th:text="${ele.getCreatedAt()}"></td>
-                        <td><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
+                        <td th:text="${ele.getWriteTime()}"></td>
+<!--                        <td th:if="${ele.getUser().getId()==userInfo.getId()}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>-->
+<!--                        <td th:if="${ele.getUser().getId()==userInfo}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>-->
                     </tr>
                 </table>
             </div>

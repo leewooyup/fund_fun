@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.controller.product;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -73,11 +75,13 @@ public class ProductController {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(defaultValue = "1") int nowPage){
+    public String list(Model model, @RequestParam(defaultValue = "1") int nowPage, @AuthenticationPrincipal UserAdapter adapter){
         Pageable page = PageRequest.of((nowPage-1), PAGE_COUNT , Sort.Direction.DESC, "createdAt");
-
         Page<ProductDto> pageList =  productService.selectAll(page);
 
+        System.out.println("셋 끝나고 왔음 adapter = "+ adapter.getUser().getRole());
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+        System.out.println("아이디로 찾음 userDto = " + userDTO.getRole());
         int temp = (nowPage-1)%BLOCK_COUNT;
         int startPage=nowPage-temp;
         //List<ProductDto> productList = productService.selectAll();
@@ -87,6 +91,8 @@ public class ProductController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("nowPage", nowPage);
 
+        model.addAttribute("user",userDTO);
+        System.out.println("userDTO.getRole = " + userDTO.getRole());
 
         return "product/product_list";
     }
@@ -114,11 +120,11 @@ public class ProductController {
      * 상품 등록 처리
      */
     @PostMapping("/write")
-    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg, Principal principal) {
+    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg, @AuthenticationPrincipal UserAdapter adapter) {
         if (bindingResult.hasErrors()) {
             return "product/product_register";
         }
-        UserDTO userDTO = userService.findByEmail(principal.getName());
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
 //        if (ou.isPresent()) {
 //            Users user = ou.get();
             productService.registerProduct(productDto, thumbnailImg, userDTO);
@@ -133,8 +139,8 @@ public class ProductController {
      * 상품 수정 폼
      */
     @GetMapping("/update/{encId}")
-    public String update(@PathVariable String encId, Model model, Principal principal) {
-        UserDTO userDTO = userService.findByEmail(principal.getName());
+    public String update(@PathVariable String encId, Model model, @AuthenticationPrincipal UserAdapter adapter) {
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         if (userDTO.getId().equals(productDto.getFundManager().getId())) {
             model.addAttribute("product", productDto);
@@ -151,8 +157,8 @@ public class ProductController {
      * 상품 수정 처리
      */
     @PostMapping("/update/{encId}")
-    public String updateProduct(@PathVariable String encId, ProductDto productDto, MultipartFile thumbnailImg, Principal principal) {
-        UserDTO userDTO = userService.findByEmail(principal.getName());
+    public String updateProduct(@PathVariable String encId, ProductDto productDto, MultipartFile thumbnailImg, @AuthenticationPrincipal UserAdapter adapter) {
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
         UUID productId = orderService.decEncId(encId);
         productService.update(productId, productDto, thumbnailImg, userDTO);
 
@@ -163,8 +169,8 @@ public class ProductController {
      * 상품 삭제
      */
     @GetMapping("/delete/{encId}")
-    public String delete(@PathVariable String encId, Principal principal) {
-        UserDTO userDTO = userService.findByEmail(principal.getName());
+    public String delete(@PathVariable String encId, @AuthenticationPrincipal UserAdapter adapter) {
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         if (!userDTO.getId().equals(productDto.getFundManager().getId())) {
             throw new RuntimeException("상품 삭제 권한이 없습니다.");

@@ -2,6 +2,7 @@ package com.fundfun.fundfund.service.order;
 
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
@@ -48,13 +49,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //주문 업데이트
-    public void update(InvestDto investDto){
+    public void update(InvestDto investDto) {
         Orders order = modelMapper.map(investDto, Orders.class);
         orderRepository.save(order);
 
     }
+
     /**
      * UUID 디코딩
+     *
      * @param encId
      * @return UUID
      */
@@ -63,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
         Base64.Decoder decoder = Base64.getDecoder();
         byte[] decodedUUIDBytes = decoder.decode(encId);
         String uuidString = new String(decodedUUIDBytes);
-        System.out.println("uuidString: " + uuidString);
+        //System.out.println("uuidString: " + uuidString);
         return UUID.fromString(uuidString);
     }
 
@@ -72,13 +75,25 @@ public class OrderServiceImpl implements OrderService {
         InvestDto investDto = new InvestDto();
         Product product = productRepository.findById(productId).orElse(null);
         Users user = userRepository.findById(userId).orElse(null);
+        System.out.println("user = " + userId + "user의 아이디 + " + user.getId());
+
+        if(product == null){
+            throw new RuntimeException("상품이 존재하지 않습니다.");
+        }
+        else if(user == null){
+            throw new RuntimeException("투자자가 존재하지 않습니다.");
+        }
 
         investDto.setProduct(product);
         investDto.setUser(user);
         investDto.setCost(cost);
 
+        //투자 후 유저 충전금 업데이트
         user.minusMoney(cost);
+
         userRepository.save(user);
+        System.out.println("머니 업데이트하고 겟 롤 " + user.getRole());
+
 
         Orders order = modelMapper.map(investDto, Orders.class);
         return orderRepository.save(order);
@@ -91,9 +106,9 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.delete(order);
     }
 
-    //scheduler test 코드
-    public void sayHello() {
-        System.out.println("HELLO!!!!!!!!!!");
-    }
+//    //scheduler test 코드
+//    public void sayHello() {
+//        System.out.println("HELLO!!!!!!!!!!");
+//    }
 
 }

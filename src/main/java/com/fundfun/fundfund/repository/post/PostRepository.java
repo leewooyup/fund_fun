@@ -1,5 +1,11 @@
 package com.fundfun.fundfund.repository.post;
 
+
+import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.user.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.fundfun.fundfund.domain.product.post.Post;
 import com.fundfun.fundfund.domain.product.post.StPost;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,10 +16,12 @@ import java.util.UUID;
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    List<Post> findByTitleContaining(String title);
+    Page<Post> findByTitleContaining(String title, Pageable pageable);
 
-    List<Post> findByStatusPost(StPost status);
+    Page<Post> findByStatusPost(StPost status, Pageable pageable);
 
-    List<Post> findByCategoryPost(String category);
+    Page<Post> findByCategoryPost(String category, Pageable pageable);
+
+    List<Post> findByUser(Users user);
 
 }
