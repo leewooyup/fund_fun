@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -74,15 +75,16 @@ public class OrderController {
         UUID productId = orderService.decEncId(encId);
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
 
-        //System.out.println("adapter.getName()"+adapter.getUser().getId());
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
 
         if (productDto == null || investDto == null) {
             throw new RuntimeException("투자에 실패하셨습니다.");
         }
+
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
-        model.addAttribute("user", UserMapper.toDto(adapter.getUser()));
+        model.addAttribute("user",userDTO );
 
         return "order/order_receipt";
     }
@@ -97,7 +99,7 @@ public class OrderController {
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        System.out.println("userDto id = " + adapter.getUser().getId());
+        System.out.println("userDto id = " + adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
 
         try {
@@ -128,15 +130,13 @@ public class OrderController {
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
 
         //업데이트된 유저를 다시 불러옴(유저 충전금 업데이트)
-        UserDTO updateUserDTO = userService.findById(adapter.getUser().getId());
-        System.out.println("updateUserDto.id = "+updateUserDTO);
-        System.out.println("updateUserDto.money = "+ updateUserDTO.getMoney());
+        UserDTO updateUserDTO = userService.findByEmail(adapter.getUser().getEmail());
+
 
 //        model.addAttribute("user", updateUserDTO);
 //        model.addAttribute("product", productDto);
 //        model.addAttribute("cost", cost);
 //        return "order/order_confirm";
-
 
         //return String.format("redirect:/product/list?msg=%s", msg);
         req.setAttribute("product", productDto);

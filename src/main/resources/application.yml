@@ -36,7 +36,7 @@ spring:
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
             # yeoooo : ? ? create ? update ?? create-drop ?? ?????
 #        defer-datasource-initialization: true
         generate-ddl: true
