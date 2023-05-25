@@ -13,6 +13,7 @@ import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
+import com.fundfun.fundfund.util.UserMapper;
 import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -83,7 +84,7 @@ public class OrderController {
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
-        model.addAttribute("user", userDTO);
+        model.addAttribute("user", UserMapper.toDto(adapter.getUser()));
 
         return "order/order_receipt";
     }
