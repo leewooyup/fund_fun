@@ -169,9 +169,6 @@ public class PostController {
         model.addAttribute("nowPage", nowPage);
 
         if(adapter!=null){
-            UserDTO userDto = UserDTO.builder().id(adapter.getUser().getId())
-                    .build();
-            //model.addAttribute("userInfo", userDto);
             model.addAttribute("userInfo", adapter.getUser().getId());
 
         }
@@ -215,6 +212,7 @@ public class PostController {
             }
             else if(adapter == null){
                 model.addAttribute("userInfo", null);
+                model.addAttribute("userLike", null);
             }
             //수정 및 삭제 버튼 유무 결정하기 위한 유저 정보 반환
 
