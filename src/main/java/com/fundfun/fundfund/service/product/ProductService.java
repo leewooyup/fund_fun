@@ -1,9 +1,7 @@
 package com.fundfun.fundfund.service.product;
 
-import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserDTO;
-import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

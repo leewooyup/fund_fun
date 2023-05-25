@@ -38,7 +38,6 @@ public class Product extends BaseTimeEntity {
 
     private String crowdStart;
 
-    @ColumnDefault("'2023-05-29'") //test
     private String crowdEnd;
 
     @ColumnDefault("0")
