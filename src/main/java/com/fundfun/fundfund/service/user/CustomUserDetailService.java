@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.service.user;
 
 import com.fundfun.fundfund.domain.user.Role;
+import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.user.UserContext;
 import com.fundfun.fundfund.repository.user.UserRepository;
