@@ -156,6 +156,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostDto> selectPostByUserId(UUID userId){
+        Users user = userRepository.findById(userId).orElse(null);
+        if(user != null){
+            List<Post> postList = postRepository.findByUser(user);
+            List<PostDto> postDtoList = postList.stream().map(p -> modelMapper.map(p, PostDto.class)).collect(Collectors.toList());
+            return postDtoList;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public void deletePost(UUID postId){
         Post post = postRepository.findById(postId).orElse(null);
         if(post == null)
