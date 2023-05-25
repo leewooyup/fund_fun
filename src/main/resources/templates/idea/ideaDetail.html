@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <div class="d-flex flex-column wrapper">
+        <div class="fontSize-fix">A 산업과 B 산업 관련 상품 아이디어</div>
+        <span class="gray_text bottom_line">23-05-11 23:03</span>
+
+        <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
+            <span class="fontSize-fix">A 산업과 B 산업은 이러한 공통점이 있고, 3개월 이내 관련주 수익률의 상승 추이가 좋았기 때문에 두 분야의 종목으로 펀드를 구성한다면 높은 숙률을 볼 것이라고 생각합니다.</span>
+            <div class="centerBox">♥<br/>52</div>
+            <div>
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus">삭제</button>
+                <button class="rightArea bg-yellow paddingBtn paddingBtn-plus">수정</button>
+            </div>
+        </div>
+
+        <div style="margin-top: 1rem;" class="centerBox2 paddingBtn">
+            <button class="centerBox2">포트폴리오 투표</button>
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <span class="fontSize-fix">댓글 4</span>
+            <div style="margin-top: 0.5rem; padding-bottom: 1rem;">
+                <button class="rightArea left_margin bg-yellow paddingBtn paddingBtn-plus">입력</button>
+                <input type="text" class="width92 leftArea border-yellow paddingBtn"/>
+            </div>
+            <div style="margin-top: 3rem;">
+                <span class="leftArea">A 업종의 aa주에 같이 투자하는 건 어떤가요?</span>
+
+                <span class="rightArea left_margin">삭제</span>
+                <span class="rightArea left_margin">수정</span>
+                <span class="rightArea left_margin">2305-11 23:19</span>
+                <span class="rightArea">♥ 15</span>
+            </div>
+        </div>
+    </div>
+    <div th:text="${curCollect}"></div>
+
+    <style>
+        .fontSize-fix {
+            font-size: 1.2rem;
+        }
+
+        .centerBox {
+            width: 5%;
+            margin: auto;
+            text-align: center;
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .centerBox2 {
+            width: 60%;
+            margin: auto;
+            text-align: center;
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .paddingBtn {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
+        .paddingBtn-plus {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+        }
+
+        .gray_text {
+            color: darkgray;
+        }
+
+        .bottom_line {
+            border-bottom: 1px solid darkgray;
+        }
+
+        .leftArea {
+            float: left;
+        }
+
+        .rightArea {
+            float: right;
+        }
+
+        .bg-yellow {
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .border-yellow {
+            border: 1px solid #ffc107;
+        }
+
+        .left_margin {
+            margin-left: 1rem;
+        }
+
+        .width92 {
+            width: 92%;
+        }
+    </style>
+</th:block>
+</html>

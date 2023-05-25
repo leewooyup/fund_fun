@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+<th:block layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    검색결과 test index
+    <div th:each="ele : ${searchList}">
+        <div th:text="${ele.title}"></div>
+    </div>
+
+
+    </body>
+</th:block>
+</html>

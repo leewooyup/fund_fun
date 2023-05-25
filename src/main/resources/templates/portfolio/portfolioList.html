@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+
+    <script th:inline="javascript">
+        var state = [[${state}]];
+        var postId = "";
+        var chkVote = "";
+        var chkAuth = "";
+
+        if(state == "noId") { // url 입력으로 접근 시 alert -> post/list 로 이동
+            alert("정상적인 경로로 접근해주세요.");
+            location.href = "/post/list";
+        } else if(state == "noData") {
+            alert("정상적인 데이터가 아닙니다.");
+            location.href = "/post/list";
+        } else {
+            postId = [[${postId}]];
+            chkVote = [[${chkVote}]];
+            chkAuth = [[${authChk}]];
+        }
+    </script>
+
+    <!-- Script -->
+    <script type="text/javascript">
+        $(Document).ready(function() {
+            getData();
+
+            // 포트폴리오 작성 클릭
+            $("#goWrite").on("click", function() {
+                // idx : 포트폴리오Id, state : 상세/수정/작성 구분코드
+                location.href = "/portfolio/goDetail?state=W&postId=" + postId;
+            });
+
+            // 투표하기
+            $("#vote").on("click", function() {
+                if(chkVote == 1) {
+                    alert("이미 투표하였습니다.");
+                    return false;
+                } else {
+                    if($("input:radio[name=selectPortfolio]").is(":checked") == true) {
+                        var param = {
+                            "postId": postId,
+                            "portfolioId": $('input[name=selectPortfolio]:checked').val()
+                        }
+                        $.ajax({
+                            url: "/portfolio/votePortfolio",
+                            type: "post",
+                            dataType: "json",
+                            contentType: "application/json; CHARSET=UTF-8",
+                            data: JSON.stringify(param),
+                            success: function(result) {
+                                if(result.msg == "fail") {
+                                    alert("투표 중 문제가 발생하였습니다.");
+                                    return false;
+                                } else {
+                                    alert("정상적으로 투표되었습니다.");
+                                    location.href = "/portfolio?postId=" + postId;
+                                }
+                            },
+                            error: function(e) {
+                                console.log(e);
+                            }
+                        });
+                    } else {
+                        alert("하나의 포트폴리오를 선택해주세요.");
+                    }
+                }
+            });
+        });
+
+        // 포트폴리오 목록 데이터 가져오기
+        function getData() {
+            $.ajax({
+                url: "/portfolio/getData",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json; CHARSET=UTF-8",
+                data: JSON.stringify({"postId": postId}),
+                success: function(result) {
+                    drawList(result.portfolioList, result.voteList);  //밑에 함수 적어놈
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+        }
+
+        function drawList(data, voteList) {
+            var txt = (chkVote == "1") ? "disabled" : "";
+            var html = '';
+            for(var i=0; i<data.length; i++) {
+                html += '<div class="marginBottom"><span onclick="goDetail(\'' + data[i].id + '\')">' + (i+1) + '.' + data[i].title + '</span></div>';
+                html += '<div class="bg-yellow leftArea" style="width: '+ voteList[i] +'%; height: 1rem;"></div>';
+                html += '<span class="left_margin">' + voteList[i] + '표</span>';
+                html += '<input type="radio" class="radioCls" name="selectPortfolio" value="' + data[i].id + '"' + txt + '/>';
+                html += '</div>';
+            }
+
+            $("#drawList").html(html);
+        }
+
+        // 상세 화면 이동
+        function goDetail(idx) {
+            // idx : 포트폴리오Id, state : 상세/수정/작성 구분코드
+            location.href = "/portfolio/goDetail?id=" + idx + "&state=" + "R&postId=" + postId;
+        }
+    </script>
+
+    <div class="d-flex flex-column wrapper">
+        <div class="fontSize-fix">아이디어</div>
+        <span class="gray_text bottom_line">23-05-11 23:03</span>
+
+        <div class="bottom_line voteDiv">
+            <span class="fontSize-fix">투표 중</span>
+            <div id="drawList"></div>
+        </div>
+
+        <div class="marginBottom bottomDiv">
+            <button class="rightArea bg-yellow paddingBtn" id="goWrite" th:if="${authChk == 2}">포트폴리오 등록</button>
+            <button class="rightArea left_margin bg-yellow paddingBtn" id="vote">투표하기</button>
+        </div>
+    </div>
+
+    <!-- Style -->
+    <style>
+        .fontSize-fix {
+            font-size: 1.2rem;
+        }
+
+        .gray_text {
+            color: darkgray;
+        }
+
+        .bottom_line {
+            border-bottom: 1px solid darkgray;
+        }
+
+        .leftArea {
+            float: left;
+        }
+
+        .radioCls {
+            float: right;
+            vertical-align: middle;
+            border: max(2px, 0.1em) solid gray;
+            border-radius: 50%;
+            width: 1.25em;
+            height: 1.25em;
+        }
+
+        .bg-yellow {
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .left_margin {
+            margin-left: 2rem;
+        }
+
+        .marginBottom {
+            margin-bottom: 2rem;
+        }
+
+        .voteDiv {
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .bottomDiv {
+            text-align: center;
+            display: inline-block;
+        }
+
+        .paddingBtn {
+            padding: 1rem 8rem !important;
+            margin-left: 5rem;
+        }
+    </style>
+</th:block>
+</html>
