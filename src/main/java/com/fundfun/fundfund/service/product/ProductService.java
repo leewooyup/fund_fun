@@ -37,7 +37,10 @@ public interface ProductService {
      */
     int updateCost(Long cost, ProductDto productDto, UserDTO userDTO);
 
-
+    /**
+     * 크라우드펀딘 종료, 상품 상태 변경
+     */
+    boolean updateStatus(ProductDto productDto);
 
     /**
      * 상품 등록

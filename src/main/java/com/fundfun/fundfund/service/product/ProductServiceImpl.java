@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -71,6 +72,7 @@ public class ProductServiceImpl implements ProductService {
     public void update(UUID productId, ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
         Product dbProduct = productRepository.findById(productId).orElse(null);
         Users user = modelMapper.map(userDTO, Users.class);
+
         if (dbProduct == null || userDTO.equals(dbProduct.getFundManager())) {
             throw new RuntimeException("상품을 수정할 수 없습니다.");
         }
@@ -82,16 +84,17 @@ public class ProductServiceImpl implements ProductService {
         productDto.setFundManager(user);
         productDto.setStatus(dbProduct.getStatus());
         productDto.setCurrentGoal(dbProduct.getCurrentGoal());
-
-        if (thumbnailImg != null) {
-            String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-            productDto.setThumbnailRelPath(thumbnailImgRelPath);
-        } else{
-            productDto.setThumbnailRelPath(dbProduct.getThumbnailRelPath());
-
+        
+        String thumbnailImgRelPath = null;
+        if(thumbnailImg.isEmpty()) {
+            thumbnailImgRelPath = "product/avatar.jpg";
+            System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
+        } else {
+            thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
         }
-
+        productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
+
         productRepository.save(product);
     }
 
@@ -156,14 +159,39 @@ public class ProductServiceImpl implements ProductService {
         return 1;
     }
 
+
+    /**
+     * 매일 자정 펀딩 상태 체크 및 update
+     * @param productDto
+     * @return update(true)/not(false)
+     */
+    @Override
+    public boolean updateStatus(ProductDto productDto) {
+        String deadline = productDto.getCrowdEnd();
+        LocalDate deadlineLD = LocalDate.parse(deadline);
+        // deadline이 오늘날짜보다 작을 경우
+        if(deadlineLD.isBefore(LocalDate.now())) {
+            productDto.setStatus("진행종료");
+            Product product = modelMapper.map(productDto, Product.class);
+            productRepository.save(product);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 상품 등록하기
      */
     @Override
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
-        //System.out.println("prouctDto.getCrowdEnd = " + productDto.getCrowdEnd());
-        String thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
-
+        System.out.println("thumbnailImg: " + thumbnailImg);
+        String thumbnailImgRelPath = null;
+        if(thumbnailImg.isEmpty()) {
+            thumbnailImgRelPath = "product/avatar.jpg";
+            System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
+        } else {
+            thumbnailImgRelPath = saveThumbnailImg(thumbnailImg);
+        }
         Users user = modelMapper.map(userDTO, Users.class);
         productDto.setFundManager(user);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);

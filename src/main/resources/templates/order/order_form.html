@@ -12,7 +12,7 @@
         <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
             <div>
-                <img alt="" th:src="@{|/gen/${product.thumbnailRelPath}|}" width="400px" height="300px">
+                <img alt="" th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}" width="400px" height="300px">
             </div>
             <div>
                 <div>

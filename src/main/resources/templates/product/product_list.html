@@ -36,9 +36,14 @@
                     <div class="col">
                         <div><span th:text="${ele.title}"></span>
                             <a th:href="@{|/order/form/${ele.uuidEncode}|}">
-                                <div>
+                                <div th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
                                     <img alt="" height="250px" style="border:solid;width:80%"
                                          th:src="@{|/gen/${ele.thumbnailRelPath}|}"
+                                         width="250px">
+                                </div>
+                                <div th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
+                                    <img alt="" height="250px" style="border:solid;width:80%"
+                                         th:src="@{|/gen/${ele.getThumbnailImgRedirectUrl}|}"
                                          width="250px">
                                 </div>
                             </a>

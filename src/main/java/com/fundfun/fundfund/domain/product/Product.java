@@ -96,5 +96,4 @@ public class Product extends BaseTimeEntity {
         return "/gen/" + thumbnailRelPath;
     }
 
-
 }

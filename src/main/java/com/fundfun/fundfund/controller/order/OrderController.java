@@ -1,5 +1,8 @@
 package com.fundfun.fundfund.controller.order;
 
+
+import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.order.InvestDto;
@@ -12,14 +15,14 @@ import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
@@ -33,10 +36,10 @@ public class OrderController {
     private final OrderService orderService;
     private final ProductService productService;
     private final UserService userService;
+    
 
     /**
      * 상품 Detail 페이지 + 투자 금액 입력 폼 페이지
-     *
      * @param investDto
      * @return view
      */
@@ -47,7 +50,7 @@ public class OrderController {
         ProductDto productDto = productService.selectById(uuid);
         model.addAttribute("product", productDto);
         model.addAttribute("encId", encId);
-
+        productService.updateStatus(productDto);
         int deadline = productService.crowdDeadline(productDto);
         model.addAttribute("deadline", deadline);
 
@@ -57,8 +60,7 @@ public class OrderController {
     /**
      * 투자하기
      * user가 입력한 투자금액(cost) 투자 영수증으로 넘기기
-     *
-     * @param investDto, bindingResult
+     * @param investDto
      * @return view
      */
     @PostMapping("/send/{encId}")
@@ -91,11 +93,11 @@ public class OrderController {
      *
      * @param encId
      * @param cost
-     * @return poduct_list view
+     * @return view
      */
     @PostMapping("/update/{encId}")
-    public String update(@PathVariable String encId, Long cost, Principal principal, Model model) {
-        UserDTO userDTO = userService.findByEmail(principal.getName());
+    public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
         try {
             int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신 + 주문서 만들기
@@ -111,12 +113,22 @@ public class OrderController {
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
 
-        model.addAttribute("user", userDTO);
-        model.addAttribute("product", productDto);
-        model.addAttribute("cost", cost);
         //return String.format("redirect:/product/list?msg=%s", msg);
-        return "order/order_confirm";
+        req.setAttribute("product", productDto);
+        req.setAttribute("user", adapter.getUser());
+        req.setAttribute("cost", cost);
+        return String.format("forward:/order/confirm?msg=%s", msg);
 
+    }
+
+    @PostMapping("/confirm")
+    public String showOrderConfirm(HttpServletRequest req, Model model, Long cost) {
+        ProductDto product = (ProductDto) req.getAttribute("product");
+        Users user = (Users) req.getAttribute("user");
+        model.addAttribute("product", product);
+        model.addAttribute("user", user);
+        model.addAttribute("cost", cost);
+        return "order/order_confirm";
     }
 
     /**
@@ -139,10 +151,13 @@ public class OrderController {
 //        return "redirect:/order/list";
 //    }
 
-    @PostMapping("/confirm/{encId}")
-    public String confirm(@PathVariable String encId) {
-        return "order/order_confirm";
-    }
+
+//    @PostMapping("/confirm/{encId}")
+//    public String confirm(@PathVariable String encId){
+//        System.out.println("encId = " + encId);
+//
+//        return "order/order_confirm";
+//    }
 
 }
 
