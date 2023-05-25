@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.service.alarm;
 
 import com.fundfun.fundfund.domain.alarm.AlarmDTO;
+import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.service.user.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.ui.ModelMap;
 
 import javax.transaction.Transactional;
 
@@ -20,6 +22,8 @@ class AlarmServiceImplTest {
     private AlarmService alarmService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Test
     void findAll() {
@@ -60,15 +64,15 @@ class AlarmServiceImplTest {
     @Transactional
     public void createAlarmTest() throws Exception {
         //given
-        Users user = userService.findByEmail("user").get();
+        UserDTO user = userService.findByEmail("user");
         System.out.println("user = " + user);
         //when
-        alarmService.createAlarm(user, "알람 33");
-        alarmService.createAlarm(user, "알람 34");
-        alarmService.createAlarm(user, "알람 35");
-        alarmService.createAlarm(user, "알람 36");
-        alarmService.createAlarm(user, "알람 37");
-        System.out.println(userService.findByEmail("user").get().getAlarms().toString());
+        alarmService.createAlarm(modelMapper.map(user, Users.class), "알람 33");
+        alarmService.createAlarm(modelMapper.map(user, Users.class), "알람 34");
+        alarmService.createAlarm(modelMapper.map(user, Users.class), "알람 35");
+        alarmService.createAlarm(modelMapper.map(user, Users.class), "알람 36");
+        alarmService.createAlarm(modelMapper.map(user, Users.class), "알람 37");
+        System.out.println(userService.findByEmail("user").getAlarms().toString());
 
 
 //        System.out.println("alarmDTO = " + alarmDTO);
