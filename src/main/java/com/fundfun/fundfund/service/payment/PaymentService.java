@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface PaymentService {
 
-    Long addPayMean(Mean mean, String number, Users user);
+    Long addPayMean(Mean mean, String number, int cvc, String vendor, Users user);
     UUID addPayment(Users user, PayMean mean, Long cost);
     UUID deletePaymentById(UUID id);
     Long deletePayMeanById(Long id);

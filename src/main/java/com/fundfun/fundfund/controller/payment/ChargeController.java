@@ -2,17 +2,17 @@ package com.fundfun.fundfund.controller.payment;
 
 import com.fundfun.fundfund.domain.payment.ChargeForm;
 import com.fundfun.fundfund.domain.payment.PayMean;
+import com.fundfun.fundfund.domain.payment.PayMeanForm;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.service.payment.PaymentService;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,6 +49,23 @@ public class ChargeController {
          */
         Long amount = form.getAmount();
         userService.addMoney(user, amount);
+        return "redirect:/charge";
+    }
+
+    @PostMapping("/charge/means?action=add")
+    public String addMean(@AuthenticationPrincipal UserAdapter adapter,
+                          @ModelAttribute("meanForm") PayMeanForm mean) {
+
+        UserDTO user = userService.findById(adapter.getUser().getId());
+        paymentService.addPayMean(mean.getMean(), mean.getMean_id(), mean.getCvc(), mean.getVendor(), adapter.getUser());
+
+        return "redirect:/charge";
+    }
+
+    @PostMapping("/charge/means/{id}?action=delete")
+    public String deleteMean(@AuthenticationPrincipal UserAdapter adapter,
+                             @PathVariable("id") Long id) {
+        paymentService.deletePayMeanById(id);
         return "redirect:/charge";
     }
 
