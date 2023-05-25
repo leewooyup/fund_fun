@@ -9,6 +9,7 @@ import com.fundfun.fundfund.dto.reply.ReplyDto;
 import com.fundfun.fundfund.service.post.PostService;
 import com.fundfun.fundfund.service.reply.ReplyService;
 import com.fundfun.fundfund.service.user.UserService;
+import com.fundfun.fundfund.util.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -16,12 +17,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +42,6 @@ public class PostController {
 
     private final ReplyService replyService;
     private final ModelMapper modelMapper;
-
     /**
      * 아이디어 전체조회 화면 이동
      * -> RestController로 옮겨야
@@ -60,7 +62,7 @@ public class PostController {
 
         List<PostDto> postList = postService.selectAll();
         model.addAttribute("postList", postList);
-        //model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
         return "post/list";
     }
 
@@ -71,7 +73,7 @@ public class PostController {
     public String popularIdeaList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
         List<PostDto> postList = postService.getPostsOrderByLikes();
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
         return "post/list";
     }
 
@@ -82,7 +84,7 @@ public class PostController {
     public String preproductList(Model model, @AuthenticationPrincipal UserAdapter adapter) {
         List<PostDto> postList = postService.selectPostByStatus(StPost.PREPRODUCT);
         model.addAttribute("postList", postList);
-        model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+        model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
         return "post/list";
     }
 
@@ -116,7 +118,7 @@ public class PostController {
             }
             //해당 게시물에 댓글이 있다면 반환
 
-            model.addAttribute("userInfo", modelMapper.map(adapter.getUser(), UserDTO.class));
+            model.addAttribute("userInfo", UserMapper.toDto(adapter.getUser()));
             //수정 및 삭제 버튼 유무 결정하기 위한 유저 정보 반환
 
             return "post/detail";
