@@ -5,7 +5,6 @@ import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.StVote;
-
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.vote.VoteDto;
@@ -20,7 +19,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -58,6 +60,12 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public List<VoteDto> selectAll(){
+        /*List<Vote> voteList = voteRepository.findAll();
+        List<VoteDto> voteDtoList = new ArrayList<>();
+        for(Vote v : voteList){
+            VoteDto voteDto = modelMapper.map(v, VoteDto.class);
+            voteDto.setPostId
+        }*/
         return voteRepository.findAll().stream().map(vote -> modelMapper.map(vote, VoteDto.class)).collect(Collectors.toList());
     }
 
@@ -77,20 +85,11 @@ public class VoteServiceImpl implements VoteService{
 
     }
 
+
     /*
     투표 상태 체크 및 업데이트
      */
-/*    public boolean updateVoteStatus(VoteDto voteDto) {
-
-        //조건
-            Vote vote = modelMapper.map(voteDto, Vote.class);
-            voteRepository.save(vote);
-            return true;
-        }
-        return false;
-    }*/
-
-    public void updateVoteStatus(VoteDto voteDto) {
+    public boolean updateVoteStatus(VoteDto voteDto) {
         Vote vote = modelMapper.map(voteDto, Vote.class);
 
         // 현재 시간과 voteEnd 비교
@@ -131,7 +130,17 @@ public class VoteServiceImpl implements VoteService{
             }
         }
         voteRepository.save(vote);
+        return true;
+        }
+
+
+    public String plusWeeks(String startDate) {
+        LocalDate voteStart = LocalDate.now();
+        LocalDate voteEnd = voteStart.plusDays(7);
+       return voteEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+
+
 
     @Override
     public void deleteVote(UUID voteId){

@@ -21,7 +21,7 @@ public interface VoteService {
     VoteDto selectVoteByPostId(UUID postId);
 
     //voteId에 해당하는 투표의 상태 업데이트
-    void updateVoteStatus(VoteDto voteDto);
+    boolean updateVoteStatus(VoteDto voteDto);
     
     //투표 삭제
     void deleteVote(UUID voteId);

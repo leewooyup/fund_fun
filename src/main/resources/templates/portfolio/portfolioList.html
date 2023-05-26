@@ -13,6 +13,7 @@
         var postId = "";
         var chkVote = "";
         var chkAuth = "";
+        var vtStatus = [[${voteStatus}]];
 
         if(state == "noId") { // url 입력으로 접근 시 alert -> post/list 로 이동
             alert("정상적인 경로로 접근해주세요.");
@@ -31,6 +32,7 @@
     <script type="text/javascript">
         $(Document).ready(function() {
             getData();
+            visibleButton();
 
             // 포트폴리오 작성 클릭
             $("#goWrite").on("click", function() {
@@ -119,7 +121,9 @@
         <span class="gray_text bottom_line" th:text="${voteEnd}"></span>
 
         <div class="bottom_line voteDiv">
-            <span class="fontSize-fix">투표 중</span>
+            <th if="${drawList==null}"><span class="fontSize-fix">등록된 포트폴리오가 없습니다.</span></th>
+
+
             <div id="drawList"></div>
         </div>
 

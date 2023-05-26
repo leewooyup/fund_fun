@@ -1,9 +1,14 @@
 package com.fundfun.fundfund.base;
 
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.vote.Vote;
+import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import com.fundfun.fundfund.dto.vote.VoteDto;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
+import com.fundfun.fundfund.service.portfolio.PortfolioService;
 import com.fundfun.fundfund.service.product.ProductService;
+import com.fundfun.fundfund.service.vote.VoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -19,14 +24,15 @@ import java.util.List;
 @Slf4j
 @Component
 public class Scheduler {
-//    private static final Logger log = LoggerFactory.getLogger(Scheduler.class);
+    //    private static final Logger log = LoggerFactory.getLogger(Scheduler.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final OrderServiceImpl orderService;
     private final ProductService productService;
-//    @Scheduled(fixedRate = 1000)
-//    public void reportCurTime() {
-//        log.info("Java fixedRate Thread={}", Thread.currentThread().getName());
-//    }
+    private final VoteService voteService;
+    @Scheduled(fixedRate = 1000)
+    public void reportCurTime() {
+        log.info("Java fixedRate Thread={}", Thread.currentThread().getName());
+    }
 
 //    @Scheduled(fixedDelay = 1000)
 //    public void reportCurTimeThread() {
@@ -51,4 +57,19 @@ public class Scheduler {
             productService.updateStatus(productDto);
         }
     }
+
+
+    /**
+     * 매일 0분 0시 0초, 투표 상태 갱신
+     */
+    @Scheduled(cron = "59 * * * * * ")
+    public void voteStauts() {
+        List<VoteDto> voteDtoList = voteService.selectAll();
+        for(VoteDto voteDto : voteDtoList){
+            voteService.updateVoteStatus(voteDto);
+        }
+
+    }
+
+
 }
