@@ -29,6 +29,7 @@ public class Scheduler {
     private final OrderServiceImpl orderService;
     private final ProductService productService;
     private final VoteService voteService;
+
     @Scheduled(fixedRate = 1000)
     public void reportCurTime() {
         log.info("Java fixedRate Thread={}", Thread.currentThread().getName());
@@ -53,7 +54,7 @@ public class Scheduler {
     @Scheduled(cron = "0 0 0 * * * ")
     public void sayHello() {
         List<ProductDto> productDtoList = productService.selectAll();
-        for(ProductDto productDto : productDtoList) {
+        for (ProductDto productDto : productDtoList) {
             productService.updateStatus(productDto);
         }
     }
@@ -65,7 +66,7 @@ public class Scheduler {
     @Scheduled(cron = "0 0 0 * * * ")
     public void voteStauts() {
         List<VoteDto> voteDtoList = voteService.selectAll();
-        for(VoteDto voteDto : voteDtoList){
+        for (VoteDto voteDto : voteDtoList) {
             voteService.updateVoteStatus(voteDto);
         }
 

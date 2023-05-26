@@ -89,4 +89,9 @@ public class UserController {
                 .build());
         return "redirect:/";
     }
+
+    @GetMapping("/user/charge")
+    public String showMoneyChargeForm() {
+        return "user/charge";
+    }
 }
