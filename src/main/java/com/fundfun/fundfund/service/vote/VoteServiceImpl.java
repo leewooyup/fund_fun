@@ -60,13 +60,14 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public List<VoteDto> selectAll(){
-        /*List<Vote> voteList = voteRepository.findAll();
+        List<Vote> voteList = voteRepository.findAll();
         List<VoteDto> voteDtoList = new ArrayList<>();
         for(Vote v : voteList){
             VoteDto voteDto = modelMapper.map(v, VoteDto.class);
-            voteDto.setPostId
-        }*/
-        return voteRepository.findAll().stream().map(vote -> modelMapper.map(vote, VoteDto.class)).collect(Collectors.toList());
+            voteDto.setPostId(v.getPost().getId());
+            voteDtoList.add(voteDto);
+        }
+        return voteDtoList;
     }
 
     @Override
@@ -91,7 +92,10 @@ public class VoteServiceImpl implements VoteService{
      */
     public boolean updateVoteStatus(VoteDto voteDto) {
         Vote vote = modelMapper.map(voteDto, Vote.class);
-
+        Post post = postRepository.findById(voteDto.getPostId()).orElse(null);
+        if(post != null){
+            vote.linkPost(post);
+        }
         // 현재 시간과 voteEnd 비교
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime voteEnd = vote.getVoteEnd();
@@ -100,33 +104,35 @@ public class VoteServiceImpl implements VoteService{
                 vote.updateStatus();
 
                 List<PortfolioDto> portfolioList = portfolioService.selectPortByVoteId(vote.getId());
-                int max = 0;
-                PortfolioDto winner = new PortfolioDto();
-                for (PortfolioDto p : portfolioList) {
-                    int count = opinionService.countByVotedFor(p);
-                    if (count > max) {
-                        winner = p;
+                if(portfolioList.size()>0) {
+                    int max = 0;
+                    PortfolioDto winner = new PortfolioDto();
+                    for (PortfolioDto p : portfolioList) {
+                        int count = opinionService.countByVotedFor(p);
+                        if (count > max) {
+                            winner = p;
+                        }
+                        System.out.println(p.getId() + " 포트폴리오가 받은 표수 : " + count);
+                        System.out.println(p.getUserId() + ", " + p.getPostId());
+                    } // 승자 선정
+
+                    Portfolio portfolio = modelMapper.map(winner, Portfolio.class);
+                    //제목, 내용 매핑
+                    portfolio.updateStatus();
+                    //상태 변경
+
+                    portfolio.setVote(vote);
+                    portfolio.setPost(vote.getPost());
+                    Portfolio pf = portfolioRepository.findById(portfolio.getId()).orElse(null);
+                    if (pf != null) {
+                        Users user = pf.getUser();
+                        portfolio.setUser(user);
                     }
-                    System.out.println(p.getId() + " 포트폴리오가 받은 표수 : " + count);
-                    System.out.println(p.getUserId() + ", " + p.getPostId());
-                } // 승자 선정
+                    //연관관계 3개 설정
 
-                Portfolio portfolio = modelMapper.map(winner, Portfolio.class);
-                //제목, 내용 매핑
-                portfolio.updateStatus();
-                //상태 변경
-
-                portfolio.setVote(vote);
-                portfolio.setPost(vote.getPost());
-                Portfolio pf = portfolioRepository.findById(portfolio.getId()).orElse(null);
-                if(pf!=null){
-                    Users user = pf.getUser();
-                    portfolio.setUser(user);
+                    portfolioRepository.save(portfolio);
+                    // 포트폴리오의 상태 업데이트
                 }
-                //연관관계 3개 설정
-
-                portfolioRepository.save(portfolio);
-                // 포트폴리오의 상태 업데이트
             }
         }
         voteRepository.save(vote);
