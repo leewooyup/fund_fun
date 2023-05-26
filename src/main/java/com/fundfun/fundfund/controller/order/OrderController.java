@@ -47,7 +47,7 @@ public class OrderController {
      * @return view
      */
     @GetMapping("/form/{encId}")
-    public String showOrderForm(InvestDto investDto, Model model, @PathVariable String encId) {
+    public String showOrderForm(InvestDto investDto, Model model, @PathVariable String encId, @AuthenticationPrincipal UserAdapter adapter) {
         UUID uuid = orderService.decEncId(encId);//productId
         // 복호화된 uuid로 해당 product 가져오기
         ProductDto productDto = productService.selectById(uuid);
@@ -56,6 +56,11 @@ public class OrderController {
         productService.updateStatus(productDto);
         int deadline = productService.crowdDeadline(productDto);
         model.addAttribute("deadline", deadline);
+
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+        if(userDTO.getId() == productDto.getFundManager().getId()){
+            model.addAttribute("user", userDTO);
+        }
 
         return "order/order_form";
     }

@@ -1,4 +1,4 @@
-package com.fundfun.fundfund.domain.product.post;
+package com.fundfun.fundfund.domain.post;
 
 
 import com.fundfun.fundfund.domain.reply.Reply;

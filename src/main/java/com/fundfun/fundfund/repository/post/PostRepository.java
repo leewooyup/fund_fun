@@ -4,8 +4,6 @@ package com.fundfun.fundfund.repository.post;
 import com.fundfun.fundfund.domain.user.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.fundfun.fundfund.domain.product.post.Post;
-import com.fundfun.fundfund.domain.product.post.StPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

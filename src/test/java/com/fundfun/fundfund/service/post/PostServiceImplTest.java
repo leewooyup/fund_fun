@@ -1,7 +1,7 @@
 package com.fundfun.fundfund.service.post;
 
-import com.fundfun.fundfund.domain.product.post.Post;
-import com.fundfun.fundfund.domain.product.post.StPost;
+import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.service.vote.VoteService;
 import org.junit.jupiter.api.Test;

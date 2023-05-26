@@ -1,8 +1,9 @@
 package com.fundfun.fundfund.service.post;
 
+
+import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.domain.user.Users;
-import com.fundfun.fundfund.domain.product.post.Post;
-import com.fundfun.fundfund.domain.product.post.StPost;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.repository.post.PostRepository;
@@ -13,13 +14,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

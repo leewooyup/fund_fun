@@ -1,6 +1,6 @@
 package com.fundfun.fundfund.domain.portfolio;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fundfun.fundfund.domain.product.post.Post;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.util.BaseTimeEntity;

@@ -1,6 +1,6 @@
 package com.fundfun.fundfund.repository.reply;
 
-import com.fundfun.fundfund.domain.product.post.Post;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.reply.Reply;
 import com.fundfun.fundfund.domain.user.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
