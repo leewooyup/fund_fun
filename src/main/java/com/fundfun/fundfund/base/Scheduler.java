@@ -62,7 +62,7 @@ public class Scheduler {
     /**
      * 매일 0분 0시 0초, 투표 상태 갱신
      */
-    @Scheduled(cron = "59 * * * * * ")
+    @Scheduled(cron = "0 0 0 * * * ")
     public void voteStauts() {
         List<VoteDto> voteDtoList = voteService.selectAll();
         for(VoteDto voteDto : voteDtoList){
