@@ -1,12 +1,17 @@
 
 package com.fundfun.fundfund.domain.vote;
 
+import com.fundfun.fundfund.domain.opinion.Opinion;
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity

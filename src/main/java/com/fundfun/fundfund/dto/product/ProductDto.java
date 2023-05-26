@@ -8,8 +8,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -62,14 +60,5 @@ public class ProductDto{
 
     public String getThumbnailImgRedirectUrl() {
         return this.thumbnailRelPath + "?random=" + UUID.randomUUID();
-    }
-
-    public String calCollectionsPercentage() {
-        double cur = this.currentGoal;
-        double goal = this.goal;
-        double percentage = (cur / goal) * 100;
-        System.out.println("percentage: " + percentage);
-
-        return String.format("%.1f", percentage);
     }
 }

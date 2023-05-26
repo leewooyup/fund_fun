@@ -2,6 +2,7 @@ package com.fundfun.fundfund.controller.portfolio;
 
 import com.fundfun.fundfund.domain.opinion.Opinion;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.portfolio.StPortfolio;
 import com.fundfun.fundfund.domain.user.Role;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.Users;
@@ -83,6 +84,7 @@ public class PortfolioController {
         String portfolioId = req.getParameter("id");
         String postId = req.getParameter("postId");
         String btnVisible = "";
+        String regVisible = "";
         System.out.println("현재 porfolioId ="+ portfolioId );
         System.out.println("현재 postId ="+postId);
 
@@ -92,6 +94,11 @@ public class PortfolioController {
             portfolioDto = portfolioService.selectById(id);
             model.addAttribute("data", portfolioDto);
 
+            regVisible = portfolioDto.getStatusPortfolio().equals(StPortfolio.WINNER)
+                    && portfolioDto.getUserId().equals(adapter.getUser().getId()) ? "1" : "0";
+            System.out.println("regVisible = " + regVisible);
+            // 상품 등록 활성화 여부 - 해당 포트폴리오가 선출되었고, 접속 유저가 작성자 본인일 때
+
             btnVisible = portfolioDto.getUserId().equals(adapter.getUser().getId()) ? "1" : "0";
         } else {
             model.addAttribute("data", null);
@@ -100,6 +107,7 @@ public class PortfolioController {
         model.addAttribute("state", req.getParameter("state"));
         model.addAttribute("postId", postId);
         model.addAttribute("btnVisible", btnVisible);
+        model.addAttribute("regVisible", regVisible);
 
         return "portfolio/portfolioDetail";
     }

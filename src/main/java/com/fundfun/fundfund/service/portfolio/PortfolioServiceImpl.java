@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.service.portfolio;
 
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.portfolio.StPortfolio;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
@@ -42,6 +43,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolio.setPost(post);
         portfolio.setVote(vote);
         portfolio.setUser(user);
+        portfolio.setStatus(StPortfolio.CANDIDATE);
         portRep.save(portfolio);
     }
 
@@ -129,6 +131,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             existingPort.setPost(post);
             existingPort.setVote(vote);
             existingPort.setUser(user);
+            existingPort.setStatus(portfolioDto.getStatusPortfolio());
 
             // 게시물을 저장하여 업데이트합니다.
             portRep.save(existingPort);

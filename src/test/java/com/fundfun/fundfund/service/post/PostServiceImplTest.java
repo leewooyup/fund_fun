@@ -2,7 +2,9 @@ package com.fundfun.fundfund.service.post;
 
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
+import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.post.PostDto;
+import com.fundfun.fundfund.dto.vote.VoteDto;
 import com.fundfun.fundfund.service.vote.VoteService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -11,7 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceImplTest {

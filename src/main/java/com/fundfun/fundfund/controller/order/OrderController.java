@@ -39,7 +39,7 @@ public class OrderController {
     private final OrderService orderService;
     private final ProductService productService;
     private final UserService userService;
-    
+
 
     /**
      * 상품 Detail 페이지 + 투자 금액 입력 폼 페이지
@@ -190,4 +190,3 @@ public class OrderController {
 //    }
 
 }
-
