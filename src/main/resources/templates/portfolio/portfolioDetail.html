@@ -34,6 +34,11 @@
                 location.href = "/portfolio?postId=" + postId;
             });
 
+            // 상품 등록 페이지 이동
+            $("#productRegister").on("click", function() {
+                location.href = "/product/register";
+            });
+
             // 삭제 버튼 클릭
             $("#delete").on("click", function() {
                 var param = {
@@ -212,7 +217,8 @@
             </div>
 
             <div class="marginBottom">
-                <span th:text="${btnVisible}"></span>
+
+                <button class="rightArea paddingBtn2 left_margin bg-yellow" id="productRegister" th:if="${#strings.equals(regVisible, '1')}">상품 등록</button>
                 <button class="rightArea paddingBtn2 left_margin bg-yellow" id="delete" th:if="${#strings.equals(btnVisible, '1')}">삭제</button>
                 <button class="rightArea paddingBtn2 bg-yellow" id="update" th:if="${#strings.equals(btnVisible, '1')}">수정</button>
             </div>
