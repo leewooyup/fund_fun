@@ -1,6 +1,5 @@
 package com.fundfun.fundfund.service.vote;
 
-
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.UserDTO;
