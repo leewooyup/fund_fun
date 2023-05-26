@@ -1,6 +1,5 @@
 package com.fundfun.fundfund.domain.portfolio;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
@@ -9,9 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import java.util.UUID;

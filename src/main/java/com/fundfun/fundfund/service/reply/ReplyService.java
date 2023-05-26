@@ -1,7 +1,5 @@
 package com.fundfun.fundfund.service.reply;
 
-import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.reply.Reply;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.dto.reply.ReplyDto;

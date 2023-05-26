@@ -62,4 +62,9 @@ public class UserController {
         return principal;
     }
 
+    @GetMapping("/user/charge")
+    public String showMoneyChargeForm() {
+        return "user/charge";
+    }
+
 }

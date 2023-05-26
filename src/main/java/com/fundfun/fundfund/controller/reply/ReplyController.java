@@ -1,9 +1,7 @@
 package com.fundfun.fundfund.controller.reply;
 
 import com.fundfun.fundfund.domain.post.Post;
-import com.fundfun.fundfund.domain.reply.Reply;
 import com.fundfun.fundfund.domain.user.UserAdapter;
-import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.reply.ReplyDto;
 import com.fundfun.fundfund.service.post.PostService;
@@ -14,11 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @Controller

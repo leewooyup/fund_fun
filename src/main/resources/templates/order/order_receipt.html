@@ -7,6 +7,12 @@
 </style>
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <style>
+        .invest {
+            font-size: large;
+        }
+
+    </style>
     <div class="d-flex flex-column align-items-center wrapper">
         <div class="title" style="text-align:left;">투자 영수증</div>
         <div class="order-main">
@@ -15,15 +21,15 @@
                 <input name="Id" type="hidden" value="${invest}">
                 <div>
                     <label class="sub-title">투자할 상품</label>
-                    <div th:text="${product.title}" style="font-size:large;font-weight: bold"></div>
+                    <div class="invest" style="font-weight:bold" th:text="${product.title}"></div>
                 </div>
                 <div>
                     <label class="sub-title">투자할 금액</label>
-                    <div th:text="|${invest.cost}원|"></div>
+                    <div class="invest" th:text="|${invest.cost}원|"></div>
                 </div>
                 <div>
                     <label class="sub-title">충전금 잔액</label>
-                    <div th:text="|${user.money}원|"></div>
+                    <div class="invest" th:text="|${user.money}원|"></div>
                 </div>
             </div>
             <div class="order-main-right-section">
@@ -32,9 +38,9 @@
         </div>
 
         <div class="d-flex justify-content-center" id="invest" style="padding:10px; width:30%">
-            <form method="post" th:action ="@{|/order/update/${encId}|}" id="costSendForm">
-                <button class="btn btn-warning" id="btn-invest" type="button" style="margin-right:10px">투자</button>
-                <input type="hidden" name="cost" th:value="${invest.cost}">
+            <form id="costSendForm" method="post" th:action="@{|/order/update/${encId}|}">
+                <button class="btn btn-warning" id="btn-invest" style="margin-right:10px" type="button">투자</button>
+                <input name="cost" th:value="${invest.cost}" type="hidden">
             </form>
             <!--            <a th:href ="@{|/order/update/${encId}|}">-->
             <!--                <button class="btn btn-warning" id="btn-invest" type="button">투자</button>-->
@@ -46,8 +52,8 @@
 
     </div>
     <script>
-        $(function(){
-            $(document).on("click", "#btn-invest", function() {
+        $(function () {
+            $(document).on("click", "#btn-invest", function () {
                 $("#costSendForm").submit();
             });
         });

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+>
+<th:block layout:fragment="content">
+    <th:block th:replace="/user/user_head :: userHeadFragment"></th:block>
+    <div class="d-flex flex-column wrapper">
+        <div class="title">충전하기</div>
+        <form method="post" action="" class="form-charge">
+            <div class="input-charge-wrapper">
+                <div>
+                    <input class="form-control input-charge" name="charge" type="number"
+                           placeholder="충전할 금액을 입력해주세요">
+                </div>
+                <div class="btn-group outline-bar-wrapper" role="group" aria-label="Basic outlined button group"
+                     style="margin-top:30px;">
+                    <button type="button" class="btn btn-outline-secondary outline-bar">+1만</button>
+                    <button type="button" class="btn btn-outline-secondary outline-bar">+5만</button>
+                    <button type="button" class="btn btn-outline-secondary outline-bar">+10만</button>
+                    <button type="button" class="btn btn-outline-secondary outline-bar">+30만</button>
+                </div>
+                <div class="account-wrapper">
+                    <label class="sub-title">출금계좌</label>
+                    <div class="d-flex" style="margin-top:10px;">
+                        <select class="select-bank">
+                            <option value="국민" selected>국민</option>
+                            <option value="농협">농협</option>
+                            <option value="신한">신한</option>
+                        </select>
+                        <div>
+                            <input class="input-account" name="charge" type="text">
+                        </div>
+                    </div>
+
+                </div>
+                <!--                    <div th:replace="form_errors :: formErrorsFragment"></div>-->
+            </div>
+            <div class="d-flex justify-content-end" style="margin-top:10px;">
+                <div style="font-size:1.3rem;margin-right:20px;padding-top:6px;">충전금 잔액</div><!-- 하드코딩 -->
+                <div style="font-size:1.6rem;color:red;margin-right:9px;">150,000</div><!-- 하드코딩 -->
+                <div style="font-size:1.3rem;padding-top:6px;">원</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-warning btn-charge" type="submit">충전하기</button>
+            </div>
+        </form>
+    </div>
+</th:block>
+</html>

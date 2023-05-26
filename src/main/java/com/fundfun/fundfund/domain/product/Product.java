@@ -2,6 +2,7 @@ package com.fundfun.fundfund.domain.product;
 
 import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.user.Users;
+import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,7 +38,6 @@ public class Product extends BaseTimeEntity {
 
     private String crowdStart;
 
-    @ColumnDefault("'2023-05-29'") //test
     private String crowdEnd;
 
     @ColumnDefault("0")
@@ -71,14 +71,6 @@ public class Product extends BaseTimeEntity {
         this.thumbnailRelPath = this.thumbnailRelPath == null ? "/product/avatar.jpg" : this.thumbnailRelPath;
     }*/
 
-    public String uuidEncode() {
-        //UUID encode
-        Base64.Encoder encoder = Base64.getEncoder();
-        String encodedString = encoder.encodeToString(this.id.toString().getBytes());
-
-        return encodedString;
-    }
-
     public Date toDate(String crowdEnd) {
         Date deadLine = null;
         try {
@@ -89,11 +81,6 @@ public class Product extends BaseTimeEntity {
             );
         }
         return deadLine;
-    }
-
-    public String getThumbnailImgUrl() {
-        if(thumbnailRelPath == null) return "/gen/product/avatar.jpg";
-        return "/gen/" + thumbnailRelPath;
     }
 
 }

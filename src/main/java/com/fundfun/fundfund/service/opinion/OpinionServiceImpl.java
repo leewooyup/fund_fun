@@ -2,7 +2,6 @@ package com.fundfun.fundfund.service.opinion;
 
 import com.fundfun.fundfund.domain.opinion.Opinion;
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
-import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
 import com.fundfun.fundfund.dto.opinion.OpinionDto;
@@ -10,7 +9,6 @@ import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.vote.VoteDto;
 import com.fundfun.fundfund.repository.opinion.OpinionRepository;
 import com.fundfun.fundfund.repository.portfolio.PortfolioRepository;
-import com.fundfun.fundfund.repository.post.PostRepository;
 import com.fundfun.fundfund.repository.user.UserRepository;
 import com.fundfun.fundfund.repository.vote.VoteRepository;
 import lombok.RequiredArgsConstructor;

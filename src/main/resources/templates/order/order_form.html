@@ -7,23 +7,32 @@
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
-
+    <style>
+        .money {
+            font-size: larger;
+            font-weight: bold;
+        }
+    </style>
     <div class="d-flex flex-column align-items-center wrapper">
         <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
             <div>
-                <img alt="" th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}" width="400px" height="300px">
+                <img alt="" height="300px" th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}" width="300px">
             </div>
             <div>
                 <div>
                     <label class="sub-title">모인금액</label>
-                    <div><span th:text="${product.currentGoal}"></span>원</div>
+                    <div><span th:text="${product.currentGoal}"></span>원
+                    </div>
                 </div>
                 <div>
                     <label class="sub-title">남은기간</label>
-                    <th:block th:if="${deadline &gt; -1}">
-                        <div><span th:text="${deadline}"></span>일</div>
+                    <th:block th:if="${deadline &gt; 0}">
+                        <div th:text="|${deadline}일|"></div>
                     </th:block>
+                    <th: block th:if="${deadline == 0}">
+                        <div>D-day</div>
+                    </th:>
                     <th:block th:if="${deadline &lt; 0}">
                         <div>투자 마감</div>
                     </th:block>
@@ -31,10 +40,15 @@
                 </div>
                 <div>
                     <label class="sub-title">담당 펀드매니저</label>
-                    <div th:text="|${product.fundManager.name} 펀드매니저님|"></div>
+                    <div th:text="${product.fundManager.name}"></div>
+                </div>
+                <div style="border-bottom: 1px solid #666a73; margin:10px 0px"></div>
+                <div>
+                    <label style="color:#666a73">목표 금액</label>
+                    <div class="money" th:text="|${product.goal}원|"></div>
                 </div>
                 <form method="post" th:action="@{|/order/send/${encId}|}" th:object="${investDto}">
-                    <input type="hidden" name="encId" th:value="${encId}">
+                    <input name="encId" th:value="${encId}" type="hidden">
                     <label class="sub-title">투자금액</label>
                     <div>
                         <input class="input-cost" th:field="*{cost}" type="number">
@@ -53,17 +67,22 @@
         예상 수익률은 ~%이고, 예상 위험도는 ~입니다.<br>
         비슷한 종목으로 구성된 펀드를 운용했을때 ~%의 수익률을 달성한 바 있습니다.<br>
     </div>
-    <a th:href= "@{/product/update/{id}(id=${encId})}" >
-        <button class="btn btn-warning" type="button">수정</button>
-    </a>
-    <a th:href= "@{/product/delete/{id}(id=${encId})}" id="confirmDel" >
-        <button class="btn btn-warning" type="button">삭제</button>
-    </a>
-
+    <th:block th:if="${user}!=null">
+        <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-between" style="width:10%">
+                <a th:href="@{/product/update/{id}(id=${encId})}">
+                    <button class="btn btn-warning" type="button">수정</button>
+                </a>
+                <a id="confirmDel" th:href="@{/product/delete/{id}(id=${encId})}">
+                    <button class="btn btn-warning" type="button">삭제</button>
+                </a>
+            </div>
+        </div>
+    </th:block>
     <script>
-        $(function(){
-            $('#confirmDel').click(function(){
-                if(!confirm('삭제하시면 복구할수 없습니다. \n 정말로 삭제하시겠습니까??')){
+        $(function () {
+            $('#confirmDel').click(function () {
+                if (!confirm('삭제하시면 복구할수 없습니다. \n 정말로 삭제하시겠습니까??')) {
                     return false;
                 }
             });
