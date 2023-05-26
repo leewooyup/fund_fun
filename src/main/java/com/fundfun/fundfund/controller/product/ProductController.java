@@ -1,4 +1,5 @@
 package com.fundfun.fundfund.controller.product;
+
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
@@ -36,8 +37,8 @@ public class ProductController {
     private final OrderService orderService;
     private final UserService userService;
 
-    private final static int PAGE_COUNT=6;
-    private final static int BLOCK_COUNT=3;
+    private final static int PAGE_COUNT = 6;
+    private final static int BLOCK_COUNT = 3;
 
 
     /**
@@ -70,20 +71,20 @@ public class ProductController {
 
     /**
      * 전체 상품 list 보여주기
+     *
      * @param model
      * @return view
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(defaultValue = "1") int nowPage, @AuthenticationPrincipal UserAdapter adapter){
-        Pageable page = PageRequest.of((nowPage-1), PAGE_COUNT , Sort.Direction.DESC, "createdAt");
-        Page<ProductDto> pageList =  productService.selectAll(page);
+    public String list(Model model, @RequestParam(defaultValue = "1") int nowPage, @AuthenticationPrincipal UserAdapter adapter) {
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
+        Page<ProductDto> pageList = productService.selectAll(page);
 
-        System.out.println("셋 끝나고 왔음 adapter = "+ adapter.getUser().getRole());
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        System.out.println("아이디로 찾음 userDto = " + userDTO.getRole());
-        int temp = (nowPage-1)%BLOCK_COUNT;
-        int startPage=nowPage-temp;
+
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
         //List<ProductDto> productList = productService.selectAll();
         model.addAttribute("list", pageList);
         model.addAttribute("blockCount", BLOCK_COUNT);
@@ -91,21 +92,20 @@ public class ProductController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("nowPage", nowPage);
 
-        model.addAttribute("user",userDTO);
-        System.out.println("userDTO.getRole = " + userDTO.getRole());
+        model.addAttribute("user", userDTO);
 
         return "product/product_list";
     }
 
 
     @GetMapping("/list/progress")
-    public String listProgress(Model model, @RequestParam(defaultValue = "1") int nowPage){
-        Pageable page = PageRequest.of((nowPage-1), PAGE_COUNT , Sort.Direction.DESC, "createdAt");
+    public String listProgress(Model model, @RequestParam(defaultValue = "1") int nowPage) {
+        Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
 
         Page<ProductDto> progressList = productService.selectByStatus(page, "진행중");
 
-        int temp = (nowPage-1)%BLOCK_COUNT;
-        int startPage=nowPage-temp;
+        int temp = (nowPage - 1) % BLOCK_COUNT;
+        int startPage = nowPage - temp;
         //List<ProductDto> productList = productService.selectAll();
         model.addAttribute("list", progressList);
         model.addAttribute("blockCount", BLOCK_COUNT);
@@ -125,13 +125,8 @@ public class ProductController {
             return "product/product_register";
         }
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-//        if (ou.isPresent()) {
-//            Users user = ou.get();
-            productService.registerProduct(productDto, thumbnailImg, userDTO);
-//        }
-//        else{
-//            throw new RuntimeException("비회원입니다.");
-//        }
+        productService.registerProduct(productDto, thumbnailImg, userDTO);
+
         return "redirect:/product/list";
     }
 
@@ -142,14 +137,14 @@ public class ProductController {
     public String update(@PathVariable String encId, Model model, @AuthenticationPrincipal UserAdapter adapter) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
-        if (userDTO.getId().equals(productDto.getFundManager().getId())) {
+
+        if (userDTO.getId()==productDto.getFundManager().getId()) {
             model.addAttribute("product", productDto);
             model.addAttribute("encId", encId);
-
-            return "product/product_update";
-        } else {
-            throw new RuntimeException("상품 수정 권한이 없습니다.");
+            //model.addAttribute("user", userDTO);
         }
+
+        return "product/product_update";
     }
 
 
@@ -175,7 +170,7 @@ public class ProductController {
         if (!userDTO.getId().equals(productDto.getFundManager().getId())) {
             throw new RuntimeException("상품 삭제 권한이 없습니다.");
         }
-            UUID productId = orderService.decEncId(encId);
+        UUID productId = orderService.decEncId(encId);
         productService.delete(productId);
         return "redirect:/product/list";
 
@@ -191,6 +186,14 @@ public class ProductController {
         return "product/product_search_list";
     }
 
+    //test
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
 
-
+    @GetMapping("/index/user")
+    public String indexUser() {
+        return "index_user";
+    }
 }

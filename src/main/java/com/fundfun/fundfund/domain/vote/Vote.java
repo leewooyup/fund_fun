@@ -1,7 +1,7 @@
 
 package com.fundfun.fundfund.domain.vote;
 
-import com.fundfun.fundfund.domain.product.post.Post;
+import com.fundfun.fundfund.domain.post.Post;
 
 import lombok.*;
 

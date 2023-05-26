@@ -1,6 +1,6 @@
 package com.fundfun.fundfund.domain.reply;
 
-import com.fundfun.fundfund.domain.product.post.Post;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
