@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
     <head>
@@ -11,15 +11,6 @@
             img {
                 width: 100%;
                 height: 300px;
-            }
-
-            #login-btn {
-                width: 80%;
-                height: 60px;
-                background-color: #7F7368;
-                color: white;
-                border-radius: 15px;
-                margin: 10px 0;
             }
 
             #login-wrapper {
@@ -51,10 +42,31 @@
                 text-decoration: none;
             }
 
-            a.login {
-                justify-content: center;
-                width: 100%;
+            .inner {
+                background-color: white;
+                width: 90%;
+                height: 90%;
+                border-radius: 20px;
+            }
+
+            .order-main-left-section img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .inner-top {
+                height: 50%;
                 display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                padding-top: 20px;
+            }
+
+            .btn {
+                background-color: #7F7368;
+                color: white;
+                height: 90%;
+                font-size: small;
             }
         </style>
     </head>
@@ -92,12 +104,37 @@
             </div>
 
             <div class="d-flex flex-column justify-content-center align-items-center" id="login-wrapper">
-                <a class="login" href="/login">
-                    <button class="btn btn-lg" id="login-btn" type="submit">Login</button>
-                </a>
-                <a href="register">회원가입</a> </span>
+                <div class="inner">
+                    <div class="inner-top">
+                        <div class="order-main-left-section">
+                            <img src="/gen/product/avatar.jpg">
+                        </div>
+                        <div class="order-main-right-section">
+                            <div style="font-size: small;color:grey">펀드매니저</div>
+                            <div style="font-size: large;font-weight: bold;">김깨비님</div>
+                            <div style="font-size: smaller">kb@kb.com</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column">
+                            <div>투자금액</div>
+                            <div>수익률</div>
+                            <div>충전금</div>
+                        </div>
+                        <div class="d-flex flex-column" style="text-align: right;">
+                            <div>1건</div>
+                            <div>2건</div>
+                            <div>0건</div>
+                            <a href="/product/list">
+                                <button class="btn" type="submit">충전하기</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
         <div class="d-flex justify-content-center">
             <table class="table" style="width:80%;text-align: center; padding:10px ">
                 <caption>Top10 아이디어 상품</caption>
@@ -111,7 +148,7 @@
 
                 <tbody>
                 <!--<tr th:each="post, index:${postList}">
-                    <td th:text="${index.index}">no</td>
+                    <td th:text="${index}">no</td>
                     <td th:text="${post.title}">title</td>
                     <td th:text="${post.user}">writer</td>
                     <td th:text="${post.createdAt}">pastDate</td>
@@ -119,21 +156,21 @@
                 </tr>-->
 
                 <tr>
-                    <td>1</td>
+                    <td>no1</td>
                     <td>title1</td>
                     <td>writer1</td>
                     <td>postDate1</td>
                     <td>status1</td>
                 </tr>
                 <tr>
-                    <td>2</td>
+                    <td>no2</td>
                     <td>title2</td>
                     <td>writer2</td>
                     <td>postDate2</td>
                     <td>status2</td>
                 </tr>
                 <tr>
-                    <td>3</td>
+                    <td>no3</td>
                     <td>title3</td>
                     <td>writer3</td>
                     <td>postDate3</td>
@@ -144,9 +181,9 @@
         </div>
 
         <div class="d-flex flex-column">
-            <div class="row">
-                <div class="col">
-                    <caption>초보자를 위한 이용가이드 확인하기</caption>
+            <div class="row d-flex align-items-center">
+                <div>
+                    <span>초보자를 위한 이용가이드</span>
                 </div>
                 <div class="col">
                     <a href="https://www.google.com/finance/quote/KOSPI:KRX?sa=X&ved=2ahUKEwjiopT_8pD_AhUPilYBHUXyC7YQ3ecFegQIHxAX">
@@ -160,9 +197,8 @@
                 </div>
             </div>
         </div>
+
     </div>
-
-
     </body>
 </th:block>
 </html>
