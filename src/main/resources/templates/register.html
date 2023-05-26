@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html
+        lang="ko"
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+<head>
+  <meta charset="UTF-8">
+  <title>Join</title>
+</head>
+<script type="text/javascript">
+
+</script>
+<th:block layout:fragment="content">
+  <body>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+  <div>
+    <h1 class="jointext">JOIN</h1>
+  </div>
+  <div class="container">
+    <br>
+    <form th:action="@{/register}" method="post" class="bottom_line" th:object="${form}">
+      <div class="joinform">
+        <table class="inputform">
+          <tr>
+            <td class="tableLabel">이메일</td>
+            <td class="tableInput"><input type="text" name="email" placeholder="이메일" class="joininput"></td>
+          </tr>
+          <tr>
+            <td class="tableLabel">비밀번호</td>
+            <td class="tableInput"><input type="password" name="password" placeholder="비밀번호" class="joininput"></td>
+          </tr>
+          <tr>
+            <td class="tableLabel">비밀번호 확인</td>
+<!--
+            <td class="tableInput"><input type="password" name="password" placeholder="비밀번호 확인" class="joininput"></td>
+-->
+          </tr>
+          <tr>
+            <td class="tableLabel">이름</td>
+            <td class="tableInput"><input type="text" name="name" placeholder="이름" class="joininput"></td>
+          </tr>
+          <tr>
+            <td class="tableLabel">성별</td>
+            <td class="tableInput"><input type="text" name="gender" placeholder="성별" class="joininput"></td>
+          </tr>
+          <tr>
+            <td class="tableLabel">휴대전화</td>
+            <td class="tableInput"><input type="text" name="phone" placeholder="휴대전화" class="joininput"></td>
+          </tr>
+        </table>
+        <input type="text" name="keyword" th:value="${role}"> <!-- type="hidden"으로 바뀌어야 -->
+        <button type="submit" class="joinbutton">회원가입</button>
+      </div>
+    </form>
+    <br><br>
+  </div>
+
+  </body>
+  <style>
+    .container{
+      display:block;
+      max-width:680px;
+      width:90%;
+      margin:40px auto;
+      background-color: #FFCE0B;
+      border-radius: 8px;
+    }
+
+    .jointext{
+      color:black;
+      font-size:48px;
+      letter-spacing:-3px;
+      text-align:center;
+      margin:40px 0 40px 0 ;
+      transition:.2s linear;
+    }
+
+    .joinform{
+      width:100%;
+      max-width:600px;
+      margin:40px auto 10px;
+      /*background-color: #ffc107;*/
+    }
+
+    .tableLabel{
+      width:10%;
+      font-size:14px;
+      padding-bottom:10px;
+    }
+
+    .tableInput{
+      width:40%;
+    }
+
+    .joininput{
+      display:block;
+      width:98%;
+      max-width:680px;
+      height:40px;
+      margin:0 auto;
+      border-radius:8px;
+      border:none;
+      background:ghostwhite;
+      padding:0 0 0 15px;
+      font-size:14px;
+      float:left;
+      margin-left:10px;
+      margin-bottom: 11px;
+    }
+
+    .joinbutton{
+      display:block;
+      width:100%;
+      height:60px;
+      margin:0 auto;
+      margin-top:20px;
+      border-radius: 8px;
+      border:none;
+      background-color:#7F7368;
+      color:white;
+      font-size:14px;
+      letter-spacing: 2px;
+    }
+  </style>
+</th:block>
+</html>
