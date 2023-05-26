@@ -72,6 +72,7 @@ public class PostController {
 
         model.addAttribute("sortby", "standard");
         //PREV, NEXT url 설정 위한 기준이 되는 attribute
+
         return "post/list";
     }
 
@@ -141,6 +142,7 @@ public class PostController {
 
         model.addAttribute("sortby", "preproduct");
         //PREV, NEXT url 설정 위한 기준이 되는 attribute
+
         return "post/list";
     }
 

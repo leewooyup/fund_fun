@@ -6,6 +6,7 @@ import com.fundfun.fundfund.domain.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -25,9 +26,9 @@ public class Vote {
     @OneToOne
     private Post post;
 
-    private final LocalDateTime voteStart = LocalDateTime.now();
 
-    private final LocalDateTime voteEnd = voteStart.plusDays(30);
+    private final LocalDateTime voteStart = LocalDateTime.now();
+    private final LocalDateTime voteEnd = voteStart.plusMinutes(2);
 
     @Builder.Default
     private StVote status = StVote.PROCEED;
@@ -39,9 +40,7 @@ public class Vote {
     //private List<Portfolio> portfolios = new ArrayList<>();
 
     public void updateStatus() {
-        if (LocalDateTime.now().isAfter(voteEnd)) {
             this.status = StVote.END;
-        }
     }
 
     public void linkPost(Post post) {this.post = post;}

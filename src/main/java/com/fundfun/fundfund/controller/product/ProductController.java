@@ -186,14 +186,9 @@ public class ProductController {
         return "product/product_search_list";
     }
 
-    //test
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
-
     @GetMapping("/index/user")
     public String indexUser() {
         return "index_user";
     }
+
 }
