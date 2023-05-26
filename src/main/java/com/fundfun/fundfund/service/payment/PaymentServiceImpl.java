@@ -26,8 +26,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Long addPayMean(Mean mean, String number, Users user) {
-        PayMean entity = PayMean.createPayMean(mean, number, user);
+    public Long addPayMean(Mean mean, String number, int cvc, String vendor, Users user) {
+        PayMean entity = PayMean.createPayMean(mean, number, cvc, vendor, user);
         payMeanRepository.save(entity);
         return entity.getId();
     }

@@ -6,13 +6,17 @@ import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.exception.InSufficientMoneyException;
+import com.fundfun.fundfund.repository.order.OrderRepository;
 import com.fundfun.fundfund.repository.product.ProductRepository;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,8 +37,7 @@ public class ProductServiceImpl implements ProductService {
     @Value("${custom.genFileDirPath}")
     private String genFileDirPath;
     private final ProductRepository productRepository;
-    private final OrderServiceImpl orderService;
-    private final UserService userService;
+    private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
 
 //    public ProductDto createProduct(Users users) { //테스트용code
@@ -84,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setFundManager(user);
         productDto.setStatus(dbProduct.getStatus());
         productDto.setCurrentGoal(dbProduct.getCurrentGoal());
-        
+
         String thumbnailImgRelPath = null;
         if(thumbnailImg.isEmpty()) {
             thumbnailImgRelPath = "product/avatar.jpg";
@@ -103,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
      */
     public void delete(UUID productId) {
         Product product = productRepository.findById(productId).orElse(null);
-        List<Orders> orderList = orderService.selectByProductId(productId);
+        List<Orders> orderList = orderRepository.findByProductId(productId);
 
         if (product == null ||  !orderList.isEmpty()) {
             throw new RuntimeException("상품을 삭제할 수 없습니다.");
@@ -131,28 +134,11 @@ public class ProductServiceImpl implements ProductService {
      * @return 성공(1)/실패(0)
      */
     @Transactional
-    public int updateCost(Long cost, ProductDto productDto, UserDTO userDTO) throws InSufficientMoneyException, RuntimeException {
+    public int updateCost(Long cost, ProductDto productDto, UserDTO userDTO) {
         //Product currentGoal 갱신하기
         Long money = productDto.getCurrentGoal() + cost;
         productDto.setCurrentGoal(money);
 
-        //Order(주문서) 생성
-        Orders order = orderService.createOrder(cost, productDto, userDTO); //(유저의 투자금액, 상품 정보, 로그인한 유저 정보)
-
-        //User Point update
-        if (userDTO.getMoney() < cost) {
-            throw new InSufficientMoneyException("충전이 필요합니다.");
-        }
-
-//        Users user = modelMapper.map(userDTO, Users.class);
-//        user.setMoney(user.minusMoney(cost));
-
-        //하나라도 못찾은 것이 있다면, Rollback
-        if (productDto == null || order == null || userDTO == null) {
-            throw new RuntimeException("업데이트에 실패하셨습니다.");
-        }
-
-        //다 성공했다면 update
         Product result = productRepository.save(modelMapper.map(productDto, Product.class));
         if (result == null)
             return 0;
@@ -194,6 +180,8 @@ public class ProductServiceImpl implements ProductService {
         }
         Users user = modelMapper.map(userDTO, Users.class);
         productDto.setFundManager(user);
+        String crowdEnd = plus2Weeks(productDto.getCrowdStart());
+        productDto.setCrowdEnd(crowdEnd);
         productDto.setThumbnailRelPath(thumbnailImgRelPath);
         Product product = modelMapper.map(productDto, Product.class);
 
@@ -220,6 +208,12 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> selectByStatus(String status) {
         List<Product> productList = productRepository.findByStatus(status);
         return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+    }
+
+    public String plus2Weeks(String startDate) {
+        LocalDate ld = LocalDate.parse(startDate);
+        LocalDate crowdEnd = ld.plusDays(14);
+        return crowdEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     /**
@@ -258,5 +252,23 @@ public class ProductServiceImpl implements ProductService {
 
         return thumbnailImgDirName + "/" + fileName;
     }
-}
 
+    /**
+     * 페이징 처리
+     * */
+    public Page<ProductDto> selectAll(Pageable pageable) {
+        Page<Product> productList = productRepository.findAll(pageable);
+        Page<ProductDto> productDtoList = productList.map(product -> modelMapper.map(product, ProductDto.class));
+
+        return productDtoList;
+    }
+
+    @Override
+    public Page<ProductDto> selectByStatus(Pageable pageable, String status) {
+        Page<Product> productList = productRepository.selectByStatus(pageable,status);
+        Page<ProductDto> productDtoList = productList.map(product -> modelMapper.map(product, ProductDto.class));
+        return productDtoList;
+    }
+
+
+}

@@ -1,5 +1,7 @@
 package com.fundfun.fundfund.service.user;
 
+import com.fundfun.fundfund.domain.user.Gender;
+import com.fundfun.fundfund.domain.user.Role;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.repository.user.UserRepository;
@@ -35,6 +37,20 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email).map(x -> modelMapper.map(x, UserDTO.class)).orElseThrow(NoSuchElementException::new);
     }
 
+    @Override
+    public Long addMoney(UserDTO dto, Long amount) {
+        Users user = modelMapper.map(dto, Users.class);
+        user.addMoney(amount);
+        return user.getMoney();
+    }
+
+    @Override
+    public Long minusMoney(UserDTO dto, Long amount) {
+        Users user = modelMapper.map(dto, Users.class);
+            user.minusMoney(amount);
+            return user.getMoney();
+    }
+
     public UserDTO register(Users users) {
         return modelMapper.map(userRepository.save(users), UserDTO.class);
     }
@@ -48,8 +64,9 @@ public class UserServiceImpl implements UserService{
     public Users update(UUID uuid, UserDTO to) {
         return userRepository.findById(uuid).map(
                         (x) -> userRepository.save(
-                                modelMapper.map(to.builder().id(uuid).build(), Users.class)))
+                                modelMapper.map(to, Users.class)))
                 .orElseThrow(NoSuchElementException::new);
     }
+
 
 }

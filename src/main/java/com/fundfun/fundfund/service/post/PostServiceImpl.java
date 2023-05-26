@@ -231,8 +231,6 @@ public class PostServiceImpl implements PostService {
         post.setStatusPost(status);
         Vote vote = new Vote();
         vote.linkPost(post);
-        System.out.println("postDto의 id : " + postDto.getId());
-        System.out.println("vote에 연결된 post : " +vote.getPost().getId());
         voteRepository.save(vote);
         post.linkVote(vote);
         postRepository.save(post);

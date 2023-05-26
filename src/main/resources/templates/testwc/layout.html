@@ -16,6 +16,7 @@
     html > body {
         font-family: "GmarketSansMedium";
     }
+
     body {
         min-height: 100vh;
         display: flex;
@@ -28,6 +29,19 @@
         list-style: none;
         text-decoration: none;
     }
+
+    .input-search {
+        width: 300px;
+        border: 1px solid #A2A2A2;
+        border-left-radius: 2px;
+        border-right: 0;
+        padding-left: 10px;
+    }
+
+    .btn-search:hover {
+        color: white;
+    }
+
 
     .main {
         padding: 20px;
@@ -58,25 +72,39 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <!-- navbar -->
-<nav class="navbar navbar-expand-xl navbar-light bg-light">
+<nav class="navbar navbar-expand-xl navbar-light bg-white fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">FundFun</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarWithDropdown"
-                aria-controls="navbarWithDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo1"
+                aria-controls="navbarTogglerDemo1" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse show" id="navbarWithDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/product/list?mode=1">상품</a>
+        <div class="collapse navbar-collapse show d-flex justify-content-around" id="navbarTogglerDemo1"
+             style="width:100%;gap:3%;">
+            <div class="flex-grow-1 text-center">
+                <a class="navbar-brand" href="#" style="margin:0;">Hidden brand</a>
+            </div>
+            <ul class="navbar-nav me-auto mb-2 mb-xl-0 d-flex flex-grow-1" style="gap:10%">
+                <li class="nav-item" style="width:100px;">
+                    <a class="nav-link active" aria-current="page" href="/product/list">상품</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" style="width:100px;">
                     <a class="nav-link" href="#">아이디어</a>
                 </li>
+            </ul>
+            <form class="d-flex flex-grow-1">
+                <input class="input-search" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-warning btn-search" type="submit"
+                        style="background-color:white;color:#A2A2A2;border:1px solid #A2A2A2;border-radius:0;border-left:0;padding-top:7px;"
+                ><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="d-flex align-items-center flex-grow-1" style="gap:3%;padding-left:30px;">
+                <div>
+                    <a href="#"><i class="fa-regular fa-bell fa-2x"></i></a>
+                </div>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
+                        <i class="fa-solid fa-bars fa-2x" style="color:black"></i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="#">Action</a></li>
@@ -84,16 +112,14 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
+            </div>
         </div>
     </div>
 </nav>
+
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
 <div class="main">
-     <th:block layout:fragment="content"></th:block>
+    <th:block layout:fragment="content"></th:block>
     <!-- <th:block th:replace="/product/product_detail :: productFragment"></th:block> -->
 
 

@@ -13,7 +13,6 @@
         var postId = "";
         var chkVote = "";
         var chkAuth = "";
-        var vtStatus = [[${voteStatus}]];
 
         if(state == "noId") { // url 입력으로 접근 시 alert -> post/list 로 이동
             alert("정상적인 경로로 접근해주세요.");
@@ -32,7 +31,6 @@
     <script type="text/javascript">
         $(Document).ready(function() {
             getData();
-            visibleButton();
 
             // 포트폴리오 작성 클릭
             $("#goWrite").on("click", function() {
@@ -75,8 +73,6 @@
                     }
                 }
             });
-
-
         });
 
         // 포트폴리오 목록 데이터 가져오기
@@ -115,15 +111,6 @@
             // idx : 포트폴리오Id, state : 상세/수정/작성 구분코드
             location.href = "/portfolio/goDetail?id=" + idx + "&state=" + "R&postId=" + postId;
         }
-
-        function visibleButton(){
-            if(vtStatus == "PROCEED"){
-                $("#vote").show();
-            }
-            else{
-                $("#vote").hide();
-            }
-        }
     </script>
 
     <div class="d-flex flex-column wrapper">
@@ -132,17 +119,13 @@
         <span class="gray_text bottom_line" th:text="${voteEnd}"></span>
 
         <div class="bottom_line voteDiv">
-            <th if="${drawList==null}"><span class="fontSize-fix">등록된 포트폴리오가 없습니다.</span></th>
-
-
+            <span class="fontSize-fix">투표 중</span>
             <div id="drawList"></div>
         </div>
 
         <div class="marginBottom bottomDiv">
             <button class="rightArea bg-yellow paddingBtn" id="goWrite" th:if="${authChk == 2}">포트폴리오 등록</button>
             <button class="rightArea left_margin bg-yellow paddingBtn" id="vote">투표하기</button>
-
-            </th:if>
         </div>
     </div>
 

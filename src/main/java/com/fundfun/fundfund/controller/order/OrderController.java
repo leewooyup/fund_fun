@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller.order;
 
 
+import com.fundfun.fundfund.domain.order.Orders;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +39,7 @@ public class OrderController {
     private final OrderService orderService;
     private final ProductService productService;
     private final UserService userService;
-    
+
 
     /**
      * 상품 Detail 페이지 + 투자 금액 입력 폼 페이지
@@ -45,7 +47,7 @@ public class OrderController {
      * @return view
      */
     @GetMapping("/form/{encId}")
-    public String showOrderForm(InvestDto investDto, Model model, @PathVariable String encId) {
+    public String showOrderForm(InvestDto investDto, Model model, @PathVariable String encId, @AuthenticationPrincipal UserAdapter adapter) {
         UUID uuid = orderService.decEncId(encId);//productId
         // 복호화된 uuid로 해당 product 가져오기
         ProductDto productDto = productService.selectById(uuid);
@@ -54,6 +56,11 @@ public class OrderController {
         productService.updateStatus(productDto);
         int deadline = productService.crowdDeadline(productDto);
         model.addAttribute("deadline", deadline);
+
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+        if(userDTO.getId() == productDto.getFundManager().getId()){
+            model.addAttribute("user", userDTO);
+        }
 
         return "order/order_form";
     }
@@ -65,7 +72,7 @@ public class OrderController {
      * @return view
      */
     @PostMapping("/send/{encId}")
-    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model, Principal principal) {
+    public String orderFormSend(@Valid InvestDto investDto, BindingResult bindingResult, @PathVariable String encId, Model model, @AuthenticationPrincipal UserAdapter adapter) {
         if (bindingResult.hasErrors()) {
             return "order/order_form";
         }
@@ -73,18 +80,16 @@ public class OrderController {
         UUID productId = orderService.decEncId(encId);
         ProductDto productDto = productService.selectById(productId); //현재 product의 정보 가져오기
 
-        //
-        UserDTO userDTO = userService.findByEmail(principal.getName());
-//        if(userDTO == null) {
-//            throw new RuntimeException("로그인 먼저 진행해주세요.");
-//        }
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+
         if (productDto == null || investDto == null) {
             throw new RuntimeException("투자에 실패하셨습니다.");
         }
+
         model.addAttribute("product", productDto);
         model.addAttribute("invest", investDto);
         model.addAttribute("encId", encId);
-        model.addAttribute("user", UserMapper.toDto(adapter.getUser()));
+        model.addAttribute("user",userDTO );
 
         return "order/order_receipt";
     }
@@ -99,12 +104,27 @@ public class OrderController {
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
+        System.out.println("userDto id = " + adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
+
         try {
-            int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신 + 주문서 만들기
+            //User Point update
+            if (userDTO.getMoney() < cost) {
+                throw new InSufficientMoneyException("충전이 필요합니다.");
+            }
+
+            //주문서 생성 + 유저 충전금 업데이트
+            Orders order = orderService.createOrder(cost, productDto.getId(), userDTO.getId());
+            if (order == null) {
+                throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
+            }
+
+            //Product update
+            int result = productService.updateCost(cost, productDto, userDTO); //투자정보 갱신
             if (result == 0) {
                 throw new RuntimeException("투자에 실패하셨습니다. 다시 시도해주세요.");
             }
+
         } catch (InSufficientMoneyException e) {
             String errMsg = Util.url.encode(e.getMessage());
             return String.format("redirect:/order/form/%s?errMsg=%s", encId, errMsg);
@@ -114,9 +134,18 @@ public class OrderController {
         }
         String msg = Util.url.encode("성공적으로 투자되었습니다.");
 
+        //업데이트된 유저를 다시 불러옴(유저 충전금 업데이트)
+        UserDTO updateUserDTO = userService.findByEmail(adapter.getUser().getEmail());
+
+
+//        model.addAttribute("user", updateUserDTO);
+//        model.addAttribute("product", productDto);
+//        model.addAttribute("cost", cost);
+//        return "order/order_confirm";
+
         //return String.format("redirect:/product/list?msg=%s", msg);
         req.setAttribute("product", productDto);
-        req.setAttribute("user", adapter.getUser());
+        req.setAttribute("user", updateUserDTO);
         req.setAttribute("cost", cost);
         return String.format("forward:/order/confirm?msg=%s", msg);
 
@@ -125,7 +154,7 @@ public class OrderController {
     @PostMapping("/confirm")
     public String showOrderConfirm(HttpServletRequest req, Model model, Long cost) {
         ProductDto product = (ProductDto) req.getAttribute("product");
-        Users user = (Users) req.getAttribute("user");
+        UserDTO user = (UserDTO) req.getAttribute("user");
         model.addAttribute("product", product);
         model.addAttribute("user", user);
         model.addAttribute("cost", cost);
@@ -161,4 +190,3 @@ public class OrderController {
 //    }
 
 }
-

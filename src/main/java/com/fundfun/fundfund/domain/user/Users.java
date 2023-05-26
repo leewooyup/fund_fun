@@ -55,6 +55,10 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Orders> orders = new ArrayList<>();
+
     private String password;
 
     private String name;
@@ -63,11 +67,16 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private Role role;
     private String phone;
     private Gender gender;
+    private String image;
     private LocalDateTime reg_date;
-    private Long money;
-    private Long count;
-    private Long total_investment;
-    private Long benefit;
+    @Builder.Default
+    private Long money = 0L;
+    @Builder.Default
+    private Long count = 0L;
+    @Builder.Default
+    private Long total_investment = 0L;
+    @Builder.Default
+    private Long benefit = 0L;
     private LocalDateTime lastLoginTime;
 
     public void addAlarm(Alarm alarm) {
