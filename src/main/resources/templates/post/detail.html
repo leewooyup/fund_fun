@@ -148,7 +148,7 @@
                         <td style="text-align:left;"><span th:text="${ele.getContentReply()}"></span></td>
                         <td th:text="${ele.getWriteTime()}"></td>
 <!--                        <td th:if="${ele.getUser().getId()==userInfo.getId()}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>-->
-                        <td th:if="${ele.getUser().getId()==userInfo}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
+<!--                        <td th:if="${ele.getUser().getId()==userInfo}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>-->
                     </tr>
                 </table>
             </div>

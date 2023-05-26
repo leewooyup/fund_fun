@@ -9,9 +9,8 @@ spring:
     datasource:
         driver-class-name: oracle.jdbc.driver.OracleDriver
         url: jdbc:oracle:thin:@localhost:1521:XE
-
-        username: c##fund
-        password: FUND
+        username: c##yeop
+        password: 1234
 
     security:
         user:
@@ -36,7 +35,7 @@ spring:
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
             # yeoooo : ? ? create ? update ?? create-drop ?? ?????
 #        defer-datasource-initialization: true
         generate-ddl: true

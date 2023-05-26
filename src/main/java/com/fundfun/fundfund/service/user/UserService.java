@@ -22,4 +22,6 @@ public interface UserService {
     UserDTO register(Users users);
     UUID deleteById(UUID uuid);
     Users update(UUID uuid, UserDTO to);
+    Long addMoney(UserDTO dto, Long amount);
+    Long minusMoney(UserDTO dto, Long amount);
 }

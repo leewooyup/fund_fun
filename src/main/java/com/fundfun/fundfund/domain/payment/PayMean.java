@@ -22,13 +22,16 @@ public class PayMean extends BaseTimeEntity {
     private Mean mean;
     // 카드 번호 또는 계좌 번호
     private String mean_id;
+    private int cvc;
+    private String vendor;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
 
-    public static PayMean createPayMean(Mean mean, String number, Users user) {
-        PayMean payMean = new PayMean(null, mean, number, user);
+
+    public static PayMean createPayMean(Mean mean, String number, int cvc, String vendor, Users user) {
+        PayMean payMean = new PayMean(null, mean, number, cvc, vendor, user);
         user.addPayMean(payMean);
         return payMean;
     }

@@ -1,0 +1,243 @@
+<!--<!DOCTYPE html>-->
+<!--<html-->
+<!--        xmlns:th="http://thymeleaf.org"-->
+<!--        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--        layout:decorate="~{/testwc/layout}"-->
+<!--&gt;-->
+<!--<th:block layout:fragment="content">-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <title>MyPage-수정</title>-->
+<!--        <style>-->
+<!--            #preview-container {-->
+<!--                position: relative;-->
+<!--                display: inline-block;-->
+<!--                cursor: pointer;-->
+<!--                width: 200px;-->
+<!--                height: 200px;-->
+<!--            }-->
+
+<!--            #preview-image {-->
+<!--                width: 100%;-->
+<!--                height: 100%;-->
+<!--                border-radius: 50%;-->
+<!--                object-fit: cover;-->
+<!--            }-->
+
+<!--            #overlay {-->
+<!--                position: absolute;-->
+<!--                top: 0;-->
+<!--                left: 0;-->
+<!--                width: 100%;-->
+<!--                height: 100%;-->
+<!--                background-color: rgba(0, 0, 0, 0.5);-->
+<!--                display: flex;-->
+<!--                align-items: center;-->
+<!--                justify-content: center;-->
+<!--                opacity: 0;-->
+<!--                transition: opacity 0.3s ease;-->
+<!--                border-radius: 50%;-->
+<!--            }-->
+
+<!--            #preview-container:hover #overlay {-->
+<!--                opacity: 1;-->
+<!--            }-->
+
+<!--            #text {-->
+<!--                color: #fff;-->
+<!--                font-size: 20px;-->
+<!--                font-weight: bold;-->
+<!--                text-align: center;-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(20px);-->
+<!--                transition: opacity 0.3s ease, transform 0.3s ease;-->
+<!--            }-->
+
+<!--            #preview-container:hover #text {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+
+<!--            #image-input {-->
+<!--                display: none;-->
+<!--            }-->
+<!--        </style>-->
+<!--    </head>-->
+<!--    <body>-->
+<!--    <div style="border-bottom:solid; margin-top:10px; margin-bottom:10px;">-->
+<!--        <h3>MyPage - 수정</h3>-->
+<!--        <h5 class="gray_text">개인 정보를 변경할 수 있는 공간입니다.</h5>-->
+<!--    </div>-->
+<!--        <form th:action="@{/mypage/edit}" method="post" th:object="${form}">-->
+<!--            <label th:for="image">프로필 사진</label>-->
+<!--            <div id="preview-container">-->
+<!--                <img src="https://m.kbfg.com/Kor/main/visual/img/slide_banner_0_mobile.jpg" alt="미리보기 이미지" id="preview-image">-->
+<!--                <div id="overlay">-->
+<!--                    <span id="text">프로필 변경하기</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <input type="file" id="image-input">-->
+<!--            <label th:for="phone">휴대 전화</label>-->
+<!--            <input type="text" th:field = "*{phone}" name = "phone" id = "phone"/>-->
+<!--            <label th:for="email">이메일</label>-->
+<!--            <input type="text" th:field = "*{email}" name = "email" id = "email"/>-->
+<!--            <input type="submit">-->
+<!--        </form>-->
+<!--    <script>-->
+<!--        // 이미지 파일 선택 시 미리보기 이미지 업데이트-->
+<!--        document.getElementById('preview-container').addEventListener('click', function() {-->
+<!--            document.getElementById('image-input').click();-->
+<!--        });-->
+
+<!--        document.getElementById('image-input').addEventListener('change', function(event) {-->
+<!--            var input = event.target;-->
+<!--            var reader = new FileReader();-->
+
+<!--            reader.onload = function() {-->
+<!--                var previewImage = document.getElementById('preview-image');-->
+<!--                previewImage.src = reader.result;-->
+<!--            };-->
+
+<!--            reader.readAsDataURL(input.files[0]);-->
+<!--        });-->
+
+<!--        // 페이지 로드 시 기본 이미지 표시-->
+<!--        window.addEventListener('load', function() {-->
+<!--            var defaultImage = document.getElementById('preview-image');-->
+<!--            defaultImage.src = 'default-image.jpg';-->
+<!--        });-->
+<!--    </script>-->
+<!--    </body>-->
+<!--</th:block>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.n필z/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+<th:block layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <title>MyPage 수정</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <style>
+            #preview-container {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+                width: 210px;
+                height: 200px;
+            }
+
+            #preview-image {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            #overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                border-radius: 50%;
+            }
+
+            #preview-container:hover #overlay {
+                opacity: 1;
+            }
+
+            #text {
+                color: #fff;
+                font-size: 20px;
+                font-weight: bold;
+                text-align: center;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+
+            #preview-container:hover #text {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            #image-input {
+                display: none;
+            }
+
+            .center-text {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+<!--                <form th:action="@{/mypage/edit}" method="post" th:object="${form}">-->
+                <form th:action="@{/mypage/edit}" method="post" th:object="${form}">
+                    <div class="container text-center">
+                        <label class="row center-text" th:for="image">프로필 사진</label>
+                        <div class="row" id="preview-container">
+                            <img src="/img/default.jpeg" alt="미리보기 이미지" id="preview-image">
+                            <div id="overlay">
+                                <span id="text">프로필 변경하기</span>
+                            </div>
+                        </div>
+                    </div>
+                    </br>
+                    <div class="container">
+                        <input type="file" id="image-input">
+                        <label th:for="phone">휴대 전화</label>
+                        <input type="text" th:field="*{phone}" name="phone" id="phone" class="form-control">
+                        <label th:for="email">이메일</label>
+                        <input type="text" th:field="*{email}" name="email" id="email" class="form-control">
+                    </div>
+                    </br>
+                    <input type="submit" class="btn btn-primary">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 이미지 파일 선택 시 미리보기 이미지 업데이트
+        document.getElementById('preview-container').addEventListener('click', function () {
+            document.getElementById('image-input').click();
+        });
+
+        document.getElementById('image-input').addEventListener('change', function (event) {
+            var input = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                var previewImage = document.getElementById('preview-image');
+                previewImage.src = reader.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        });
+
+        // 페이지 로드 시 기본 이미지 표시
+        window.addEventListener('load', function () {
+
+            var defaultImage = document.getElementById('preview-image');
+            defaultImage.src = '/img/default.jpeg';
+        });
+    </script>
+    </body>
+</th:block>
+</html>
