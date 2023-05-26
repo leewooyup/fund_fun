@@ -1,6 +1,8 @@
 package com.fundfun.fundfund.repository.post;
 
 
+import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.domain.user.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
