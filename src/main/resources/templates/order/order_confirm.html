@@ -77,8 +77,9 @@
                 <span class="invest-msg" th:text="|<${product.title}> 상품에 ${cost}원 투자 완료되었습니다.|"></span>
             </div>
         </div>
-        <div style="text-align:right; padding:10px 0">
-            <span th:text="|충전금 잔액 : ${user.money}원|"></span>
+        <div id="tick" style="margin-top:10px;"></div>
+        <div class="d-flex" style="padding: 10px 0;justify-content: right;width: 70%;">
+            <span class="invest-span">충전금 잔액 : <span style="color:red; font-size:larger" th:text="${user.money}"></span>원</span>
         </div>
         <div style="text-align: center">
             <a href="/product/list">
@@ -90,6 +91,26 @@
             </a>
         </div>
     </div>
+    <script>
+        $(function() {
+            let count = 10;
+            let tickInterval = setInterval(timer, 1000); // 1초마다 계속 불러옴
+            timer();
+            function timer() {
+                if(count == 0) {
+                    location.href="/product/list";
+                }
+                if(count > 0) {
+                    let message = "초 후에 상품 리스트로 이동합니다";
+                    let tickMessage = count + message;
+                    $("#tick").html(tickMessage);
+                    count--;
+                } else {
+                    clearInterval(tickInterval);
+                }
+            }
+        });
+    </script>
     <script th:inline="javascript">
         toastr.options = {
             closeButton: false,
