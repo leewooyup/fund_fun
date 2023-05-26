@@ -29,9 +29,11 @@ public class UserDTO {
     private Gender gender;
     private LocalDateTime reg_date;
     private Long money;
+    private String password;
     private Long count;
     private Long total_investment;
     private Long benefit;
+    private String image;
     private List<PortfolioDto> on_vote_portfolio;
     private List<ProductDto> managing_product;
     private List<AlarmDTO> alarms;

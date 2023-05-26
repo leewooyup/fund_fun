@@ -1,32 +1,20 @@
 package com.fundfun.fundfund.controller.user;
 
 import com.fundfun.fundfund.domain.user.*;
-import com.fundfun.fundfund.dto.user.UserContext;
-import com.fundfun.fundfund.service.order.OrderService;
-import com.fundfun.fundfund.service.portfolio.PortfolioService;
-import com.fundfun.fundfund.service.post.PostService;
-import com.fundfun.fundfund.service.product.ProductService;
-import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
-import com.fundfun.fundfund.util.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import java.security.Principal;
-import java.util.Optional;
+
+import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -41,7 +29,7 @@ public class UserController {
         return "register";
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public String register(RegisterForm form, @RequestParam("role") String role) {
 
         UserDTO user = userService.register(Users.builder()
@@ -78,12 +66,27 @@ public class UserController {
         return "index";
     }
 
-    @PostMapping("/mypage")
-    public String editMyPage(@AuthenticationPrincipal UserAdapter adapter) {
-
-        return "index";
+    @GetMapping("/mypage/edit")
+    public String myPageForm(@AuthenticationPrincipal UserAdapter adapter, Model model) {
+        model.addAttribute("form", new UserUpdateForm());
+        return "user/mypage_form";
     }
 
-
-
+    @PostMapping("/mypage/edit")
+    public String editMyPage(@AuthenticationPrincipal UserAdapter adapter, @Valid UserUpdateForm form, BindingResult result) {
+        UserDTO dto = userService.findById(adapter.getUser().getId());
+        userService.update(dto.getId(), UserDTO
+                .builder()
+                .id(dto.getId())
+                .password(dto.getPassword())
+                .name(dto.getName())
+                .image(form.getImage() == null ? dto.getImage() : form.getImage())
+                .email(form.getEmail() == null ? dto.getEmail() : form.getEmail())
+                .phone(form.getPhone() == null ? dto.getPhone() : form.getPhone())
+                .role(dto.getRole())
+                .gender(dto.getGender())
+                .money(dto.getMoney())
+                .build());
+        return "redirect:/";
+    }
 }
