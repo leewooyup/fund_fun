@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -90,7 +91,7 @@ public class VoteServiceImpl implements VoteService{
         return false;
     }*/
 
-    public boolean updateVoteStatus(VoteDto voteDto) {
+    public void updateVoteStatus(VoteDto voteDto) {
         Vote vote = modelMapper.map(voteDto, Vote.class);
 
         // 현재 시간과 voteEnd 비교
@@ -131,9 +132,6 @@ public class VoteServiceImpl implements VoteService{
             }
         }
         voteRepository.save(vote);
-        return true;
-
-        }
     }
 
     @Override

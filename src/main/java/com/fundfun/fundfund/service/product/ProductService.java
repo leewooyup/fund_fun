@@ -1,11 +1,12 @@
 package com.fundfun.fundfund.service.product;
 
-import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.UserDTO;
-import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -71,5 +72,12 @@ public interface ProductService {
 //     * 하드코딩,,create
 //     */
 //    ProductDto createProduct(Users users);
+
+    /**
+     * 페이징 처리
+     * */
+    Page<ProductDto> selectAll(Pageable pageable);
+    Page<ProductDto> selectByStatus(Pageable pageable, String status);
+
 
 }
