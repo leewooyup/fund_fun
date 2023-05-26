@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+>
+<th:block layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #login-btn {
+                width: 250px;
+                height: 60px;
+                background-color: #7F7368;
+                color: white;
+                border-radius: 15px;
+                margin: 10px 0;
+            }
+
+            #login-wrapper {
+                width: 30%;
+                height: 300px;
+                background-color: #FFCE0B;
+                margin: 10px;
+            }
+
+            .sub-main {
+                background-color: lightgrey;
+                padding: 10px;
+                border-radius: 20px;
+            }
+
+            .d-flex {
+                padding: 10px;
+            }
+
+            caption {
+                text-align: center;
+                caption-side: top;
+                border-bottom: 1px solid;
+                font-size: large;
+            }
+
+            .col img {
+                width: 300px;
+                height: 300px;
+            }
+
+            .col {
+                border-radius: 20px;
+                text-align: center;
+                margin: 10px;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            .inner {
+                background-color: white;
+                width: 90%;
+                height: 90%;
+                border-radius: 20px;
+            }
+
+            .order-main-left-section img {
+                width: 100px;
+                height: 100px;
+            }
+            .inner-top{
+                height: 50%;
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+    <div style="margin:0px 50px">
+        <div class="d-flex">
+            <div class="wrapper" style="width:70%;padding:10px">
+                <div class="carousel slide" data-bs-ride="carousel"
+                     id="carouselExampleAutoplaying">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img alt="..." class="d-block"
+                                 src="https://fastly.picsum.photos/id/893/400/300.jpg?hmac=a1S674RYEEFSC6Ng-ccTs_spth5eS3Mdfvsp6O5excM">
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="..." class="d-block"
+                                 src="https://fastly.picsum.photos/id/1041/400/300.jpg?hmac=HcI2xbviGnFAbd-4qFp_OCc_mA0ASWzX9cWunjllpTo">
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="..." class="d-block"
+                                 src="https://fastly.picsum.photos/id/1052/400/300.jpg?hmac=LSyS5yPq4DULGZaFFjBhDBhNa5fF3MeXgFHHnl6fegw">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" data-bs-slide="prev"
+                            data-bs-target="#carouselExampleAutoplaying" type="button">
+                        <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" data-bs-slide="next"
+                            data-bs-target="#carouselExampleAutoplaying" type="button">
+                        <span aria-hidden="true" class="carousel-control-next-icon"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column justify-content-center align-items-center" id="login-wrapper">
+                <div class="inner">
+                    <div class="inner-top">
+                        <!-- 긁어옴 ㅋㅋ -->
+                        <div class="order-main-left-section">
+                            <img src="/gen/product/avatar.jpg">
+                        </div>
+                        <div class="order-main-right-section">
+                            <div>펀드매니저</div>
+                            <div>김깨비님</div>
+                            <div>kb@kb.com</div>
+                        </div>
+                    </div>
+                    <div class="inner-bottom">
+                        <div>진행중인 상품</div>
+                        <div>포트폴리오</div>
+                        <div>모집기간</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <table class="table" style="width:80%;text-align: center; padding:10px ">
+            <caption>Top10 아이디어 상품</caption>
+            <tr>
+                <th scope="col">no</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+                <th scope="col">상태</th>
+            </tr>
+
+            <tbody>
+            <!--<tr th:each="post, index:${postList}">
+                <td th:text="${index}">no</td>
+                <td th:text="${post.title}">title</td>
+                <td th:text="${post.user}">writer</td>
+                <td th:text="${post.createdAt}">pastDate</td>
+                <td th:text="${post.statusPost}">status</td>
+            </tr>-->
+
+            <tr>
+                <td>no1</td>
+                <td>title1</td>
+                <td>writer1</td>
+                <td>postDate1</td>
+                <td>status1</td>
+            </tr>
+            <tr>
+                <td>no2</td>
+                <td>title2</td>
+                <td>writer2</td>
+                <td>postDate2</td>
+                <td>status2</td>
+            </tr>
+            <tr>
+                <td>no3</td>
+                <td>title3</td>
+                <td>writer3</td>
+                <td>postDate3</td>
+                <td>status3</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex flex-column">
+        <div class="row">
+            <div class="col">
+                <caption>초보자를 위한 이용가이드 확인하기</caption>
+            </div>
+            <div class="col">
+                <a href="https://www.google.com/finance/quote/KOSPI:KRX?sa=X&ved=2ahUKEwjiopT_8pD_AhUPilYBHUXyC7YQ3ecFegQIHxAX">
+                    <img src="https://img.wowtv.co.kr/wowtv_news/dnrs/20211203/B20211203165510550.jpg">
+                </a>
+            </div>
+            <div class="col">
+                <a href="https://www.mk.co.kr/news/stock/">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdkW-8Pn0y7K0MoG0JQehuG4CCJYEUcYlgew&usqp=CAU">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </body>
+</th:block>
+</html>

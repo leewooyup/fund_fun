@@ -1,6 +1,6 @@
 package com.fundfun.fundfund.dto.reply;
 
-import com.fundfun.fundfund.domain.product.post.Post;
+import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.user.Users;
 import lombok.Data;
 
