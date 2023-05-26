@@ -17,7 +17,6 @@ public class HomeController {
     @GetMapping("/")
     public String index(@AuthenticationPrincipal UserAdapter adapter, Model model) {
 
-        System.out.println("adapter = " + adapter.getUser().getRole());
         return "index";
     }
 }

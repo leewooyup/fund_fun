@@ -1,10 +1,11 @@
 package com.fundfun.fundfund.service.post;
 
-
+import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 import com.fundfun.fundfund.domain.post.StPost;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.domain.vote.Vote;
+import com.fundfun.fundfund.dto.portfolio.PortfolioDto;
 import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.repository.post.PostRepository;
 import com.fundfun.fundfund.repository.user.UserRepository;
@@ -14,14 +15,15 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import org.springframework.data.domain.Pageable;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -229,8 +231,6 @@ public class PostServiceImpl implements PostService {
         post.setStatusPost(status);
         Vote vote = new Vote();
         vote.linkPost(post);
-        System.out.println("postDto의 id : " + postDto.getId());
-        System.out.println("vote에 연결된 post : " +vote.getPost().getId());
         voteRepository.save(vote);
         post.linkVote(vote);
         postRepository.save(post);
