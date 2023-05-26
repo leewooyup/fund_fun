@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class ReplyServiceImplTest {
     @Autowired

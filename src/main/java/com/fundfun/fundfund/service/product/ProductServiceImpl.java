@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setFundManager(user);
         productDto.setStatus(dbProduct.getStatus());
         productDto.setCurrentGoal(dbProduct.getCurrentGoal());
-        
+
         String thumbnailImgRelPath = null;
         if(thumbnailImg.isEmpty()) {
             thumbnailImgRelPath = "product/avatar.jpg";
@@ -272,4 +272,3 @@ public class ProductServiceImpl implements ProductService {
 
 
 }
-
