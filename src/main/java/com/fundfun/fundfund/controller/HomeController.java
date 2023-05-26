@@ -21,7 +21,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(@AuthenticationPrincipal UserAdapter adapter, Model model) {
-
+        System.out.println("adapter = " + adapter);
         if (adapter == null) {
             return "index";
         }else{
