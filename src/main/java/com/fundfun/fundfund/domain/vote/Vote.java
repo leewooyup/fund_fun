@@ -1,17 +1,13 @@
 
 package com.fundfun.fundfund.domain.vote;
 
-import com.fundfun.fundfund.domain.opinion.Opinion;
-import com.fundfun.fundfund.domain.portfolio.Portfolio;
 import com.fundfun.fundfund.domain.post.Post;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,9 +26,9 @@ public class Vote {
     @OneToOne
     private Post post;
 
-    private final LocalDateTime voteStart = LocalDateTime.now();
 
-    private final LocalDateTime voteEnd = voteStart.plusDays(30);
+    private final LocalDateTime voteStart = LocalDateTime.now();
+    private final LocalDateTime voteEnd = voteStart.plusMinutes(2);
 
     @Builder.Default
     private StVote status = StVote.PROCEED;
@@ -44,9 +40,7 @@ public class Vote {
     //private List<Portfolio> portfolios = new ArrayList<>();
 
     public void updateStatus() {
-        if (LocalDateTime.now().isAfter(voteEnd)) {
             this.status = StVote.END;
-        }
     }
 
     public void linkPost(Post post) {this.post = post;}
