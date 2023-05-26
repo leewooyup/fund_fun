@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.dto.portfolio;
 
 import com.fundfun.fundfund.domain.portfolio.Portfolio;
+import com.fundfun.fundfund.domain.portfolio.StPortfolio;
 import lombok.Data;
 
 import java.util.UUID;
@@ -16,6 +17,7 @@ public class PortfolioDto {
     private String contentPortfolio;
     private String warnLevel;
     private float beneRatio;
+    private StPortfolio statusPortfolio;
 
 }
 
