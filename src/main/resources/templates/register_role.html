@@ -10,12 +10,12 @@
     <title>Join</title>
 </head>
 <script type="text/javascript">
-    $(Documemt).ready(function(){
-        $("#FUND_MANAGER").on("click", function(){
+    $(document).ready(function(){
+        $("#fm").on("click", function(){
             location.href = "/register?role=FUND_MANAGER";
         })
 
-        $("#COMMON").on("click", function(){
+        $("#cm").on("click", function(){
             location.href = "/register?role=COMMON";
         })
     })
@@ -30,8 +30,8 @@
         <h1 class="jointext">JOIN</h1>
     </div>
     <div class="container">
-        <a href="/register?role=COMMON" id="COMMON" class="rolebutton" style="float:left;">투자자이신가요?</a>
-        <a href="/register?role=FUND_MANAGER" id="FUND_MANAGER" class="rolebutton" style="float:right;">펀드매니저이신가요?</a>
+        <a href="/register?role=COMMON" id="COMMONbtn" class="rolebtn" style="float:left;">투자자이신가요?</a>
+        <a href="/register?role=FUND_MANAGER" id="FUND_MANAGERbtn" class="rolebtn" style="float:right;">펀드매니저이신가요?</a>
     </div>
     <br><br>
     </body>
@@ -54,53 +54,6 @@
             transition:.2s linear;
         }
 
-        .joinform{
-            width:100%;
-            max-width:600px;
-            margin:40px auto 10px;
-            /*background-color: #ffc107;*/
-        }
-
-        .tableLabel{
-            width:10%;
-            font-size:14px;
-            padding-bottom:10px;
-        }
-
-        .tableInput{
-            width:40%;
-        }
-
-        .joininput{
-            display:block;
-            width:98%;
-            max-width:680px;
-            height:40px;
-            margin:0 auto;
-            border-radius:8px;
-            border:none;
-            background:ghostwhite;
-            padding:0 0 0 15px;
-            font-size:14px;
-            float:left;
-            margin-left:10px;
-            margin-bottom: 11px;
-        }
-
-        .joinbutton{
-            display:block;
-            width:100%;
-            height:40px;
-            margin:0 auto;
-            margin-top:20px;
-            border-radius: 8px;
-            border:none;
-            background-color:#7F7368;
-            color:white;
-            font-size:14px;
-            letter-spacing: 2px;
-        }
-
         .rolebutton{
             display:block;
             width:45%;
@@ -113,6 +66,26 @@
             font-size:20px;
             letter-spacing: 2px;
         }
+
+        .rolebtn{
+            width:45%;
+            height:300px;
+            margin:10px 10px 10px 10px;
+            border-radius: 8px;
+            border:#7F7368;
+            border-width:thick;
+            background-color:#7F7368;
+            color:white;
+            font-size:20px;
+            letter-spacing: 2px;
+            display:block;
+            text-align: center;
+            --move-hover : -4px;
+            padding: 130px 32px;
+            text-decoration: none;
+
+        }
+        a:hover{color:black; text-decoration: none; background-color:#FFCE0B;}
 
     </style>
 </th:block>

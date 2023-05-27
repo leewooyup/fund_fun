@@ -9,10 +9,72 @@
   <meta charset="UTF-8">
   <title>Join</title>
 </head>
-<script type="text/javascript">
-
-</script>
 <th:block layout:fragment="content">
+  <script type="text/javascript">
+    var compare_result = false;
+    $(document).ready(function(){
+      $("#submitBtn").click(function(){
+        var msg = validation();
+        if(msg == ""){
+          $("#joinForm").submit();
+        }
+        else{
+          alert(msg);
+          return false;
+        }
+      });
+    })
+    function validation(){
+      var msg="";
+      var phoneNumber = $("#phonef").val();
+      if($("#emailf").val() == ""){
+        msg = "이메일을 입력해주세요.";
+        return msg;
+      }
+      if($("#password1").val() == ""){
+        msg = "비밀번호를 입력해주세요.";
+        return msg;
+      }
+      if($("#password2").val() == ""){
+        msg = "비밀번호 확인란을 입력해주세요.";
+        return msg;
+      }
+      if(!compare_result){
+        msg = "비밀번호가 일치하지 않습니다.";
+        return msg;
+      }
+      if($("#namef").val() == ""){
+        msg = "이름을 입력해주세요.";
+        return msg;
+      }
+      if($("#phonef").val() == ""){
+        msg = "전화번호를 입력해주세요.";
+        return msg;
+      }
+      if(/^[가-힣a-zA-Z\s]+$/.test(phoneNumber)) {
+        msg = "전화번호란에는 숫자만 입력할 수 있습니다.";
+      }
+      return msg;
+    }
+
+    function fn_compare_pwd(){
+      var pwd1 = $("#password1").val(); // 비밀번호
+      var pwd2 = $("#password2").val(); // 비밀번호 확인
+      var $s_result = $("#s_result");
+      if(pwd1 == "" && pwd2 == ""){
+        compare_result=false;
+        $s_result.text("");
+        return;
+      }
+      if(pwd1 == pwd2){
+        compare_result = true;
+        $s_result.text("비밀번호가 일치합니다.");
+        return;
+      }
+      compare_result = false;
+      $s_result.text("비밀번호가 일치하지 않습니다.");
+    }
+  </script>
   <body>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -23,37 +85,44 @@
   </div>
   <div class="container">
     <br>
-    <form th:action="@{/register?role={role}(role=${role})}" method="post" class="bottom_line" th:object="${form}">
+    <form th:action="@{/register?role={role}(role=${role})}" method="post" class="bottom_line" th:object="${form}" id="joinForm">
       <div class="joinform">
         <table class="inputform">
           <tr>
             <td class="tableLabel">이메일</td>
-            <td class="tableInput"><input type="text" name="email" placeholder="이메일" class="joininput"></td>
+            <td class="tableInput"><input type="text" id="emailf" name="email" placeholder="이메일" class="joininput"></td>
           </tr>
           <tr>
             <td class="tableLabel">비밀번호</td>
-            <td class="tableInput"><input type="password" name="password" placeholder="비밀번호" class="joininput"></td>
+            <td class="tableInput"><input id="password1" type="password" name="password" placeholder="비밀번호" class="joininput" onKeyUp="fn_compare_pwd();"></td>
           </tr>
           <tr>
             <td class="tableLabel">비밀번호 확인</td>
-            <td class="tableInput"><input type="password" placeholder="비밀번호 확인" class="joininput"></td>
-
+            <td class="tableInput"><input id="password2" type="password" placeholder="비밀번호 확인" class="joininput" onKeyUp="fn_compare_pwd();"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><span class="tableInput" id="s_result" style="font-size: 12px; margin-left : 10px; margin-bottom: 20px;"></span></td>
           </tr>
           <tr>
             <td class="tableLabel">이름</td>
-            <td class="tableInput"><input type="text" name="name" placeholder="이름" class="joininput"></td>
+            <td class="tableInput"><input type="text" id="namef" name="name" placeholder="이름" class="joininput"></td>
           </tr>
           <tr>
             <td class="tableLabel">성별</td>
-            <td class="tableInput"><input type="text" name="gender" placeholder="성별" class="joininput"></td>
+            <td><select name="gender" id="gender" class="select">
+              <option value="MALE">남성</option>
+              <option value="FEMALE">여성</option>
+            </select>
+            </td>
           </tr>
           <tr>
-            <td class="tableLabel">휴대전화</td>
-            <td class="tableInput"><input type="text" name="phone" placeholder="휴대전화" class="joininput"></td>
+            <td class="tableLabel">전화번호</td>
+            <td class="tableInput"><input type="text" id="phonef" name="phone" placeholder="전화번호" class="joininput"></td>
           </tr>
         </table>
-        <input type="text" name="keyword" th:value="${role}"> <!-- type="hidden"으로 바뀌어야 -->
-        <button type="submit" class="joinbutton">회원가입</button>
+        <input type="hidden" name="keyword" th:value="${role}"> <!-- type="hidden"으로 바뀌어야 -->
+        <button type="submit" class="joinbutton" id="submitBtn">회원가입</button>
       </div>
     </form>
     <br><br>
@@ -94,6 +163,7 @@
 
     .tableInput{
       width:40%;
+      padding-top:5px;
     }
 
     .joininput{
@@ -124,6 +194,26 @@
       color:white;
       font-size:14px;
       letter-spacing: 2px;
+    }
+
+    .select {
+      width: 98%;
+      height: 40px;
+      /*background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;*/
+      background-size: 20px;
+      padding: 0 0 0 15px;
+      border-radius: 8px;
+      outline: 0 none;
+      float:right;
+      margin-left:10px;
+      margin-bottom: 11px;
+      background:ghostwhite;
+      font-size:14px;
+    }
+    .select option {
+      padding: 3px 0;
+      background:ghostwhite;
+      font-size:14px;
     }
   </style>
 </th:block>
