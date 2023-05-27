@@ -58,6 +58,7 @@ public class OrderController {
         // 복호화된 uuid로 해당 product 가져오기
         ProductDto productDto = productService.selectById(uuid);
         model.addAttribute("product", productDto);
+        model.addAttribute("goalWithComma", Util.number.formatNumberWithComma(productDto.getGoal()));
         model.addAttribute("encId", encId);
         productService.updateStatus(productDto);
         int deadline = productService.crowdDeadline(productDto);

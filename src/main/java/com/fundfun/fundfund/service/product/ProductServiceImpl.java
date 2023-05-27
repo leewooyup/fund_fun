@@ -305,7 +305,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Weight> selectWeightsByProductTitle(String productTitle) {
         return weightRepository.findByProductTitle(productTitle);
     }
-    
+
     public List<ProductDto> selectByCurrentGoal() {
         List<Product> productList = productRepository.findByCurrentGoal();
         List<ProductDto> productDtoList = productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
