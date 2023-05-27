@@ -5,6 +5,7 @@ import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -24,9 +25,19 @@ public class UserController {
 
     private final UserService userService;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping("/register")
-    public String getRegisterForm() {
-        return "register";
+    public String getRegisterForm(@RequestParam(value = "role", required = false) String role, Model model) {
+        if(role == null){
+            return "register_role";
+        } else if(role.equals("COMMON")){
+            model.addAttribute("role", role);
+            return "register";
+        } else {
+            model.addAttribute("role", role);
+            return "register";
+        }
     }
 
     @PostMapping("/register")
@@ -40,7 +51,7 @@ public class UserController {
                 .benefit(0L)
                 .name(form.getName())
                 .phone(form.getPhone())
-                .password(form.getPassword())
+                .password(bCryptPasswordEncoder.encode(form.getPassword()))
                 .role(Role.valueOf(role))
                 .total_investment(0L)
                 .build()
