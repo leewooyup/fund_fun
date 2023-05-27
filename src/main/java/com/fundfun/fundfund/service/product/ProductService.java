@@ -72,11 +72,6 @@ public interface ProductService {
      */
     int crowdDeadline(ProductDto productDto);
 
-//    /**
-//     * 하드코딩,,create
-//     */
-//    ProductDto createProduct(Users users);
-
     /**
      * 페이징 처리
      * */
@@ -84,6 +79,8 @@ public interface ProductService {
     Page<ProductDto> selectByStatus(Pageable pageable, String status);
 
     void createItems(String item, ProductDto productDto);
+
+    List<ProductDto> selectByCurrentGoal();
 
     void createWeight(Integer weight, ProductDto productDto);
 

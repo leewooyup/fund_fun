@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -56,7 +57,12 @@ public class PortfolioController {
             } else { // 정상 데이터 확인 시
                 model.addAttribute("postId", postId);  // postId 값 넣기( 목록 조회 AJAX 에서 사용해야 하므로 뷰로 다시 넘김 )
                 model.addAttribute("state", "pass"); // 정상 결과 값 넣기
-
+                VoteDto voteDto = voteService.selectVoteByPostId(postId);
+                String voteStart = voteDto.getVoteStart().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+                String voteEnd = voteDto.getVoteEnd().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+                String voteStatus = voteDto.getStatus().toString();
+                model.addAttribute("voteDate", voteStart + " ~ " + voteEnd);
+                model.addAttribute("voteStatus", voteStatus);
                 /*
                  * 투표 여부 확인( 한 POST 당 한번만 투표 가능 ) : 입력받은 postId와 로그인한 사용자로 opinion 테이블에서 검색
                  * 0 : 투표 이력 없음
@@ -65,6 +71,8 @@ public class PortfolioController {
                 String chkVote = opinionService.checkOpinion(voteService.selectVoteByPostId(postId), adapter.getUser()) ? "1" : "0";
                 model.addAttribute("chkVote", chkVote); // 투표 여부 넣기
                 model.addAttribute("authChk", adapter.getUser().getRole().toString().equals(Role.FUND_MANAGER.name()) ? 2 : 1);
+
+                model.addAttribute("vtStatus", voteService.selectVoteByPostId(postId).getStatus());
             }
         }
         return "portfolio/portfolioList";
