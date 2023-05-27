@@ -9,7 +9,7 @@
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
 
     <div class="d-flex flex-column wrapper">
-        <div class="fontSize-fix bottom_line">아이디어 작성</div>
+        <div class="fontSize-fix bottom_line" style="padding-bottom: 10px;">아이디어 작성</div>
 
         <form method="post" th:action="@{/post/write}" th:object="${postForm}">
             <div class="d-flex flex-column">
@@ -25,7 +25,7 @@
             </div>
 
             <div th:replace="form_errors :: formErrorsFragment"></div>
-
+            <br>
             <span style="margin-top: 10px;">※ 주의해주세요!</span>
             <span style="margin-top:10px;">광고, 스팸성 게시글, 업종 및 종목명을 기재하지 않은 글은 통보 없이 관리자에 의해 삭제될 수 있습니다.</span>
 

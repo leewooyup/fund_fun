@@ -145,10 +145,10 @@
             <div style="margin-top: 1rem;">
                 <table>
                     <tr th:each="ele: ${replyList}" style="border-top: 0.5px solid darkgray; border-bottom: 0.5px solid darkgray;">
+                        <td th:text="${ele.getUser().getName()}" style="text-align:left;"></td>
                         <td style="text-align:left;"><span th:text="${ele.getContentReply()}"></span></td>
                         <td th:text="${ele.getWriteTime()}"></td>
-<!--                        <td th:if="${ele.getUser().getId()==userInfo.getId()}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>-->
-<!--                        <td th:if="${ele.getUser().getId()==userInfo}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>-->
+                        <td th:if="${ele.getUser().getId()==userInfo}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
                     </tr>
                 </table>
             </div>
@@ -180,16 +180,12 @@
             text-align: center;
             background-color: #ffc107;
             border: 1px solid #ffc107;
+            border-radius: 0.25rem;
         }
 
         .paddingBtn {
             padding-top: 0.5rem !important;
             padding-bottom: 0.5rem !important;
-        }
-
-        .paddingBtn-plus {
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
         }
 
         .gray_text {
@@ -208,21 +204,21 @@
             float: right;
         }
 
-        .bg-yellow {
-            background-color: #ffc107;
-            border: 1px solid #ffc107;
-        }
-
-        .border-yellow {
-            border: 1px solid #ffc107;
-        }
-
         .left_margin {
             margin-left: 1rem;
         }
 
-        .width92 {
-            width: 92%;
+        a {color: black; text-decoration: none;}
+        a:hover{color:#7F7368; text-decoration: none;}
+
+        td{
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        th {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color:#FFCE0B;
         }
     </style>
 </th:block>
