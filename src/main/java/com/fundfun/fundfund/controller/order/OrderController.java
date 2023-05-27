@@ -104,7 +104,6 @@ public class OrderController {
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        System.out.println("userDto id = " + adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
 
         try {

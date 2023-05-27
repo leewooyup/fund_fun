@@ -18,6 +18,7 @@
                 height: 300px;
                 background-color: #FFCE0B;
                 margin: 10px;
+                border-radius: 10px;
             }
 
             .d-flex {
@@ -31,10 +32,17 @@
                 font-size: large;
             }
 
+            .div-caption {
+                text-align: center;
+                font-size: large;
+                color: #6c757d;
+            }
+
             .col {
                 border-radius: 20px;
                 text-align: center;
                 margin: 10px;
+                border: 1px solid rgba(17, 17, 17, .16);
             }
 
             a {
@@ -60,6 +68,22 @@
                 justify-content: space-evenly;
                 align-items: center;
                 padding-top: 20px;
+            }
+
+            .btn {
+                background-color: #7F7368;
+                color: white;
+                height: 90%;
+                font-size: small;
+            }
+
+            .btn-logout{
+                font-size: x-small;
+                width: 120%;
+                border: none;
+                border-radius: 10px;
+                height: 50%;
+                color: sandybrown;
             }
         </style>
     </head>
@@ -104,11 +128,14 @@
                         </div>
                         <div class="order-main-right-section">
                             <div style="font-size: small;color:grey">펀드매니저</div>
-                            <div style="font-size: large;font-weight: bold;">김깨비님</div>
-                            <div style="font-size: smaller">kb@kb.com</div>
+                            <div style="font-size: large;font-weight: bold;" th:text="|${user.name}님|"></div>
+                            <div style="font-size: smaller" th:text="${user.email}"></div>
+                            <a href="/logout">
+                                <button class="btn-logout" type="submit">logout</button>
+                            </a>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between" style="font-size: 15px;">
                         <div class="d-flex flex-column">
                             <div>진행중인 상품</div>
                             <div>포트폴리오</div>
@@ -127,7 +154,7 @@
 
         <div class="d-flex justify-content-center">
             <table class="table" style="width:80%;text-align: center; padding:10px ">
-                <caption>Top10 아이디어 상품</caption>
+                <caption>아이디어 게시판</caption>
                 <tr>
                     <th scope="col">no</th>
                     <th scope="col">제목</th>
@@ -137,53 +164,36 @@
                 </tr>
 
                 <tbody>
-                <!--<tr th:each="post, index:${postList}">
-                    <td th:text="${index}">no</td>
-                    <td th:text="${post.title}">title</td>
-                    <td th:text="${post.user}">writer</td>
-                    <td th:text="${post.createdAt}">pastDate</td>
-                    <td th:text="${post.statusPost}">status</td>
-                </tr>-->
-
-                <tr>
-                    <td>no1</td>
-                    <td>title1</td>
-                    <td>writer1</td>
-                    <td>postDate1</td>
-                    <td>status1</td>
-                </tr>
-                <tr>
-                    <td>no2</td>
-                    <td>title2</td>
-                    <td>writer2</td>
-                    <td>postDate2</td>
-                    <td>status2</td>
-                </tr>
-                <tr>
-                    <td>no3</td>
-                    <td>title3</td>
-                    <td>writer3</td>
-                    <td>postDate3</td>
-                    <td>status3</td>
+                <tr th:each="post, index:${postList}">
+                    <td th:text="${index.count}"></td>
+                    <td th:text="${post.title}"></td>
+                    <td th:text="${post.user.name}"></td>
+                    <td th:text="${post.createdAt}"></td>
+                    <td th:text="${post.likePost}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
+        <th:block th:if="!${productList.isEmpty()}">
+            <div class="div-caption">투자 상품 Best 3</div>
+        </th:block>
         <div class="d-flex flex-column">
-            <div class="row">
-                <div class="col">
-                    <caption>초보자를 위한 이용가이드 확인하기</caption>
-                </div>
-                <div class="col">
-                    <a href="https://www.google.com/finance/quote/KOSPI:KRX?sa=X&ved=2ahUKEwjiopT_8pD_AhUPilYBHUXyC7YQ3ecFegQIHxAX">
-                        <img src="https://img.wowtv.co.kr/wowtv_news/dnrs/20211203/B20211203165510550.jpg">
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="https://www.mk.co.kr/news/stock/">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdkW-8Pn0y7K0MoG0JQehuG4CCJYEUcYlgew&usqp=CAU">
-                    </a>
+            <div class="row row-cols-3">
+                <div th:each="product:${productList}">
+                    <div class="col">
+                        <!--                    <a th:href="@{|/order/form/${product.uuid}|}"></a>-->
+                        <div class="d-flex flex-column" style="height:400px">
+                            <div style="padding:20px">
+                                <img src="/gen/product/gom.jpg" style="height: 200px;">
+                            </div>
+                            <div style="padding:20px;">
+                                <div style="font-size: 25px;font-weight: bold" th:text="${product.title}"></div>
+                                <div th:text="|<${product.fundManager.name} 펀드매니저>|"></div>
+                                <div style="padding:10px;font-style: italic"
+                                     th:text="|${product.calCollectionsPercentage}%|"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
