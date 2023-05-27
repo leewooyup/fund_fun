@@ -57,7 +57,7 @@
             transition: transform 0.3s;
         }
         .btn-close {
-            padding: 5px;
+            padding: 10px;
         }
         .popup__body {
             padding: 3px 5px;
@@ -74,11 +74,11 @@
                 <button class="btn-close"></button>
             </div>
             <div class="popup__body">
-                <div>차트</div>
+                <div>[[${product.title}]]</div>
                 <div>
                     <canvas id="myChart"></canvas>
                 </div>
-                <button class="btn btn-warning" type="button">확인</button>
+                <button class="btn btn-warning my-3" id="btn-check" type="button">확인</button>
             </div>
         </div>
     </div>
@@ -130,12 +130,20 @@
     </div>
 
     <div class="order-desc">
-        <div id="btn-show-chart"><i class="fa-solid fa-chart-pie"></i></div>
-        ~ 아이디어를 기반으로 개발된 펀드 상품입니다.<br>
-        ~ 상품 ~%<br>
-        ~ 상품 ~%<br>
-        예상 수익률은 ~%이고, 예상 위험도는 ~입니다.<br>
-        비슷한 종목으로 구성된 펀드를 운용했을때 ~%의 수익률을 달성한 바 있습니다.<br>
+        <div class="d-flex justify-content-between">
+            <div>[[${product.title}]] 아이디어를 기반으로 개발된 펀드 상품입니다.</div>
+            <div id="btn-show-chart"><i class="fa-solid fa-chart-pie fa-2x" style="color:#5F584C;cursor:pointer;"></i></div>
+        </div>
+        <div class="d-flex" style="gap:30px;">
+            <div th:each="combined : ${combinedList}">
+                <div style="background-color:#5F584C;border-radius:10px;padding:5px 10px;color:white;"><i class="fa-solid fa-gift" style="color:white;"></i> [[${combined}]]</div>
+            </div>
+
+        </div>
+        <div class="my-3">
+            예상 수익률은 ~%이고, 예상 위험도는 ~입니다.<br>
+            비슷한 종목으로 구성된 펀드를 운용했을때 ~%의 수익률을 달성한 바 있습니다.<br>
+        </div>
     </div>
     <th:block th:if="${user}!=null">
         <div class="d-flex justify-content-center">
@@ -163,6 +171,10 @@
             });
 
             $(document).on('click', '.btn-close', function() {
+                $(".popup").removeClass("active");
+            });
+
+            $(document).on('click', '#btn-check', function() {
                 $(".popup").removeClass("active");
             });
         });
@@ -203,11 +215,12 @@
 
         var donutLabels = /*[[${items}]]*/;
         var donutData = /*[[${weights}]]*/;
+        var donutTitle = /*[[${product.title}]]*/;
 
         const data = {
           labels: donutLabels,
           datasets: [{
-            label: 'My First Dataset',
+            label: donutTitle,
             data: donutData,
             backgroundColor: [
               'rgb(255, 99, 132)',

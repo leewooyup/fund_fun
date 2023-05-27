@@ -18,8 +18,10 @@ import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.UserMapper;
 import com.fundfun.fundfund.util.Util;
+
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -80,6 +83,13 @@ public class OrderController {
 
         model.addAttribute("items", itemNames);
         model.addAttribute("weights", itemWeights);
+
+        List<String> combinedList = new ArrayList<>();
+        for(int i = 0; i < itemNames.length; i++) {
+            String combinedValue = "\'" + itemNames[i] + "\'" + " 상품: " + itemWeights[i] + " %";
+            combinedList.add(combinedValue);
+        }
+        model.addAttribute("combinedList", combinedList);
         return "order/order_form";
     }
 
