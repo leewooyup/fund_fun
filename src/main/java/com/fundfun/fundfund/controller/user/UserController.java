@@ -105,4 +105,14 @@ public class UserController {
     public String showMoneyChargeForm() {
         return "user/charge";
     }
+
+    @GetMapping("/user/myPageUser")
+    public String goMyPageUser() {
+        return "user/myPageUser";
+    }
+
+    @GetMapping("/user/myPageFund")
+    public String goMyPageFund() {
+        return "user/myPageFund";
+    }
 }
