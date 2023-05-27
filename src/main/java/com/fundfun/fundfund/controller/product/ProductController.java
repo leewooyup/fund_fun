@@ -1,8 +1,13 @@
 package com.fundfun.fundfund.controller.product;
 
+
+import com.fundfun.fundfund.domain.product.Items;
+import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Role;
+
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
+import com.fundfun.fundfund.dto.product.ItemsDTO;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.service.product.ProductService;
@@ -22,8 +27,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/product")
@@ -99,12 +109,23 @@ public class ProductController {
      * 상품 등록 처리
      */
     @PostMapping("/write")
-    public String write(@Valid ProductDto productDto, BindingResult bindingResult, MultipartFile thumbnailImg, @AuthenticationPrincipal UserAdapter adapter) {
+    public String write(@Valid ProductDto productDto, BindingResult bindingResult,
+                        @RequestParam("items[]") String[] items,@RequestParam("weights[]") Integer[] weights, MultipartFile thumbnailImg, @AuthenticationPrincipal UserAdapter adapter) {
         if (bindingResult.hasErrors()) {
             return "product/product_register";
         }
+
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        productService.registerProduct(productDto, thumbnailImg, userDTO);
+        ProductDto product = productService.registerProduct(productDto, thumbnailImg, userDTO);
+
+        Stream.of(items)
+                .forEach(item -> {
+                    productService.createItems(String.valueOf(item), product);
+                });
+        Stream.of(weights)
+                .forEach(weight -> {
+                    productService.createWeight(Integer.valueOf(weight), product);
+                });
 
         return "redirect:/product/list";
     }
