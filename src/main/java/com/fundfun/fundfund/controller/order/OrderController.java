@@ -58,7 +58,7 @@ public class OrderController {
         model.addAttribute("deadline", deadline);
 
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        if(userDTO.getId() == productDto.getFundManager().getId()){
+        if(userDTO.getId() == productDto.getFundManager().getId() && userDTO.getRole().equals("FUND_MANAGER")){
             model.addAttribute("user", userDTO);
         }
 
