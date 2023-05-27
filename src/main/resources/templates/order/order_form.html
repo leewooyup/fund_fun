@@ -201,11 +201,14 @@
             errorModal(params.errMsg);
         }
 
+        var donutLabels = /*[[${items}]]*/;
+        var donutData = /*[[${weights}]]*/;
+
         const data = {
-          labels: ['Red', 'Blue', 'Yellow'],
+          labels: donutLabels,
           datasets: [{
             label: 'My First Dataset',
-            data: [300, 50, 100],
+            data: donutData,
             backgroundColor: [
               'rgb(255, 99, 132)',
               'rgb(54, 162, 235)',

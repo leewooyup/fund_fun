@@ -30,10 +30,10 @@ public class Scheduler {
     private final ProductService productService;
     private final VoteService voteService;
 
-    @Scheduled(fixedRate = 1000)
-    public void reportCurTime() {
-        log.info("Java fixedRate Thread={}", Thread.currentThread().getName());
-    }
+//    @Scheduled(fixedRate = 1000)
+//    public void reportCurTime() {
+//        log.info("Java fixedRate Thread={}", Thread.currentThread().getName());
+//    }
 
 //    @Scheduled(fixedDelay = 1000)
 //    public void reportCurTimeThread() {

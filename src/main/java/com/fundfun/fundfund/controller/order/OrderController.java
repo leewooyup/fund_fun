@@ -2,7 +2,9 @@ package com.fundfun.fundfund.controller.order;
 
 
 import com.fundfun.fundfund.domain.order.Orders;
+import com.fundfun.fundfund.domain.product.Items;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.product.Weight;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,6 +65,21 @@ public class OrderController {
             model.addAttribute("user", userDTO);
         }
 
+        List<Items> items = productService.selectItemsByProductTitle(productDto.getTitle());
+        List<Weight> weights = productService.selectWeightsByProductTitle(productDto.getTitle());
+        String[] itemNames = new String[items.size()];
+        Integer[] itemWeights = new Integer[weights.size()];
+        int idx = 0;
+        for(Items it : items) {
+            itemNames[idx++] = it.getItemsName();
+        }
+        idx = 0;
+        for(Weight w : weights) {
+            itemWeights[idx++] = w.getWeight();
+        }
+
+        model.addAttribute("items", itemNames);
+        model.addAttribute("weights", itemWeights);
         return "order/order_form";
     }
 
@@ -96,7 +114,6 @@ public class OrderController {
 
     /**
      * 주문 생성 + 상품 모금액 업데이트
-     *
      * @param encId
      * @param cost
      * @return view
