@@ -1,5 +1,6 @@
 package com.fundfun.fundfund.controller.product;
 
+import com.fundfun.fundfund.domain.user.Role;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.dto.product.ProductDto;
@@ -44,26 +45,6 @@ public class ProductController {
         return "product/product_register";
     }
 
-
-    /**
-     * (해당 유저에 해당하는 주문서 ..) 전체검색
-     */
-//    @GetMapping("/list")
-//    public String list(Model model, int modeVal) {
-//        if () {
-//            List<ProductDto> productList = productService.selectAll();
-//            model.addAttribute("list", productList);
-//            return "product/product_list";
-//        }
-//        if (modeVal == 2) {
-//            List<Product> productList = productService.selectByStatus("진행중");
-//            model.addAttribute("list", productList);
-//            return "product/product_list";
-//        }
-//        return "product/list";
-//
-//    }
-
     /**
      * 전체 상품 list 보여주기
      *
@@ -94,10 +75,11 @@ public class ProductController {
 
 
     @GetMapping("/list/progress")
-    public String listProgress(Model model, @RequestParam(defaultValue = "1") int nowPage) {
+    public String listProgress(Model model, @RequestParam(defaultValue = "1") int nowPage, @AuthenticationPrincipal UserAdapter adapter) {
         Pageable page = PageRequest.of((nowPage - 1), PAGE_COUNT, Sort.Direction.DESC, "createdAt");
-
         Page<ProductDto> progressList = productService.selectByStatus(page, "진행중");
+
+        UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
 
         int temp = (nowPage - 1) % BLOCK_COUNT;
         int startPage = nowPage - temp;
@@ -107,6 +89,8 @@ public class ProductController {
 
         model.addAttribute("startPage", startPage);
         model.addAttribute("nowPage", nowPage);
+
+        model.addAttribute("user", userDTO);
 
         return "product/product_list";
     }
@@ -181,18 +165,4 @@ public class ProductController {
         return "product/product_search_list";
     }
 
-    //test
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
-
-    @GetMapping("/index/fund")
-    public String indexFund() {
-        return "index_fund";
-    }
-    @GetMapping("/index/user")
-    public String indexUser() {
-        return "index_user";
-    }
 }

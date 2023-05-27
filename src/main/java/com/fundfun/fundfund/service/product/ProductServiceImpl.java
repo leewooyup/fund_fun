@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
+    private ProductDto productDto;
 
 //    public ProductDto createProduct(Users users) { //테스트용code
 //
@@ -89,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setCurrentGoal(dbProduct.getCurrentGoal());
 
         String thumbnailImgRelPath = null;
-        if(thumbnailImg.isEmpty()) {
+        if (thumbnailImg.isEmpty()) {
             thumbnailImgRelPath = "product/avatar.jpg";
             System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
         } else {
@@ -108,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId).orElse(null);
         List<Orders> orderList = orderRepository.findByProductId(productId);
 
-        if (product == null ||  !orderList.isEmpty()) {
+        if (product == null || !orderList.isEmpty()) {
             throw new RuntimeException("상품을 삭제할 수 없습니다.");
         }
         productRepository.delete(product);
@@ -148,6 +149,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 매일 자정 펀딩 상태 체크 및 update
+     *
      * @param productDto
      * @return update(true)/not(false)
      */
@@ -156,7 +158,7 @@ public class ProductServiceImpl implements ProductService {
         String deadline = productDto.getCrowdEnd();
         LocalDate deadlineLD = LocalDate.parse(deadline);
         // deadline이 오늘날짜보다 작을 경우
-        if(deadlineLD.isBefore(LocalDate.now())) {
+        if (deadlineLD.isBefore(LocalDate.now())) {
             productDto.setStatus("진행종료");
             Product product = modelMapper.map(productDto, Product.class);
             productRepository.save(product);
@@ -172,7 +174,7 @@ public class ProductServiceImpl implements ProductService {
     public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
         System.out.println("thumbnailImg: " + thumbnailImg);
         String thumbnailImgRelPath = null;
-        if(thumbnailImg.isEmpty()) {
+        if (thumbnailImg.isEmpty()) {
             thumbnailImgRelPath = "product/avatar.jpg";
             System.out.println("thumbnailImgRelPath: " + thumbnailImgRelPath);
         } else {
@@ -221,8 +223,11 @@ public class ProductServiceImpl implements ProductService {
      */
     public int crowdDeadline(ProductDto productDto) {
         LocalDate now = LocalDate.now();
+        System.out.println("now!!!!!!!!!!!" + now);
         LocalDate deadLine = LocalDate.parse(productDto.getCrowdEnd());
+        System.out.println("기한!!!!!!!!!!!!!!!!!" + deadLine);
         Period period = Period.between(now, deadLine);
+        System.out.println("period!!!!!!!!!!!!!" + period.getDays());
 //        System.out.println("gap: " + period.getDays());
         return period.getDays();
     }
@@ -255,7 +260,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 페이징 처리
-     * */
+     */
     public Page<ProductDto> selectAll(Pageable pageable) {
         Page<Product> productList = productRepository.findAll(pageable);
         Page<ProductDto> productDtoList = productList.map(product -> modelMapper.map(product, ProductDto.class));
@@ -265,10 +270,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDto> selectByStatus(Pageable pageable, String status) {
-        Page<Product> productList = productRepository.selectByStatus(pageable,status);
+        Page<Product> productList = productRepository.findByStatus(pageable, status);
         Page<ProductDto> productDtoList = productList.map(product -> modelMapper.map(product, ProductDto.class));
         return productDtoList;
     }
 
-
+    public List<ProductDto> selectByCurrentGoal() {
+        List<Product> productList = productRepository.findByCurrentGoal();
+        List<ProductDto> productDtoList = productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return productDtoList;
+    }
 }

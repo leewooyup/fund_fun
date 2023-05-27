@@ -68,16 +68,12 @@ public interface ProductService {
      */
     int crowdDeadline(ProductDto productDto);
 
-//    /**
-//     * 하드코딩,,create
-//     */
-//    ProductDto createProduct(Users users);
-
     /**
      * 페이징 처리
      * */
     Page<ProductDto> selectAll(Pageable pageable);
     Page<ProductDto> selectByStatus(Pageable pageable, String status);
 
+    List<ProductDto> selectByCurrentGoal();
 
 }
