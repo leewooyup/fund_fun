@@ -58,7 +58,7 @@ public class OrderController {
         model.addAttribute("deadline", deadline);
 
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        if(userDTO.getId() == productDto.getFundManager().getId() && userDTO.getRole().equals("FUND_MANAGER")){
+        if(userDTO.getId() == productDto.getFundManager().getId()){
             model.addAttribute("user", userDTO);
         }
 
@@ -104,7 +104,6 @@ public class OrderController {
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        System.out.println("userDto id = " + adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
 
         try {

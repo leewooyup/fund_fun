@@ -223,11 +223,8 @@ public class ProductServiceImpl implements ProductService {
      */
     public int crowdDeadline(ProductDto productDto) {
         LocalDate now = LocalDate.now();
-        System.out.println("now!!!!!!!!!!!" + now);
         LocalDate deadLine = LocalDate.parse(productDto.getCrowdEnd());
-        System.out.println("기한!!!!!!!!!!!!!!!!!" + deadLine);
         Period period = Period.between(now, deadLine);
-        System.out.println("period!!!!!!!!!!!!!" + period.getDays());
 //        System.out.println("gap: " + period.getDays());
         return period.getDays();
     }

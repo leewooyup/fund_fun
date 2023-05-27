@@ -86,7 +86,12 @@
                 contentType: "application/json; CHARSET=UTF-8",
                 data: JSON.stringify({"postId": postId}),
                 success: function(result) {
-                    drawList(result.portfolioList, result.voteList);  //밑에 함수 적어놈
+                    if(result.portfolioList.length == 0) {
+                        $("#noData").show();
+                    } else {
+                        $("#noData").hide();
+                        drawList(result.portfolioList, result.voteList);
+                    }
                 },
                 error: function(e) {
                     console.log(e);
@@ -113,17 +118,24 @@
             // idx : 포트폴리오Id, state : 상세/수정/작성 구분코드
             location.href = "/portfolio/goDetail?id=" + idx + "&state=" + "R&postId=" + postId;
         }
+
+       function visibleButton(){
+            if(vtStatus == "PROCEED"){
+                $("#vote").show();
+            }
+            else{
+                $("#vote").hide();  //원래 여기 hide로 하고 싶음
+            }
+        }
+
     </script>
 
     <div class="d-flex flex-column wrapper">
         <div class="fontSize-fix">포트폴리오 투표</div>
-        <span class="gray_text" th:text="${voteStart}"></span>
-        <span class="gray_text bottom_line" th:text="${voteEnd}"></span>
+        <span class="gray_text bottom_line" th:text="${voteDate}"></span>
 
         <div class="bottom_line voteDiv">
-            <th if="${drawList==null}"><span class="fontSize-fix">등록된 포트폴리오가 없습니다.</span></th>
-
-
+            <span class="fontSize-fix" id="noData" style="display: none">등록된 포트폴리오가 없습니다.</span>
             <div id="drawList"></div>
         </div>
 

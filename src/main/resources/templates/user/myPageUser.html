@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+<th:block layout:fragment="content">
+  <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+  <div class="img-wrapper">
+    <div>
+      <img class="sample" style="width: 230px; height: 250px;"
+           src="../../../../main/resources/iamge/깨비.jpg"/>
+    </div>
+    <div class="info-wrapper">
+      <div class="account-wrapper">
+        <div class="account-info">
+          <div class="charge fontSizeFix2">충전금</div>
+          <div class="charge-button">충전하기</div>
+        </div>
+        <div class="fontSizeFix2">170,490원</div>
+      </div>
+      <div class="invest-wrapper">
+        <div class="invest-info">
+          <div class="fontSizeFix2">최근 투자상품</div>
+        </div>
+        <div class="fontSizeFix2">A+B 상품</div>
+      </div>
+    </div>
+  </div>
+  <div class="invest-people-wrapper">
+    <span class="invest-people">투자자</span>
+    <span class="invest-name">김 OO님</span>
+  </div>
+
+  <div class="box-wrapper">
+    <div class="invest-info-wrapper">
+      <div class="invest-title">투자내역</div>
+      <div class="invest-box">
+        <div class="invest-boarder">
+          <div class="invest-list">
+            <div>A+B상품</div>
+            <div>-%</div>
+          </div>
+        </div>
+        <div class="invest-boarder">
+          <div class="invest-list">
+            <div>X+F상품</div>
+            <div>-%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="invest-info-wrapper marginMinus">
+      <div class="invest-title">작성한 게시글</div>
+      <div class="invest-box">
+        <div class="invest-boarder">
+          <div class="invest-list">
+            <div>요즘 IT 산업 뜨고있던데...</div>
+            <div>2023.05.24</div>
+          </div>
+        </div>
+        <div class="invest-boarder">
+          <div class="invest-list">
+            <div>A 산업과 B산업 관련...</div>
+            <div>2023.05.26</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .header-wrapper {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding: 30px;
+    }
+
+    .menu-wrapper {
+      display: flex;
+    }
+
+    .menu-idea {
+      font-size: 18px;
+      padding-right: 10px;
+    }
+
+    .menu-product {
+      font-size: 18px;
+    }
+
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-input {
+      display: flex;
+      align-items: center;
+      padding-right: 10px;
+    }
+
+    .icon-bell {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      padding-right: 5px;
+    }
+
+    .icon-move {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      padding-right: 5px;
+    }
+    .img-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .sample {
+      width: 195px;
+      height: 100px;
+      padding-left: 30px;
+      padiing-right: 100px;
+    }
+
+    .info-wrapper {
+      width: 100%;
+      max-width: 65%;
+      margin-left: 4rem;
+      padding: 30px;
+    }
+
+    .account-wrapper {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5e5e5;
+      margin-bottom: 20px;
+    }
+
+    .account-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .charge {
+      padding-right: 8px;
+    }
+
+    .fontSizeFix2 {
+      font-size: 2rem;
+    }
+
+    .charge-button {
+      background-color: #c8b398;
+      font-size: 1.2rem;
+      margin-left: 2rem;
+      padding: 4px 13px;
+      border-radius: 7px;
+      color: #fff;
+    }
+
+    .invest-wrapper {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #e8e6e6;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .invest-info {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .invest-people-wrapper {
+      padding: 5px 30px;
+    }
+
+    .invest-people {
+      padding-right: 5px;
+      font-size: 1.2rem;
+    }
+
+    .invest-name {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .invest-info-wrapper {
+      padding: 30px;
+      width: 100%;
+    }
+
+    .invest-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .marginMinus {
+      margin-left: -5%;
+    }
+
+    .invest-box {
+      width: 90%;
+      font-size: 1.5rem;
+      height: 300px;
+      background: #e8e6e6;
+    }
+
+    .invest-boarder {
+      padding: 0 20px;
+    }
+
+    .invest-list {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0px 10px;
+      border-bottom: 1px solid black;
+    }
+
+    .box-wrapper {
+      display: flex;
+    }
+  </style>
+
+</th:block>
+</html>
