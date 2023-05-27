@@ -32,7 +32,9 @@ public class Vote {
 
     private final LocalDateTime voteStart = LocalDateTime.now();
 
-    private final LocalDateTime voteEnd = voteStart.plusDays(30);
+    private final LocalDateTime voteEnd = voteStart.plusDays(10);
+    //테스트용
+    //private final LocalDateTime voteEnd = voteStart.plusMinutes(2);
 
     @Builder.Default
     private StVote status = StVote.PROCEED;

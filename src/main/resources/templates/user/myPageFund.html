@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+<th:block layout:fragment="content">
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+        <div class="img-wrapper">
+            <div>
+                <img class="sample" style="width: 230px; height: 250px;"
+                     src="../../../../main/resources/iamge/깨비.jpg"/>
+            </div>
+
+            <div class="info-wrapper">
+                <div class="account-wrapper">
+                    <div class="account-info">
+                        <div class="charge">현재 진행중인 상품</div>
+                        <form action="#">
+                            <select name="product" id="product" class="selectFix">
+                                <option value="진행상품">현재 진행중인 상품을 골라주세요<</option>
+                                <option value="2챠전지">2차전지</option>
+                                <option value="NFT">NFT</option>
+                                <option value="화장품">화장품</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="invest-table" style="width: 80%; height: 450px;">
+                    <div style="height: 20px;"></div>
+                    <table class="invest-table">
+                        <tr>
+                            <td>종목</td>
+                            <td class="textRight">X+Z</td>
+                        </tr>
+                        <tr>
+                            <td>목표금액</td>
+                            <td class="textRight">-원</td>
+                        </tr>
+                        <tr>
+                            <td>배정금액</td>
+                            <td class="textRight">-원</td>
+                        </tr>
+                        <tr>
+                            <td>모집기간</td>
+                            <td class="textRight">23.05.10~23.06.15</td>
+                        </tr>
+                        <tr>
+                            <td>수익률</td>
+                            <td class="textRight">-%</td>
+                        </tr>
+                        <tr>
+                            <td>위험도</td>
+                            <td class="textRight">-</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="invest-people-wrapper">
+            <span class="invest-people">투자자</span>
+            <span class="invest-name">김 OO님</span>
+        </div>
+
+        <div class="box-wrapper" style="margin-top: 2rem;">
+            <div class="invest-info-wrapper">
+                <div class="invest-title">포트폴리오 목록</div>
+                <div class="invest-table" style="height: 450px;">
+                    <div style="height: 20px;"></div>
+                    <table class="portfolio-table">
+                        <tr>
+                            <th>제목</th>
+                            <th>등록일자</th>
+                            <th>투표기간</th>
+                            <th>받은투표수</th>
+                            <th>전체투표수</th>
+                        </tr>
+                        <tr>
+                            <td>2차전지+타이어</td>
+                            <td>23.05.15</td>
+                            <td>23.05.13~23.05.23</td>
+                            <td>3</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>NFT+중고차</td>
+                            <td>23.05.20</td>
+                            <td>23.05.17~23.05.27</td>
+                            <td>5</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>화장품</td>
+                            <td>23.05.20</td>
+                            <td>23.05.17~23.05.27</td>
+                            <td>6</td>
+                            <td>20</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    <style>
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 30px;
+        }
+
+        .menu-wrapper {
+            display: flex;
+        }
+
+        .menu-idea {
+            font-size: 18px;
+            padding-right: 10px;
+        }
+
+        .menu-product {
+            font-size: 18px;
+        }
+
+        .icon-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-input {
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+        }
+
+        .icon-bell {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            padding-right: 5px;
+        }
+
+        .icon-move {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            padding-right: 5px;
+        }
+        .img-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .textRight {
+            text-align: right;
+        }
+
+        .selectFix {
+            width: 600px;
+            margin-left: 3rem;
+            height: 60px;
+            text-align: center;
+            color: gray;
+        }
+
+        .sample {
+            width: 195px;
+            height: 100px;
+            padding-left: 50px;
+            padding-right: 30px;
+        }
+
+        .info-wrapper {
+            width: 100%;
+            margin-left: 5rem;
+            padding: 30px;
+        }
+
+        .account-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            margin-left: 3rem;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .invest-table{
+            background:  #e8e6e6;
+            margin-right : 19px;
+            margin-left: 3rem;
+            font-size: 1.5rem;
+        }
+        .invest-table td {
+            padding: 15px 30px 15px 30px;
+        }
+
+        .invest-table tr {
+            border-bottom: 1px solid gray;
+        }
+
+        .invest-wrapper {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e8e6e6;
+            margin-bottom: 20px;
+        }
+
+        .invest-info {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .invest {
+            font-size: 18px;
+        }
+
+        .invest-people-wrapper {
+            padding: 5px 30px;
+        }
+
+        .invest-people {
+            padding-right: 5px;
+            font-size: 1.2rem;
+        }
+
+        .invest-name {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .invest-info-wrapper {
+            padding: 30px;
+            width:100%;
+        }
+
+        .invest-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .invest-box {
+            width: 400px;
+            height: 200px;
+            background: #e8e6e6;
+        }
+
+        .invest-boarder {
+            padding: 0 20px;
+        }
+
+        .invest-list {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0px 10px;
+            border-bottom: 1px solid black;
+        }
+
+        .box-wrapper {
+            display: flex;
+        }
+
+        .portfolio-table{
+            background: #e8e6e6;
+            width: 100%;
+            border-collapse: collapse;
+            width: 95%;
+            margin-left: 3.7rem;
+        }
+
+        .portfolio-table tr {
+            border-bottom: 1px solid gray;
+        }
+
+        .portfolio-table th,
+        .portfolio-table td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .portfolio-table td {
+            font-size: 1.5rem;
+            padding: 15px 30px 15px 30px;
+        }
+
+        .portfolio-table th {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</th:block>
+</html>

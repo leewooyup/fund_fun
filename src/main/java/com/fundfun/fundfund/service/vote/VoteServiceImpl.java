@@ -102,7 +102,8 @@ public class VoteServiceImpl implements VoteService{
         if (currentTime.isAfter(voteEnd) || currentTime.isEqual(voteEnd)) {
             if(vote.getStatus() == StVote.PROCEED) {
                 vote.updateStatus();
-
+    
+                // 가장 표를 많이 받은 포트폴리오 선정
                 List<PortfolioDto> portfolioList = portfolioService.selectPortByVoteId(vote.getId());
                 if(portfolioList.size()>0) {
                     int max = 0;
@@ -138,15 +139,6 @@ public class VoteServiceImpl implements VoteService{
         voteRepository.save(vote);
         return true;
         }
-
-
-    public String plusWeeks(String startDate) {
-        LocalDate voteStart = LocalDate.now();
-        LocalDate voteEnd = voteStart.plusDays(7);
-       return voteEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    }
-
-
 
     @Override
     public void deleteVote(UUID voteId){
