@@ -1,16 +1,21 @@
 package com.fundfun.fundfund.service.product;
 
 import com.fundfun.fundfund.domain.order.Orders;
+import com.fundfun.fundfund.domain.product.Items;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.product.Weight;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.exception.InSufficientMoneyException;
 import com.fundfun.fundfund.repository.order.OrderRepository;
+import com.fundfun.fundfund.repository.product.ItemsRepository;
 import com.fundfun.fundfund.repository.product.ProductRepository;
+import com.fundfun.fundfund.repository.product.WeightRepository;
 import com.fundfun.fundfund.service.order.OrderServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.Util;
+import jdk.swing.interop.LightweightContentWrapper;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
 import org.modelmapper.ModelMapper;
@@ -37,6 +42,8 @@ public class ProductServiceImpl implements ProductService {
     @Value("${custom.genFileDirPath}")
     private String genFileDirPath;
     private final ProductRepository productRepository;
+    private final ItemsRepository itemsRepository;
+    private final WeightRepository weightRepository;
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
     private ProductDto productDto;
@@ -171,7 +178,7 @@ public class ProductServiceImpl implements ProductService {
      * 상품 등록하기
      */
     @Override
-    public Product registerProduct(ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
+    public ProductDto registerProduct(ProductDto productDto, MultipartFile thumbnailImg, UserDTO userDTO) {
         System.out.println("thumbnailImg: " + thumbnailImg);
         String thumbnailImgRelPath = null;
         if (thumbnailImg.isEmpty()) {
@@ -190,7 +197,8 @@ public class ProductServiceImpl implements ProductService {
         if (product == null) {
             throw new RuntimeException("상품 등록에 실패하셨습니다.");
         }
-        return productRepository.save(product);
+        productRepository.save(product);
+        return productDto;
     }
 
     /**
@@ -272,6 +280,32 @@ public class ProductServiceImpl implements ProductService {
         return productDtoList;
     }
 
+    @Override
+    public void createItems(String itemsName, ProductDto productDto) {
+        Items items = new Items();
+        items.setItemsName(itemsName);
+        items.setProductTitle(productDto.getTitle());
+        itemsRepository.save(items);
+    }
+
+    @Override
+    public void createWeight(Integer weight, ProductDto productDto) {
+        Weight w = new Weight();
+        w.setWeight(weight);
+        w.setProductTitle(productDto.getTitle());
+        weightRepository.save(w);
+    }
+
+    @Override
+    public List<Items> selectItemsByProductTitle(String productTitle) {
+        return itemsRepository.findByProductTitle(productTitle);
+    }
+
+    @Override
+    public List<Weight> selectWeightsByProductTitle(String productTitle) {
+        return weightRepository.findByProductTitle(productTitle);
+    }
+    
     public List<ProductDto> selectByCurrentGoal() {
         List<Product> productList = productRepository.findByCurrentGoal();
         List<ProductDto> productDtoList = productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
