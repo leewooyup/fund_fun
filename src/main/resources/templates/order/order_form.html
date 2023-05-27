@@ -7,6 +7,8 @@
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .money {
             font-size: larger;
@@ -73,6 +75,9 @@
             </div>
             <div class="popup__body">
                 <div>차트</div>
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>
                 <button class="btn btn-warning" type="button">확인</button>
             </div>
         </div>
@@ -144,6 +149,7 @@
             </div>
         </div>
     </th:block>
+
     <script>
         $(function () {
             $('#confirmDel').click(function () {
@@ -159,6 +165,8 @@
             $(document).on('click', '.btn-close', function() {
                 $(".popup").removeClass("active");
             });
+
+            <!--            chart-->
         });
 
     </script>
@@ -194,6 +202,34 @@
         if (params.errMsg) {
             errorModal(params.errMsg);
         }
+
+        const data = {
+          labels: ['Red', 'Blue', 'Yellow'],
+          datasets: [{
+            label: 'My First Dataset',
+            data: [300, 50, 100],
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+          }]
+        };
+
+        const config = {
+          type: 'doughnut',
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        };
+
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, config);
+
     </script>
 </th:block>
 </html>
