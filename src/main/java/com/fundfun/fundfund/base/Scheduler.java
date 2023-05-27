@@ -51,26 +51,26 @@ public class Scheduler {
     /**
      * 매일 0분 0시 0초, 펀딩 상태 갱신
      */
-    @Scheduled(cron = "0 0 0 * * * ")
-    public void sayHello() {
-        List<ProductDto> productDtoList = productService.selectAll();
-        for (ProductDto productDto : productDtoList) {
-            productService.updateStatus(productDto);
-        }
-    }
-
-
-    /**
-     * 매일 0분 0시 0초, 투표 상태 갱신
-     */
-    @Scheduled(cron = "0 0 0 * * * ")
-    public void voteStauts() {
-        List<VoteDto> voteDtoList = voteService.selectAll();
-        for (VoteDto voteDto : voteDtoList) {
-            voteService.updateVoteStatus(voteDto);
-        }
-
-    }
+//    @Scheduled(cron = "0 0 0 * * * ")
+//    public void sayHello() {
+//        List<ProductDto> productDtoList = productService.selectAll();
+//        for (ProductDto productDto : productDtoList) {
+//            productService.updateStatus(productDto);
+//        }
+//    }
+//
+//
+//    /**
+//     * 매일 0분 0시 0초, 투표 상태 갱신
+//     */
+//    @Scheduled(cron = "0 0 0 * * * ")
+//    public void voteStauts() {
+//        List<VoteDto> voteDtoList = voteService.selectAll();
+//        for (VoteDto voteDto : voteDtoList) {
+//            voteService.updateVoteStatus(voteDto);
+//        }
+//
+//    }
 
 
 }
