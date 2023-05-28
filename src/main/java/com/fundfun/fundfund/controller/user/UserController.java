@@ -100,7 +100,10 @@ public class UserController {
     }
 
     @GetMapping("/user/charge")
-    public String showMoney() {
+    public String showMoney(@AuthenticationPrincipal UserAdapter adapter, Model model) {
+        UserDTO dto = userService.findById(adapter.getUser().getId());
+        long curPoints = dto.getMoney();
+        model.addAttribute("curPoints", curPoints);
         return "user/charge";
     }
 

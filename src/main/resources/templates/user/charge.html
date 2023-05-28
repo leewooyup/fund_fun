@@ -39,7 +39,7 @@
       </div>
       <div class="d-flex justify-content-end" style="margin-top:10px;">
         <div style="font-size:1.3rem;margin-right:20px;padding-top:6px;">충전금 잔액</div><!-- 하드코딩 -->
-        <div style="font-size:1.6rem;color:red;margin-right:9px;">150,000</div><!-- 하드코딩 -->
+        <div style="font-size:1.6rem;color:red;margin-right:9px;" th:text="${curPoints}" id="balance"></div>
         <div style="font-size:1.3rem;padding-top:6px;">원</div>
       </div>
       <div class="d-flex justify-content-center">
@@ -50,25 +50,29 @@
       $(function() {
         let charge = 0;
         let formatted = "";
+        let balanceCharge = /*[[ ${curPoints} ]]*/
         $(document).on('click', '#one', function() {
           charge += 10000;
-          formmated = numberWithCommas(charge);
-          $('.input-charge').val(formmated);
+          balanceCharge += charge;
+          formatted = numberWithCommas(charge);
+          formattedBalance = numberWithCommas(balanceCharge);
+          $('.input-charge').val(formatted);
+          $('#balance').text(formattedBalance);
         });
         $(document).on('click', '#five', function() {
           charge += 50000;
-          formmated = numberWithCommas(charge);
-          $('.input-charge').val(formmated);
+          formatted = numberWithCommas(charge);
+          $('.input-charge').val(formatted);
         });
         $(document).on('click', '#ten', function() {
           charge += 100000;
-          formmated = numberWithCommas(charge);
-          $('.input-charge').val(formmated);
+          formatted = numberWithCommas(charge);
+          $('.input-charge').val(formatted);
         });
         $(document).on('click', '#thirty', function() {
           charge += 300000;
-          formmated = numberWithCommas(charge);
-          $('.input-charge').val(formmated);
+          formatted = numberWithCommas(charge);
+          $('.input-charge').val(formatted);
         });
         function numberWithCommas(number) {
           return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

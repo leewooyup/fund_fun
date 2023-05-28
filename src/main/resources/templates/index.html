@@ -138,7 +138,7 @@
                         <!--                    <a th:href="@{|/order/form/${product.uuid}|}"></a>-->
                         <div class="d-flex flex-column" style="height:400px">
                             <div style="padding:20px">
-                                <img src="/gen/product/gom.jpg" style="height: 200px;">
+                                <img th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}" style="height: 200px;">
                             </div>
                             <div style="padding:20px;">
                                 <div style="font-size: 25px;font-weight: bold" th:text="${product.title}"></div>
