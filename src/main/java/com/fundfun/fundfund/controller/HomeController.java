@@ -8,6 +8,7 @@ import com.fundfun.fundfund.dto.post.PostDto;
 import com.fundfun.fundfund.dto.product.ProductDto;
 import com.fundfun.fundfund.service.post.PostService;
 import com.fundfun.fundfund.service.product.ProductService;
+import com.fundfun.fundfund.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal UserAdapter adapter, Model model) {
+    public String index(@AuthenticationPrincipal UserAdapter adapter, Model model) throws IOException {
         List<ProductDto> productDtoList = productService.selectAll();
         if (productDtoList.size() > 3) {
             List<ProductDto> list = productService.selectByCurrentGoal();
@@ -56,6 +58,7 @@ public class HomeController {
         if (adapter == null) {
             return "index";
         } else {
+            model.addAttribute("imgDir", Util.findProfileImg(adapter.getUser().getId()));
             if (adapter.getUser().getRole() == Role.COMMON) {
                 model.addAttribute("user", adapter.getUser());
                 return "index_user";
