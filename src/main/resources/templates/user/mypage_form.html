@@ -232,6 +232,9 @@
                 var formElement = document.getElementById("userForm");
                 var dataToSend = reader.result
                 formElement.elements['image'].value = dataToSend;
+                // console.log("formEle " + );
+                formElement.setAttribute('action', formElement.getAttribute('action')+"?rand="+Math.random())
+
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -240,18 +243,18 @@
         });
 
         // 페이지 로드 시 기본 이미지 표시
-        // window.addEventListener('load', function () {
-        //     var defaultImage = document.getElementById('preview-image');
-        //     var targetImage = /*[[${imgDir}]]*/ null
-        //     console.log("/img/profiles/"+targetImage)
-        //
-        //     if (targetImage.toString().length == 0) {
-        //         defaultImage.src = '../img/profiles/default.jpeg';
-        //     }else {
-        //         defaultImage.src = "../img/profiles/" + targetImage;
-        //         console.log(defaultImage.src)
-        //     }
-        // });
+        window.addEventListener('load', function () {
+            var defaultImage = document.getElementById('preview-image');
+            var targetImage = /*[[${imgDir}]]*/ null
+            console.log("/img/profiles/"+targetImage)
+
+            if (targetImage.toString().length == 0) {
+                defaultImage.src = '../img/profiles/default.jpeg';
+            }else {
+                defaultImage.src = "../img/profiles/" + targetImage;
+                console.log(defaultImage.src)
+            }
+        });
     </script>
     </body>
 </th:block>
