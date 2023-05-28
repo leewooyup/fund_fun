@@ -36,6 +36,7 @@
 
     .input-search {
         width: 300px;
+        height: 38.6px;
         border: 1px solid #A2A2A2;
         border-left-radius: 2px;
         border-right: 0;
@@ -48,8 +49,8 @@
 
 
     .main {
-        margin-top: 60px;
-        padding: 20px;
+        margin-top: 75px;
+        padding: 30px;
         flex-grow: 1;
     }
 
@@ -59,12 +60,9 @@
         text-align: center;
         padding: 20px;
     }
-
-
-
 </style>
 
-<body>
+<body style="display:flex;flex-direction:column;">
 <!-- JQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -83,14 +81,14 @@
       integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
       crossorigin="anonymous" referrerpolicy="no-referrer"/>
 <!-- navbar -->
-<nav class="navbar navbar-expand-xl navbar-light bg-white shadow-smca fixed-top">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-xl navbar-light bg-white shadow-sm fixed-top flex-grow-1">
+    <div class="container-fluid" style="padding:0;">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo1"
                 aria-controls="navbarTogglerDemo1" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse show d-flex justify-content-around" id="navbarTogglerDemo1"
-             style="width:100%;gap:3%;">
+             style="width:100%;gap:3%;padding:0;height:72.8px;">
             <div class="flex-grow-1 text-center">
                 <a class="navbar-brand" href="/" style="margin:0;">FundFun</a>
             </div>

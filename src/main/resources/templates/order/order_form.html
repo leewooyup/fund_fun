@@ -86,7 +86,7 @@
         <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
             <div>
-                <img alt="" th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}">
+                <img alt="" th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}" width="450px;" height="300px;" style="border-radius:10px;">
             </div>
             <div>
                 <div>
@@ -114,7 +114,7 @@
                 <div style="border-bottom: 1px solid #666a73; margin:10px 0px"></div>
                 <div>
                     <label style="color:#666a73">목표 금액</label>
-                    <div class="money" th:text="|${product.goal}원|"></div>
+                    <div class="money" th:text="|${goalWithComma}원|"></div>
                 </div>
 
                 <th:block th:if="${deadline >= 0}">

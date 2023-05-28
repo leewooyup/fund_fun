@@ -2,6 +2,7 @@ package com.fundfun.fundfund.controller.user;
 
 import com.fundfun.fundfund.domain.user.*;
 import com.fundfun.fundfund.service.user.UserService;
+import com.fundfun.fundfund.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,6 +14,9 @@ import org.springframework.ui.Model;
 
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -181,7 +185,10 @@ public class UserController {
     }
 
     @GetMapping("/user/charge")
-    public String showMoneyChargeForm() {
+    public String showMoney(@AuthenticationPrincipal UserAdapter adapter, Model model) {
+        UserDTO dto = userService.findById(adapter.getUser().getId());
+        long curPoints = dto.getMoney();
+        model.addAttribute("curPoints", curPoints);
         return "user/charge";
     }
 
