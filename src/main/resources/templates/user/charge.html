@@ -8,18 +8,18 @@
   <th:block th:replace="/user/user_head :: userHeadFragment"></th:block>
   <div class="d-flex flex-column wrapper">
     <div class="title">충전하기</div>
-    <form method="post" action="" class="form-charge">
+    <form method="post" action="/user/ch" class="form-charge">
       <div class="input-charge-wrapper">
         <div>
-          <input class="form-control input-charge" name="charge" type="number"
+          <input class="form-control input-charge" name="charge" type="text"
                  placeholder="충전할 금액을 입력해주세요">
         </div>
         <div class="btn-group outline-bar-wrapper" role="group" aria-label="Basic outlined button group"
              style="margin-top:30px;">
-          <button type="button" class="btn btn-outline-secondary outline-bar">+1만</button>
-          <button type="button" class="btn btn-outline-secondary outline-bar">+5만</button>
-          <button type="button" class="btn btn-outline-secondary outline-bar">+10만</button>
-          <button type="button" class="btn btn-outline-secondary outline-bar">+30만</button>
+          <button type="button" class="btn btn-outline-secondary outline-bar" id="one">+1만</button>
+          <button type="button" class="btn btn-outline-secondary outline-bar" id="five">+5만</button>
+          <button type="button" class="btn btn-outline-secondary outline-bar" id="ten">+10만</button>
+          <button type="button" class="btn btn-outline-secondary outline-bar" id="thirty">+30만</button>
         </div>
         <div class="account-wrapper">
           <label class="sub-title">출금계좌</label>
@@ -46,6 +46,35 @@
         <button class="btn btn-warning btn-charge" type="submit">충전하기</button>
       </div>
     </form>
+    <script>
+      $(function() {
+        let charge = 0;
+        let formatted = "";
+        $(document).on('click', '#one', function() {
+          charge += 10000;
+          formmated = numberWithCommas(charge);
+          $('.input-charge').val(formmated);
+        });
+        $(document).on('click', '#five', function() {
+          charge += 50000;
+          formmated = numberWithCommas(charge);
+          $('.input-charge').val(formmated);
+        });
+        $(document).on('click', '#ten', function() {
+          charge += 100000;
+          formmated = numberWithCommas(charge);
+          $('.input-charge').val(formmated);
+        });
+        $(document).on('click', '#thirty', function() {
+          charge += 300000;
+          formmated = numberWithCommas(charge);
+          $('.input-charge').val(formmated);
+        });
+        function numberWithCommas(number) {
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+      });
+    </script>
   </div>
 </th:block>
 </html>
