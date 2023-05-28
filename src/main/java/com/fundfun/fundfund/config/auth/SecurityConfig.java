@@ -57,6 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test")
                 .authenticated() // 인증된 유저만 접근을 허용
                 .and()
+                .headers()
+                .cacheControl()
+                .disable()
+                .and()
                 .formLogin() // 로그인 폼은
 //                .usernameParameter("inputEmail")// 이곳에는 login page의 input tag id 를 넣어야 한다.
 //                .passwordParameter("inputPassword") //이곳에는 login page의 input tag id 를 넣어야 한다.
