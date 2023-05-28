@@ -36,6 +36,7 @@ public class ProductDto{
     private String thumbnailRelPath;
     private Users fundManager;
 
+
     //    public Date toDate(String crowdEnd) {
 //        Date deadLine = null;
 //        try {

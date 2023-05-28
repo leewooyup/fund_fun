@@ -27,7 +27,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @DynamicInsert
 public class Product extends BaseTimeEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")

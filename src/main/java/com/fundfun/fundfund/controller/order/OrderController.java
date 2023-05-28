@@ -2,7 +2,9 @@ package com.fundfun.fundfund.controller.order;
 
 
 import com.fundfun.fundfund.domain.order.Orders;
+import com.fundfun.fundfund.domain.product.Items;
 import com.fundfun.fundfund.domain.product.Product;
+import com.fundfun.fundfund.domain.product.Weight;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
 import com.fundfun.fundfund.domain.user.Users;
@@ -16,8 +18,10 @@ import com.fundfun.fundfund.service.product.ProductServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.UserMapper;
 import com.fundfun.fundfund.util.Util;
+
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,6 +68,28 @@ public class OrderController {
             model.addAttribute("user", userDTO);
         }
 
+        List<Items> items = productService.selectItemsByProductTitle(productDto.getTitle());
+        List<Weight> weights = productService.selectWeightsByProductTitle(productDto.getTitle());
+        String[] itemNames = new String[items.size()];
+        Integer[] itemWeights = new Integer[weights.size()];
+        int idx = 0;
+        for(Items it : items) {
+            itemNames[idx++] = it.getItemsName();
+        }
+        idx = 0;
+        for(Weight w : weights) {
+            itemWeights[idx++] = w.getWeight();
+        }
+
+        model.addAttribute("items", itemNames);
+        model.addAttribute("weights", itemWeights);
+
+        List<String> combinedList = new ArrayList<>();
+        for(int i = 0; i < itemNames.length; i++) {
+            String combinedValue = "\'" + itemNames[i] + "\'" + " 상품: " + itemWeights[i] + " %";
+            combinedList.add(combinedValue);
+        }
+        model.addAttribute("combinedList", combinedList);
         return "order/order_form";
     }
 
@@ -96,7 +124,6 @@ public class OrderController {
 
     /**
      * 주문 생성 + 상품 모금액 업데이트
-     *
      * @param encId
      * @param cost
      * @return view
@@ -104,7 +131,6 @@ public class OrderController {
     @PostMapping("/update/{encId}")
     public String update(@AuthenticationPrincipal UserAdapter adapter, @PathVariable String encId, Long cost, HttpServletRequest req) {
         UserDTO userDTO = userService.findByEmail(adapter.getUser().getEmail());
-        System.out.println("userDto id = " + adapter.getUser().getEmail());
         ProductDto productDto = productService.selectById(orderService.decEncId(encId));
 
         try {

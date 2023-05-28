@@ -60,16 +60,47 @@
                 <div>
                     <input class="thumbnailImg" type="file" name="thumbnailImg" accept="image/png, image/gif, image/jpeg" />
                 </div>
+                <div class="my-3">
+                    <div style="border-bottom:1px solid #d3d3d3;" class="my-2"><img src='/img/gift.png' width='30px;'> 종목 비중 설정</div>
+                    <button class="btn btn-warning btn-plus" type="button"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div th:replace="form_errors :: formErrorsFragment"></div>
+                <span style="margin-top: 10px;">※ 주의해주세요!</span>
+                <span style="margin-top:10px;">펀드 상품의 내용에는 어떤 종목에 어떤 비율로 투자할 것인지 상세히 기재된 포트폴리오가 포함되어 있어야 합니다.</span>
             </div>
-
-            <div th:replace="form_errors :: formErrorsFragment"></div>
-
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-warning" style="margin-top:15px;">등록</button>
             </div>
         </form>
-
     </div>
+    <script>
+        $(document).on('click', '.btn-plus', function() {
+                $.ajax({
+                    url: '/product/register',
+                    type: 'GET',
+                    datatype: 'html',
+                    success: function(data, status) {
+                        let str = "";
+
+                        str += "<div class='d-flex my-1'>"
+                        str += "<div>";
+                        str += "<label style='margin-right:10px;'><img src='/img/gift.png' width='20px;'> 종목이름</label>";
+                        str += "<input type='text' name='items[]' placeholder='종목' style='width:150px;margin-right:20px;border:3px solid #5F584C'>"
+                        str += "</div>";
+                        str += "<div>";
+                        str += "<label style='margin-right:10px;'>비중</label>";
+                        str += "<input type='number' name='weights[]' placeholder='0' style='width:60px;border:3px solid #5F584C'>%"
+                        str += "</div>";
+                        str += "</div>";
+
+                        $(".btn-plus").before(str);
+                    },
+                    error: function(err, status) {
+
+                    }
+                })
+            });
+    </script>
     </body>
 </th:block>
 </html>

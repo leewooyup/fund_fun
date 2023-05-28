@@ -7,12 +7,81 @@
 
 <th:block layout:fragment="content">
     <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .money {
             font-size: larger;
             font-weight: bold;
         }
+        .popup {
+            z-index: 10;
+            visibility: hidden;
+            transition: opacity  .3s, visibility .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0,0,0,0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .popup.active .popup__content {
+            transform: translateY(10%);
+        }
+        .popup__content {
+            border-radius: 10px;
+            width: 400px;
+            height:450px;
+            background-color: white;
+            border: 2px solid black;
+            transform: translateY(-100%);
+            transition: transform .3s;
+        }
+        .popup__head {
+            display: flex;
+            justify-content: end;
+        }
+        .popup__btn-close {
+            width: 30px;
+            height: 30px;
+            margin-left: auto;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .btn-close {
+            padding: 10px;
+        }
+        .popup__body {
+            padding: 3px 5px;
+            text-align: center;
+            font-size: large;
+        }
+        .btn-show-chart {
+            float: right;
+        }
     </style>
+    <div class="popup">
+        <div class="popup__content">
+            <div class="popup__head">
+                <button class="btn-close"></button>
+            </div>
+            <div class="popup__body">
+                <div>[[${product.title}]]</div>
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>
+                <button class="btn btn-warning my-3" id="btn-check" type="button">확인</button>
+            </div>
+        </div>
+    </div>
     <div class="d-flex flex-column align-items-center wrapper">
         <div class="title" th:text="${product.title}"></div>
         <div class="form-order">
@@ -34,7 +103,7 @@
                         <div>D-day</div>
                     </th:>
                     <th:block th:if="${deadline &lt; 0}">
-                        <div>투자 마감</div>
+                        <div style="color:red">투자 마감</div>
                     </th:block>
 
                 </div>
@@ -47,6 +116,8 @@
                     <label style="color:#666a73">목표 금액</label>
                     <div class="money" th:text="|${product.goal}원|"></div>
                 </div>
+
+                <th:block th:if="${deadline >= 0}">
                 <form method="post" th:action="@{|/order/send/${encId}|}" th:object="${investDto}">
                     <input name="encId" th:value="${encId}" type="hidden">
                     <label class="sub-title">투자금액</label>
@@ -56,16 +127,37 @@
                     </div>
                     <div th:replace="form_errors :: formErrorsFragment"></div>
                 </form>
+                </th:block>
+                <th:block th:if="${deadline < 0}">
+                    <form method="post" th:action="@{|/order/send/${encId}|}" th:object="${investDto}">
+                        <input name="encId" th:value="${encId}" type="hidden">
+                        <label class="sub-title">투자금액</label>
+                        <div>
+                            <input class="input-cost" th:field="*{cost}" type="number" placeholder="투자가 종료되었습니다." disabled>
+                            <button class="btn btn-warning" type="submit" disabled>마감</button>
+                        </div>
+                        <div th:replace="form_errors :: formErrorsFragment"></div>
+                    </form>
+                </th:block>
             </div>
         </div>
     </div>
 
     <div class="order-desc">
-        ~ 아이디어를 기반으로 개발된 펀드 상품입니다.<br>
-        ~ 상품 ~%<br>
-        ~ 상품 ~%<br>
-        예상 수익률은 ~%이고, 예상 위험도는 ~입니다.<br>
-        비슷한 종목으로 구성된 펀드를 운용했을때 ~%의 수익률을 달성한 바 있습니다.<br>
+        <div class="d-flex justify-content-between">
+            <div>[[${product.title}]] 아이디어를 기반으로 개발된 펀드 상품입니다.</div>
+            <div id="btn-show-chart"><i class="fa-solid fa-chart-pie fa-2x" style="color:#5F584C;cursor:pointer;"></i></div>
+        </div>
+        <div class="d-flex" style="gap:30px;">
+            <div th:each="combined : ${combinedList}">
+                <div style="background-color:#5F584C;border-radius:10px;padding:5px 10px;color:white;"><i class="fa-solid fa-gift" style="color:white;"></i> [[${combined}]]</div>
+            </div>
+
+        </div>
+        <div class="my-3">
+            예상 수익률은 ~%이고, 예상 위험도는 ~입니다.<br>
+            비슷한 종목으로 구성된 펀드를 운용했을때 ~%의 수익률을 달성한 바 있습니다.<br>
+        </div>
     </div>
     <th:block th:if="${user}!=null">
         <div class="d-flex justify-content-center">
@@ -79,12 +171,25 @@
             </div>
         </div>
     </th:block>
+
     <script>
         $(function () {
             $('#confirmDel').click(function () {
                 if (!confirm('삭제하시면 복구할수 없습니다. \n 정말로 삭제하시겠습니까??')) {
                     return false;
                 }
+            });
+
+            $(document).on('click', '#btn-show-chart', function() {
+                $(".popup").addClass("active");
+            });
+
+            $(document).on('click', '.btn-close', function() {
+                $(".popup").removeClass("active");
+            });
+
+            $(document).on('click', '#btn-check', function() {
+                $(".popup").removeClass("active");
             });
         });
 
@@ -121,6 +226,38 @@
         if (params.errMsg) {
             errorModal(params.errMsg);
         }
+
+        var donutLabels = /*[[${items}]]*/;
+        var donutData = /*[[${weights}]]*/;
+        var donutTitle = /*[[${product.title}]]*/;
+
+        const data = {
+          labels: donutLabels,
+          datasets: [{
+            label: donutTitle,
+            data: donutData,
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+          }]
+        };
+
+        const config = {
+          type: 'doughnut',
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        };
+
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, config);
+
     </script>
 </th:block>
 </html>
