@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html
         xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
         layout:decorate="~{/testwc/layout}"
 >
 
@@ -181,13 +181,13 @@
         <div class="fontSize-fix bottom_line">
             <th:block th:if="${state == 'R'}">
                 <span class="leftArea" th:text="${data['title']}"></span>
-                <span class="rightArea gray_text">23-05-11 23:03</span>
+                <span class="rightArea gray_text"></span>
             </th:block>
             <th:block th:if="${state == 'W'}">
-                아이디어 등록
+               포트폴리오 등록
             </th:block>
             <th:block th:if="${state == 'U'}">
-                아이디어 수정
+                프트폴리오 수정
             </th:block>
         </div>
         <th:block th:if="${state == 'R'}">
@@ -214,10 +214,9 @@
                 <div class="bottomDiv">
                     <button class="bg-yellow paddingBtn goPfList">포트폴리오 목록으로 돌아가기</button>
                 </div>
-            </div>
+            </div>s
 
             <div class="marginBottom">
-
                 <button class="rightArea paddingBtn2 left_margin bg-yellow" id="productRegister" th:if="${#strings.equals(regVisible, '1')}">상품 등록</button>
                 <button class="rightArea paddingBtn2 left_margin bg-yellow" id="delete" th:if="${#strings.equals(btnVisible, '1')}">삭제</button>
                 <button class="rightArea paddingBtn2 bg-yellow" id="update" th:if="${#strings.equals(btnVisible, '1')}">수정</button>
@@ -231,11 +230,11 @@
                     <div class="marginTop marginBottom">
                         <input type="text" placeholder="예상 수익률" id="beneRatioNew"
                                class="leftArea width49 border-yellow heightFix"/>
-                        <input type="text" placeholder="위험도" id="warnLevelNew"
+                        <input type="text" placeholder="위험도(하, 중, 상)으로 표기하세요." id="warnLevelNew"
                                class="rightArea width49 border-yellow heightFix"/>
                     </div>
                     <textarea class="border-yellow width100 marginTop" id="contentNew"
-                              rows="14" placeholder="내용을 입력해주세요."></textarea>
+                              rows="22" placeholder="투자내역에 다음과 같은 내용을 포함해주세요 .구성종목(구성자산), 구성비중, 시세(현재, 3개월평균시세, 6개월평균시세), 예상투자 기간,  투자 시 유의사항 등에 대해 적어주세요."></textarea>
                 </th:block>
                 <th:block th:if="${state == 'U'}">
                     <input type="text" placeholder="제목" id="title" th:value="${data['title']}"
@@ -243,16 +242,21 @@
                     <div class="marginTop marginBottom">
                         <input type="text" placeholder="예상 수익률" id="beneRatio" th:value="${data['beneRatio']}"
                                class="leftArea width49 border-yellow heightFix"/>
-                        <input type="text" placeholder="위험도" id="warnLevel" th:value="${data['warnLevel']}"
+                        <input type="text" placeholder="위험도(하, 중, 상)으로 표기하세요." id="warnLevel" th:value="${data['warnLevel']}"
                                class="rightArea width49 border-yellow heightFix"/>
                     </div>
                     <textarea class="border-yellow width100 marginTop" id="content" th:text="${data['contentPortfolio']}"
-                              rows="14" placeholder="내용을 입력해주세요."></textarea>
+                              rows="14" placeholder="투자내역에 다음과 같은 내용을 포함해주세요 .구성종목(구성자산), 구성비중, 시세(현재, 3개월평균시세, 6개월평균시세), 예상투자 기간,  투자 시 유의사항 등에 대해 적어주세요."></textarea>
                 </th:block>
             </div>
             <div class="marginTop">
                 <span>* 주의해주세요!</span><br/>
-                <span>광고, 스팸성 게시글, 업종 및 종목명을 기재하지 않은 글은 통보 없이 관리자에 의해 삭제될 수 있습니다.</span>
+                <span>광고, 스팸성 게시글, 업종 및 종목명을 기재하지 않은 글은 통보 없이 관리자에 의해 삭제될 수 있습니다.</span></br>
+                <span>집합투자상품 운용결과에 따른 이익 또는 손실이 투자자에게 귀속되는 실적배당 상품이며,</span></br>
+                <span>예금자 보호법에 따라 예금보험공사가 보호하지 않습니다.</span></br>
+                <span>펀드가입을 결정하시기 전에  투자설명서를 반드시 읽어보시기 바랍니다.</span></br>
+                <span>과거의 운용실적이 미래의 수익을 보장하는 것은 아닙니다.</span></br>
+                <span>환율변동에 따라 외화자산의 투자가치가 변동되어 손실이 발생할 수 있습니다.</span>
             </div>
             <div class="marginBottom">
                 <button class="rightArea paddingBtn2 left_margin bg-yellow" id="commitBtn">
@@ -305,7 +309,7 @@
 
         .bg-yellow {
             background-color: #ffc107;
-            border: 1px solid #ffc107;
+            border: 1px solid #ebe9e6;
         }
 
         .left_margin {
@@ -343,7 +347,7 @@
         }
 
         .border-yellow {
-            border: 1px solid #ffc107;
+            border: 1px solid #ebe9e6;
         }
 
         .width100 {
