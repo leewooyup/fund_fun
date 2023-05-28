@@ -15,9 +15,11 @@
             margin: 10px;
         }
 
-        img {
+        .product-thumbnail {
             height: 250px;
-            width: 100%;
+            display: flex;
+            justify-content: center;
+
         }
 
         .search-btn {
@@ -112,12 +114,12 @@
                         <div th:each="ele : ${list}">
                             <div class="col">
                                 <a th:href="@{|/order/form/${ele.uuidEncode}|}">
-                                    <div th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
+                                    <div class="product-thumbnail" th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
                                         <img alt="" style="width:80%"
                                              th:src="@{|/gen/${ele.thumbnailRelPath}|}"
                                              width="250px">
                                     </div>
-                                    <div th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
+                                    <div class="product-thumbnail" th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
                                         <img alt="" height="250px"
                                              th:src="@{|/gen/${ele.getThumbnailImgRedirectUrl}|}"
                                              width="250px">
