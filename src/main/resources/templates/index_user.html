@@ -187,10 +187,10 @@
                 <div class="col">
                     <!--                    <a th:href="@{|/order/form/${product.uuid}|}"></a>-->
                     <div class="d-flex flex-column" style="height:400px">
-                        <div style="padding:20px">
-                            <img src="/gen/product/gom.jpg" style="height: 200px;">
+                        <div style="height:70%">
+                            <img th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}" style="height: 100%;width:70%;padding-top:10px">
                         </div>
-                        <div style="padding:20px;">
+                        <div style="padding-top:10px">
                             <div style="font-size: 25px;font-weight: bold" th:text="${product.title}"></div>
                             <div th:text="|<${product.fundManager.name} 펀드매니저>|"></div>
                             <div style="padding:10px;font-style: italic"
