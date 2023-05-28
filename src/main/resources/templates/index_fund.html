@@ -90,21 +90,21 @@
     <body>
     <div style="margin:0px 50px">
         <div class="d-flex">
-            <div class="wrapper" style="width:70%;padding:10px">
+            <div class="wrapper" style="width:80%;padding:10px">
                 <div class="carousel slide" data-bs-ride="carousel"
                      id="carouselExampleAutoplaying">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img alt="..." class="d-block"
-                                 src="https://fastly.picsum.photos/id/893/400/300.jpg?hmac=a1S674RYEEFSC6Ng-ccTs_spth5eS3Mdfvsp6O5excM">
+                            <img alt="banner1" class="d-block"
+                                 src="/img/banner1.png">
                         </div>
                         <div class="carousel-item">
-                            <img alt="..." class="d-block"
-                                 src="https://fastly.picsum.photos/id/1041/400/300.jpg?hmac=HcI2xbviGnFAbd-4qFp_OCc_mA0ASWzX9cWunjllpTo">
+                            <img alt="banner2" class="d-block"
+                                 src="/img/banner2.jpg">
                         </div>
                         <div class="carousel-item">
-                            <img alt="..." class="d-block"
-                                 src="https://fastly.picsum.photos/id/1052/400/300.jpg?hmac=LSyS5yPq4DULGZaFFjBhDBhNa5fF3MeXgFHHnl6fegw">
+                            <img alt="banner3" class="d-block"
+                                 src="/img/banner3.jpg">
                         </div>
                     </div>
                     <button class="carousel-control-prev" data-bs-slide="prev"
@@ -124,7 +124,7 @@
                 <div class="inner">
                     <div class="inner-top">
                         <div class="order-main-left-section">
-                            <img src="/gen/product/avatar.jpg">
+                            <img src="/gen/product/avatar.jpg" alt="프로필">
                         </div>
                         <div class="order-main-right-section">
                             <div style="font-size: small;color:grey">펀드매니저</div>
@@ -154,13 +154,13 @@
 
         <div class="d-flex justify-content-center">
             <table class="table" style="width:80%;text-align: center; padding:10px ">
-                <caption>아이디어 게시판</caption>
+                <caption>아이디어 최신글</caption>
                 <tr>
                     <th scope="col">no</th>
                     <th scope="col">제목</th>
                     <th scope="col">작성자</th>
                     <th scope="col">작성일</th>
-                    <th scope="col">상태</th>
+                    <th scope="col">좋아요</th>
                 </tr>
 
                 <tbody>
@@ -168,7 +168,7 @@
                     <td th:text="${index.count}"></td>
                     <td th:text="${post.title}"></td>
                     <td th:text="${post.user.name}"></td>
-                    <td th:text="${post.createdAt}"></td>
+                    <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></td>
                     <td th:text="${post.likePost}"></td>
                 </tr>
                 </tbody>
