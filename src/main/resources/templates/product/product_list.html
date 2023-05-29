@@ -108,7 +108,7 @@
         </th:block>
 
         <th:unless>
-            <div class="container">
+            <div class="container my-3">
                 <div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">
                     <div class="row row-cols-3">
                         <div th:each="ele : ${list}">
@@ -181,11 +181,11 @@
                     </div>
                 </form>
 
-                <th:block th:if="${#strings.equals(user.role, 'ADMIN')}">
+<!--                <th:block th:if="${#strings.equals(user.role, 'ADMIN')}">-->
                     <a href="/product/register">
                         <button class="btn btn-warning" type="submit">등록</button>
                     </a>
-                </th:block>
+<!--                </th:block>-->
             </div>
         </div>
     </div>
