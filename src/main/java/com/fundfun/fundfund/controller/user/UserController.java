@@ -182,7 +182,10 @@ public class UserController {
     }
 
     @GetMapping("/user/myPageUser")
-    public String goMyPageUser() {
+    public String goMyPageUser(@AuthenticationPrincipal UserAdapter adapter, Model model) {
+        UserDTO dto = userService.findById(adapter.getUser().getId());
+        model.addAttribute("user", dto);
+        model.addAttribute("formattedMoney", Util.number.formatNumberWithComma(dto.getMoney()));
         return "user/myPageUser";
     }
 
