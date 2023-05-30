@@ -53,13 +53,14 @@
         <script src="https://js.tosspayments.com/v1"></script>
         <script>
       $(function() {
+        let charge = 0;
         $("#resetEx").click(function() {
           $(".input-charge").val("");
+          charge = 0;
         });
         $("#chargeForm").submit(function(event) {
           event.preventDefault();
         });
-        let charge = 0;
         let formatted = "";
         let balanceCharge = /*[[ ${curPoints} ]]*/
         $(document).on('click', '#one', function() {
