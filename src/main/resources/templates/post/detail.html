@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/testwc/layout}"
+>
+
+<th:block layout:fragment="content">
+    <style>
+        table{
+            width:100%;
+        }
+        table, th, td{
+            text-align:center;
+            vertical-align:center;
+        }
+    </style>
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+
+    <script th:inline="javascript">
+        var postId = [[${postDto.id}]];
+        var postLike = [[${postDto.likePost}]];
+        var userInfo = [[${userInfo}]]; //글을 조회중인 유저의 아이디
+        var writer = [[${postDto.user.getId()}]]; //글을 작성한 유저의 아이디
+        var userLike = [[${userLike}]]; //글을 조회중인 유저의 좋아요 카운트
+    </script>
+
+    <script type="text/javascript">
+        $(Document).ready(function () {
+            visibleButton();
+
+            // 포트폴리오 투표 클릭
+            $("#goPFList").on("click", function () {
+                location.href = "/portfolio?postId=" + postId;
+            });
+
+            $("#listBtn").on("click", function(){
+                location.href = "/post/list";
+            })
+
+            $("#likePostBtn").on("click", function(){
+                location.href = "/post/detail/" + postId + "/like"
+            })
+
+            $("#editPost").on("click", function(){
+                location.href = "/post/edit/" + postId;
+            })
+
+            $("#deletePost").on("click", function(){
+                location.href = "/post/delete/" + postId;
+            })
+
+            function visibleButton() {
+                if (postLike >= 10) {
+                    $("#buttondiv").show();
+
+                } else {
+                    $("#buttondiv").hide();
+                }
+                if(userInfo != null) { // 로그인한 사람이 봤을 때
+                    if (userInfo == writer) { // 작성자가 게시물에 접근했을 때
+                        $("#editPost").show(); // 글 수정 가능
+                        $("#likePostBtn").hide(); // 좋아요 불가능
+                        $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
+
+                        if (postLike >= 10) {
+                            $("#deletePost").hide();
+                        } else {
+                            $("#deletePost").show();
+                        }
+                    } else { // 작성자 이외의 회원이 게시물에 접근했을 때
+                        if (userLike <= 0) {
+                            $("#likePostBtn").hide(); // 좋아요 불가능
+                            $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
+                        } else {
+                            $("#likePostBtn").show(); // 좋아요 가능
+                            $("#likePostCount").hide(); // 좋아요 개수 열람 버튼 숨기기
+                        }
+                        $("#editPost").hide();
+                        $("#deletePost").hide();
+                    }
+                }
+                else if(userInfo == null){ // 로그인 안 한 사람이 봤을 때
+                    $("#editPost").hide(); // 수정 불가능
+                    $("#deletePost").hide(); // 삭제 불가능
+                    $("#likePostBtn").hide(); // 좋아요 불가능
+                    $("#likePostCount").show(); // 좋아요 개수만 열람할 수 있도록 함
+                }
+            }
+        });
+    </script>
+
+    <div class="d-flex flex-column wrapper">
+        <!-- 글 제목 -->
+        <div>
+            <h2><span th:text="${postDto.title}">title</span></h2>
+        </div>
+
+        <!-- 글 작성일 -->
+        <div>
+            <span th:text="${postDto.writeTime}" class="gray_text bottom_line">createdAt</span>
+        </div>
+
+        <!-- 글 내용, 목록으로 돌아가기, 좋아요, 수정, 삭제 버튼(순서대로) -->
+        <div style="margin-top: 1rem; padding-bottom: 1rem;" class="bottom_line">
+            <span th:text="${postDto.contentPost}" class="contentText">content</span>
+            <div style="margin-top: 1rem; padding-bottom: 1rem; text-align:center;">
+                <span class="fontSize-fix"> 좋아요 </span>
+                <button id="likePostBtn" class="centerBox btn btn-warning">
+                    <span th:text="${postDto.likePost}">likePost</span>
+                </button>
+                <button id="likePostCount" class="centerBox btn btn-warning">
+                    <span th:text="${postDto.likePost}">likePost</span>
+                </button>
+            </div>
+            <div>
+                <button id="listBtn" class="leftArea btn btn-warning">목록으로 돌아가기</button>
+                <button id="deletePost" class="rightArea left_margin btn btn-warning">삭제</button>
+                <button id="editPost" class="rightArea btn btn-warning">수정</button>
+            </div>
+        </div>
+
+        <!-- 포트폴리오 투표 버튼 -->
+        <!-- statusPost = StPost.EARLY_IDEA일 때 감춰짐 -->
+        <div id="buttondiv" style="margin-top: 1rem;" class="centerBox2 paddingBtn">
+            <button class="centerBox2" id="goPFList">포트폴리오 투표</button>
+        </div>
+
+        <!-- 댓글 수, 등록폼 -->
+        <div style="margin-top: 1rem;">
+            <span class="fontSize-fix">댓글 </span>
+            <span class="fontSize-fix" th:text="${replyCount}"> </span>
+
+            <form name="replyForm" action="/reply/write" method="post" autocomplete="off">
+                <div class="form-group">
+                    <input type="hidden" name="id" th:value="*{postDto.id}"/>
+                    <textarea name="contentReply" class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea>
+                </div>
+                <button type="submit" class="rightArea btn btn-warning" style="margin-top:10px;">등록</button>
+            </form>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <div>
+            <div style="margin-top: 1rem;">
+                <table>
+                    <tr th:each="ele: ${replyList}" style="border-top: 0.5px solid darkgray; border-bottom: 0.5px solid darkgray;">
+                        <td th:text="${ele.getUser().getName()}" style="text-align:left;"></td>
+                        <td style="text-align:left;"><span th:text="${ele.getContentReply()}"></span></td>
+                        <td th:text="${ele.getWriteTime()}"></td>
+                        <td th:if="${ele.getUser().getId()==userInfo}"><a th:href="@{/reply/delete/{id}(id=${ele.getId()})}">삭제</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:text="${curCollect}"></div>
+
+    <style>
+        .contentText {
+            display:block;
+            font-size:18px;
+        }
+
+        .fontSize-fix {
+            font-size: 1.2rem;
+        }
+
+        .centerBox {
+            width: 5%;
+            margin: auto;
+            text-align: center;
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .centerBox2 {
+            width: 60%;
+            margin: auto;
+            text-align: center;
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+            border-radius: 0.25rem;
+        }
+
+        .paddingBtn {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
+        .gray_text {
+            color: darkgray;
+        }
+
+        .bottom_line {
+            border-bottom: 1px solid darkgray;
+        }
+
+        .leftArea {
+            float: left;
+        }
+
+        .rightArea {
+            float: right;
+        }
+
+        .left_margin {
+            margin-left: 1rem;
+        }
+
+        a {color: black; text-decoration: none;}
+        a:hover{color:#7F7368; text-decoration: none;}
+
+        td{
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        th {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color:#FFCE0B;
+        }
+    </style>
+</th:block>
+</html>

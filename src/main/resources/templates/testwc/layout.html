@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <style>
+    @font-face {
+        font-family: "GmarketSansMedium";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+        format("woff");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    html > body {
+        font-family: "GmarketSansMedium";
+    }
+
     body {
         min-height: 100vh;
         display: flex;
@@ -18,20 +34,35 @@
         text-decoration: none;
     }
 
+    .input-search {
+        width: 300px;
+        height: 38.6px;
+        border: 1px solid #A2A2A2;
+        border-left-radius: 2px;
+        border-right: 0;
+        padding-left: 10px;
+    }
+
+    .btn-search:hover {
+        color: white;
+    }
+
+
     .main {
-        padding: 20px;
+        margin-top: 75px;
+        padding: 30px;
         flex-grow: 1;
     }
 
     .footer {
         height: 80px;
-        background-color: yellow;
+        background-color: #FFCE0B;
         text-align: center;
         padding: 20px;
     }
 </style>
 
-<body>
+<body style="display:flex;flex-direction:column;">
 <!-- JQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -42,42 +73,63 @@
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+<!-- toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<!-- Font-awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
 <!-- navbar -->
-<nav class="navbar navbar-expand-xl navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">FundFun</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarWithDropdown" aria-controls="navbarWithDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-xl navbar-light bg-white shadow-sm fixed-top flex-grow-1">
+    <div class="container-fluid" style="padding:0;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo1"
+                aria-controls="navbarTogglerDemo1" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse show" id="navbarWithDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">상품</a>
+        <div class="collapse navbar-collapse show d-flex justify-content-around" id="navbarTogglerDemo1"
+             style="width:100%;gap:3%;padding:0;height:72.8px;">
+            <div class="flex-grow-1 text-center">
+                <a class="navbar-brand" href="/" style="margin:0;">FundFun</a>
+            </div>
+            <ul class="navbar-nav me-auto mb-2 mb-xl-0 d-flex flex-grow-1" style="gap:10%">
+                <li class="nav-item" style="width:100px;">
+                    <a class="nav-link" href="/post/list">아이디어</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">아이디어</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                <li class="nav-item" style="width:100px;">
+                    <a class="nav-link active" aria-current="page" href="/product/list">상품</a>
                 </li>
             </ul>
+            <form class="d-flex flex-grow-1">
+                <input class="input-search" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-warning btn-search" type="submit"
+                        style="background-color:white;color:#A2A2A2;border:1px solid #A2A2A2;border-radius:0;border-left:0;padding-top:7px;"
+                ><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="d-flex align-items-center" style="gap:3%;padding-left:30px;">
+                <div>
+                    <a href="#"><i class="fa-regular fa-bell fa-2x"></i></a>
+                </div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false" >
+                        <i class="fa-solid fa-bars fa-2x" style="color:black"></i>
+                    </a>
+                    <ui class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="right:0;left:auto">
+                        <a class="dropdown-item" href="/user/myPageUser">나의 투자내역 확인하기</a>
+                    </ui>
+                </li>
+            </div>
         </div>
     </div>
 </nav>
+
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
 <div class="main">
     <th:block layout:fragment="content"></th:block>
+    <!-- <th:block th:replace="/product/product_detail :: productFragment"></th:block> -->
+
+
 </div>
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
 

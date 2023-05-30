@@ -1,17 +1,158 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/testwc/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
+        <style>
+            img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #login-btn {
+                width: 80%;
+                height: 60px;
+                background-color: #7F7368;
+                color: white;
+                border-radius: 15px;
+                margin: 10px 0;
+            }
+
+            #login-wrapper {
+                width: 30%;
+                height: 300px;
+                background-color: #FFCE0B;
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .d-flex {
+                padding: 10px;
+            }
+
+            caption {
+                text-align: center;
+                caption-side: top;
+                border-bottom: 1px solid;
+                font-size: large;
+            }
+            .div-caption {
+                text-align: center;
+                font-size: large;
+                color: #6c757d;
+            }
+
+            .col {
+                border-radius: 20px;
+                text-align: center;
+                margin: 10px;
+                border: 1px solid rgba(17, 17, 17, .16);
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            a.login {
+                justify-content: center;
+                width: 100%;
+                display: flex;
+            }
+        </style>
     </head>
     <body>
-    안녕하세요
+    <div style="margin:0px 50px">
+        <div class="d-flex">
+            <div class="wrapper" style="width:80%;padding:10px">
+                <div class="carousel slide" data-bs-ride="carousel"
+                     id="carouselExampleAutoplaying">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img alt="banner1" class="d-block"
+                                 src="/img/banner1.png">
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="banner2" class="d-block"
+                                 src="/img/banner2.jpg">
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="banner3" class="d-block"
+                                 src="/img/banner3.jpg">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" data-bs-slide="prev"
+                            data-bs-target="#carouselExampleAutoplaying" type="button">
+                        <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" data-bs-slide="next"
+                            data-bs-target="#carouselExampleAutoplaying" type="button">
+                        <span aria-hidden="true" class="carousel-control-next-icon"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
 
+            <div class="d-flex flex-column justify-content-center align-items-center" id="login-wrapper">
+                <a class="login" href="/login">
+                    <button class="btn btn-lg" id="login-btn" type="submit">Login</button>
+                </a>
+                <a href="register">회원가입</a> </span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <table class="table" style="width:80%;text-align: center; padding:10px ">
+                <caption>아이디어 최신글</caption>
+                <tr>
+                    <th scope="col">no</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">작성일</th>
+                    <th scope="col">좋아요</th>
+                </tr>
+
+                <tbody>
+                <tr th:each="post, index:${postList}">
+                    <td th:text="${index.count}"></td>
+                    <td th:text="${post.title}"></td>
+                    <td th:text="${post.user.name}"></td>
+                    <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${post.likePost}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <th:block th:if="!${productList.isEmpty()}">
+            <div class="div-caption">투자 상품 Best 3</div>
+        </th:block>
+        <div class="d-flex flex-column">
+            <div class="row row-cols-3">
+                <div th:each="product:${productList}">
+                    <div class="col">
+                        <!--                    <a th:href="@{|/order/form/${product.uuid}|}"></a>-->
+                        <div class="d-flex flex-column" style="height:400px">
+                            <div style="height:70%">
+                                <img th:src="@{|/gen/${product.getThumbnailImgRedirectUrl}|}" style="height: 100%;width:70%;padding-top:10px">
+                            </div>
+                            <div style="padding-top:10px">
+                                <div style="font-size: 25px;font-weight: bold" th:text="${product.title}"></div>
+                                <div th:text="|<${product.fundManager.name} 펀드매니저>|"></div>
+                                <div style="padding:10px;font-style: italic"
+                                     th:text="|${product.calCollectionsPercentage}%|"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
     </body>
 </th:block>
 </html>
