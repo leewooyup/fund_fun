@@ -193,6 +193,7 @@ public class UserController {
         model.addAttribute("user", dto);
         model.addAttribute("posts", postDTO);
         model.addAttribute("formattedMoney", Util.number.formatNumberWithComma(dto.getMoney()));
+
         return "user/myPageUser";
     }
 
