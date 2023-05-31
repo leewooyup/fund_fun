@@ -20,7 +20,7 @@
                 <div class="account-wrapper">
                     <div class="account-info">
                         <div class="charge fontSizeFix2">충전금</div>
-                        <div class="charge-button">충전하기</div>
+                        <div class="charge-button"><a href="/user/charge" style="color:white;text-decoration:none;">충전하기</a></div>
                     </div>
                     <div class="fontSizeFix2">[[${formattedMoney}]]원</div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="invest-info">
                         <div class="fontSizeFix2">최근 투자상품</div>
                     </div>
-                    <div class="fontSizeFix2">A+B 상품</div>
+                    <div class="fontSizeFix2"> - </div>
                 </div>
             </div>
         </div>
@@ -41,12 +41,7 @@
                 <div class="invest-title"><i class="fa-solid fa-gift"></i> 투자내역</div>
                 <div class="invest-box shadow-sm">
                     <div>
-                        <div>A+B상품</div>
-                        <div>-%</div>
-                    </div>
-                    <div>
-                        <div>X+F상품</div>
-                        <div>-%</div>
+                        <div style="color:#A2A2A2;">투자 내역이 없습니다.</div>
                     </div>
                 </div>
             </div>
@@ -54,17 +49,19 @@
                 <div class="invest-title"><i class="fa-regular fa-file"></i> 작성한 게시글</div>
                 <div class="invest-box shadow-sm">
                     <div class="invest-boarder">
-                        <div class="invest-list">
-                            <div style="margin-right:50px;">요즘 IT 산업 뜨고있던데...</div>
-                            <div>2023.05.24</div>
+                        <div class="invest-list" style="padding-top:10px;" th:each="post : ${posts}">
+                            <div th:text="${post.title}"></div>
+                            <div th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
+<!--                            <div style="margin-right:50px;">요즘 IT 산업 뜨고있던데...</div>-->
+<!--                            <div>2023.05.24</div>-->
                         </div>
                     </div>
-                    <div class="invest-boarder">
-                        <div class="invest-list">
-                            <div style="margin-right:50px;">A 산업과 B산업 관련...</div>
-                            <div>2023.05.26</div>
-                        </div>
-                    </div>
+<!--                    <div class="invest-boarder">-->
+<!--                        <div class="invest-list">-->
+<!--                            <div style="margin-right:50px;">A 산업과 B산업 관련...</div>-->
+<!--                            <div>2023.05.26</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -218,6 +215,7 @@
 
     .invest-boarder {
       padding: 0 20px;
+      padding: 10px;
     }
 
     .invest-list {

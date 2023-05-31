@@ -1,6 +1,9 @@
 package com.fundfun.fundfund.controller.user;
 
 import com.fundfun.fundfund.domain.user.*;
+import com.fundfun.fundfund.dto.post.PostDto;
+import com.fundfun.fundfund.service.post.PostService;
+import com.fundfun.fundfund.service.post.PostServiceImpl;
 import com.fundfun.fundfund.service.user.UserService;
 import com.fundfun.fundfund.util.ApiResponse;
 import com.fundfun.fundfund.util.Util;
@@ -36,6 +39,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -47,6 +51,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -184,7 +189,9 @@ public class UserController {
     @GetMapping("/user/myPageUser")
     public String goMyPageUser(@AuthenticationPrincipal UserAdapter adapter, Model model) {
         UserDTO dto = userService.findById(adapter.getUser().getId());
+        List<PostDto> postDTO = postService.selectPostByUserId(dto.getId());
         model.addAttribute("user", dto);
+        model.addAttribute("posts", postDTO);
         model.addAttribute("formattedMoney", Util.number.formatNumberWithComma(dto.getMoney()));
         return "user/myPageUser";
     }
