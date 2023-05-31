@@ -5,50 +5,62 @@
         xmlns:th="http://thymeleaf.org"
 >
 <th:block layout:fragment="content">
-  <th:block th:replace="/user/user_head :: userHeadFragment"></th:block>
-  <div class="d-flex flex-column wrapper">
-    <div class="title">충전하기</div>
-    <form method="post" action="/user/ch" class="form-charge">
-      <div class="input-charge-wrapper">
-        <div>
-          <input class="form-control input-charge" name="charge" type="text"
-                 placeholder="충전할 금액을 입력해주세요">
-        </div>
-        <div class="btn-group outline-bar-wrapper" role="group" aria-label="Basic outlined button group"
-             style="margin-top:30px;">
-          <button type="button" class="btn btn-outline-secondary outline-bar" id="one">+1만</button>
-          <button type="button" class="btn btn-outline-secondary outline-bar" id="five">+5만</button>
-          <button type="button" class="btn btn-outline-secondary outline-bar" id="ten">+10만</button>
-          <button type="button" class="btn btn-outline-secondary outline-bar" id="thirty">+30만</button>
-        </div>
-        <div class="account-wrapper">
-          <label class="sub-title">출금계좌</label>
-          <div class="d-flex" style="margin-top:10px;">
-            <select class="select-bank">
-              <option value="국민" selected>국민</option>
-              <option value="농협">농협</option>
-              <option value="신한">신한</option>
-            </select>
-            <div>
-              <input class="input-account" name="charge" type="text">
+    <th:block th:replace="/user/user_head :: userHeadFragment"></th:block>
+    <div class="d-flex flex-column wrapper">
+        <div class="title">충전하기</div>
+        <form method="post" action="" class="form-charge" id="chargeForm">
+            <div class="input-charge-wrapper">
+                <div>
+                    <input class="form-control input-charge" name="charge" type="text"
+                           placeholder="충전할 금액을 입력해주세요">
+                </div>
+                <div class="d-flex align-items-center" style="gap:50px;">
+                    <div class="btn-group outline-bar-wrapper" role="group" aria-label="Basic outlined button group"
+                         style="margin-top:30px;">
+                        <button type="button" class="btn btn-outline-secondary outline-bar" id="one">+1만</button>
+                        <button type="button" class="btn btn-outline-secondary outline-bar" id="five">+5만</button>
+                        <button type="button" class="btn btn-outline-secondary outline-bar" id="ten">+10만</button>
+                        <button type="button" class="btn btn-outline-secondary outline-bar" id="thirty">+50만</button>
+                    </div>
+                    <i class="fa-solid fa-arrows-rotate fa-2x" id="resetEx" style="margin-top:20px;color:#A2A2A2;cursor:pointer;"></i>
+                </div>
+                <div class="my-5 mx-3"><label><input type="radio" name="method" value="카드" checked/> &emsp;신용카드 <i
+                        class="fa-regular fa-credit-card" style="margin-left:10px;"></i></label></div>
+                <!--        <div class="account-wrapper">-->
+                <!--          <label class="sub-title">출금계좌</label>-->
+                <!--          <div class="d-flex" style="margin-top:10px;">-->
+                <!--            <select class="select-bank">-->
+                <!--              <option value="국민" selected>국민</option>-->
+                <!--              <option value="농협">농협</option>-->
+                <!--              <option value="신한">신한</option>-->
+                <!--            </select>-->
+                <!--            <div>-->
+                <!--              <input class="input-account" name="charge" type="text">-->
+                <!--            </div>-->
+                <!--          </div>-->
+                <!--        </div>-->
+                <!--                    <div th:replace="form_errors :: formErrorsFragment"></div>-->
             </div>
-          </div>
-
-        </div>
-        <!--                    <div th:replace="form_errors :: formErrorsFragment"></div>-->
-      </div>
-      <div class="d-flex justify-content-end" style="margin-top:10px;">
-        <div style="font-size:1.3rem;margin-right:20px;padding-top:6px;">충전금 잔액</div><!-- 하드코딩 -->
-        <div style="font-size:1.6rem;color:red;margin-right:9px;" th:text="${curPoints}" id="balance"></div>
-        <div style="font-size:1.3rem;padding-top:6px;">원</div>
-      </div>
-      <div class="d-flex justify-content-center">
-        <button class="btn btn-warning btn-charge" type="submit">충전하기</button>
-      </div>
-    </form>
-    <script>
+            <div class="d-flex justify-content-end" style="margin-top:10px;">
+                <div style="font-size:1.3rem;margin-right:20px;padding-top:6px;">현재 충전금 잔액</div><!-- 하드코딩 -->
+                <div style="font-size:1.6rem;color:red;margin-right:9px;" th:text="${curPoints}" id="balance"></div>
+                <div style="font-size:1.3rem;padding-top:6px;">원</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-warning btn-charge" type="submit" id="payment-button">충전하기</button>
+            </div>
+        </form>
+        <script src="https://js.tosspayments.com/v1"></script>
+        <script>
       $(function() {
         let charge = 0;
+        $("#resetEx").click(function() {
+          $(".input-charge").val("");
+          charge = 0;
+        });
+        $("#chargeForm").submit(function(event) {
+          event.preventDefault();
+        });
         let formatted = "";
         let balanceCharge = /*[[ ${curPoints} ]]*/
         $(document).on('click', '#one', function() {
@@ -57,7 +69,9 @@
           formatted = numberWithCommas(charge);
           formattedBalance = numberWithCommas(balanceCharge);
           $('.input-charge').val(formatted);
-          $('#balance').text(formattedBalance);
+<!--          $('#balance').empty();-->
+          $('#balance').val(formatted);
+<!--          console.log(formattedBalance);-->
         });
         $(document).on('click', '#five', function() {
           charge += 50000;
@@ -70,15 +84,39 @@
           $('.input-charge').val(formatted);
         });
         $(document).on('click', '#thirty', function() {
-          charge += 300000;
+          charge += 500000;
           formatted = numberWithCommas(charge);
           $('.input-charge').val(formatted);
         });
         function numberWithCommas(number) {
           return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
+        var tossPayments = TossPayments("test_ck_OEP59LybZ8Bk0LWlDEW36GYo7pRe");
+        var button = document.getElementById("payment-button");
+
+        var orderId = new Date().getTime();
+
+        button.addEventListener("click", function () {
+            var method = document.querySelector('input[name=method]:checked').value; // "카드" 혹은 "가상계좌"
+
+            var paymentData = {
+                amount: charge,
+                orderId: orderId,
+                orderName: "포인트 충전",
+                customerName: "이토페",
+                successUrl: window.location.origin + "/charge/success",
+                failUrl: window.location.origin + "/charge/fail",
+            };
+
+    <!--        if (method === '가상계좌') {-->
+    <!--            paymentData.virtualAccountCallbackUrl = window.location.origin + '/virtual-account/callback'-->
+    <!--        }-->
+
+            tossPayments.requestPayment(method, paymentData);
+        });
       });
-    </script>
-  </div>
+
+        </script>
+    </div>
 </th:block>
 </html>

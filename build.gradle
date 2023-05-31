@@ -75,6 +75,9 @@ dependencies {
 
 	//job scheduling
 	testImplementation 'org.awaitility:awaitility:4.2.0'
+
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 }
 
 tasks.named('test') {

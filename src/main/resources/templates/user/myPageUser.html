@@ -5,71 +5,73 @@
         layout:decorate="~{/testwc/layout}"
 >
 <th:block layout:fragment="content">
-  <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
-  <div class="img-wrapper">
-    <div>
-      <img class="sample" style="width: 230px; height: 250px;"
-           src="../../../../main/resources/iamge/깨비.jpg"/>
-    </div>
-    <div class="info-wrapper">
-      <div class="account-wrapper">
-        <div class="account-info">
-          <div class="charge fontSizeFix2">충전금</div>
-          <div class="charge-button">충전하기</div>
+    <th:block th:replace="/order/order_head :: orderHeadFragment"></th:block>
+    <div class="container-fluid wrapper my-3">
+        <div class="img-wrapper d-flex justify-content-around">
+            <div class="d-flex flex-column">
+                <img class="sample" style="width: 230px; height: 230px;border-radius:10px;padding:0;border:4px solid #FFCE0B;"
+                     src="/img/profiles/default.jpeg"/>
+                <div class="d-flex align-items-center justify-content-center" style="gap:15px;">
+                    <div class="invest-people">투자자</div>
+                    <div class="invest-name">[[${user.name}]] 님</div>
+                </div>
+            </div>
+            <div class="info-wrapper">
+                <div class="account-wrapper">
+                    <div class="account-info">
+                        <div class="charge fontSizeFix2">충전금</div>
+                        <div class="charge-button"><a href="/user/charge" style="color:white;text-decoration:none;">충전하기</a></div>
+                    </div>
+                    <div class="fontSizeFix2">[[${formattedMoney}]]원</div>
+                </div>
+                <div class="invest-wrapper">
+                    <div class="invest-info">
+                        <div class="fontSizeFix2">최근 투자상품</div>
+                    </div>
+                    <div class="fontSizeFix2"> - </div>
+                </div>
+            </div>
         </div>
-        <div class="fontSizeFix2">170,490원</div>
-      </div>
-      <div class="invest-wrapper">
-        <div class="invest-info">
-          <div class="fontSizeFix2">최근 투자상품</div>
-        </div>
-        <div class="fontSizeFix2">A+B 상품</div>
-      </div>
-    </div>
-  </div>
-  <div class="invest-people-wrapper">
-    <span class="invest-people">투자자</span>
-    <span class="invest-name">김 OO님</span>
-  </div>
+        <!--        <div class="invest-people-wrapper">-->
+        <!--            -->
+        <!--        </div>-->
 
-  <div class="box-wrapper">
-    <div class="invest-info-wrapper">
-      <div class="invest-title">투자내역</div>
-      <div class="invest-box">
-        <div class="invest-boarder">
-          <div class="invest-list">
-            <div>A+B상품</div>
-            <div>-%</div>
-          </div>
+        <div class="d-flex justify-content-between" style="width:100%;margin:0 auto;margin-top:30px;gap:20px;">
+            <div style="width:80%;">
+                <div class="invest-title"><i class="fa-solid fa-gift"></i> 투자내역</div>
+                <div class="invest-box shadow-sm">
+                    <div>
+                        <div style="color:#A2A2A2;">투자 내역이 없습니다.</div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:80%;">
+                <div class="invest-title"><i class="fa-regular fa-file"></i> 작성한 게시글</div>
+                <div class="invest-box shadow-sm">
+                    <div class="invest-boarder">
+                        <div class="invest-list" style="padding-top:10px;" th:each="post : ${posts}">
+                            <div th:text="${post.title}"></div>
+                            <div th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
+<!--                            <div style="margin-right:50px;">요즘 IT 산업 뜨고있던데...</div>-->
+<!--                            <div>2023.05.24</div>-->
+                        </div>
+                    </div>
+<!--                    <div class="invest-boarder">-->
+<!--                        <div class="invest-list">-->
+<!--                            <div style="margin-right:50px;">A 산업과 B산업 관련...</div>-->
+<!--                            <div>2023.05.26</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+            </div>
         </div>
-        <div class="invest-boarder">
-          <div class="invest-list">
-            <div>X+F상품</div>
-            <div>-%</div>
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="invest-info-wrapper marginMinus">
-      <div class="invest-title">작성한 게시글</div>
-      <div class="invest-box">
-        <div class="invest-boarder">
-          <div class="invest-list">
-            <div>요즘 IT 산업 뜨고있던데...</div>
-            <div>2023.05.24</div>
-          </div>
-        </div>
-        <div class="invest-boarder">
-          <div class="invest-list">
-            <div>A 산업과 B산업 관련...</div>
-            <div>2023.05.26</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <style>
+    <style>
+    .wrapper {
+        width: 90%;
+    }
+
     .header-wrapper {
       display: flex;
       justify-content: space-between;
@@ -191,29 +193,30 @@
     }
 
     .invest-info-wrapper {
-      padding: 30px;
-      width: 100%;
+<!--      width: 100%;-->
     }
 
     .invest-title {
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: bold;
       margin-bottom: 20px;
     }
 
     .marginMinus {
-      margin-left: -5%;
+<!--      margin-left: -5%;-->
     }
 
     .invest-box {
-      width: 90%;
-      font-size: 1.5rem;
-      height: 300px;
+<!--      width: 300px;-->
+      font-size: 1rem;
       background: #e8e6e6;
+      padding: 10px;
+      border-radius:10px;
     }
 
     .invest-boarder {
       padding: 0 20px;
+      padding: 10px;
     }
 
     .invest-list {
@@ -225,6 +228,9 @@
 
     .box-wrapper {
       display: flex;
+      justify-content: between;
+    }
+    </style>
     }
   </style>
 

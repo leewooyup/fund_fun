@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService{
     public Long addMoney(UserDTO dto, Long amount) {
         Users user = modelMapper.map(dto, Users.class);
         user.addMoney(amount);
+        userRepository.save(user);
+
         return user.getMoney();
     }
 
