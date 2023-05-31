@@ -187,11 +187,12 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
 <!--                <form th:action="@{/mypage/edit}" method="post" th:object="${form}">-->
-                <form th:action="@{/mypage/edit}" method="post" th:object="${form}">
+                <form th:action="@{/mypage/edit}" method="post" th:object="${form}" id="userForm" name="userForm">
                     <div class="container text-center">
                         <label class="row center-text" th:for="image">프로필 사진</label>
                         <div class="row" id="preview-container">
-                            <img src="/img/default.jpeg" alt="미리보기 이미지" id="preview-image">
+                            <img th:src="@{/img/profiles/{img}(img=${imgDir})}" alt="미리보기 이미지" id="preview-image">
+                            <input type="hidden" value="" id="image" name="image" th:field="*{image}"/>
                             <div id="overlay">
                                 <span id="text">프로필 변경하기</span>
                             </div>
@@ -213,7 +214,9 @@
         </div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
+
+
         // 이미지 파일 선택 시 미리보기 이미지 업데이트
         document.getElementById('preview-container').addEventListener('click', function () {
             document.getElementById('image-input').click();
@@ -226,16 +229,31 @@
             reader.onload = function () {
                 var previewImage = document.getElementById('preview-image');
                 previewImage.src = reader.result;
+                var formElement = document.getElementById("userForm");
+                var dataToSend = reader.result
+                formElement.elements['image'].value = dataToSend;
+                // console.log("formEle " + );
+                formElement.setAttribute('action', formElement.getAttribute('action')+"?rand="+Math.random())
+
             };
 
             reader.readAsDataURL(input.files[0]);
+
+            // console.log(dataToSend)
         });
 
         // 페이지 로드 시 기본 이미지 표시
         window.addEventListener('load', function () {
-
             var defaultImage = document.getElementById('preview-image');
-            defaultImage.src = '/img/default.jpeg';
+            var targetImage = /*[[${imgDir}]]*/ null
+            console.log("/img/profiles/"+targetImage)
+
+            if (targetImage.toString().length == 0) {
+                defaultImage.src = '../img/profiles/default.jpeg';
+            }else {
+                defaultImage.src = "../img/profiles/" + targetImage;
+                console.log(defaultImage.src)
+            }
         });
     </script>
     </body>

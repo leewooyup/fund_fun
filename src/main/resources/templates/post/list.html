@@ -7,11 +7,11 @@
 <th:block layout:fragment="content">
     <style>
         .pagination-newer {
-            margin-right: 50px;
+            margin-left: 50px;
         }
 
-        .pagination-older {
-            margin-left: 50px;
+        .pagination-prev {
+            margin-right: 50px;
         }
 
         div .aa {
@@ -60,12 +60,12 @@
             <h5 class="gray_text">투자 아이디어를 자유롭게 제안할 수 있는 공간입니다.</h5>
         </div>
         <div style="margin-top: 1rem;">
-            <span class="gray_text leftArea" style="margin-right:3px;"><a href="/post/list">최신순</a>  | </span>
-            <span class="gray_text leftArea" style="margin-right:3px;"><a href="/post/list/popular">인기순</a>  | </span>
-            <span class="gray_text leftArea" style="margin-right:3px;"><a href="/post/list/preproduct">가상품</a></span>
+            <span class="gray_text leftArea sorttab" style="margin-right:3px;"><a href="/post/list">최신순</a>  | </span>
+            <span class="gray_text leftArea sorttab" style="margin-right:3px;"><a href="/post/list/popular">인기순</a>  | </span>
+            <span class="gray_text leftArea sorttab" style="margin-right:3px;"><a href="/post/list/preproduct">가상품</a></span>
 
             <form class="rightArea" action="/post/list/searchResult" method="get" style="margin-bottom:10px;">
-                <input type="text" name="keyword" th:value="${keyword}">
+                <input type="text" class="input-search" name="keyword" placeholder="검색어를 입력해주세요" th:value="${keyword}">
                 <button class="btn btn-warning" type="submit">검색</button>
             </form>
         </div>
@@ -76,6 +76,7 @@
                 <th class="bd-right-none">좋아요</th>
                 <th>작성일</th>
             </tr>
+            <span th:if="${postList==null}">작성된 게시물이 없습니다.</span>
             <tr th:each="ele: ${postList}" style="border-top: 1px solid darkgray; border-bottom: 1px solid darkgray;">
                 <td>
                     <a th:href="@{/post/detail/{id}(id=${ele.getId()})}">
@@ -97,19 +98,19 @@
                         <!-- PREV -->
                         <span th:if="${nowPage > startPage}">
                             <span th:if="${sortby == 'standard'}">
-                                <a class="pagination-newer"
+                                <a class="pagination-prev"
                                    th:href="@{/post/list?nowPage={n}(n=${nowPage}-1)}">PREV</a>
                             </span>
                             <span th:if="${sortby == 'popular'}">
-                                <a class="pagination-newer"
+                                <a class="pagination-prev"
                                    th:href="@{/post/list/popular?nowPage={n}(n=${nowPage}-1)}">PREV</a>
                             </span>
                             <span th:if="${sortby == 'preproduct'}">
-                                <a class="pagination-newer"
+                                <a class="pagination-prev"
                                    th:href="@{/post/list/preproduct?nowPage={n}(n=${nowPage}-1)}">PREV</a>
                             </span>
                             <span th:if="${sortby == 'search'}">
-                                <a class="pagination-newer"
+                                <a class="pagination-prev"
                                    th:href="@{/post/list/searchResult?keyword={k}&nowPage={n}(k=${keyword}, n=${nowPage}-1)}">PREV</a>
                             </span>
                         </span>
@@ -138,6 +139,7 @@
                                 <a class="pagination-newer"
                                    th:href="@{/post/list/searchResult?keyword={k}&nowPage={n}(k=${keyword}, n=${nowPage}+1)}">NEXT</a>
                             </span>
+                        </span>
                     </span>
                 </div>
             </nav>
@@ -156,6 +158,30 @@
 
         .rightArea {
             float: right;
+        }
+        .sorttab{
+            font-size:18px;
+            margin-top:5px;
+            margin-left:5px;
+        }
+        .input-search {
+            width: 300px;
+            height:35px;
+            border: 1px solid #A2A2A2;
+            /*border-left-radius: 2px;*/
+            /*border-right: 0;*/
+        }
+
+        a {color: black; text-decoration: none;}
+        a:hover{color:#7F7368; text-decoration: none;}
+        th {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color:#FFCE0B;
+        }
+        td{
+            padding-top: 5px;
+            padding-bottom: 5px;
         }
     </style>
 </th:block>

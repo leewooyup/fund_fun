@@ -13,15 +13,6 @@
                 height: 300px;
             }
 
-            #login-btn {
-                width: 80%;
-                height: 60px;
-                background-color: #7F7368;
-                color: white;
-                border-radius: 15px;
-                margin: 10px 0;
-            }
-
             #login-wrapper {
                 width: 30%;
                 height: 300px;
@@ -40,6 +31,7 @@
                 border-bottom: 1px solid;
                 font-size: large;
             }
+
             .div-caption {
                 text-align: center;
                 font-size: large;
@@ -58,10 +50,40 @@
                 text-decoration: none;
             }
 
-            a.login {
-                justify-content: center;
-                width: 100%;
+            .inner {
+                background-color: white;
+                width: 90%;
+                height: 90%;
+                border-radius: 20px;
+            }
+
+            .order-main-left-section img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .inner-top {
+                height: 50%;
                 display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                padding-top: 20px;
+            }
+
+            .btn {
+                background-color: #7F7368;
+                color: white;
+                height: 90%;
+                font-size: small;
+            }
+
+            .btn-logout{
+                font-size: x-small;
+                width: 120%;
+                border: none;
+                border-radius: 10px;
+                height: 50%;
+                color: sandybrown;
             }
         </style>
     </head>
@@ -99,10 +121,34 @@
             </div>
 
             <div class="d-flex flex-column justify-content-center align-items-center" id="login-wrapper">
-                <a class="login" href="/login">
-                    <button class="btn btn-lg" id="login-btn" type="submit">Login</button>
-                </a>
-                <a href="register">회원가입</a> </span>
+                <div class="inner">
+                    <div class="inner-top">
+                        <div class="order-main-left-section">
+                            <img th:src="@{/img/profiles/{id}(id=${imgDir})}" alt="프로필">
+                        </div>
+                        <div class="order-main-right-section">
+                            <div style="font-size: small;color:grey">펀드매니저</div>
+                            <div style="font-size: large;font-weight: bold;" th:text="|${user.name}님|"></div>
+                            <div style="font-size: smaller" th:text="${user.email}"></div>
+                            <a href="/logout">
+                                <button class="btn-logout" type="submit">logout</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between" style="font-size: 15px;">
+                        <div class="d-flex flex-column">
+                            <div>진행중인 상품</div>
+                            <div>포트폴리오</div>
+                            <div>투표 중인 포트폴리오</div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div>1건</div>
+                            <div>2건</div>
+                            <div>0건</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
