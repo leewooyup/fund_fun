@@ -22,6 +22,15 @@
 
         }
 
+        .active {
+            color: black;
+            font-weight: bolder;
+        }
+
+        .menu {
+            color: #A2A2A2;
+        }
+
         .search-btn {
             /*float:right;*/
         }
@@ -92,6 +101,13 @@
             text-decoration: none;
         }
 
+        .text{
+          display: inline;
+          vertical-align: middle;
+          border-right: .05em solid black;
+          animation:  cursor 1s ease infinite;
+        }
+
     </style>
     <body>
     <div>
@@ -100,11 +116,16 @@
             <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매 중인 펀드 상품입니다. </h5>
         </div>
         <div style="padding:0 0 10px 10px;">
-            <span><a href="/product/list">전체</a> | </span>
-            <a href="/product/list/progress">진행 중인 상품</a>
+            <a href="/product/list"><span class="menu">전체</span></a> |
+            <a href="/product/list/progress"><span class="menu">진행 중인 상품</span></a>
         </div>
         <th:block th:if="${list.isEmpty()}">
-            <span style="text-align: center"><h4>상품을 등록해주세요.</h4></span>
+            <div style="text-align: center">
+                <div>
+                    <img src="/img/ccoli_error.png" style="width:200px;">
+                </div>
+                <h4 class="register-err-msg" style="color:#A2A2A2;"></h4>
+            </div>
         </th:block>
 
         <th:unless>
@@ -188,6 +209,33 @@
             </div>
         </div>
     </div>
+    <script>
+<!--        타이핑 효과 -->
+        const REGISTER_ERR_MSG = "등록된 상품이 없습니다.";
+        const text = document.querySelector(".register-err-msg");
+        let index=0;
+        function sleep(delay) {
+            const start = new Date().getTime();
+            while(new Date().getTime() < start + delay);
+        }
+
+        function typing() {
+            text.textContent += REGISTER_ERR_MSG[index++];
+            if(index > REGISTER_ERR_MSG.length) {
+                text.textContent ="";
+                index = 0;
+            }
+        }
+
+        setInterval(typing, 200);
+
+        $(function() {
+            $(".menu").click(function() {
+                $(this).removeClass();
+                $(this).addClass('active').siblings().removeClass('active');
+            });
+        });
+    </script>
     <script th:inline="javascript">
         toastr.options = {
             closeButton: false,
