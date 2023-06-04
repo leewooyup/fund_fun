@@ -243,20 +243,20 @@
                     success: function(data) {
                         console.log("data: ", data);
                         let str = "";
+                        str += `<div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">`;
+                        str += `<div class="row row-cols-4" style="gap:30px;">`;
                         $.each(data, function(index, item) {
-                            str += `<div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">`;
-                            str += `<div class="row row-cols-3">`;
-                            str += `<div class="col">`;
-                            str += `<div class="d-flex flex-column align-items-center">`;
+                            str += `<div class="col p-0 shadow" style="border-radius:10px;border:1px solid #5f584c;">`;
+                            str += `<div class="d-flex flex-column align-items-center p-3">`;
                             str += `<a href="/order/form/` + item.uuidEncode + `">`;
                             console.log("uuidEncode: ", `${item.uuidEncode}`);
-                            str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;">`;
+                            str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;border:4px solid #5f584c;">`;
                             str += `</a>`;
                             str += `<div style="font-size:large;font-weight:bold;margin-top:8px;">` + item.title + `</div>`;
                             str += `<div style="color:#8B8B8B;">` + item.crowdStart + `일 ~ </div>`;
                             str += `<div style="font-size:small;margin-top:10px;color:red">` + item.calCollectionsPercentage + `%</div>`;
                             str += `</div>`;
-                            str += `<div class="progress" style="margin-bottom:2rem;width:80%;margin:0 auto;">`;
+                            str += `<div class="progress my-3 mt-0" style="margin-bottom:2rem;width:80%;margin:0 auto;">`;
                             str += `<div class="progress-bar" role="progressbar" attr="aria-valuenow=` + item.calCollectionsPercentage + `, aria-valuemin=0, aria-valuemax=100" style="width:` + item.calCollectionsPercentage + `%;">` + item.calCollectionsPercentage + `%`;
                             str += `</div>`;
                             str += `</div>`;
