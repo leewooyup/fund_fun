@@ -23,12 +23,16 @@
         }
 
         .active {
-            color: black;
+            color: #ffc107;
             font-weight: bolder;
         }
 
         .menu {
             color: #A2A2A2;
+        }
+
+        .product-total, .product-progress {
+            cursor: pointer;
         }
 
         .search-btn {
@@ -107,17 +111,17 @@
           border-right: .05em solid black;
           animation:  cursor 1s ease infinite;
         }
-
     </style>
-    <body>
     <div>
         <div class="header">
             <h3>상품게시판</h3>
             <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매 중인 펀드 상품입니다. </h5>
         </div>
         <div style="padding:0 0 10px 10px;">
-            <a href="/product/list"><span class="menu">전체</span></a> |
-            <a href="/product/list/progress"><span class="menu">진행 중인 상품</span></a>
+<!--            <a href="/product/list"><span class="menu">전체</span></a> |-->
+            <span class="menu product-total">전체</span> |
+<!--            <a href="/product/list/progress"><span class="menu">진행 중인 상품</span></a>-->
+            <span class="menu product-progress">진행 중인 상품</span>
         </div>
         <th:block th:if="${list.isEmpty()}">
             <div style="text-align: center">
@@ -211,50 +215,62 @@
         </div>
     </div>
     <script>
-
-
         $(function() {
             <!--        클릭된 메뉴 active -->
             $(".menu").click(function() {
-                $(this).removeClass();
+                $(this).removeClass('menu');
                 $(this).addClass('active').siblings().removeClass('active');
             });
-            <!--        AJAX -->
-            $.ajax({
-                url: "/ff/api/v5/show/all",
-                type: "GET",
-                dataType: "json",
-                success: function(data) {
-                    console.log("data: ", data);
-                    let str = "";
-                    $.each(data, function(index, item) {
-                        str += `<div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">`;
-                        str += `<div class="row row-cols-3">`;
-                        str += `<div class="col">`;
-                        str += `<div class="d-flex flex-column align-items-center">`;
-                        str += `<a href="/order/form/` + item.uuidEncode + `">`;
-                        console.log("uuidEncode: ", `${item.uuidEncode}`);
-                        str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;">`;
-                        str += `</a>`;
-                        str += `<div style="font-size:large;font-weight:bold;margin-top:8px;">` + item.title + `</div>`;
-                        str += `<div style="color:#8B8B8B;">` + item.crowdStart + `일 ~ </div>`;
-                        str += `<div style="font-size:small;margin-top:10px;color:red">` + item.calCollectionsPercentage + `%</div>`;
-                        str += `</div>`;
-                        str += `<div class="progress" style="margin-bottom:2rem;width:80%;margin:0 auto;">`;
-                        str += `<div class="progress-bar" role="progressbar" attr="aria-valuenow=` + item.calCollectionsPercentage + `, aria-valuemin=0, aria-valuemax=100" style="width:` + item.calCollectionsPercentage + `%;">` + item.calCollectionsPercentage + `%`;
-                        str += `</div>`;
-                        str += `</div>`;
-                        str += `</div>`;
-                    });
-                    $(".product-grid").html(str);
-                },
-                error: function(jqXHR, status) {
-                    alert("문제 발생 : " + status)
-                }
-            })
+
+            $(".product-total").click(function() {
+                listing("/ff/api/v5/show/all");
+            });
+
+            $(".product-progress").click(function() {
+                listing("/ff/api/v5/show/progress");
+            });
+
+            $(".product-total").removeClass('menu');
+            $(".product-total").addClass('active');
+
+            listing("/ff/api/v5/show/all");
+
+            function listing(url) {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        console.log("data: ", data);
+                        let str = "";
+                        $.each(data, function(index, item) {
+                            str += `<div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">`;
+                            str += `<div class="row row-cols-3">`;
+                            str += `<div class="col">`;
+                            str += `<div class="d-flex flex-column align-items-center">`;
+                            str += `<a href="/order/form/` + item.uuidEncode + `">`;
+                            console.log("uuidEncode: ", `${item.uuidEncode}`);
+                            str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;">`;
+                            str += `</a>`;
+                            str += `<div style="font-size:large;font-weight:bold;margin-top:8px;">` + item.title + `</div>`;
+                            str += `<div style="color:#8B8B8B;">` + item.crowdStart + `일 ~ </div>`;
+                            str += `<div style="font-size:small;margin-top:10px;color:red">` + item.calCollectionsPercentage + `%</div>`;
+                            str += `</div>`;
+                            str += `<div class="progress" style="margin-bottom:2rem;width:80%;margin:0 auto;">`;
+                            str += `<div class="progress-bar" role="progressbar" attr="aria-valuenow=` + item.calCollectionsPercentage + `, aria-valuemin=0, aria-valuemax=100" style="width:` + item.calCollectionsPercentage + `%;">` + item.calCollectionsPercentage + `%`;
+                            str += `</div>`;
+                            str += `</div>`;
+                            str += `</div>`;
+                        });
+                        $(".product-grid").html(str);
+                    },
+                    error: function(jqXHR, status) {
+                        alert("문제 발생 : " + status)
+                    }
+                });
+            }
         });
-    </script>
-    <script th:inline="javascript">
+<!--        toastr 알림메세지-->
         toastr.options = {
             closeButton: false,
             debug: false,
@@ -290,10 +306,6 @@
         if (params.msg) {
             successModal(params.msg);
         }
-
     </script>
-    </body>
 </th:block>
-
-
 </html>

@@ -27,8 +27,20 @@ public class ProductRestController {
     private final ProductService productService;
     private final ModelMapper modelMapper;
     @GetMapping("/show/all")
-    public List<ProductShowDTO> showAll(HttpServletResponse response) {
+    public List<ProductShowDTO> showAll() {
         List<ProductDto> productDtos = productService.selectAll();
+        List<ProductShowDTO> products = productDtos
+                .stream()
+                .map((x) ->
+                        modelMapper.map(x, ProductShowDTO.class)
+                )
+                .collect(Collectors.toList());
+        return products;
+    }
+
+    @GetMapping("/show/progress")
+    public List<ProductShowDTO> showProgress() {
+        List<ProductDto> productDtos = productService.selectByStatus("진행중");
         List<ProductShowDTO> products = productDtos
                 .stream()
                 .map((x) ->
