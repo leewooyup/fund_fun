@@ -75,6 +75,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> selectAll() {
         List<Product> productList = productRepository.findAll();
         return productList.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+//        return productList;
     }
 
     /**

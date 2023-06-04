@@ -124,46 +124,47 @@
                 <div>
                     <img src="/img/ccoli_error.png" style="width:200px;">
                 </div>
-                <h4 class="register-err-msg" style="color:#A2A2A2;"></h4>
+<!--                <h4 class="register-err-msg" style="color:#A2A2A2;"></h4>-->
             </div>
         </th:block>
 
         <th:unless>
-            <div class="container my-3">
-                <div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">
-                    <div class="row row-cols-3">
-                        <div th:each="ele : ${list}">
-                            <div class="col">
-                                <a th:href="@{|/order/form/${ele.uuidEncode}|}">
-                                    <div class="product-thumbnail" th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
-                                        <img alt="" style="width:80%"
-                                             th:src="@{|/gen/${ele.thumbnailRelPath}|}"
-                                             width="250px">
-                                    </div>
-                                    <div class="product-thumbnail" th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">
-                                        <img alt="" height="250px"
-                                             th:src="@{|/gen/${ele.getThumbnailImgRedirectUrl}|}"
-                                             width="250px">
-                                    </div>
-                                </a>
-                                <div style="font-size: large;font-weight: bold" th:text="${ele.title}"></div>
-                                <div style="color:#8B8B8B" th:text="|${ele.crowdStart}일 ~|"></div>
-                                <div style="font-size:small;margin-top:10px;color:red"
-                                     th:text="|${ele.calCollectionsPercentage}%|"></div>
-                                <div class="progress" style="margin-bottom:2rem;">
-                                    <div class="progress-bar" role="progressbar"
-                                         th:attr="aria-valuenow=${ele.calCollectionsPercentage}, aria-valuemin=0, aria-valuemax=100"
-                                         th:style="'width: ' + ${ele.calCollectionsPercentage} + '%;'"
-                                         th:text="${ele.calCollectionsPercentage + '%'}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="container my-3">-->
+<!--                <div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">-->
+<!--                    <div class="row row-cols-3">-->
+<!--                        <div th:each="ele : ${list}">-->
+<!--                            <div class="col">-->
+<!--                                <a th:href="@{|/order/form/${ele.uuidEncode}|}">-->
+<!--                                    <div class="product-thumbnail" th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">-->
+<!--                                        <img alt="" style="width:80%"-->
+<!--                                             th:src="@{|/gen/${ele.thumbnailRelPath}|}"-->
+<!--                                             width="250px">-->
+<!--                                    </div>-->
+<!--                                    <div class="product-thumbnail" th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">-->
+<!--                                        <img alt="" height="250px"-->
+<!--                                             th:src="@{|/gen/${ele.getThumbnailImgRedirectUrl}|}"-->
+<!--                                             width="250px">-->
+<!--                                    </div>-->
+<!--                                </a>-->
+<!--                                <div style="font-size: large;font-weight: bold" th:text="${ele.title}"></div>-->
+<!--                                <div style="color:#8B8B8B" th:text="|${ele.crowdStart}일 ~|"></div>-->
+<!--                                <div style="font-size:small;margin-top:10px;color:red"-->
+<!--                                     th:text="|${ele.calCollectionsPercentage}%|"></div>-->
+<!--                                <div class="progress" style="margin-bottom:2rem;">-->
+<!--                                    <div class="progress-bar" role="progressbar"-->
+<!--                                         th:attr="aria-valuenow=${ele.calCollectionsPercentage}, aria-valuemin=0, aria-valuemax=100"-->
+<!--                                         th:style="'width: ' + ${ele.calCollectionsPercentage} + '%;'"-->
+<!--                                         th:text="${ele.calCollectionsPercentage + '%'}">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </th:unless>
 
+        <div class="product-grid"></div>
 
         <div>
             <div style="text-align: center">
@@ -210,30 +211,47 @@
         </div>
     </div>
     <script>
-<!--        타이핑 효과 -->
-        const REGISTER_ERR_MSG = "등록된 상품이 없습니다.";
-        const text = document.querySelector(".register-err-msg");
-        let index=0;
-        function sleep(delay) {
-            const start = new Date().getTime();
-            while(new Date().getTime() < start + delay);
-        }
 
-        function typing() {
-            text.textContent += REGISTER_ERR_MSG[index++];
-            if(index > REGISTER_ERR_MSG.length) {
-                text.textContent ="";
-                index = 0;
-            }
-        }
-
-        setInterval(typing, 200);
 
         $(function() {
+            <!--        클릭된 메뉴 active -->
             $(".menu").click(function() {
                 $(this).removeClass();
                 $(this).addClass('active').siblings().removeClass('active');
             });
+            <!--        AJAX -->
+            $.ajax({
+                url: "/ff/api/v5/show/all",
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log("data: ", data);
+                    let str = "";
+                    $.each(data, function(index, item) {
+                        str += `<div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">`;
+                        str += `<div class="row row-cols-3">`;
+                        str += `<div class="col">`;
+                        str += `<div class="d-flex flex-column align-items-center">`;
+                        str += `<a href="/order/form/` + item.uuidEncode + `">`;
+                        console.log("uuidEncode: ", `${item.uuidEncode}`);
+                        str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;">`;
+                        str += `</a>`;
+                        str += `<div style="font-size:large;font-weight:bold;margin-top:8px;">` + item.title + `</div>`;
+                        str += `<div style="color:#8B8B8B;">` + item.crowdStart + `일 ~ </div>`;
+                        str += `<div style="font-size:small;margin-top:10px;color:red">` + item.calCollectionsPercentage + `%</div>`;
+                        str += `</div>`;
+                        str += `<div class="progress" style="margin-bottom:2rem;width:80%;margin:0 auto;">`;
+                        str += `<div class="progress-bar" role="progressbar" attr="aria-valuenow=` + item.calCollectionsPercentage + `, aria-valuemin=0, aria-valuemax=100" style="width:` + item.calCollectionsPercentage + `%;">` + item.calCollectionsPercentage + `%`;
+                        str += `</div>`;
+                        str += `</div>`;
+                        str += `</div>`;
+                    });
+                    $(".product-grid").html(str);
+                },
+                error: function(jqXHR, status) {
+                    alert("문제 발생 : " + status)
+                }
+            })
         });
     </script>
     <script th:inline="javascript">

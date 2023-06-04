@@ -13,6 +13,7 @@ import com.fundfun.fundfund.service.order.OrderService;
 import com.fundfun.fundfund.service.product.ProductService;
 import com.fundfun.fundfund.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -42,6 +44,7 @@ public class ProductController {
     private final ProductService productService;
     private final OrderService orderService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     private final static int PAGE_COUNT = 6;
     private final static int BLOCK_COUNT = 3;
@@ -184,6 +187,14 @@ public class ProductController {
         List<ProductDto> searchList = productService.searchTitle(title);
         model.addAttribute("searchList", searchList);
         return "product/product_search_list";
+    }
+
+    @GetMapping("/search/all")
+    @ResponseBody
+    public List<Product> searchAll() {
+        List<ProductDto> list = productService.selectAll();
+        List<Product> products = list.stream().map((x) -> modelMapper.map(list, Product.class)).collect(Collectors.toList());
+        return products;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.fundfun.fundfund.controller;
 
 import com.fundfun.fundfund.domain.post.Post;
+import com.fundfun.fundfund.domain.product.Product;
 import com.fundfun.fundfund.domain.user.Role;
 import com.fundfun.fundfund.domain.user.UserAdapter;
 import com.fundfun.fundfund.domain.user.UserDTO;
