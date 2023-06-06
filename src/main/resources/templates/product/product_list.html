@@ -125,15 +125,15 @@
                 <span class="menu product-progress">진행 중인 상품</span>
             </div>
             <th:block th:if="${list.isEmpty()}">
-                <div style="text-align: center">
+                <div style="text-align:center;min-height:410px;" class="d-flex flex-column justify-content-center my-4">
                     <div>
-                        <img src="/img/ccoli_error.png" style="width:200px;">
+                        <i class="fa-solid fa-frog fa-7x" style="color:#A2A2A2;"></i>
                     </div>
-                    <!--                <h4 class="register-err-msg" style="color:#A2A2A2;"></h4>-->
+                    <h4 style="color:#A2A2A2;margin-top:15px;">등록된 상품이 없습니다.</h4>
                 </div>
             </th:block>
 
-            <th:unless>
+
                 <!--            <div class="container my-3">-->
                 <!--                <div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">-->
                 <!--                    <div class="row row-cols-3">-->
@@ -167,10 +167,11 @@
                 <!--                    </div>-->
                 <!--                </div>-->
                 <!--            </div>-->
-            </th:unless>
 
-            <div class="product-grid my-4"></div>
 
+            <th:block th:unless="${list.isEmpty()}">
+                <div class="product-grid my-4" style="min-height:410px;"></div>
+            </th:block>
             <div style="text-align: center">
                 <nav class="pagination-container">
                     <div class="pagination">
@@ -243,7 +244,7 @@
                     success: function(data) {
                         console.log("data: ", data);
                         let str = "";
-                        str += `<div style="min-height:50vh;">`;
+                        str += `<div>`;
                         str += `<div class="row row-cols-4" style="gap:30px;--bs-gutter-x:0rem;padding-left:10px">`;
                         $.each(data, function(index, item) {
                             str += `<div class="col p-0 shadow" style="border-radius:10px;border:2px solid #5f584c;">`;
