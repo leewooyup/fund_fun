@@ -247,18 +247,20 @@
                         str += `<div>`;
                         str += `<div class="row row-cols-4" style="gap:30px;--bs-gutter-x:0rem;padding-left:10px">`;
                         $.each(data, function(index, item) {
-                            str += `<div class="col p-0 shadow" style="border-radius:10px;border:2px solid #5f584c;">`;
+                            str += `<div class="col p-0 shadow" style="border-radius:10px;border:2px solid #5f584c;background-color:rgba(255,193,7,0.1);">`;
                             str += `<div class="d-flex flex-column align-items-center py-3">`;
                             str += `<a href="/order/form/` + item.uuidEncode + `">`;
-                            console.log("uuidEncode: ", `${item.uuidEncode}`);
                             str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;border:5px solid #5f584c;">`;
                             str += `</a>`;
-                            str += `<div style="font-size:large;font-weight:bold;margin-top:8px;">` + item.title + `</div>`;
-                            str += `<div style="color:#8B8B8B;">` + item.crowdStart + `일 ~ </div>`;
-                            str += `<div style="font-size:small;margin-top:10px;color:red">` + item.calCollectionsPercentage + `%</div>`;
+                            str += `<div style="width:250px;text-align:left" class="d-flex flex-column">`;
+                            str += `<div style="font-size:large;font-weight:bold;margin-top:20px;color:#5f584c;">` + item.title + `</div>`;
+                            str += `<div class="d-flex justify-content-between">`;
+                            str += `<div style="color:#A2A2A2;font-size:15px;">` + item.crowdStart + ` ~ </div>`;
+                            str += `<div style="font-size:x-large;margin-top:10px;color:red;font-weight:bolder;">` + item.calCollectionsPercentage + `%</div>`;
                             str += `</div>`;
-                            str += `<div class="progress my-3 mt-0" style="margin-bottom:2rem;width:80%;margin:0 auto;">`;
-                            str += `<div class="progress-bar" role="progressbar" attr="aria-valuenow=` + item.calCollectionsPercentage + `, aria-valuemin=0, aria-valuemax=100" style="width:` + item.calCollectionsPercentage + `%;">` + item.calCollectionsPercentage + `%`;
+                            str += `</div>`;
+                            str += `<div class="progress my-3 mt-0" style="margin-bottom:2rem;width:250px;margin:0 auto;">`;
+                            str += `<div class="progress-bar" role="progressbar" attr="aria-valuenow=` + item.calCollectionsPercentage + `, aria-valuemin=0, aria-valuemax=100" style="width:` + item.calCollectionsPercentage + `%;background-color:#ffc107;color:black;padding-top:3px;font-weight:bolder;border:2px solid #5f584c;">` + item.calCollectionsPercentage + `%`;
                             str += `</div>`;
                             str += `</div>`;
                             str += `</div>`;
