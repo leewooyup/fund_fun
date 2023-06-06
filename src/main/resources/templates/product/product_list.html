@@ -113,105 +113,105 @@
         }
     </style>
     <div>
-        <div class="header">
-            <h3>상품게시판</h3>
-            <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매 중인 펀드 상품입니다. </h5>
-        </div>
-        <div style="padding:0 0 10px 10px;">
-<!--            <a href="/product/list"><span class="menu">전체</span></a> |-->
-            <span class="menu product-total">전체</span> |
-<!--            <a href="/product/list/progress"><span class="menu">진행 중인 상품</span></a>-->
-            <span class="menu product-progress">진행 중인 상품</span>
-        </div>
-        <th:block th:if="${list.isEmpty()}">
-            <div style="text-align: center">
-                <div>
-                    <img src="/img/ccoli_error.png" style="width:200px;">
-                </div>
-<!--                <h4 class="register-err-msg" style="color:#A2A2A2;"></h4>-->
+        <div class="pl-5">
+            <div class="header">
+                <h3>상품게시판</h3>
+                <h5>투자자 여러분의 아이디어와 투표 결과를 반영해 판매 중인 펀드 상품입니다. </h5>
             </div>
-        </th:block>
+            <div style="padding:0 0 10px 10px;">
+                <!--            <a href="/product/list"><span class="menu">전체</span></a> |-->
+                <span class="menu product-total">전체</span> |
+                <!--            <a href="/product/list/progress"><span class="menu">진행 중인 상품</span></a>-->
+                <span class="menu product-progress">진행 중인 상품</span>
+            </div>
+            <th:block th:if="${list.isEmpty()}">
+                <div style="text-align: center">
+                    <div>
+                        <img src="/img/ccoli_error.png" style="width:200px;">
+                    </div>
+                    <!--                <h4 class="register-err-msg" style="color:#A2A2A2;"></h4>-->
+                </div>
+            </th:block>
 
-        <th:unless>
-<!--            <div class="container my-3">-->
-<!--                <div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">-->
-<!--                    <div class="row row-cols-3">-->
-<!--                        <div th:each="ele : ${list}">-->
-<!--                            <div class="col">-->
-<!--                                <a th:href="@{|/order/form/${ele.uuidEncode}|}">-->
-<!--                                    <div class="product-thumbnail" th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">-->
-<!--                                        <img alt="" style="width:80%"-->
-<!--                                             th:src="@{|/gen/${ele.thumbnailRelPath}|}"-->
-<!--                                             width="250px">-->
-<!--                                    </div>-->
-<!--                                    <div class="product-thumbnail" th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">-->
-<!--                                        <img alt="" height="250px"-->
-<!--                                             th:src="@{|/gen/${ele.getThumbnailImgRedirectUrl}|}"-->
-<!--                                             width="250px">-->
-<!--                                    </div>-->
-<!--                                </a>-->
-<!--                                <div style="font-size: large;font-weight: bold" th:text="${ele.title}"></div>-->
-<!--                                <div style="color:#8B8B8B" th:text="|${ele.crowdStart}일 ~|"></div>-->
-<!--                                <div style="font-size:small;margin-top:10px;color:red"-->
-<!--                                     th:text="|${ele.calCollectionsPercentage}%|"></div>-->
-<!--                                <div class="progress" style="margin-bottom:2rem;">-->
-<!--                                    <div class="progress-bar" role="progressbar"-->
-<!--                                         th:attr="aria-valuenow=${ele.calCollectionsPercentage}, aria-valuemin=0, aria-valuemax=100"-->
-<!--                                         th:style="'width: ' + ${ele.calCollectionsPercentage} + '%;'"-->
-<!--                                         th:text="${ele.calCollectionsPercentage + '%'}">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-        </th:unless>
+            <th:unless>
+                <!--            <div class="container my-3">-->
+                <!--                <div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">-->
+                <!--                    <div class="row row-cols-3">-->
+                <!--                        <div th:each="ele : ${list}">-->
+                <!--                            <div class="col">-->
+                <!--                                <a th:href="@{|/order/form/${ele.uuidEncode}|}">-->
+                <!--                                    <div class="product-thumbnail" th:if="${ele.thumbnailRelPath == 'product/avatar.jpg'}">-->
+                <!--                                        <img alt="" style="width:80%"-->
+                <!--                                             th:src="@{|/gen/${ele.thumbnailRelPath}|}"-->
+                <!--                                             width="250px">-->
+                <!--                                    </div>-->
+                <!--                                    <div class="product-thumbnail" th:unless="${ele.thumbnailRelPath == 'product/avatar.jpg'}">-->
+                <!--                                        <img alt="" height="250px"-->
+                <!--                                             th:src="@{|/gen/${ele.getThumbnailImgRedirectUrl}|}"-->
+                <!--                                             width="250px">-->
+                <!--                                    </div>-->
+                <!--                                </a>-->
+                <!--                                <div style="font-size: large;font-weight: bold" th:text="${ele.title}"></div>-->
+                <!--                                <div style="color:#8B8B8B" th:text="|${ele.crowdStart}일 ~|"></div>-->
+                <!--                                <div style="font-size:small;margin-top:10px;color:red"-->
+                <!--                                     th:text="|${ele.calCollectionsPercentage}%|"></div>-->
+                <!--                                <div class="progress" style="margin-bottom:2rem;">-->
+                <!--                                    <div class="progress-bar" role="progressbar"-->
+                <!--                                         th:attr="aria-valuenow=${ele.calCollectionsPercentage}, aria-valuemin=0, aria-valuemax=100"-->
+                <!--                                         th:style="'width: ' + ${ele.calCollectionsPercentage} + '%;'"-->
+                <!--                                         th:text="${ele.calCollectionsPercentage + '%'}">-->
+                <!--                                    </div>-->
+                <!--                                </div>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--            </div>-->
+            </th:unless>
 
-        <div class="product-grid"></div>
+            <div class="product-grid my-4"></div>
 
-        <div>
             <div style="text-align: center">
                 <nav class="pagination-container">
                     <div class="pagination">
                         <th:block th:with="doneLoop=false"></th:block>
                         <span th:if="${startPage > blockCount}">
-                       <a class="pagination-newer" th:href="'/product/list?nowPage='+ ${startPage-1}">PREV</a>
-                   </span>
+                            <a class="pagination-newer" th:href="'/product/list?nowPage='+ ${startPage-1}">PREV</a>
+                        </span>
 
                         <span class="pagination-inner">
-                    <th:block th:each="i : ${#numbers.sequence(startPage, (startPage-1)+blockCount)}">
-                        <th:block th:if="${i-1 >= list.getTotalPages()}">
-                            <th:block th:with="doneLoop=true"></th:block>
-                        </th:block>
-                        <th:block th:unless="${doneLoop}">
-                            <a th:class="${i==nowPage ? 'pagination-active' : 'page'}"
-                               th:href="@{/product/list(nowPage=${i})}"
-                               th:text="${i}"></a>
-                        </th:block>
-                    </th:block>
-                    </span>
+                            <th:block th:each="i : ${#numbers.sequence(startPage, (startPage-1)+blockCount)}">
+                                <th:block th:if="${i-1 >= list.getTotalPages()}">
+                                    <th:block th:with="doneLoop=true"></th:block>
+                                </th:block>
+                                <th:block th:unless="${doneLoop}">
+                                    <a th:class="${i==nowPage ? 'pagination-active' : 'page'}"
+                                       th:href="@{/product/list(nowPage=${i})}"
+                                       th:text="${i}"></a>
+                                </th:block>
+                            </th:block>
+                        </span>
 
                         <span th:if="${(startPage + blockCount) <= list.getTotalPages()}">
-                        <a class="pagination-older"
-                           th:href="'/product/list?nowPage=' + ${startPage+blockCount}">NEXT</a>
-                    </span>
+                            <a class="pagination-older"
+                               th:href="'/product/list?nowPage=' + ${startPage+blockCount}">NEXT</a>
+                        </span>
                     </div>
                 </nav>
             </div>
-            <div class="bottom">
-                <form action="/product/search" method="get" style="float: right">
-                    <div class="search-btn">
-                        <input name="title" placeholder="Search" type="text"></input>
-                        <button class="btn btn-warning" type="submit">검색</button>
-                    </div>
-                </form>
-<!--                <th:block th:if="${#strings.equals(user.role, 'ADMIN')}">-->
-                    <a href="/product/register">
-                        <button class="btn btn-warning" type="submit">등록</button>
-                    </a>
-<!--                </th:block>-->
-            </div>
+        </div>
+        <div class="bottom">
+            <form action="/product/search" method="get" style="float: right">
+                <div class="search-btn">
+                    <input name="title" placeholder="Search" type="text"></input>
+                    <button class="btn btn-warning" type="submit">검색</button>
+                </div>
+            </form>
+            <!--                <th:block th:if="${#strings.equals(user.role, 'ADMIN')}">-->
+            <a href="/product/register">
+                <button class="btn btn-warning" type="submit">등록</button>
+            </a>
+            <!--                </th:block>-->
         </div>
     </div>
     <script>
@@ -243,14 +243,14 @@
                     success: function(data) {
                         console.log("data: ", data);
                         let str = "";
-                        str += `<div class="d-flex flex-column flex-grow-1" style="min-height:50vh;">`;
-                        str += `<div class="row row-cols-4" style="gap:30px;">`;
+                        str += `<div style="min-height:50vh;">`;
+                        str += `<div class="row row-cols-4" style="gap:30px;--bs-gutter-x:0rem;padding-left:10px">`;
                         $.each(data, function(index, item) {
-                            str += `<div class="col p-0 shadow" style="border-radius:10px;border:1px solid #5f584c;">`;
-                            str += `<div class="d-flex flex-column align-items-center p-3">`;
+                            str += `<div class="col p-0 shadow" style="border-radius:10px;border:2px solid #5f584c;">`;
+                            str += `<div class="d-flex flex-column align-items-center py-3">`;
                             str += `<a href="/order/form/` + item.uuidEncode + `">`;
                             console.log("uuidEncode: ", `${item.uuidEncode}`);
-                            str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;border:4px solid #5f584c;">`;
+                            str += `<img alt="" height="250px" src="/gen/` + item.thumbnailImgRedirectUrl + `" width="250px" class="shadow" style="border-radius:10px;border:5px solid #5f584c;">`;
                             str += `</a>`;
                             str += `<div style="font-size:large;font-weight:bold;margin-top:8px;">` + item.title + `</div>`;
                             str += `<div style="color:#8B8B8B;">` + item.crowdStart + `일 ~ </div>`;
@@ -306,6 +306,7 @@
         if (params.msg) {
             successModal(params.msg);
         }
+
     </script>
 </th:block>
 </html>
